@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>复盘 2.0 模板（Phase 1 版）· K线训练营</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+/* 模板专用排版：五组卡片 + 可打印填空 */
+.rv-meta { font-family: var(--sans); font-size: .8rem; color: var(--muted); display: flex; gap: 1.5rem; flex-wrap: wrap;
+  border: 1px solid var(--line); border-radius: 8px; padding: .5rem .9rem; background: #fff; margin: 1rem 0 1.6rem; }
+.rv-group { border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: .9rem 1.1rem; margin: 1rem 0; }
+.rv-group h3 { margin: 0 0 .1rem; font-size: 1.02rem; }
+.rv-group .g-meta { font-family: var(--sans); font-size: .74rem; color: var(--faint); margin-bottom: .6rem; }
+.rv-item { display: flex; gap: .7rem; padding: .5rem 0; border-bottom: 1px dashed var(--line); align-items: baseline; }
+.rv-item:last-child { border-bottom: none; }
+.rv-item .chk { color: var(--faint); font-size: 1.05rem; min-width: 1.2rem; }
+.rv-item .q { min-width: 13.5rem; font-size: .92rem; }
+.rv-item .fill { flex: 1; border-bottom: 1px solid var(--line); min-height: 1.3rem; font-family: var(--sans); font-size: .82rem; color: var(--ink); }
+.rv-item .hint { font-family: var(--sans); font-size: .74rem; color: var(--faint); min-width: 7.5rem; text-align: right; }
+.rv-log table { width: 100%; }
+.rv-log td { border: 1px solid var(--line); padding: .45rem .6rem; font-size: .85rem; }
+.rv-log td:first-child { white-space: nowrap; font-family: var(--sans); font-size: .78rem; color: var(--muted); width: 6.5rem; }
+.et-row td { height: 1.6rem; }
+@media print {
+  body { font-size: 10.5pt; max-width: none; padding: 0; }
+  .rv-group, .rv-meta { break-inside: avoid; }
+  .no-print { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡 · 复盘 2.0（Phase 1 版）</div>
+  <h1>每日复盘模板 · 十二维五组</h1>
+  <p class="sub">Phase 0 用 <a href="https://chevywang.github.io/kbar/phase-0/lessons/0007-chart-reading-training.html">七维清单</a>（简化版）；Phase 1 毕业后切换本模板。设计原理：条目变多、时间不变——分组 + 状态/事件分流 + 画在图上（《认知天性》提取练习：清单越长提取越浅，故分层）。打印每日一份，或抄进笔记。</p>
+</header>
+
+<div class="rv-meta">
+  <span>品种/周期：＿＿＿＿＿＿＿</span>
+  <span>日期：＿＿＿＿＿＿＿</span>
+  <span>用时目标：≤13 min</span>
+  <span>状态组打勾即过 · 事件组发生才写</span>
+</div>
+
+<div class="rv-group">
+  <h3>A · 状态组 <span class="g-meta">确认或更新 · 约2 min · 多数日子 10 秒/项</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>① always-in 与票数</b></span><span class="fill"></span><span class="hint">多/空/中性/存疑+第几票（1001）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>② 结构序列</b></span><span class="fill"></span><span class="hint">HH+HL / LH+LL / 重叠；最近摆动点（0004）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>③ 紧度档位</b></span><span class="fill"></span><span class="hint">微通道/通道/宽通道——决定回调与止损单位（1002）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>B · 地图组 <span class="g-meta">画在图上，不写在表里 · 约3 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>④ 关键区域更新</b></span><span class="fill"></span><span class="hint">三条最重要区域；今日对它们做了什么（0003/1011）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑤ 磁铁清单（按距离排序）</b></span><span class="fill"></span><span class="hint">量度目标/通道线/fib位/前极值/整数关（1006/1008/1011）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑥ 未回访区 / 缺口</b></span><span class="fill"></span><span class="hint">20根未触碰区=有效缺口；回补预案（1007）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>C · 棒组 <span class="g-meta">当日K线本身 · 约3 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑦ 当日三问 + 两度量</b></span><span class="fill"></span><span class="hint">谁赢/战场在哪/干净吗；实体占比、收盘位置（0001）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑧ 双K / 数腿状态</b></span><span class="fill"></span><span class="hint">反攻/试探/休战；当前第几腿、H几窗口（0002/1003）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑨ 三推计数</b></span><span class="fill"></span><span class="hint">若有：第几推、幅度对比、第三推收位（1005）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>D · 确认组 <span class="g-meta">约2 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑩ 量能判词</b></span><span class="fill"></span><span class="hint">今日量÷20日均量；背书还是拆台（0005）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑪ 三镜头协同</b></span><span class="fill"></span><span class="hint">日/4h/1h 判词一致吗；大周期许可方向（0006）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>E · 输出组 <span class="g-meta">约3 min · 禁止预测，只写条件</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑫ 明日预案（双写）</b></span><span class="fill"></span><span class="hint">"如果放量收盘越X区上沿，则…；如果收盘跌破Y，则…"</span></div>
+</div>
+
+<div class="rv-group rv-log">
+  <h3>事件日志 <span class="g-meta">发生了才填 · 类型见错误六分类表</span></h3>
+  <table>
+    <tr><td>事件类型</td><td>突破 / 失败突破（类型①–⑤）/ 三推完成 / 磁铁抵达 / 缺口回补 / 高潮 / 二次信号</td></tr>
+    <tr><td>位置与次数</td><td></td></tr>
+    <tr><td>我的响应</td><td></td></tr>
+    <tr><td>正确响应应为</td><td></td></tr>
+  </table>
+</div>
+
+<div class="rv-group">
+  <h3>错误六分类 <span class="g-meta">月度统计占比 → 下月训练重点（0007 + Phase 1 增补）</span></h3>
+  <table>
+    <tr><td>形状错</td><td>影线归属搞反、吞没没包两端、Pin参数不过线就当Pin</td><td>0001/0002</td></tr>
+    <tr><td>位置错</td><td>半空中的形态当信号、整数关口没标、突破判定用了影线</td><td>0003</td></tr>
+    <tr><td>结构错</td><td>把回调读成反转、区间中央开仓、BOS分寸不对</td><td>0004</td></tr>
+    <tr><td>量能错</td><td>缩量突破当真突破、高潮量当启动量、跨市场比绝对量</td><td>0005</td></tr>
+    <tr><td>周期错</td><td>用1h信号逆日线方向重仓、止损放在错误的级别</td><td>0006</td></tr>
+    <tr><td><b>紧度错</b>（新增）</td><td>止损单位与形态单位不匹配（微通道止损扛宽通道回撤/反之）、把通道回撤当趋势终结、斜率衰减（线逐条变平）视而不见</td><td>1002/1011</td></tr>
+  </table>
+</div>
+
+<div class="note no-print">
+<b>使用说明：</b>①打印本页或抄写结构；②状态组是"确认或更新"——没变就打勾过，别重写；③地图组画在行情图上（趋势线/通道线/磁铁位——画法见 <a href="../lessons/1011-drawing-toolbox.html">1011 画线工具箱</a>），表里只记结论；④事件日志是月度统计的原料——每月底数一次六分类占比，占比最大的那类就是下月训练重点；⑤每周日加一次周复盘（20 min）：结构变了吗？哪条磁铁被消耗了？本周最大一个错误归哪类？
+</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 1 主页</a>
+    <a href="glossary.html">术语手册</a>
+    <a href="../lessons/1011-drawing-toolbox.html">1011 画线工具箱</a>
+  </div>
+  <div class="citations">设计依据：《认知天性》（提取练习/合意困难——分层控制提取深度）· K线训练营 0007 课（七维清单 v1）· Phase 1 十课（1001–1011 各维度）· 专业交易者复盘实践（条目演进、时间不变）。</div>
+</footer>
+
+</body>
+</html>

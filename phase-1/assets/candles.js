@@ -7,6 +7,7 @@
  *       opts: { w, h, caps:[每根下方文字], hl:高亮第i根,
  *               vol:[成交量数组],
  *               levels:[{y,label,color,dash}],   // 水平位虚线+右标签
+ *               lines:[{i1,p1,i2,p2,color,dash,label}], // 斜线（趋势线/通道线，i为0-based棒索引）
  *               zones:[{y1,y2,label,color}],     // 支撑/阻力区域底纹
  *               marks:[{i,text,pos:'above'|'below'}], // 摆动点标注（HH/HL/LH/LL）
  *               reveal:前k根,                     // 逐根揭示（刻度仍按全集固定）
@@ -196,6 +197,15 @@
         s += '<text x="' + (padL + plotW + 5) + '" y="' + (y(p) + 3.5) + '" font-family="' + SANS + '" font-size="10" fill="' + FAINT + '">' + fmtPrice(p, range) + '</text>';
       });
     }
+
+    // 斜线（趋势线/通道线）：{i1,p1,i2,p2,color,dash,label}，i 为 0-based 棒索引
+    (opts.lines || []).forEach(function (L) {
+      var lc = L.color || '#8a6d1f';
+      var x1 = padL + step * (L.i1 + 0.5), x2 = padL + step * (L.i2 + 0.5);
+      s += '<line x1="' + x1 + '" y1="' + y(L.p1) + '" x2="' + x2 + '" y2="' + y(L.p2) +
+        '" stroke="' + lc + '" stroke-width="1.4" stroke-dasharray="' + (L.dash || '7 5') + '"/>';
+      if (L.label) s += '<text x="' + (x2 + 4) + '" y="' + (y(L.p2) - 4) + '" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
+    });
 
     // K线（仅前 reveal 根）
     candles.forEach(function (k, i) {
