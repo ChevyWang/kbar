@@ -41,6 +41,17 @@ course/
     └── glossary.html       # 术语手册（全课程统一用词）
 ```
 
+## 教材依据（grounding 模型）
+
+课程内容四层依据，缺一不可，每课页脚"主资源"标注到书与章：
+
+1. **经典原著**：Nison《日本蜡烛图技术》（第二版，丁圣元 译）/ Grimes《The Art and Science of Technical Analysis》/ Brooks《Trading Price Action》三部曲 / Morris《蜡烛图精解》（第3版）/ Bulkowski《Encyclopedia of Candlestick Charts》
+2. **统计检验**：Marshall, Young & Rose (2006)、SAGE (2017) 等学术研究
+3. **学习方法论**：《认知天性》《刻意练习》——训练场/考场/间隔复习的设计依据
+4. **真实数据**：全部案例与考场用交易所真实行情；面向读者的数字与原书逐项核对
+
+新课件制作规范：一切面向读者的数字必须由代码从数据生成，发布前跑 `tools/verify_data.py` 校验（OHLC/marks/verdicts/时间预算/死链/JS 语法）。
+
 ## 每课标准结构（60 分钟 + 课外作业）
 
 1. **知识讲解**（厚课：心理叙述、边界情况、强度分级、worked example、统计引用、跨市场差异）≈ 30 min
