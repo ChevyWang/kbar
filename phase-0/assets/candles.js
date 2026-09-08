@@ -12,7 +12,9 @@
  *               reveal:前k根,                     // 逐根揭示（刻度仍按全集固定）
  *               yLabels:布尔 }                    // 右侧价格刻度
  *   Kbar.playback(selector, candles, opts) -> 交互式逐根揭示训练器（基于 chart 的 reveal）
- * 约定: 红涨绿跌（A股惯例）。开=左侧刻度、收=右侧刻度是方向的无障碍第二重编码，勿删。
+ * 约定: 红涨绿跌（A股惯例）。方向的双重无障碍编码，勿删：
+ *   ① 阴线实体空心（描边不填充）——红绿色盲与灰度打印下仍可辨方向；
+ *   ② 单根图开=左侧刻度、收=右侧刻度。
  */
 (function () {
   'use strict';
@@ -37,7 +39,7 @@
     var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
     s += '<line x1="' + cx + '" y1="' + yH + '" x2="' + cx + '" y2="' + yL + '" stroke="' + col + '" stroke-width="2"/>';
     s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH +
-      '" rx="2" fill="' + col + '" stroke="' + col + '" stroke-width="1.5"/>';
+      '" rx="2" fill="' + (bull ? col : 'none') + '" stroke="' + col + '" stroke-width="1.5"/>';
     if (ticks !== false) {
       var tl = bw / 2 + 4, tr = bw / 2 + 12;
       s += '<line x1="' + (cx - tr) + '" y1="' + yO + '" x2="' + (cx - tl) + '" y2="' + yO + '" stroke="' + INK + '" stroke-width="2"/>';
@@ -80,7 +82,7 @@
     });
     // 主K线
     s += '<line x1="' + mainX + '" y1="' + yH + '" x2="' + mainX + '" y2="' + yL + '" stroke="' + col + '" stroke-width="2.5"/>';
-    s += '<rect x="' + (mainX - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="2" fill="' + col + '"/>';
+    s += '<rect x="' + (mainX - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="2" fill="' + (bull ? col : 'none') + '" stroke="' + col + '" stroke-width="1.5"/>';
     // 维度括注（左缘）
     var bx = mainX - bw / 2 - 10;
     s += '<line x1="' + bx + '" y1="' + yH + '" x2="' + bx + '" y2="' + bodyTop + '" stroke="' + INK + '" stroke-width="1.2"/>';
@@ -122,7 +124,7 @@
       var yO = y(k.o), yC = y(k.c);
       var bodyTop = Math.min(yO, yC), bodyH = Math.max(Math.abs(yC - yO), 2.5);
       s += '<line x1="' + cx + '" y1="' + y(k.h) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="2"/>';
-      s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="2" fill="' + col + '"/>';
+      s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="2" fill="' + (bull ? col : 'none') + '" stroke="' + col + '" stroke-width="' + (bull ? 0 : 1.4) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 8) + '" text-anchor="middle" font-family="' + SANS + '" font-size="11" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
       if (opts.hl === i) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 15) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 15) + '" stroke="' + INK + '" stroke-width="2.5"/>';
     });
@@ -200,7 +202,7 @@
       var yO = y(k.o), yC = y(k.c);
       var bodyTop = Math.min(yO, yC), bodyH = Math.max(Math.abs(yC - yO), 2.2);
       s += '<line x1="' + cx + '" y1="' + y(k.h) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="1.7"/>';
-      s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + col + '"/>';
+      s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + (bull ? col : 'none') + '" stroke="' + col + '" stroke-width="' + (bull ? 0 : 1.4) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 7) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
       if (opts.hl === i && reveal === n) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 14) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 14) + '" stroke="' + INK + '" stroke-width="2.5"/>';
     });
