@@ -1,0 +1,38 @@
+# K线训练营 · Phase 1 逐根推理（可复用课件包）
+
+Brooks 体系的十天课：Always-In → 微通道与 S&C → 数腿与回踩 → 二次入场 → 楔形三推 → 量度目标 → 缺口分类 → TTR 与磁吸 → 失败突破目录 → 逐根带读+毕业考。全部课件自包含 HTML，无外部依赖、可离线、可打印。
+
+## 快速开始
+
+```bash
+open index.html        # 或
+python3 -m http.server 8000
+```
+
+## 目录结构
+
+```
+course/
+├── index.html          # 本阶段主页（十课地图）
+├── assets/             # 共享组件（course.css / candles.js / quiz.js，与 Phase 0 同源）
+├── lessons/            # 1001–1010 十课
+└── reference/
+    └── glossary.html   # 术语手册 Phase 0+1 全量版（60 词条）
+```
+
+## 教材依据（grounding 模型）
+
+四层缺一不可，每课页脚"主资源"标注到书与章：
+
+1. **经典原著**：Al Brooks《Trading Price Action》三部曲（本阶段主底稿）/ Grimes / Nison 中译（丁圣元）/ Morris / Bulkowski 百科
+2. **统计检验**：Marshall, Young & Rose (2006)、SAGE (2017) 等
+3. **学习方法论**：《认知天性》《刻意练习》——训练场/交错复习/毕业考蓝图的设计依据
+4. **真实数据**：九课共用 ETH 锚定行情（2026-06-01→07-30）；毕业考 SOL 盲图（与全部课件不同源）
+
+新课件制作规范：一切面向读者的数字必须由代码从数据生成，发布前跑 `tools/verify_data.py` 校验。
+
+## 数据设计
+
+- **锚定数据集**：ETHUSDT 1d 60 根，九课每课换镜头重读（紧度/腿/推/里程/缺口/磁力/失败）
+- **带读窗**：ETHUSDT 1d 30 根（2026-08-05→09-03）——与 Phase 0 锚定窗重叠是有意设计（同一张图的第二遍读法）
+- **毕业考**：SOLUSDT 1d 60 根（2026-05-02→06-30）——与 Phase 0 全部考场/课件数据不同源（防泄题）
