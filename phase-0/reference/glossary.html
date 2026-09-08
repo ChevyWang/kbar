@@ -3,115 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>术语手册 · K线训练营</title>
+<title>术语手册（Phase 0） · K线训练营</title>
 <link rel="stylesheet" href="../assets/course.css">
+<style>
+/* 手册专用排版：粘性导航 + 双栏词条卡 + 阶段徽章 */
+.gloss-nav { position: sticky; top: 0; z-index: 5; background: var(--paper);
+  border-bottom: 2px solid var(--ink); padding: .55rem 0 .5rem; margin: 0 0 1.6rem;
+  display: flex; flex-wrap: wrap; gap: .4rem; }
+.gloss-nav a { font-family: var(--sans); font-size: .78rem; color: var(--ink);
+  text-decoration: none; border: 1px solid var(--line); border-radius: 99px;
+  padding: .18rem .7rem; background: #fff; }
+.gloss-nav a:hover { border-color: var(--ink); }
+h2 { scroll-margin-top: 4.2rem; }
+h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
+.gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: .7rem 1.1rem; margin: 1rem 0 2.2rem; }
+.term { border: 1px solid var(--line); border-radius: 10px; padding: .7rem .95rem;
+  background: #fff; break-inside: avoid; }
+.term dt { font-weight: 700; font-size: .98rem; margin: 0 0 .3rem; }
+.term dt .en { display: block; font-weight: 400; font-size: .76rem; color: var(--faint);
+  font-family: var(--sans); letter-spacing: .03em; margin-top: .15rem; }
+.term dd { margin: 0; font-size: .88rem; line-height: 1.7; }
+.bdg { font-family: var(--sans); font-size: .64rem; font-weight: 700; color: #fff;
+  border-radius: 4px; padding: .06rem .34rem; margin-left: .45em; vertical-align: 2px; }
+.bdg.p0 { background: #6e6c64; }
+.bdg.p1 { background: #8a6d1f; }
+@media print {
+  .gloss-nav { display: none; }
+  .gloss-grid { grid-template-columns: 1fr 1fr; gap: .4rem .8rem; }
+  .term { border: .5pt solid #999; }
+}
+</style>
 </head>
-<body>
-
+<body id="top">
 <header class="course">
   <div class="kicker">K线训练营 · 参考卡</div>
-  <h1>术语手册</h1>
-  <p class="sub">全七课词汇。所有课件遵照本表用词——打印出来贴在手边。</p>
+  <h1>术语手册（Phase 0）</h1>
+  <p class="sub">七日课词汇。所有课件遵照本表用词——打印贴手边。</p>
 </header>
-
-<figure><div id="anatomy"></div>
-<figcaption>阳线与阴线的解剖。左侧刻度 = 开，右侧刻度 = 收；阳线为空心实体、阴线为实心——这两套编码贯穿所有课件，是方向的无障碍保险。</figcaption></figure>
-
-<h2 id="s01"><span class="no">01</span>四要素（第 0001 课）</h2>
-<dl class="gloss-dl">
-  <dt>开盘价 <span class="en">Open</span></dt><dd>本周期第一笔成交价。战斗的开局。</dd>
-  <dt>收盘价 <span class="en">Close</span></dt><dd>本周期最后一笔成交价。战斗结束时的地盘——<b>一根K线里最重要的数字</b>，因为它是唯一"存活"到下一根K线的价格；一切水平位与结构的判定口径。</dd>
-  <dt>最高价 <span class="en">High</span></dt><dd>周期内买方推进到的最远处。上影线的顶。</dd>
-  <dt>最低价 <span class="en">Low</span></dt><dd>周期内卖方砸到的最远处。下影线的底。</dd>
-</dl>
-
-<h2 id="s02"><span class="no">02</span>解剖结构（第 0001 课）</h2>
-<dl class="gloss-dl">
-  <dt>实体 <span class="en">Body</span></dt><dd>开盘价与收盘价之间的矩形。谁的旗帜插在了战场终点。</dd>
-  <dt>上影线 <span class="en">Upper shadow</span></dt><dd>最高价到实体上沿。买方曾推进、后被卖方夺回的领地——上方存在<b>供给</b>的记录，战功记卖方。</dd>
-  <dt>下影线 <span class="en">Lower shadow</span></dt><dd>实体下沿到最低价。卖方曾砸落、后被买方全数接回的领地——下方存在<b>需求</b>的记录，战功记买方。</dd>
-  <dt>阳线 / 阴线 <span class="en">Bullish / Bearish</span></dt><dd>收 ≥ 开（买方胜）/ 收 &lt; 开（卖方胜）。红涨绿跌与绿涨红跌两种配色都必须秒读；本课程图上阳线一律<b>空心实体</b>、阴线实心（空心=涨、实心=跌，国际经典惯例）——颜色之外的第二重方向编码。</dd>
-  <dt>光头光脚 <span class="en">Marubozu</span></dt><dd>无影线或影线极小：胜方从头压到尾，几乎无抵抗。</dd>
-  <dt>十字星 <span class="en">Doji</span></dt><dd>收 ≈ 开：平局。是一个"状态"不是"事件"——连续出现=压缩蓄力；含义由位置给出。</dd>
-  <dt>一字线 <span class="en">Flat bar</span></dt><dd>开=高=低=收，全天单一价位。A股涨跌停封板特产；信息在K线外（封板力量与排队）。</dd>
-</dl>
-
-<h2 id="s03"><span class="no">03</span>两个度量（第 0001 课）</h2>
-<dl class="gloss-dl">
-  <dt>实体占比 <span class="en">Body ratio</span></dt><dd>实体 ÷ 全长（高−低）。胜负的干净程度（别名：干净度）：≥65% 一边倒，≤25% 拉锯。</dd>
-  <dt>收盘位置 <span class="en">Close location</span></dt><dd>（收−低）÷（高−低），0~1。控场程度（别名：控场度）：≥0.7 收在头部，≤0.35 收在脚下。与实体占比连读。</dd>
-</dl>
-
-<h2 id="s04"><span class="no">04</span>双K形态（第 0002 课）</h2>
-<dl class="gloss-dl">
-  <dt>看涨吞没 / 抱线 <span class="en">Bullish Engulfing</span></dt><dd>下跌后：小阴线 + 大阳线，第二根<b>实体上下两端全包</b>第一根实体（影线不要求）。买方全面反攻。实测 63% 反转率、排名 84/103——常见但单独使用很弱。</dd>
-  <dt>看跌吞没 <span class="en">Bearish Engulfing</span></dt><dd>镜像：上涨后小阳线 + 大阴线全包。卖方全面反攻。</dd>
-  <dt>锤子线 <span class="en">Hammer</span>（丁圣元中译归入"伞形线"家族）</dt><dd>下跌末段：长下影（≥实体2–3倍）+ 小实体在顶部 + 几乎无上影。下方有需求。</dd>
-  <dt>上吊线 <span class="en">Hanging Man</span></dt><dd>与锤子线<b>完全同形</b>，出现在上涨末段。形状不改，位置改名。需次日确认。</dd>
-  <dt>流星线 <span class="en">Shooting Star</span></dt><dd>上涨末段：长上影 + 小实体在底部。上方有供给。</dd>
-  <dt>Pin Bar <span class="en">价格行为社区叫法</span></dt><dd>影线主导形态的统称（Brooks/外汇圈术语）。灵魂在<b>出现的位置</b>，不在影线本身；主影线应 ≥ 全长 2/3 且伸进前几根K线的领地。</dd>
-  <dt>内包日 / 孕线 <span class="en">Inside Bar / Harami</span>（丁圣元译名：孕线，又称母子线）</dt><dd>第二根<b>高低点全部</b>缩进第一根（母线）区间：波动率收缩、休战蓄力。母线高低点=预写的触发线。</dd>
-  <dt>波动率压缩 <span class="en">Volatility contraction / Squeeze</span></dt><dd>连续十字星、内包序列、窄幅拉锯的统称：全长收窄=市场蓄力，方向选择（突破）临近。压缩的尽头常有爆发（第0001–0005课反复出现的主线概念）。</dd>
-  <dt>宽松口径 / 严格口径 <span class="en">Loose / Strict criterion</span></dt><dd>吞没形态的两种判法：连续市场（加密 7×24）开盘≈前收，第二根实体"底端相等、顶端远超"=宽松口径；两端都严格超出=严格口径。判定时必须声明所用口径。</dd>
-  <dt>确认 <span class="en">Confirmation</span></dt><dd>形态出现后，下一根K线朝形态暗示方向收盘，信号才成立。Morris"蜡烛图过滤"核心：<b>形态是预警，确认才是行动令</b>。</dd>
-</dl>
-
-<h2 id="s05"><span class="no">05</span>位置与水平位（第 0003 课）</h2>
-<dl class="gloss-dl">
-  <dt>支撑区 <span class="en">Support zone</span></dt><dd>下方价格区域，需求反复出现。来源：前低（摆动低点）、密集成交区、整数关口。最强验证=离开后回踩不破。</dd>
-  <dt>阻力区 <span class="en">Resistance zone</span></dt><dd>上方价格区域，供给反复出现。被收盘突破后角色互换（转支撑）。</dd>
-  <dt>消耗效应 <span class="en">Exhaustion</span></dt><dd>每次触碰水平区都在消耗守方挂单：前两三次干净拒绝=验证；五六次勉强拒绝、穿透加深=突破临近。（注意与 Wyckoff 语境的 absorption"吸收供给"区分——那是另一个概念。）</dd>
-  <dt>假突破 / 陷阱 <span class="en">Fakeout / Trap</span></dt><dd>影线刺穿或短暂收破后收回。多头陷阱=假向上突破；空头陷阱/spring=假向下跌破。判定永远看<b>实体收盘</b>。</dd>
-  <dt>止损猎杀 <span class="en">Stop hunting</span></dt><dd>价格影线刺穿明显支撑/阻力（那里堆积着止损单）后迅速收回——假突破的"主力动机"版本。防它靠"区域+收盘"双口径：画区域不画线、判定看实体收盘。</dd>
-  <dt>证据重叠 <span class="en">Confluence</span></dt><dd>多个独立证据指向同一价位或方向（前高+整数关口+密集成交区+形态），信号质量加权——位置学的复利。</dd>
-  <dt>三合一检查 <span class="en">Shape-Position-Confirmation</span></dt><dd>本营标准流程：形状（参数过线）→ 位置（水平位语境说得通）→ 确认（次日收盘朝形态方向）。三者齐备，预警才升级为行动信号。</dd>
-  <dt>回抽 <span class="en">Retest</span></dt><dd>突破后价格回到被突破区域边缘并止住——真突破的二次确认，教科书入场点。</dd>
-</dl>
-
-<h2 id="s06"><span class="no">06</span>市场结构（第 0004 课）</h2>
-<dl class="gloss-dl">
-  <dt>摆动高点 / 摆动低点 <span class="en">Swing High / Low</span></dt><dd>高点（低点）高于（低于）左右各 N 根（N 常取3–5）。结构的原子；确认天然滞后 N 根。用影线极值判定。</dd>
-  <dt>HH / HL / LH / LL <span class="en">Higher High 等</span></dt><dd>更高高点 / 更高低点 / 更低高点 / 更低低点——四象限记号。</dd>
-  <dt>上升趋势 / 下降趋势 <span class="en">Uptrend / Downtrend</span></dt><dd>严格定义：HH 与 HL 交替的序列 / LH 与 LL 交替的序列。不靠眼睛。</dd>
-  <dt>震荡（区间） <span class="en">Range</span></dt><dd>高低点重叠、序列矛盾。纪律：下沿做多、上沿做空、中间管住手。</dd>
-  <dt>结构破坏 <span class="en">Break of Structure (BOS)</span></dt><dd>收盘跌破最近 HL（上升趋势语境）：停止顺势的开关。≠ 立即反手——反手要等 LH+LL 完整序列。判定看收盘。</dd>
-</dl>
-
-<h2 id="s07"><span class="no">07</span>量能（第 0005 课）</h2>
-<dl class="gloss-dl">
-  <dt>量价四象限 <span class="en">Price-volume quad</span></dt><dd>放量涨=健康趋势；缩量涨=推升乏力；放量跌=供给真实；缩量跌=卖压渐竭。量能验证价格，不预测方向。</dd>
-  <dt>相对量 <span class="en">Relative volume</span></dt><dd>今日量 ÷ 近20日均量。≥1.5–2倍=显著放量，≤0.7=显著缩量。绝不跨市场比绝对量。</dd>
-  <dt>高潮量 <span class="en">Climactic volume</span></dt><dd>加速末段的天量：最后一批人用尽最后子弹。卖出高潮=恐慌出清（底）；买入高潮=需求透支（顶）。只标记极端，不自动反转。</dd>
-</dl>
-
-<h2 id="s08"><span class="no">08</span>多周期（第 0006 课）</h2>
-<dl class="gloss-dl">
-  <dt>自上而下 <span class="en">Top-down</span></dt><dd>大周期定方向（结构）→ 中周期找区域（水平位）→ 小周期找时机（形态+确认）→ 止损放小周期结构外、宽度反推仓位。顺序不可逆。</dd>
-  <dt>三重时间框架 <span class="en">Triple timeframe</span></dt><dd>周/日/4h 或 日/4h/1h 的三镜头工作流。协同（三镜头同向）=最高质量入场窗口。</dd>
-  <dt>周期冲突 <span class="en">Timeframe conflict</span></dt><dd>大周期趋势 + 小周期逆向 = 回调。裁决黄金规则：<b>大周期结构优先</b>，逆向信号降级处理（小仓、快进快出、止损从严）。</dd>
-</dl>
-
-<h2 id="s09"><span class="no">09</span>训练法（第 0007 课）</h2>
-<dl class="gloss-dl">
-  <dt>检索练习 / 间隔重复 / 交错练习 <span class="en">Retrieval / Spacing / Interleaving</span></dt><dd>盘感的三大认知科学地基：从记忆提取（不是认出）、隔天重练、混练判断题型。</dd>
-  <dt>盲图盲测 <span class="en">Blind chart reading</span></dt><dd>遮住图表右侧→朗读七维判词→写结构预判→逐根揭示→错误归档。每天10分钟，频率>时长。</dd>
-  <dt>七维复盘清单 <span class="en">Daily checklist</span></dt><dd>结构→关键位→当日三问→量能→双K→三镜头→预案（只用"如果…那么…"句式）。</dd>
-  <dt>错误五分类 <span class="en">Error taxonomy</span></dt><dd>形状错 / 位置错 / 结构错 / 量能错 / 周期错。每月统计占比=下月训练重点。</dd>
-</dl>
-
-<h2 id="s10"><span class="no">10</span>配色双阅读（全市场必修）</h2>
-<div class="note">
-<b>红涨绿跌</b>＝A股、港股通、国内期货行情软件惯例；<b>绿涨红跌</b>＝加密交易所（多数界面可切换）、美股、国际平台惯例。同一根K线在两个世界颜色相反——读错颜色＝方向读反。本课程统一用红涨绿跌，且方向判定有三重保险：<b>① 阳线一律空心实体、阴线实心</b>（红绿色盲与黑白打印下"空心=涨、实心=跌"仍可辨向）；② 单根图开=左刻度、收=右刻度；③ 永远可以回到数字本身。
-</div>
-
+<nav class="gloss-nav"><a href="#g-basic">四要素与解剖</a><a href="#g-metric">两个度量</a><a href="#g-dual">双K形态</a><a href="#g-pos">位置与水平位</a><a href="#g-struct">市场结构</a><a href="#g-range">Phase 1 · 区间</a><a href="#g-tf">多周期</a><a href="#g-train">训练法</a></nav>
+<h2 id="g-basic"><span class="no">§</span>四要素与解剖<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>开盘价<span class="en">Open</span></dt><dd>本周期第一笔成交价。战斗的开局。</dd></div><div class="term"><dt>收盘价<span class="en">Close</span></dt><dd>本周期最后一笔成交价。<b>一根K线里最重要的数字</b>——判定口径。</dd></div><div class="term"><dt>最高价 / 最低价<span class="en">High / Low</span></dt><dd>买方推进 / 卖方砸落的极值，上下影线的顶与底。</dd></div><div class="term"><dt>实体<span class="en">Body</span></dt><dd>开盘与收盘之间的矩形——谁把旗帜插在了战场终点。</dd></div><div class="term"><dt>上影线 / 下影线<span class="en">Upper / Lower shadow</span></dt><dd>被夺回的领地，战功记<b>防守方</b>（上影记卖方、下影记买方）。</dd></div><div class="term"><dt>阳线 / 阴线<span class="en">Bullish / Bearish</span></dt><dd>收≥开（买方胜）/ 收&lt;开（卖方胜）。本课程图上<b>阳线空心、阴线实心</b>（空心=涨、实心=跌），单根图另有开=左刻度、收=右刻度。</dd></div><div class="term"><dt>光头光脚<span class="en">Marubozu</span></dt><dd>无影线或影线极小：胜方从头压到尾。</dd></div><div class="term"><dt>十字星<span class="en">Doji</span></dt><dd>收≈开：平局。是「状态」不是「事件」——含义由位置给出。</dd></div><div class="term"><dt>一字线<span class="en">Flat bar</span></dt><dd>四价合一。A股涨跌停封板特产。</dd></div></dl>
+<h2 id="g-metric"><span class="no">§</span>两个度量<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>实体占比<span class="en">Body ratio</span></dt><dd>实体÷全长（别名：干净度）。≥65% 一边倒，≤25% 拉锯。</dd></div><div class="term"><dt>收盘位置<span class="en">Close location</span></dt><dd>（收−低）÷（高−低）（别名：控场度）。≥0.7 收头部，≤0.35 收脚下。</dd></div></dl>
+<h2 id="g-dual"><span class="no">§</span>双K形态<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>看涨/看跌吞没（抱线）<span class="en">Engulfing</span></dt><dd>第二根实体全包第一根。丁圣元译名：抱线形态。实测 63% 反转率、排名 84/103——常见但单独使用很弱。</dd></div><div class="term"><dt>锤子线 / 上吊线<span class="en">Hammer / Hanging Man</span></dt><dd>同形不同命：下跌末段=锤子（需求），上涨末段=上吊（供给）。丁圣元归入「伞形线」家族。</dd></div><div class="term"><dt>流星线<span class="en">Shooting Star</span></dt><dd>上涨末段长上影小实体：上方有供给。</dd></div><div class="term"><dt>Pin Bar<span class="en">价格行为社区叫法</span></dt><dd>影线主导形态统称（Brooks/外汇圈）。主影线≥全长2/3且伸进前几根领地；灵魂在位置。</dd></div><div class="term"><dt>内包日 / 孕线<span class="en">Inside Bar / Harami</span></dt><dd>第二根高低点全缩进母线：波动率收缩。母线高低点=预写触发线。丁圣元译名：孕线。</dd></div><div class="term"><dt>波动率压缩<span class="en">Volatility contraction</span></dt><dd>连续十字/内包/窄幅的统称：蓄力，方向选择临近。</dd></div><div class="term"><dt>宽松 / 严格口径<span class="en">Loose / Strict criterion</span></dt><dd>连续市场（开盘≈前收）吞没常见底端相等版=宽松口径；两端都严格超出=严格口径。判定时须声明。</dd></div><div class="term"><dt>确认<span class="en">Confirmation</span></dt><dd>形态是预警，次日朝形态方向收盘才升级为信号（Morris 过滤法核心）。</dd></div></dl>
+<h2 id="g-pos"><span class="no">§</span>位置与水平位<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>支撑区 / 阻力区<span class="en">Support / Resistance</span></dt><dd>需求/供给反复出现的区域。画区域不画线，判定看实体收盘。</dd></div><div class="term"><dt>消耗效应<span class="en">Exhaustion</span></dt><dd>每次触碰都在消耗守方挂单：前几次干净拒绝=验证；多次勉强拒绝=突破临近。（区别于 Wyckoff 的 absorption）</dd></div><div class="term"><dt>假突破 / 陷阱<span class="en">Fakeout / Trap</span></dt><dd>影线刺穿或短暂收破后收回。空头陷阱=spring。判定看收盘。</dd></div><div class="term"><dt>止损猎杀<span class="en">Stop hunting</span></dt><dd>影线刺穿明显支撑/阻力（止损单堆积处）后收回——假突破的动机版。</dd></div><div class="term"><dt>证据重叠<span class="en">Confluence</span></dt><dd>多个独立证据指向同一价位/方向，信号质量加权。</dd></div><div class="term"><dt>三合一检查<span class="en">Shape-Position-Confirmation</span></dt><dd>形状（参数过线）→位置（语境说得通）→确认（次日收盘）。齐备才行动。</dd></div><div class="term"><dt>回抽<span class="en">Retest</span></dt><dd>突破后回到被破区域边缘止住——真突破的二次确认。</dd></div></dl>
+<h2 id="g-struct"><span class="no">§</span>市场结构<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>摆动高点 / 低点<span class="en">Swing High / Low</span></dt><dd>高于/低于左右各 N 根（N 常取 3–5）的极值。结构的原子，确认滞后 N 根。</dd></div><div class="term"><dt>HH / HL / LH / LL<span class="en">Higher High 等</span></dt><dd>四象限记号。趋势的严格定义=HH+HL 或 LH+LL 交替。</dd></div><div class="term"><dt>结构破坏<span class="en">BOS</span></dt><dd>收盘跌破最近 HL：停止顺势的开关；反手要等 LH+LL 完整序列。</dd></div></dl>
+<h2 id="g-range"><span class="no">§</span>Phase 1 · 区间<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>区间纪律<span class="en">Range discipline</span></dt><dd>下沿做多、上沿做空、中间管住手；判定一律看收盘。</dd></div></dl>
+<h2 id="g-tf"><span class="no">§</span>多周期<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>自上而下<span class="en">Top-down</span></dt><dd>大周期定方向→中周期找区域→小周期找时机。顺序不可逆。</dd></div><div class="term"><dt>三重时间框架<span class="en">Triple timeframe</span></dt><dd>三镜头工作流；协同=最高质量窗口。</dd></div><div class="term"><dt>周期冲突<span class="en">Timeframe conflict</span></dt><dd>大周期趋势+小周期逆向=回调。裁决：大周期结构优先。</dd></div></dl>
+<h2 id="g-train"><span class="no">§</span>训练法<a class="top" href="#top">↑</a></h2>
+<dl class="gloss-grid"><div class="term"><dt>检索/间隔/交错<span class="en">Retrieval / Spacing / Interleaving</span></dt><dd>盘感三大认知科学地基（《认知天性》）。</dd></div><div class="term"><dt>盲图盲测<span class="en">Blind chart reading</span></dt><dd>遮右→朗读判词→写预判→逐根揭示→错误归档。每天10分钟。</dd></div><div class="term"><dt>七维复盘<span class="en">Daily checklist</span></dt><dd>结构→关键位→三问→量能→双K→三镜头→预案（「如果…那么…」句式）。</dd></div><div class="term"><dt>错误五分类<span class="en">Error taxonomy</span></dt><dd>形状/位置/结构/量能/周期。月度统计=下月训练重点。</dd></div></dl>
 <footer class="course">
-  <div class="nav"><a href="../index.html">← 课程主页</a><a href="../lessons/0001-anatomy-of-a-candle.html">第 0001 课：一根K线的解剖学 →</a></div>
-  <div class="citations">词汇定义依据 Steve Nison《日本蜡烛图技术》（第二版，丁圣元 译）· Adam Grimes《The Art and Science of Technical Analysis》· Al Brooks 三部曲《Trading Price Action》· Greg Morris《蜡烛图精解》（原书第3版）；形态统计依据 Thomas Bulkowski《Encyclopedia of Candlestick Charts》及 <a href="https://thepatternsite.com/CandleEntry.html">thepatternsite.com</a>。</div>
+  <div class="nav"><a href="../index.html">← 课程主页</a></div>
+  <div class="citations">词汇定义依据 Steve Nison《日本蜡烛图技术》（第二版，丁圣元 译）· Adam Grimes《The Art and Science of Technical Analysis》· Al Brooks《Trading Price Action》三部曲 · Greg Morris《蜡烛图精解》（第3版）；形态统计依据 Thomas Bulkowski《Encyclopedia of Candlestick Charts》。</div>
 </footer>
-
-<script src="../assets/candles.js"></script>
-<script>
-document.getElementById('anatomy').innerHTML = Kbar.anatomy({dir:'bull'}) + Kbar.anatomy({dir:'bear'});
-</script>
 </body>
 </html>
