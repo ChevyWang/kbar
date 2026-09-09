@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradingView 实操图解 · K线训练营</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+/* 图解页专用：截图框、步骤条、快捷键 */
+.tv-shot { margin: 1.6rem 0 2rem; }
+.tv-shot img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; display: block; }
+.tv-shot figcaption { text-align: left; }
+.tv-steps { counter-reset: step; padding-left: 0; list-style: none; margin: 1rem 0; }
+.tv-steps li { counter-increment: step; position: relative; padding-left: 2.1rem; margin: .45rem 0; }
+.tv-steps li::before { content: counter(step); position: absolute; left: 0; top: .1rem;
+  width: 1.45rem; height: 1.45rem; border-radius: 50%; background: var(--ink); color: #fff;
+  font-family: var(--sans); font-size: .78rem; display: flex; align-items: center; justify-content: center; }
+.kbd { font-family: var(--sans); font-size: .8rem; border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 5px; padding: .06em .45em; background: #fff; white-space: nowrap; }
+.tv-cards { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin: 1.2rem 0; }
+.tv-card { border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: .8rem 1rem; }
+.tv-card h4 { margin: 0 0 .3rem; font-size: .95rem; }
+.tv-card p { margin: 0; font-size: .86rem; color: var(--muted); line-height: 1.65; }
+.tv-card .en { color: var(--faint); font-family: var(--sans); font-size: .78rem; }
+@media (max-width: 640px) { .tv-cards { grid-template-columns: 1fr; } }
+@media print { .tv-shot img { max-width: 100%; } }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡 · 实操工具</div>
+  <h1>TradingView 实操图解：界面与四种核心线</h1>
+  <p class="sub">1011 课「画线工具箱」的配套实操手册。<b>本页全部截图为 2026-09 网页版实测</b>（免费账户 · BINANCE:ETHUSDT · 日线 · 深色主题），每一步都是照着真实界面写下的，可逐步复现。画线方法论（为什么画、画在哪、画完怎么用）在 1011 课；本页只回答"在 TradingView 上怎么画"。同花顺/通达信有等价工具，路径不同、思想相同。</p>
+</header>
+
+<h2 id="s01"><span class="no">01</span>界面分区：先认清六块</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/01-interface.png" alt="TradingView 全界面">
+  <figcaption><b>全界面（ETHUSDT · 日线 · 裸K）。</b>①左侧竖条＝<b>画线工具栏</b>（本页主角）；②顶部横条＝<b>品种、周期、图表类型、指标、警报、回放</b>；③图内左上角＝<b>品种信息行</b>——十字光标指着哪根K线，这行就实时显示那根的 O/H/L/C 与涨跌幅（读图时先盯这里）；④中央＝<b>主图区</b>，虚线十字是光标，右缘价格轴上的小圆点是光标当前价；⑤右侧竖条＝<b>观察列表/警报等面板</b>（可整体收起）；⑥底部＝<b>周期快捷条（1D 5D 1M…）与时钟（UTC+8）</b>。</figcaption>
+</figure>
+
+<div class="note"><b>建议：</b>初学把右侧面板收起（点右缘图标可再展开），主图越大，读图越省眼。界面语言可在账户设置里切换为中文；本页保留英文原版截图，所有按钮都给出中文对照。</div>
+
+<h2 id="s02"><span class="no">02</span>画线工具栏：组与展开</h2>
+
+<p>左侧工具栏的每个图标大多是一个<b>组</b>——点图标本身选「上次用的那个工具」，点图标<b>右侧的小箭头</b>展开整组菜单。找工具不用背位置，展开看一遍就记住。</p>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/02-trendline-menu.png" alt="趋势线工具组弹窗">
+  <figcaption><b>第 2 组「线」的展开菜单</b>：LINES（趋势线 ⌥T / 射线 / 信息线 / 延伸线 / 趋势角度 / 水平线 ⌥H / 水平射线 ⌥J / 垂直线 ⌥V / 十字线 ⌥C）＋ CHANNELS（<b>平行通道</b> / 回归带 / 平顶平底 / 非平行通道）＋ PITCHFORKS（叉线组，本课程不教）。<b>⌥ 是 macOS 的 Option 键，Windows 下即 Alt。</b></figcaption>
+</figure>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/06-fib-menu.png" alt="斐波那契与甘氏工具组弹窗">
+  <figcaption><b>第 3 组「斐波那契与甘氏」的展开菜单</b>：FIBONACCI（<b>Fib retracement 回撤 ⌥F</b> / 基于趋势的扩展 / 斐波那契通道 / 时间区间 / 扇形 / 圆环 / 螺旋……）＋ GANN（甘氏盒/方/扇）。<b>本课程只教加粗的这两样</b>——回撤（1011§4）与甘氏线明确不教（见 1011 的立场说明）。</figcaption>
+</figure>
+
+<div class="tv-cards">
+  <div class="tv-card"><h4>光标组（第 1 个图标）</h4><p><span class="en">Cross / Dot / Arrow / Eraser</span>——十字是默认；橡皮可点选擦除单条线。</p></div>
+  <div class="tv-card"><h4>磁铁（Magnet，第 7 个图标）</h4><p><b>画线前先打开它</b>：锚点自动吸附到最近的 K 线 O/H/L/C，趋势线端点才会精确落在摆动高低点上。开启时会弹出蓝色提示条。</p></div>
+  <div class="tv-card"><h4>锁定 / 隐藏（第 8–9 个图标）</h4><p>锁定＝防误拖全部画线；隐藏＝暂时藏起来看裸图。复盘完记得解除。</p></div>
+  <div class="tv-card"><h4>垃圾桶（最下）</h4><p>点开是菜单：<b>Remove N drawings（清除全部画线）</b>/ 指标 / 两者。不是直接清空，防手滑。</p></div>
+</div>
+
+<h2 id="s03"><span class="no">03</span>画线通用流程（四种线全一样）</h2>
+
+<ol class="tv-steps">
+  <li><b>开磁铁</b>（第 7 个图标，看到蓝色提示条即成功）。</li>
+  <li><b>选工具</b>：点组箭头 → 点菜单里的工具名（或直接按快捷键）。</li>
+  <li><b>点第 1 个锚点</b>：鼠标靠近 K 线高低点时会自动吸附。</li>
+  <li><b>点第 2 个锚点</b>（通道类还要第 3 点定宽度）——线自动落定。</li>
+  <li><b>按 <span class="kbd">Esc</span> 退出</b>工具（否则点图会接着画新的）；选中已画的线会浮出小工具条：颜色 / 线宽 / 设置 / 克隆 / 锁定 / 删除。</li>
+</ol>
+
+<div class="note"><b>两个习惯</b>（1011 课）：①画线前想清楚这条线连接的是<b>哪两个极值点、为什么</b>——工具 3 秒，判断 3 个月；②画错就删，<b>破位的趋势线不删</b>——它变平后是下一阶段的参照（1011 带读二）。</div>
+
+<h2 id="s04"><span class="no">04</span>趋势线 Trendline（⌥T）</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/03-trendline-drawn.png" alt="趋势线画法">
+  <figcaption><b>实测：下降趋势线。</b>开磁铁 → 选 Trendline → 第 1 点点在 8 月大顶的高点（自动吸附）→ 第 2 点点在 10 月的更低高点 → 线落定。顶部同时浮出这条线的工具条（颜色/线宽/设置/克隆/锁定/删除）。<b>画法要领</b>（Brooks《Trends》Ch.13–14）：下降连高点、上升连低点；两次触碰只是"候选"，<b>第 3 次触碰被拒绝才成立</b>；锚点用影线极值（摆动点），不用实体。</figcaption>
+</figure>
+
+<div class="note"><b>常见错误：</b>①为了让线"好看"穿过 K 线实体——趋势线宁可漏触、不可穿体；②一破就删——破位后把它留着，它就是斜率衰减的证据（1011 带读二：16.8 → 10 → 6.4 逐条变平）；③用十字光标没开磁铁硬点——端点悬在半空，触点统计全错。</div>
+
+<h2 id="s05"><span class="no">05</span>水平线 / 水平区域（⌥H）</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/04-horizontal-line.png" alt="水平线画法">
+  <figcaption><b>实测：水平支撑线。</b>⌥H → 在 4 月大底的低点区点一下（磁铁吸附到那根K线的最低价）→ 一条横线贯穿全图，<b>右缘自动挂价格标签</b>（本例 1,747.80）。底部中间的小工具条（− ＋ ‹ › ↺）是画线工具激活时的快捷条，<span class="kbd">Esc</span> 后消失。</figcaption>
+</figure>
+
+<p><b>和课程的接口</b>（0003 课"位置 &gt; 形态"）：一条线是区域的<b>中轴</b>。认真做法是画 2–3 条（区域上沿 / 下沿）或用矩形工具框出区域；价格<b>刺入但收回来</b>是假突破素材（0003 假突破三纪律），<b>收在线外</b>才是破位。区域被多次测试消耗后才删线，换新参照。</p>
+
+<h2 id="s06"><span class="no">06</span>平行通道 Parallel channel</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/05-channel.png" alt="平行通道画法">
+  <figcaption><b>实测：下降通道。</b>第 2 组箭头 → CHANNELS → Parallel channel，<b>三个点击</b>：①起点（8 月顶）②终点（10 月更低高点）③宽度（往下方低点带一按）——两轨平行 + 半透明填充自动生成。<b>要领</b>（Brooks Ch.15 通道章）：先有趋势线（上轨），再"平行复制"出通道线（下轨）；通道线是<b>磁铁</b>（1008 清单）——过冲与提前回落都是反转线索（1011§3：通道过冲）。</figcaption>
+</figure>
+
+<div class="note"><b>小技巧：</b>通道选中后的小工具条与 Settings 里可改颜色、填充与线型；本例的上轨与 04 节的趋势线是同一条——<b>通道上轨本来就是趋势线，下轨只是它的平行复制</b>。这就是为什么 08 节的全景图里"趋势线"看起来消失在通道上：它俩重合了。</div>
+
+<h2 id="s07"><span class="no">07</span>斐波那契回撤 Fib retracement（⌥F）</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/07-fib-drawn.png" alt="斐波那契回撤画法">
+  <figcaption><b>实测：4 月低点 → 6 月反弹高点的回撤。</b>⌥F → 第 1 点点在腿的起点（低点）→ 第 2 点点在腿的终点（高点）→ 各档自动标出：<b>0.236 / 0.382 / 0.5 / 0.618 / 0.786 / 1，每档右侧带实时价格</b>，网格只铺满两锚点之间；下方 1.618 扩展档默认也在（量度目标素材）。<b>清醒用法</b>（1011§4）：38.2 / 50 / 61.8 三档是<b>回撤观察区，不是买卖指令</b>——与水平位、趋势线重合时才有分量（本例 0.236≈2,222.75 恰压在前高区）。</figcaption>
+</figure>
+
+<h2 id="s08"><span class="no">08</span>全景：一张图就是一张"地图"</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/08-all-lines.png" alt="三种线全景">
+  <figcaption><b>实测全景：</b>通道（上轨＝趋势线，下轨平行）＋ 水平支撑（1,747.80，磁铁位）。复盘 2.0 模板 <b>B 组「地图组」</b>要求的正是这三样：关键区域、磁铁位、结构线——画在图上，不写在表里。斐波那契按需叠加（档位太多会糊，只留 38.2/50/61.8 一档的垃圾信息更少——Settings 里可关）。</figcaption>
+</figure>
+
+<h2 id="s09"><span class="no">09</span>Bar Replay 回放：画线能力的训练场</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/09-replay.png" alt="Bar Replay 回放模式">
+  <figcaption><b>实测：回放模式。</b>点顶部 <b>Replay</b> → 底部出现控制条：<b>|◄ Select bar</b>（选回放起点，点图上某根K线即从那里开始"切掉未来"）、<b>▶ 播放</b>、<b>▶| 逐根步进</b>、<b>10x 倍速</b>、<b>D 周期</b>，最右 <b>✕</b> 退出。下方的 Replay Trading 面板是模拟下单用的，纯画线训练可无视（右上 − 收起）。</figcaption>
+</figure>
+
+<ol class="tv-steps">
+  <li>点 Replay → 选起点（比如 60 根之前）——未来数据被切掉。</li>
+  <li>逐根步进，每根做<b>三问</b>：谁赢了？战场在哪？干净吗（0007/1010 协议）。</li>
+  <li>在关键位置<b>动手画线</b>：趋势线、水平区、通道——画完再步进，让市场给你判卷。</li>
+  <li>错的地方记进复盘模板的<b>事件日志</b>（哪一步看错了、正确响应是什么）。</li>
+</ol>
+
+<div class="note"><b>纪律</b>（1010 课）：回放里最忌"瞥见未来"——把右边遮住，步进前先写下判断再揭晓。画线能力只能在回放里长出来：实盘划线是验收，回放划线才是练习。</div>
+
+<h2 id="s10"><span class="no">10</span>警报 Alert：让磁铁位来叫你</h2>
+
+<figure class="tv-shot">
+  <img src="../assets/tv/10-alert.png" alt="创建警报对话框">
+  <figcaption><b>实测：创建警报。</b>点顶部 <b>Alert</b>（闹钟图标）→ 弹窗：<b>Condition</b>（条件：Price 价格 / Crossing 上穿下穿 / 目标价——默认填当前价 2,492.96）、<b>Trigger</b>（Once only 只触发一次…）、<b>Expiration</b>（到期日）、<b>Notifications</b>（App / Toasts 通知方式）→ <b>Create</b>。到价时右下角弹提醒。</figcaption>
+</figure>
+
+<p><b>和课程的接口</b>（1008 磁铁清单）：把警报挂在<b>磁铁位</b>——量度目标、通道线、fib 档、前极值、整数关——到价提醒代替盯盘。两条纪律：①警报响了<b>回到图前先做三问</b>，不要在通知弹窗里做决定；②只挂计划内的位置（复盘模板 E 组的预案），警报不是猎枪是门铃。</p>
+
+<h2 id="s11"><span class="no">11</span>快捷键速查（本页截图实测出现过的）</h2>
+
+<table>
+  <tr><th>键</th><th>工具</th><th>备注</th></tr>
+  <tr><td><span class="kbd">⌥T</span></td><td>趋势线 Trendline</td><td>macOS ⌥＝Option；Windows＝Alt</td></tr>
+  <tr><td><span class="kbd">⌥H</span></td><td>水平线 Horizontal line</td><td>一下一点，贯穿全图</td></tr>
+  <tr><td><span class="kbd">⌥J</span></td><td>水平射线 Horizontal ray</td><td>向右单向</td></tr>
+  <tr><td><span class="kbd">⌥V</span></td><td>垂直线 Vertical line</td><td>标日期/事件用</td></tr>
+  <tr><td><span class="kbd">⌥C</span></td><td>十字线 Crossline</td><td>横竖双线十字</td></tr>
+  <tr><td><span class="kbd">⌥F</span></td><td>斐波那契回撤 Fib retracement</td><td>两点选腿</td></tr>
+  <tr><td><span class="kbd">Esc</span></td><td>退出当前画线工具</td><td>画完一条先 Esc，再画下一种</td></tr>
+</table>
+
+<div class="note"><b>收尾三步</b>：①选中不想要的线按 <span class="kbd">Delete</span>；②垃圾桶 → Remove all drawings 一键清场；③所有画线随图表布局自动云端保存，换设备登录还在。</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 1 主页</a>
+    <a href="../lessons/1011-drawing-toolbox.html">1011 画线工具箱</a>
+    <a href="review-template.html">复盘 2.0 模板</a>
+    <a href="glossary.html">术语手册</a>
+  </div>
+  <div class="citations"><b>截图与步骤来源：</b>TradingView 网页版实测（2026-09，免费账户，BINANCE:ETHUSDT · 1D，深色主题英文界面）——本页每一张图均为真实界面，操作路径可逐步复现；功能以 <a href="https://www.tradingview.com/support/solutions/">TradingView 官方支持文档</a>为准。<b>画线方法论：</b>Brooks《Trends》Part II（趋势线/通道线/水平线画法，Ch.13–15）· 斐波那契清醒用法与"甘氏线不教"立场见 1011 课 · 位置与区域见 0003 课 · 磁铁清单见 1008 课。回放协议见 1010 课。</div>
+</footer>
+
+</body>
+</html>
