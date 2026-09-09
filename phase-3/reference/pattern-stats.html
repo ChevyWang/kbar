@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>形态统计总表 · K线训练营 Phase 3</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.pst-tag { font-family: var(--sans); font-size: .7rem; border-radius: 4px; padding: .06rem .38rem; color: #fff; margin-right: .3em; }
+.pst-a { background: #d33a2c; } .pst-u { background: #4a6fa5; } .pst-c { background: #8a6d1f; }
+td.hot { font-weight: 700; }
+td.dim { color: var(--faint); }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡 · 形态统计</div>
+  <h1>形态统计总表（三市场 × 十形态）</h1>
+  <p class="sub">33 品种（A股 17 + 美股 11 + 加密 5）× 5 年日线，pivot 几何检测器，去重后 3594 例。<b>口径</b>（3001§05）：突破=收盘越界；失败=突破后 5 根内收盘收回；达标=20 根内走满形态高度投影；顺幅=突破后 20 根内最大顺向幅度（平均，会被极端值拉高——配中位数心读）。<span class="pst-tag pst-a">A股</span><span class="pst-tag pst-u">美股</span><span class="pst-tag pst-c">加密</span>样本构成约 55%/30%/15%。脚本与原始数据在私有库，可复算。</p>
+</header>
+
+<h2><span class="no">00</span>总表</h2>
+<table id="stattbl">
+<tr><th>形态</th><th>市场</th><th>N</th><th>失败率</th><th>达标率</th><th>平均顺幅</th></tr>
+</table>
+<div class="note"><b>读表纪律（3001 四列陷阱的应用）</b>：①先看 N——小于 30 的行（头肩家族、旗形）只当参考；②失败率相对 50% 硬币的位置——大样本行几乎都在 ±2pt 内（中性家族）；③顺幅跨市场不可直接比（加密列按波动率约为 A股两倍量级）；④此表是<b>描述统计</b>不是策略回测（无成本/滑点/执行假设）——期望值核算见 Phase 4。</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 3 主页</a>
+    <a href="../lessons/3001-reading-stats.html">3001 读表方法论</a>
+    <a href="../lessons/3007-graduation.html">3007 毕业课</a>
+  </div>
+  <div class="citations">数据：yfinance（A股/美股复权日线）+ Binance（加密现货）。检测器与口径：3001§05。对照参照：Bulkowski《Encyclopedia of Chart Patterns》v3 各章 Statistics（美股、其口径）。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script>
+var P3STATS = {"上升三角|美股": [163, 77, 39, 1152.7099999999998], "三顶|美股": [99, 54, 46, 570.5500000000002], "双顶|美股": [186, 95, 82, 1087.6999999999998], "矩形(向上)|美股": [165, 77, 72, 1091.2100000000003], "矩形(向下)|美股": [122, 70, 44, 705.9200000000004], "三底|美股": [120, 47, 45, 807.4399999999995], "双底|美股": [222, 102, 109, 1506.220000000001], "下降三角|美股": [100, 60, 16, 583.2499999999999], "头肩顶|美股": [8, 3, 1, 73.49], "下降三角|A股": [231, 108, 71, 1518.4399999999994], "三顶|A股": [191, 81, 89, 1309.639999999999], "双底|A股": [284, 140, 150, 2574.510000000001], "矩形(向上)|A股": [206, 104, 99, 2227.2400000000007], "上升三角|A股": [195, 100, 65, 1740.26], "三底|A股": [166, 81, 85, 1628.7900000000004], "矩形(向下)|A股": [246, 111, 106, 1707.0399999999995], "双顶|A股": [299, 147, 132, 1984.6199999999985], "头肩底|A股": [22, 6, 8, 247.5], "头肩底|美股": [21, 10, 2, 114.19], "旗形|A股": [7, 4, 1, 40.67], "头肩顶|A股": [15, 4, 3, 98.28], "旗形|美股": [12, 4, 3, 116.33999999999999], "双底|加密": [89, 43, 48, 1449.9699999999998], "下降三角|加密": [60, 29, 22, 740.78], "上升三角|加密": [77, 36, 26, 1163.53], "矩形(向上)|加密": [59, 29, 32, 1025.74], "头肩底|加密": [14, 8, 5, 198.22], "双顶|加密": [87, 38, 35, 903.9799999999998], "矩形(向下)|加密": [57, 25, 18, 487.58], "三底|加密": [29, 14, 17, 383.21], "头肩顶|加密": [12, 10, 0, 82.85000000000001], "三顶|加密": [28, 17, 10, 205.87999999999994], "旗形|加密": [2, 1, 1, 14.17]};
+(function () {
+  var rows = [];
+  Object.keys(P3STATS).forEach(function (k) {
+    var parts = k.split('|');
+    var v = P3STATS[k];
+    if (v[0] < 6) return;
+    rows.push({ p: parts[0], m: parts[1], n: v[0], f: v[1]/v[0]*100, h: v[2]/v[0]*100, a: v[3]/v[0] });
+  });
+  rows.sort(function (a, b) { return b.n - a.n; });
+  var tag = { 'A股': 'pst-a', '美股': 'pst-u', '加密': 'pst-c' };
+  var html = rows.map(function (r) {
+    var ncls = r.n >= 100 ? '' : (r.n >= 30 ? 'dim' : 'dim');
+    var fcls = Math.abs(r.f - 50) >= 8 && r.n >= 60 ? 'hot' : '';
+    return '<tr><td>' + r.p + '</td><td><span class="pst-tag ' + tag[r.m] + '">' + r.m + '</span></td>' +
+      '<td class="' + ncls + '">' + r.n + '</td><td class="' + fcls + '">' + Math.round(r.f) + '%</td><td>' + Math.round(r.h) + '%</td><td>+' + r.a.toFixed(1) + '%</td></tr>';
+  }).join('');
+  document.querySelector('#stattbl').innerHTML += html;
+})();
+</script>
+
+</body>
+</html>
