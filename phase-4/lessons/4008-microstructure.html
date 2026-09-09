@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · 第 4008 课</div>
   <h1>四市场适配与市场微观结构</h1>
-  <p class="sub">同一套 setup，种在四块土壤里长出四种作物。本课先看你每张单子的去向（Harris 的流动性世界、Osler 的止损单聚集——假突破的微观机制），再逐一过四市场的制度现实：A股 T+1 与涨跌停（连续跌停那天的完整解剖）、美股 PDT 与隔夜跳空、加密 7×24 与杠杆爆仓——最后给出系统组件的<b>四市场适配表</b>。本课约 75 分钟。</p>
+  <p class="sub">同一套 setup，种在四块土壤里长出四种作物。本课先看你每张单子的去向（Harris 的流动性世界、Osler 的止损单聚集——假突破的微观机制），再逐一过四市场的制度现实：A股 T+1 与涨跌停（连续跌停那天的完整解剖）、美股 PDT 与隔夜跳空、加密 7×24 与杠杆爆仓——最后给出系统组件的<b>四市场适配表</b>。本课约 79 分钟。</p>
 </header>
 
 <div class="lesson-map">
@@ -27,7 +27,7 @@
   </ol>
 </div>
 
-<h2 id="s01"><span class="no">01</span>你的订单去哪了：流动性与对手盘 <span class="t">≈</span> <span class="time-chip">≈11 min</span></h2>
+<h2 id="s01"><span class="no">01</span>你的订单去哪了：流动性与对手盘 <span class="t">≈</span> <span class="time-chip">≈15 min</span></h2>
 <p>4002 课的订单簿知识升级成世界观（Harris《Trading and Exchanges》——微观结构的标准教材）：市场是一台<b>流动性配送机器</b>。限价单是报价者（提供流动性、赚价差、担风险），市价单是吃价者（付价差、拿确定性）。你看到的每一根K线，都是这两类订单在价位×时间上的成交记录——<b>价格行为就是流动性事件的历史</b>。这套视角给前面课程的概念找到机械基础：</p>
 <table>
 <tr><th>课程概念</th><th>微观结构翻译（Harris/Osler）</th></tr>
@@ -69,6 +69,10 @@
 </table>
 <p>表的使用方法：它不是让你立刻交易四个市场——<b>是让你在任何一个市场交易前，知道这张表里哪些行必须先改写</b>。课程的建议路径（Phase 5 实盘沿用）：A股 或 美股<b>单市场</b>起步，跑满 30 笔；加密放最后（微观结构最野生 + 我们的统计显示其形态失败率最高，3002）。跨市场分散（4007 的 0.02/−0.03 相关性）是<b>第二阶段</b>的收益，不是第一阶段的门票。</p>
 
+
+<h3 id="stopwho">谁去扫池子：订单捕捉者（Harris Ch.11）</h3>
+<p>0003 课引 Osler 的实证说「止损单在关键位聚集成池」；4008 上一节说「知道池子在哪 ≠ 知道谁去扫」。Harris《交易与交易所》第 11 章给出了行为人名单——<b>订单捕捉者</b>（order catchers）三类：<b>抢先交易者</b>（front-runners，收集他人交易意图的信息、抢在完成前交易）、情绪导向技术型交易者（预测非知情者的流）、挤兑者（囤积挤压被迫交易者）。机制示例（原文案例）：跑单员罗伯与内特约定暗号——大买单来时内特先买，经纪商为客户执行时推高价格，内特获利——<b>利润来自大单的价格影响，成本由被抢的客户承担</b>。与你的止损的关系：在时间优先的市场里，扫池者只需在止损集群前抢先一个最小变动单位；「合法版」同样存在——敏锐的场内交易者从经纪商处理订单的姿势里读出意图。所以止损猎杀不是阴谋论，是<b>寄生策略的理性经济行为</b>（Harris 原话：订单捕捉者的交易增加价格波动、让市场更无效）——你的对策不是愤怒，是 4003 的结构止损：把止损放在<b>没人有利可图去扫的位置</b>（论点死亡线，而非肉眼可见的整数关/前低）。</p>
+
 <h2 id="s06"><span class="no">06</span>训练场：十二题 <span class="t">≈</span> <span class="time-chip">≈12 min</span></h2>
 <div id="trainer"></div>
 
@@ -82,7 +86,7 @@
     <a href="4009-one-page-plan.html">第 4009 课 →</a>
     <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
   </div>
-  <p><b>主资源（本课 grounded on）：</b>Larry Harris《Trading and Exchanges: Market Microstructure for Practitioners》(Oxford 2003)（订单、流动性、涨跌停机制各章）；Carol Osler (2000, FRBNY ER)（限价单聚集于整数与前高前低）；Osler (2003, JF)（止损单聚集与技术位预测力）；沪深交易所交易规则、FINRA PDT 规则。</p>
+  <p><b>主资源（本课 grounded on）：</b>Larry Harris《Trading and Exchanges: Market Microstructure for Practitioners》(Oxford 2003)（订单、流动性、涨跌停机制各章）；Carol Osler (2000, FRBNY ER)（限价单聚集于整数与前高前低）；Osler (2003, JF)（止损单聚集与技术位预测力）；沪深交易所交易规则、FINRA PDT 规则；订单捕捉者与止损猎杀行为人 = Harris 第 11 章（订单捕捉者：抢先交易者/情绪导向技术型/挤兑者）。。</p>
   <div class="citations"><b>引用：</b>Harris (2003) · Osler (2000/2003) · <a href="https://www.finra.org/investors/learn-to-invest/advanced-investing/day-trading-margin-requirements">FINRA PDT</a> · 沪深交易所《交易规则》。数据：立讯 2025-04（yfinance，前复权）与 BTC 2022-06-13（Binance）为原始日线。</div>
 </footer>
 
