@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4006 · R 倍数、期望值与凯利公式 — K线训练营 Phase 4</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 4 系统 · 第 4006 课 · 数学主课</div>
+  <h1>R 倍数、期望值与凯利公式：从微正期望到活得久</h1>
+  <p class="sub">训练者一号 87 笔期望 +0.204R——这个数能赚多少、会亏多惨、该下多少注，全是数学。本课三件套：①R 度量衡与期望公式（用 BT30 三十笔真实交易算给你看）；②连亏数学（60% 胜率 30 笔内出现四连亏的概率是 37%——精确计算）；③凯利公式与破产风险（为什么样本告诉你“别交易”到“全押”都在置信区间内，以及课程为什么只让你用 1%）。含可交互蒙特卡洛模拟器。本课约 76 分钟。</p>
+</header>
+
+<div class="lesson-map">
+  <div class="lm-title">本课地图</div>
+  <ol>
+    <li>R：统一盈亏的度量衡 <span class="t">≈8 min</span></li>
+    <li>期望值：把 30 笔变成一个数 <span class="t">≈10 min</span></li>
+    <li>连亏数学：60% 胜率的黑暗面 <span class="t">≈12 min</span></li>
+    <li>凯利公式：最优仓位的理论与实践 <span class="t">≈12 min</span></li>
+    <li>破产风险与蒙特卡洛实验（交互） <span class="t">≈14 min</span></li>
+    <li>BT30 资金曲线实拍 <span class="t">≈8 min</span></li>
+    <li>训练场：十二题 <span class="t">≈10 min</span></li>
+    <li>小结 <span class="t">≈2 min</span></li>
+  </ol>
+</div>
+
+<h2 id="s01"><span class="no">01</span>R：统一盈亏的度量衡 <span class="time-chip">≈8 min</span></h2>
+<p>先解决“怎么记账”。比特币赚 800 点和茅台赚 50 元没法比——把它们都除以<b>这笔交易冒的风险</b>（入场价−止损价=1R）：<b>R 倍数 = 盈亏金额 ÷ 初始风险</b>。止损打掉=−1R（永远恰好 −1R，不管股数多少）；2R 目标达成=+2R；时间出场小赚=+0.04R。R 化之后：跨品种可比（BTC 与茅台同语言）、跨仓位可比（1 手和 100 手同语言）、统计可算（30 笔的胜率与期望直接从 R 列读出）。<b>训练者一号的 BT30</b>（33 品种抽 30 笔，4010 课你将亲手重算）就是一张 R 列表——先记住它的三个总账：胜率 15/30=50%，期望 <b>+0.095R</b>，总 <b>+2.8R</b>。</p>
+
+<h2 id="s02"><span class="no">02</span>期望值：把 30 笔变成一个数 <span class="time-chip">≈10 min</span></h2>
+<p><b>E = p × 平均盈利 − (1−p) × 平均亏损</b>（R 计价）。BT30 逐项代入：15 笔盈利平均 <b>+0.882R</b>，15 笔亏损平均 <b>−0.692R</b>（含时间出场的 −0.16R 们——不是每笔亏损都是满额止损）；E = 0.5×0.882 − 0.5×0.692 = <b>+0.095R</b>。三个读数：①<b>正期望很薄</b>——每冒 1R 风险平均只赚回 0.095R，手续费与滑点（§05/4010）就能吃掉一半，这就是“微正期望系统”的真实长相；②<b>胜率与盈亏比是可交换的</b>——33% 胜率×3R 盈亏比与 60% 胜率×1R 可以同期望（4004 课三个出场政策就是同一胜率-赔率谱系上的移位）；③<b>期望是均值不是承诺</b>——它对任何一笔的答案都是“不知道”，承诺只存在于 30、100、500 笔的聚合里（§03 讲聚合路径有多颠簸）。</p>
+
+<h2 id="s03"><span class="no">03</span>连亏数学：60% 胜率的黑暗面 <span class="t">≈</span> <span class="time-chip">≈12 min</span></h2>
+<p>“胜率 60%，怎么可能连亏 4 次？”——不仅能，而且大概率会。精确计算（对 N 笔交易枚举所有路径，非近似）：</p>
+<table>
+<tr><th>单笔亏损概率</th><th>N</th><th>≥4 连亏</th><th>≥5 连亏</th><th>≥6 连亏</th><th>≥10 连亏</th></tr>
+<tr><td>40%（胜率 60%）</td><td>30 笔</td><td><b>37%</b></td><td>16%</td><td>6%</td><td>≈0%</td></tr>
+<tr><td>50%（胜率 50%）</td><td>30 笔</td><td><b>64%</b></td><td>37%</td><td>19%</td><td>1%</td></tr>
+<tr><td>40%（胜率 60%）</td><td>100 笔</td><td><b>80%</b></td><td>46%</td><td>21%</td><td>1%</td></tr>
+<tr><td>60%（胜率 40%）</td><td>100 笔</td><td><b>100%</b></td><td>98%</td><td>87%</td><td><b>20%</b></td></tr>
+</table>
+<p>带读两行：<b>胜率 60% 的交易者，30 笔内出现 4 连亏的概率 37%</b>——三人行必有一人怀疑系统；100 笔内 80%。低胜率系统更残酷：胜率 40% 的政策（4004 课的跟踪止损就是 36%）100 笔内有 20% 概率吃满 <b>10 连亏</b>。<b>BT30 实测最长连亏 5 笔</b>——对照第二行（发生概率 37%）：它不是运气差，是这张系统的正常输出。连亏不是系统坏了的证据（§05 的模拟器里“系统一直没变”而资金曲线千姿百态）；判断系统好坏靠的是 4010 课的规则化回测，不是靠连亏时的感觉。</p>
+
+<h2 id="s04"><span class="no">04</span>凯利公式：最优仓位的理论与实践 <span class="t">≈</span> <span class="time-chip">≈12 min</span></h2>
+<p>Kelly（1956，贝尔实验室，《信息速率的新解释》——本为电话噪声里的赌注问题而生，Thorp 把它带进市场）回答：已知胜率 p、盈亏比 b（平均盈利/平均亏损），长期复利增长最快的风险比例是 <b>f* = p − (1−p)/b</b>。代入 BT30 的估计：p=0.5，b=0.882/0.692=1.28 → f* = 0.5 − 0.5/1.28 = <b>10.8%</b>——每笔拿权益的 10.8% 冒险？半凯利 5.4%？课程却让你用 1%。三层理由：</p>
+<ol>
+<li><b>参数是估计不是知识</b>。30 笔样本的胜率标准误 = ±9 个百分点：真实胜率的 95% 置信区间是 <b>32%–68%</b>。把区间两端代入凯利：p=32% → f*=<b>−21%（别交易）</b>；p=68% → f*=<b>+43%（接近全押）</b>。同一个样本，凯利给出的答案从“零”到“梭哈”——<b>仓位公式的精度不可能超过参数估计的精度</b>。</li>
+<li><b>市场非平稳</b>。凯利假设 p、b 恒定；市场的边会衰减（AMH，3003 课），昨天的 0.5 可能是今天的 0.45。</li>
+<li><b>凯利路的颠簸没人开得动</b>。按全凯利下注，常见的最大回撤 50%+（§05 模拟器把 f 拉到 10% 亲眼看）——数学上的最优增长，心理上的无法执行。Thorp 本人的实务也是分数凯利。</li>
+</ol>
+<p>课程立场：<b>固定分数法，1% 起步</b>（4007 课展开）。它离凯利很远——这段距离买的是参数误差保险、非平稳保险、和心理生存保险。凯利在本课的价值不是公式，是它揭示的方向：<b>仓位是期望的函数，不是信心的函数</b>。</p>
+
+<h2 id="s05"><span class="no">05</span>破产风险与蒙特卡洛实验（交互） <span class="t">≈</span> <span class="time-chip">≈14 min</span></h2>
+<div class="note" style="margin-bottom:.8rem"><b>实验说明</b>：系统参数固定（胜率 p、盈亏比 b），单笔风险 f（当前权益的百分比），模拟 100 笔 × 500 条路径。观察三件事：中位终值随 f 的变化；“最大回撤 ≥50%”的路径占比（事实性破产）；路径之间差异有多大。<b>系统从未改变，改变的只有你的仓位。</b></div>
+<div id="mc-sim" class="mcbox"></div>
+<p>必做三组实验：①p=50%、b=1.3（BT30 参数），f 从 1% 拉到 10%——中位终值先升后<b>降</b>（过度下注的复利惩罚：亏 50% 需要赚 100% 回本）；②同参数把 f 固定 1%，p 从 50% 拖到 40%——期望转负的速度（参数误差的杀伤力）；③p=40%、b=2（跟踪止损的脸）、f=1% vs 3%——低胜率系统对 f 更敏感，十连亏（§03 的 20%）配 3% 风险就是 −30% 回撤。<b>破产风险的本质：不是“亏光”，是“回撤深到你不再执行系统”</b>——Phase 5 会从心理侧回到这里。</p>
+
+<h2 id="s06"><span class="no">06</span>BT30 资金曲线实拍 <span class="time-chip">≈8 min</span></h2>
+<figure><div id="eq-bt30"></div>
+<figcaption><b>BT30 累计 R 曲线。</b>前 21 笔基本在水下（最深 −3.0R），第 25–27 笔三笔达标（立讯 +2R、赛力斯 +1.03R、BNB +2R）才翻身上岸，终点 +2.8R。</figcaption></figure>
+<p>把 R 曲线翻译成账户：1% 风险下这段旅程=最深浮亏约 3%、终点 +2.8%；<b>10% 风险（接近 BT30 的全凯利）下=最深浮亏约 26%</b>（复利放大）而且方差拖累使实际终值低于线性换算。同一条 R 曲线，不同 f，是不同的旅程——这就是 §05 结论的实拍版本。另一个读法：曲线的形状（长期横盘+少数跳升）就是“微正期望+2R 封顶”系统的指纹——<b>你需要在第 21 笔仍然活着、仍然在执行，第 25 笔的 +2R 才属于你</b>。</p>
+
+<h2 id="s07"><span class="no">07</span>训练场：十二题 <span class="t">≈</span> <span class="time-chip">≈10 min</span></h2>
+<div id="trainer"></div>
+
+<h2 id="s08"><span class="no">08</span>小结 <span class="t">≈</span> <span class="time-chip">≈2 min</span></h2>
+<p><b>本课带走四样：</b>①R 度量衡与期望公式——BT30：50% 胜率、平均赢 0.882R/亏 0.692R、E=+0.095R（微正期望的真实长相）；②连亏数学——60% 胜率 30 笔内 4 连亏概率 37%；BT30 的 5 连亏是正常输出不是故障；③凯利 f*=p−(1−p)/b——BT30 估计给 10.8%，但 30 笔样本的置信区间让它从“别交易”到“全押”都说得通：仓位精度 ≤ 参数精度，课程用 1% 买三层保险；④蒙特卡洛的复利惩罚与破产风险本质——“回撤深到你不再执行”。<b>下一课</b>：1% 落到操作——仓位计算、组合相关性与总风险预算。</p>
+
+<footer class="course">
+  <div class="nav">
+    <a href="4005-targets.html">← 第 4005 课</a>
+    <a href="../index.html">Phase 4 主页</a>
+    <a href="4007-position-sizing.html">第 4007 课 →</a>
+    <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
+  </div>
+  <p><b>主资源（本课 grounded on）：</b>J. L. Kelly Jr. (1956) "A New Interpretation of Information Rate," <i>Bell System Technical Journal</i> 35(4)；E. O. Thorp 关于凯利 criterion 的实务论述（分数凯利）；训练者一号 BT30/全样本数据。</p>
+  <div class="citations"><b>引用：</b>Kelly (1956) <a href="https://www.princeton.edu/~wbialek/rome/refs/kelly-56.pdf">原文 PDF（普林斯顿托管）</a> · Thorp (2006)· 连亏概率为精确枚举计算（DP，非近似）· BT30 与 87 笔全样本由 scan_p4.py 可复算（seed=44 分层抽样）。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script src="../assets/quiz.js"></script>
+<script>
+var BT30 = [
+{d:'2022-01-05',n:'美的集团',m:'A股',e:59.9977,st:54.6664,tg:70.6603,r:-0.16,o:'时间出场',h:20},
+{d:'2022-01-21',n:'中国平安',m:'A股',e:42.2324,st:39.5485,tg:47.6002,r:-1.00,o:'止损',h:6},
+{d:'2023-01-12',n:'BTC',m:'加密',e:17943.26,st:16333.0,tg:21163.78,r:2.00,o:'达标',h:3},
+{d:'2023-01-17',n:'平安银行',m:'A股',e:3229.4399,st:3064.46,tg:3559.3997,r:0.37,o:'时间出场',h:20},
+{d:'2023-04-15',n:'XRP',m:'加密',e:0.5227,st:0.481,tg:0.6061,r:-1.00,o:'止损',h:5},
+{d:'2023-04-15',n:'BTC',m:'加密',e:30466.93,st:27200.24,tg:37000.31,r:-1.00,o:'止损',h:7},
+{d:'2023-05-04',n:'中国平安',m:'A股',e:42.3416,st:37.371,tg:52.2828,r:-0.63,o:'时间出场',h:20},
+{d:'2023-05-30',n:'微软',m:'美股',e:326.8659,st:297.9674,tg:384.6629,r:-0.02,o:'时间出场',h:20},
+{d:'2023-11-09',n:'中芯国际',m:'A股',e:58.01,st:53.36,tg:67.31,r:-1.00,o:'止损',h:6},
+{d:'2023-11-13',n:'微软',m:'美股',e:359.7931,st:319.4578,tg:440.4637,r:0.09,o:'时间出场',h:20},
+{d:'2024-01-03',n:'长江电力',m:'A股',e:21.5285,st:20.7099,tg:23.1657,r:0.48,o:'时间出场',h:20},
+{d:'2024-01-24',n:'微软',m:'美股',e:393.1469,st:358.8393,tg:461.7621,r:0.04,o:'时间出场',h:20},
+{d:'2024-02-05',n:'亚马逊',m:'美股',e:170.2,st:149.91,tg:210.78,r:0.36,o:'时间出场',h:20},
+{d:'2024-06-18',n:'微软',m:'美股',e:441.9199,st:397.5029,tg:530.7539,r:-0.14,o:'时间出场',h:20},
+{d:'2024-07-23',n:'比亚迪',m:'A股',e:85.9069,st:77.4423,tg:102.8361,r:-1.00,o:'止损',h:9},
+{d:'2024-09-23',n:'中信建投',m:'A股',e:19.5066,st:18.1377,tg:22.2444,r:2.00,o:'达标',h:5},
+{d:'2024-12-10',n:'苹果',m:'美股',e:245.1112,st:224.0838,tg:287.166,r:-0.20,o:'时间出场',h:20},
+{d:'2025-01-31',n:'谷歌',m:'美股',e:200.8213,st:186.2668,tg:229.9303,r:-1.00,o:'止损',h:6},
+{d:'2025-04-10',n:'长江电力',m:'A股',e:27.7183,st:25.7519,tg:31.6511,r:0.04,o:'时间出场',h:20},
+{d:'2025-05-23',n:'长江电力',m:'A股',e:28.9791,st:27.342,tg:32.2533,r:-0.23,o:'时间出场',h:20},
+{d:'2025-05-26',n:'比亚迪',m:'A股',e:131.8647,st:116.7325,tg:162.1291,r:-1.00,o:'止损',h:4},
+{d:'2025-07-02',n:'摩根大通',m:'美股',e:285.184,st:256.5426,tg:342.4668,r:0.31,o:'时间出场',h:20},
+{d:'2025-07-07',n:'中国平安',m:'A股',e:53.8683,st:49.1271,tg:63.3507,r:0.32,o:'时间出场',h:20},
+{d:'2025-07-14',n:'BNB',m:'加密',e:692.01,st:643.71,tg:788.61,r:2.00,o:'达标',h:10},
+{d:'2025-08-21',n:'立讯精密',m:'A股',e:39.8789,st:35.6026,tg:48.4315,r:2.00,o:'达标',h:13},
+{d:'2025-09-02',n:'赛力斯',m:'A股',e:141.3374,st:125.7804,tg:172.4514,r:1.03,o:'时间出场',h:20},
+{d:'2025-09-13',n:'BNB',m:'加密',e:924.81,st:840.0,tg:1094.43,r:2.00,o:'达标',h:20},
+{d:'2025-09-26',n:'苹果',m:'美股',e:253.1648,st:225.1184,tg:309.2576,r:0.19,o:'时间出场',h:20},
+{d:'2026-01-07',n:'摩根大通',m:'美股',e:327.9765,st:307.8486,tg:368.2323,r:-1.00,o:'止损',h:5},
+{d:'2026-05-11',n:'BTC',m:'加密',e:82210.07,st:74937.52,tg:96755.17,r:-1.00,o:'止损',h:13}
+];
+var BT_CUM = [-0.16, -1.16, 0.84, 1.21, 0.21, -0.79, -1.42, -1.44, -2.44, -2.35, -1.87, -1.83, -1.47, -1.61, -2.61, -0.61, -0.81, -1.81, -1.77, -2.0, -3.0, -2.69, -2.37, -0.37, 1.63, 2.66, 4.66, 4.85, 3.85, 2.85];
+/* 汇总（seed=44 分层抽样 A股14/美股10/加密6，口径见 scan_p4.py）
+   基线87笔全样本: 胜率59% 期望+0.204R 总R+17.7 | BT30: 胜率50% 期望+0.095R 总+2.8R 最长连亏5 回撤4.2R
+   限价-1%变体: 成交41/87 期望+0.056R（踏空46笔基线平均+0.40R/胜率72% vs 成交41笔-0.016R/44%）
+   移动止损变体: 胜率36% 期望+0.136R 最大4.18R | 混合(半2R半跟踪): 胜率54% 期望+0.170R 总+14.8R 最大+3.09R */
+(function () {
+  var W = 660, H = 250, padL = 40, padB = 26, padT = 14;
+  var cum = [0].concat(BT_CUM);
+  var lo = Math.min(-3.4, Math.min.apply(null, cum)), hi = Math.max(3.2, Math.max.apply(null, cum));
+  function X(i) { return padL + (W - padL - 14) * i / (cum.length - 1); }
+  function Y(v) { return padT + (H - padT - padB) * (1 - (v - lo) / (hi - lo)); }
+  var s = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" style="max-width:100%">';
+  for (var g = Math.ceil(lo); g <= Math.floor(hi); g++) {
+    s += '<line x1="' + padL + '" y1="' + Y(g) + '" x2="' + (W - 14) + '" y2="' + Y(g) + '" stroke="#e8e5dc" stroke-width="1"/>';
+    s += '<text x="' + (padL - 6) + '" y="' + (Y(g) + 3.5) + '" text-anchor="end" font-size="10.5" fill="#8b877d">' + (g > 0 ? '+' + g : g) + 'R</text>';
+  }
+  var peak = 0, ddSeg = null;
+  var poly = '';
+  for (var i = 0; i < cum.length; i++) {
+    poly += (i ? ' ' : '') + X(i).toFixed(1) + ',' + Y(cum[i]).toFixed(1);
+    if (cum[i] >= peak) { peak = cum[i]; if (ddSeg) { ddSeg = null; } }
+  }
+  // 回撤区（从峰值 1.21 到谷 −3.0 的水下段）
+  var iPk = cum.indexOf(1.21), iTr = cum.indexOf(-3.0);
+  if (iPk >= 0 && iTr > iPk) {
+    s += '<rect x="' + X(iPk) + '" y="' + Y(1.21) + '" width="' + (X(iTr) - X(iPk)) + '" height="' + (Y(-3.0) - Y(1.21)) + '" fill="#d33a2c" fill-opacity="0.07"/>';
+    s += '<text x="' + ((X(iPk) + X(iTr)) / 2) + '" y="' + (Y(-3.0) + 14) + '" text-anchor="middle" font-size="10.5" fill="#d33a2c">水下 18 笔 · 回撤 4.2R</text>';
+  }
+  s += '<polyline points="' + poly + '" fill="none" stroke="#1a7f37" stroke-width="2.2"/>';
+  [0, 20, 29].forEach(function (i) {
+    s += '<circle cx="' + X(i) + '" cy="' + Y(cum[i]) + '" r="3.2" fill="#1a7f37"/>';
+  });
+  s += '<text x="' + X(29) + '" y="' + (Y(cum[29]) - 8) + '" text-anchor="end" font-size="11" fill="#1a7f37" font-weight="700">终点 +2.8R</text>';
+  s += '<text x="' + X(16) + '" y="' + (Y(cum[16]) + 16) + '" text-anchor="middle" font-size="10.5" fill="#8b877d">第21笔仍 −3.0R</text>';
+  for (var t = 0; t <= 30; t += 5) {
+    s += '<text x="' + X(t) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="#8b877d">' + t + '</text>';
+  }
+  s += '<text x="' + (W / 2) + '" y="' + (H - 0) + '" text-anchor="middle" font-size="0" fill="#fff"> </text>';
+  s += '</svg>';
+  document.getElementById('eq-bt30').innerHTML = s;
+})();
+(function () {
+  var host = document.getElementById('mc-sim');
+  host.innerHTML =
+    '<div class="mcrow">胜率 <input id="mc-p" type="range" min="20" max="80" step="1" value="50"/><b id="mc-pv">50%</b>' +
+    '<span class="mclab">盈亏比</span><input id="mc-b" type="range" min="0.5" max="4" step="0.1" value="1.3"/><b id="mc-bv">1.3R</b>' +
+    '<span class="mclab">单笔风险</span><input id="mc-f" type="range" min="0.25" max="15" step="0.25" value="1"/><b id="mc-fv">1%</b></div>' +
+    '<div id="mc-plot"></div><div id="mc-stats" class="mcstats"></div>';
+  function fmt(x) { return x >= 0.995 && x <= 1.005 ? '1.00' : x.toFixed(2); }
+  function run() {
+    var p = +document.getElementById('mc-p').value / 100,
+        b = +document.getElementById('mc-b').value,
+        f = +document.getElementById('mc-f').value / 100;
+    document.getElementById('mc-pv').textContent = Math.round(p * 100) + '%';
+    document.getElementById('mc-bv').textContent = b.toFixed(1) + 'R';
+    document.getElementById('mc-fv').textContent = (f * 100).toFixed(2).replace(/\.?0+$/, '') + '%';
+    var N = 100, RUNS = 500;
+    var finals = [], dd50 = 0, dd30 = 0, streaks = [], samplePaths = [];
+    for (var r = 0; r < RUNS; r++) {
+      var eq = 1, peak = 1, maxdd = 0, cur = 0, mstreak = 0, path = [1];
+      for (var i = 0; i < N; i++) {
+        var win = Math.random() < p;
+        eq *= win ? (1 + f * b) : (1 - f);
+        peak = Math.max(peak, eq);
+        maxdd = Math.max(maxdd, 1 - eq / peak);
+        cur = win ? 0 : cur + 1;
+        mstreak = Math.max(mstreak, cur);
+        if (r < 24) path.push(eq);
+      }
+      finals.push(eq);
+      if (maxdd >= 0.5) dd50++;
+      if (maxdd >= 0.3) dd30++;
+      streaks.push(mstreak);
+      if (r < 24) samplePaths.push(path);
+    }
+    finals.sort(function (a, c) { return a - c; });
+    streaks.sort(function (a, c) { return a - c; });
+    var med = finals[Math.floor(RUNS / 2)], p10 = finals[Math.floor(RUNS * 0.1)];
+    var k = p - (1 - p) / b;
+    document.getElementById('mc-stats').innerHTML =
+      '中位终值 <b>' + fmt(med) + '</b> ｜ 最差10%线 <b>' + fmt(p10) + '</b> ｜ 最大回撤≥30%：<b>' +
+      Math.round(dd30 / RUNS * 100) + '%</b> ｜ ≥50%（事实性破产）：<b>' + Math.round(dd50 / RUNS * 100) + '%</b> ｜ 中位最长连亏 <b>' +
+      streaks[Math.floor(RUNS / 2)] + '</b> 笔 ｜ 凯利 f* = ' + (k > 0 ? (k * 100).toFixed(1) + '%' : '负——这个参数组合不该交易');
+    var W = 660, H = 220, padL = 10, padB = 20, padT = 10;
+    var ymax = Math.max(2, finals[Math.floor(RUNS * 0.97)]), ymin = Math.max(0, finals[0]);
+    function X(i) { return padL + (W - padL - 12) * i / N; }
+    function Y(v) { return padT + (H - padT - padB) * (1 - (v - ymin) / (ymax - ymin)); }
+    var s = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" style="max-width:100%">';
+    s += '<line x1="' + padL + '" y1="' + Y(1) + '" x2="' + (W - 12) + '" y2="' + Y(1) + '" stroke="#c9c4b8" stroke-dasharray="4 4"/>';
+    s += '<text x="' + (W - 14) + '" y="' + (Y(1) - 4) + '" text-anchor="end" font-size="10" fill="#8b877d">初始 1.00</text>';
+    samplePaths.forEach(function (path) {
+      var pl = '';
+      for (var i = 0; i < path.length; i++) pl += (i ? ' ' : '') + X(i).toFixed(1) + ',' + Y(path[i]).toFixed(1);
+      s += '<polyline points="' + pl + '" fill="none" stroke="#4a6fa5" stroke-width="1" stroke-opacity="0.28"/>';
+    });
+    var meds = [];
+    s += '<text x="' + (W / 2) + '" y="' + (H - 4) + '" text-anchor="middle" font-size="10" fill="#8b877d">24 条样本路径（共 500 次模拟 × 100 笔）· 系统参数从未改变</text>';
+    s += '</svg>';
+    document.getElementById('mc-plot').innerHTML = s;
+  }
+  ['mc-p', 'mc-b', 'mc-f'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', run);
+  });
+  run();
+})();
+var questions = [
+  { q: '一笔交易的初始风险是 2 元，止损打掉后账面亏 200 元——R 倍数是：', options: ['+100R', '−1R（R 由股数×每股风险定义，止损被打掉永远 −1R）', '−100R', '无法计算'], answer: 1, explain: 'R 化的目的：跨品种、跨仓位统一度量——止损单永远 −1R。' },
+  { q: 'BT30 的期望值与构成：', options: ['+5R，胜率 90%', 'E=+0.095R：50% 胜率，平均赢 0.882R、亏 0.692R', '−0.095R', '期望无法从 30 笔算出'], answer: 1, explain: '微正期望的真实长相：每冒 1R 平均赚回 0.095R，滑点就能吃掉一半。' },
+  { q: '胜率 60% 的交易者 30 笔内出现 ≥4 连亏的概率（本课精确计算）：', options: ['≈0%，几乎不可能', '37%——三人行必有一人怀疑系统', '95%', '无法计算'], answer: 1, explain: '精确枚举（非近似）。连亏是正常输出，不是系统故障。' },
+  { q: '胜率 40% 的系统 100 笔内吃满 10 连亏的概率约：', options: ['20%', '0.1%', '80%', '50%'], answer: 0, explain: '低胜率政策（如 4004 的跟踪止损 36%）的必经之路——选它就要配更小的 f。' },
+  { q: 'BT30 实测最长连亏 5 笔，理论发生概率 37%——这告诉我们：', options: ['运气差', '这是这张系统的正常输出；判断系统好坏靠规则化回测（4010），不靠连亏时的感觉', '系统该停用', '该加倍下注回本'], answer: 1, explain: '§05 模拟器：系统没变，路径千姿百态——感觉不是证据。' },
+  { q: '凯利公式 f* = p − (1−p)/b 中，b 是：', options: ['账户余额', '盈亏比（平均盈利/平均亏损）', '杠杆倍数', '交易次数'], answer: 1, explain: 'Kelly (1956) 的赌注框架：p、b 已知时的复利增长最优比例。' },
+  { q: 'BT30 参数（p=0.5, b=1.28）的全凯利是 10.8%，课程只用 1%——第一层理由：', options: ['凯利错了', '30 笔样本胜率标准误 ±9pt：置信区间端点代入凯利，答案从“别交易”（−21%）到“全押”（+43%）——仓位精度不可能超过参数精度', '手续费', '券商限制'], answer: 1, explain: '参数是估计不是知识；另有非平稳（AMH）与凯利路径颠簸两层理由。' },
+  { q: '“过度下注的复利惩罚”指：', options: ['手续费随仓位增长', '亏 50% 需赚 100% 回本——f 超过某点后期望为正、复利中位反而下降', '数学错误', '只在高频出现'], answer: 1, explain: '模拟器实验①：中位终值随 f 先升后降。凯利点就是这个拐点。' },
+  { q: '本课对“事实性破产”的操作定义：', options: ['账户精确归零', '最大回撤 ≥50%——不是“亏光”，是“回撤深到你不再执行系统”', '单笔亏 1R', '连续三天亏损'], answer: 1, explain: '破产风险的本质是执行中断。Phase 5 从心理侧回到这里。' },
+  { q: '同一条 BT30 的 R 曲线，1% 与 10% 风险的差异：', options: ['只是数字缩放', '1%=最深浮亏约 3%；10%≈26% 且方差拖累使终值低于线性换算——同曲线不同旅程', '10% 赚更多所以更好', '无差异'], answer: 1, explain: '§06 实拍：复利对亏损端不对称放大。' },
+  { q: '曲线“长期横盘+少数跳升”的指纹对应：', options: ['随机乱做', '微正期望+2R 封顶系统的形态——第 25 笔的 +2R 只属于第 21 笔仍活着仍执行的人', '内幕交易', '数据错误'], answer: 1, explain: '读懂自己系统的资金曲线指纹，是持有它的心理前提。' },
+  { q: '综合：凯利公式给你的最重要认知是：', options: ['照公式下注就能财富自由', '仓位是期望的函数，不是信心的函数——方向比公式本身重要', '胜率无关紧要', '永远满仓'], answer: 1, explain: '课程用 1% 买参数误差/非平稳/心理三层保险——这就是方向的落地。' }
+];
+Quiz.mount('#trainer', { title: '4006 训练场', questions: questions,
+  verdicts: [[12,'全对——生存数学在手，进 4007 仓位与风险模型'], [9,'不错——回看连亏表与凯利三理由'], [0,'回读 §03–§05 再来']] });
+</script>
+
+<style>
+.mcbox { border: 1px solid var(--line); border-radius: 10px; padding: .8rem .9rem; background: #fff; margin: 1rem 0; }
+.mcrow { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .7rem; font-size: .9rem; margin-bottom: .6rem; }
+.mcrow input[type=range] { width: 120px; }
+.mclab { color: var(--faint); margin-left: .6rem; }
+.mcrow b { font-family: var(--sans); min-width: 3.2em; }
+.mcstats { font-size: .92rem; line-height: 1.9; }
+.mcstats b { font-family: var(--sans); }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 4 · 系统：组装交易系统（Grimes Part 2-4 / Brooks setups）— K线训练营</title>
+<link rel="stylesheet" href="assets/course.css">
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 4 系统 · Grimes / Brooks / Harris / Kelly</div>
+  <h1>系统：组装交易系统</h1>
+  <p class="sub">十天 · 十课 · 每课 65–80 分钟 + 毕业考 · 全真实数据（同一套示范系统“训练者一号”跑 33 品种×5 年：87 笔真实交易、胜率 59%、期望 +0.204R；限价/跟踪/混合三种执行变体对照实验；四市场微观结构活例）· 可离线可打印。前置：Phase 0–3。<b>里程碑：本阶段末开模拟盘。</b></p>
+</header>
+
+<h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
+
+<p><b>教：</b>把 Phase 0–3 的积累（词汇、语境、地形、统计）组装成一台<b>可执行的机器</b>——Grimes 的五步决策链（setup→入场→止损→目标→仓位）逐件落地，每件都用课程自己的真实数据做实验：限价单的逆向选择（87 信号对照）、止损的双结局（同一笔交易±3R）、三种出场政策的分布对决、凯利公式的置信区间拆解、四市场的制度适配。毕业交付两件套：<b>你的一页纸交易计划 v1.0 + 30 笔手工回测报告</b>。</p>
+
+<p><b>不教：</b>自动致富（期望是数学函数不是愿望函数）；参数优化玄学（回测协议先防自欺）；编程回测（手工回测是统计训练，MISSION 边界不变）；经典指标（MACD/均线/布林仍 out of scope——止损距离就是波动度量，不需要指标）。</p>
+
+<div class="note">
+<b>教材依据（grounding）：</b>①经典原著——Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链、Ch.8 Trade Management 的止损与目标、Ch.10 六类 setup）+ Part IV（自我导向交易者的计划与风控）；Al Brooks 三部曲（H2/出场/通道线实务）；②微观结构——Larry Harris《Trading and Exchanges》(2003)（订单与流动性）+ Osler (2000/2003)（限价/止损单聚集）；③数学——Kelly (1956)（信息速率与最优赌注）+ Thorp（分数凯利实务）；④真实数据——训练者一号 87 笔全样本与 BT30 抽样（seed=44）、相关性矩阵（33 品种日收益）、涨跌停/暴跌事件，全部脚本可复算。
+</div>
+
+<h2><span class="no">01</span>十课地图</h2>
+
+<a class="lesson-card" href="lessons/4001-setup-definition.html">
+  <div class="day">DAY 1 · 第 4001 课</div>
+  <div class="t">Setup 的正式定义：从“看到”到“等到”</div>
+  <div class="d">五步决策链、三条标准（客观/预先写死/会被打脸）、训练者一号全规则（87 笔·胜率 59%·期望+0.204R）、诱惑检查表——东方财富 2024-09-24 死于风险过滤的教训：过滤器用错过换生存。</div>
+  <div class="meta">70 min · 12 题 · Grimes Part III + 我们的 87 笔</div>
+</a>
+
+<a class="lesson-card" href="lessons/4002-entries.html">
+  <div class="day">DAY 2 · 第 4002 课</div>
+  <div class="t">入场技术：限价单 vs 停损单及其心理学</div>
+  <div class="d">订单簿与你的对手盘（Harris）；87 信号对照实验——限价 −1% 让期望从 +0.204R 塌到 +0.056R；踏空的 46 笔恰是最强样本（+0.40R/72%）——逆向选择；四市场订单现实。</div>
+  <div class="meta">70 min · 12 题 · Harris + 挂单变体实验</div>
+</a>
+
+<a class="lesson-card" href="lessons/4003-initial-stop.html">
+  <div class="day">DAY 3 · 第 4003 课</div>
+  <div class="t">初始止损：结构止损的艺术</div>
+  <div class="d">止损三重身份（证伪位是根）；“错在哪”原则；中信建投双结局（紧止损死于噪音 vs 结构止损活到 +2R）；四市场的止损失灵——立讯连续跌停 −25.8% 完整解剖。</div>
+  <div class="meta">70 min · 12 题 · Grimes Ch.8 + 真实事件</div>
+</a>
+
+<a class="lesson-card" href="lessons/4004-exits.html">
+  <div class="day">DAY 4 · 第 4004 课</div>
+  <div class="t">移动止损与出场机制：分布整形器</div>
+  <div class="d">三族出场（目标/跟踪/时间）；87 信号三种政策对决：59%↔36%↔54% 胜率、期望 +0.204↔+0.136↔+0.170R；摆动点跟踪实拍；出场政策即心理合同。</div>
+  <div class="meta">70 min · 12 题 · Grimes Ch.8 + 出场变体实验</div>
+</a>
+
+<a class="lesson-card" href="lessons/4005-targets.html">
+  <div class="day">DAY 5 · 第 4005 课</div>
+  <div class="t">目标位体系：量度目标 × 高度投影 × Profile 边缘</div>
+  <div class="d">三把尺子与合流加权（容差 0.5%）；茅台实拍——50% 回撤与 POC 合流、8 月回调在第一带被承接的诚实后记；R 上限算术与 2R 的“期望×实现率”平衡。</div>
+  <div class="meta">65 min · 12 题 · Grimes Ch.8 + 茅台 Profile</div>
+</a>
+
+<a class="lesson-card" href="lessons/4006-expectancy-kelly.html">
+  <div class="day">DAY 6 · 第 4006 课 · 数学主课</div>
+  <div class="t">R 倍数、期望值与凯利公式：从微正期望到活得久</div>
+  <div class="d">BT30 全账（50%/±0.88R/±0.69R/E=+0.095R）；连亏数学（60% 胜率 30 笔内 4 连亏概率 37%——精确计算）；凯利 f* 与置信区间拆解（“别交易”到“全押”都在区间内）；交互蒙特卡洛模拟器；BT30 资金曲线实拍。</div>
+  <div class="meta">76 min · 12 题 + 模拟器 · Kelly 1956 + BT30</div>
+</a>
+
+<a class="lesson-card" href="lessons/4007-position-sizing.html">
+  <div class="day">DAY 7 · 第 4007 课</div>
+  <div class="t">仓位与风险模型：单笔 %、相关性与总预算</div>
+  <div class="d">仓位=账户×风险%÷止损距离（交互计算器）；风险以止损为界不以市值为界；真实相关性——加密内部 0.68/BTC×ETH 0.84 vs SPY×BTC −0.03（数量≠分散）；相关组=一组风险、总预算 3R；升仓的唯一路径。</div>
+  <div class="meta">65 min · 12 题 + 计算器 · 33 品种相关性</div>
+</a>
+
+<a class="lesson-card" href="lessons/4008-microstructure.html">
+  <div class="day">DAY 8 · 第 4008 课</div>
+  <div class="t">四市场适配与市场微观结构</div>
+  <div class="d">订单去哪了（Harris 流动性世界 + Osler 止损单聚集=假突破机制）；A股三闸门（T+1/涨跌停/集合竞价——立讯 −25.8% 换镜头重看）；美股 PDT 与跳空；加密无地板（BTC 单日 −15.4%）与杠杆失真；四市场×组件适配表。</div>
+  <div class="meta">75 min · 12 题 · Harris + Osler + 四市场</div>
+</a>
+
+<a class="lesson-card" href="lessons/4009-one-page-plan.html">
+  <div class="day">DAY 9 · 第 4009 课</div>
+  <div class="t">一页纸交易计划：把零件装成机器</div>
+  <div class="d">九栏结构（决策链+新陈代谢）；填好的范例——训练者一号·A股版，每行可溯源到一门课；外行 60 秒测试；三种修改冲动与⑨栏防线——让冲动排队，不上方向盘。</div>
+  <div class="meta">65 min · 12 题 + 模板交付 · Grimes Part IV</div>
+</a>
+
+<a class="lesson-card" href="lessons/4010-backtest-graduation.html">
+  <div class="day">DAY 10 · 第 4010 课 · 毕业课</div>
+  <div class="t">手工回测：验证自己的规则，然后毕业</div>
+  <div class="d">回测协议（逐根推进/无未来函数/九字段/滑点/冻结参数）；中信建投全流程带走一遍；BT30 三十笔全表与统计；五种自欺与防线；毕业考 12 题（META/XOM 盲图与全部课件不同源）——通过即开模拟盘。</div>
+  <div class="meta">80 min · 毕业考 12 题 · 认知天性 + BT30</div>
+</a>
+
+<h2><span class="no">02</span>配套资料</h2>
+<p><a href="reference/one-page-plan.html">一页纸交易计划模板</a>（可打印，含范例对照与逐栏自检五问）· <a href="reference/glossary-p4.html">Phase 4 词汇速查</a>（系统篇 15 词）· 全量术语手册见 <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">Phase 2 版</a>（P0–P2 + 中文圈语境对照组）· 训练者一号数据口径见 4010 课页脚（scan_p4.py 可复算）。</p>
+
+<footer class="course">
+  <div class="nav">
+    <a href="https://chevywang.github.io/kbar/">← 训练营主页</a>
+    <a href="https://chevywang.github.io/kbar/phase-3/">Phase 3 主页</a>
+    <a href="reference/one-page-plan.html">计划模板</a>
+  </div>
+  <div class="citations">主资源：Grimes (2012) Part III–IV · Brooks 三部曲 · Harris (2003) · Osler (2000/2003) · Kelly (1956)。数据：33 品种×5 年（yfinance + Binance + 通达信核对）；训练者一号 87 笔与 BT30（seed=44）、执行/出场变体、相关性矩阵、事件窗口，全部脚本可复算。</div>
+</footer>
+
+</body>
+</html>

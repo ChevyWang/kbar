@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4007 · 仓位与风险模型 — K线训练营 Phase 4</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 4 系统 · 第 4007 课</div>
+  <h1>仓位与风险模型：单笔 %、相关性与总预算</h1>
+  <p class="sub">4006 定了方向（1% 起步），本课落到算术：止损距离怎么变成股数、为什么同一风险 % 下不同品种仓位差十倍、以及“分散”的真相——用我们 33 品种的真实日收益算相关性：加密五币内部平均 0.68（BTC×ETH 高达 0.84），而 SPY×BTC 是 −0.03。<b>数量不是分散，低相关才是。</b>含交互仓位计算器。本课约 65 分钟（知识 40 + 训练 23 + 小结 2）。</p>
+</header>
+
+<div class="lesson-map">
+  <div class="lm-title">本课地图</div>
+  <ol>
+    <li>单笔风险 % 的算术：从距离到股数 <span class="t">≈10 min</span></li>
+    <li>风险距离与波动：同 1% 不同命 <span class="t">≈8 min</span></li>
+    <li>组合与相关性：用真实数据算分散 <span class="t">≈14 min</span></li>
+    <li>加仓金字塔：课程立场=不加 <span class="t">≈9 min</span></li>
+    <li>从 1% 到凯利：升仓的唯一路径 <span class="t">≈8 min</span></li>
+    <li>训练场：十二题 <span class="t">≈14 min</span></li>
+    <li>小结 <span class="t">≈2 min</span></li>
+  </ol>
+</div>
+
+<h2 id="s01"><span class="no">01</span>单笔风险 % 的算术：从距离到股数 <span class="time-chip">≈10 min</span></h2>
+<p>仓位公式只有一行：<b>仓位 = 账户 × 单笔风险% ÷ (入场价 − 止损价)</b>。例：账户 100,000，风险 1%（=1,000），入场 39.88、止损 35.60（立讯那笔）——每股风险 4.28 元 → 233 股；A股按 100 股整手取整 → <b>200 股</b>（整手取整永远向下：风险只能小于等于预算，不能大）。市值 7,976，仓位占比 8%。三个字段在盘前全部可算——<b>仓位不是“买多少”的感觉题，是三个已知数的除法</b>。用计算器试：</p>
+<div id="poscalc" class="mcbox"></div>
+<p>注意占市值占比与风险占比的区别：这笔交易市值占账户 8%，但<b>风险</b>只占 0.85%（200 股 × 4.28 元 = 856 元）。新闻里说的“仓位”是前者，系统说的是后者——<b>你的风险预算以止损为界，不以市值为界</b>。唯一例外在 4003 课已经预告：T+1 的入场日没有止损保护，当日实际风险=市值波动——所以A股价位下仓位还要过一道“当日极端波动我受得了吗”的检查。</p>
+
+<h2 id="s02"><span class="no">02</span>风险距离与波动：同 1% 不同命 <span class="t">≈</span> <span class="time-chip">≈8 min</span></h2>
+<p>同一账户、同一 1%：长江电力那种止损距离 7% 的单，仓位是立讯（10.7%）的 1.5 倍；BTC 那笔（8.8%）介于其间；要是某品种结构位在 15% 外——训练者一号的过滤器直接拒绝（12% 上限）。<b>波动大的品种自动变小仓位，这就是“波动率倒数加权”的裸K版</b>——不需要 ATR 指标，止损距离本身就是波动的结构度量。第二个推论：不要用“固定股数”跨品种（1,000 股茅台和 1,000 股东方财富是两种生物），也不要用固定市值（止损远的单天然超标）。<b>固定的是风险，浮动的是仓位</b>。</p>
+
+<h2 id="s03"><span class="no">03</span>组合与相关性：用真实数据算分散 <span class="t">≈</span> <span class="time-chip">≈14 min</span></h2>
+<p>五个持仓同时被打止损，是不是“不走运”？取决于它们是不是<b>同一个风险换了五件衣服</b>。用我们 33 品种的日收益算平均两两相关（近 5 年日线）：</p>
+<table>
+<tr><th>组合</th><th>平均相关</th><th>读法</th></tr>
+<tr><td>加密五币（BTC/ETH/SOL/XRP/BNB）</td><td><b>0.68</b></td><td>买五个币≈买 1.7 个币——“数量分散”是幻觉</td></tr>
+<tr><td>其中 BTC×ETH</td><td><b>0.84</b></td><td>几乎同一个风险源</td></tr>
+<tr><td>美股科技五巨头</td><td><b>0.51</b></td><td>同一因子（科技贝塔）主导</td></tr>
+<tr><td>A股跨行业五只（白酒/银行/电池/保险/银行）</td><td><b>0.48</b></td><td>市场系统性因子仍占主导</td></tr>
+<tr><td>其中 SPY×上证代理</td><td><b>0.02</b></td><td>跨市场才是真分散（日度口径）</td></tr>
+<tr><td>SPY×BTC</td><td><b>−0.03</b></td><td>统计上几乎独立</td></tr>
+</table>
+<p>三个操作结论：①<b>相关组=一组风险</b>——组合风险预算按组算：A股组同时最多 2R、美股组 2R、加密组 1R（加密自身高相关+24h 无收盘跳空保护，预算再砍半）；②<b>总预算 3R 封顶</b>——三个组同时满仓时，账户当日最大理论损失 3%，4006 的连亏数学才有缓冲垫；③<b>真分散在市场之间</b>——0.02/−0.03 的相关性意味着跨市场持仓的回撤路径更平缓，但代价是三套微观结构都要适配（4008 课的门票）。诚实的边界：相关系数是历史统计，危机时刻会集体飙升（“暴跌时所有相关性奔向 1”）——预算要按“危机日相关性=0.8”压力测试。</p>
+
+<h2 id="s04"><span class="no">04</span>加仓金字塔：课程立场=不加 <span class="t">≈</span> <span class="time-chip">≈9 min</span></h2>
+<p>金字塔加仓（越涨越加、每次加仓量递减、整体浮盈保护）在趋势系统里有合法地位，但它同时改写三个已定变量：平均成本上移（止损不变则总风险膨胀）、R 定义漂移（哪一层的 1R？）、心理负荷翻倍（浮盈保护被击穿时的挫败感）。<b>课程立场：训练者一号与初学者阶段不加仓</b>——一笔交易一个仓位，风险一笔一结。想加仓的那天，规则卡上写的是“平仓后新的 setup 触发，按新单处理”——大多数“想加仓”的冲动，用“再开一单”检查一遍 setup，就消失了。等你有了 4010 的 30 笔回测 + Phase 5 的 30 笔实盘记录，加仓规则可以作为 v2 提案走复盘流程。</p>
+
+<h2 id="s05"><span class="no">05</span>从 1% 到凯利：升仓的唯一路径 <span class="t">≈</span> <span class="time-chip">≈8 min</span></h2>
+<p>1% 不是终身刑。升仓的流程写死：①<b>样本</b>——当前参数下 ≥30 笔回测 + ≥30 笔模拟/小仓实盘（Phase 5 交付）；②<b>统计</b>——滚动 30 笔期望仍为正、最大回撤在模拟器压力测试容忍内；③<b>幅度</b>——每次升 0.5%（1%→1.5%→2%），任何一步回撤触及预算线降回上一档。方向是 4006 的：仓位是期望的函数——<b>期望的证明材料齐了，仓位才有资格动</b>。反向规则同样写死：连续回撤到预算线 → 降档；换系统参数 → 从 0.5% 重新爬。这套升降规则本身就是你一页纸（4009）的“风险”栏内容。</p>
+
+<h2 id="s06"><span class="no">06</span>训练场：十二题 <span class="t">≈</span> <span class="time-chip">≈14 min</span></h2>
+<div id="trainer"></div>
+
+<h2 id="s07"><span class="no">07</span>小结 <span class="t">≈</span> <span class="time-chip">≈2 min</span></h2>
+<p><b>本课带走四样：</b>①仓位=账户×风险%÷止损距离，整手向下取整——盘前三个已知数的除法；②风险以止损为界不以市值为界；波动大的品种经止损距离自动小仓位——固定的是风险，浮动的是仓位；③相关性真相（我们的数据）：加密内部 0.68/BTC×ETH 0.84（数量≠分散）、SPY×上证 0.02、SPY×BTC −0.03（跨市场=真分散）；相关组=一组风险，总预算 3R 封顶，危机日按相关 0.8 压测；④课程立场：不加仓、1% 起步、升降档规则写死（+0.5%/次，证明材料齐才有资格动）。<b>下一课</b>：四市场微观结构——T+1、涨跌停、PDT、7×24 与杠杆，你的系统在不同市场要改哪些参数。</p>
+
+<footer class="course">
+  <div class="nav">
+    <a href="4006-expectancy-kelly.html">← 第 4006 课</a>
+    <a href="../index.html">Phase 4 主页</a>
+    <a href="4008-microstructure.html">第 4008 课 →</a>
+    <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
+  </div>
+  <p><b>主资源（本课 grounded on）：</b>Adam Grimes (2012) Part IV（自我导向交易者的风险管理）；4006 课凯利框架（Kelly 1956 / Thorp）；组合相关性为课程自有数据计算（33 品种日收益，2021-09→2026-09）。</p>
+  <div class="citations"><b>引用：</b>Grimes (2012) · Kelly (1956)。数据：相关系数由 yfinance（A股/美股）与 Binance（加密）日线收益计算，皮尔逊口径，样本近 5 年；计算脚本随 instancelib 可复算。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script src="../assets/quiz.js"></script>
+<script>
+(function () {
+  var host = document.getElementById('poscalc');
+  host.innerHTML =
+    '<div class="mcrow">账户 <input id="pc-a" type="number" value="100000" step="10000" style="width:100px"/>' +
+    '<span class="mclab">单笔风险</span><input id="pc-r" type="number" value="1" step="0.25" min="0.25" max="5" style="width:64px"/>%' +
+    '<span class="mclab">入场</span><input id="pc-e" type="number" value="39.88" step="0.01" style="width:84px"/>' +
+    '<span class="mclab">止损</span><input id="pc-s" type="number" value="35.60" step="0.01" style="width:84px"/></div>' +
+    '<div id="pc-out" class="mcstats"></div>';
+  function run() {
+    var A = +document.getElementById('pc-a').value, R = +document.getElementById('pc-r').value / 100,
+        E = +document.getElementById('pc-e').value, S = +document.getElementById('pc-s').value;
+    var out = document.getElementById('pc-out');
+    if (!(A > 0 && R > 0 && E > S)) {
+      out.innerHTML = '<b style="color:#d33a2c">输入不合法：需要 账户&gt;0、风险%&gt;0、入场&gt;止损。</b>';
+      return;
+    }
+    var budget = A * R, per = E - S, raw = budget / per;
+    var lots = Math.floor(raw / 100) * 100; // A股整手（向下取整）
+    var actual = lots * per, mv = lots * E, pct = mv / A * 100;
+    out.innerHTML = '风险预算 <b>' + budget.toFixed(0) + '</b> 元 ｜ 每股风险 <b>' + per.toFixed(2) + '</b> 元 ｜ 理论 <b>' + raw.toFixed(0) +
+      '</b> 股 → A股整手 <b>' + lots + '</b> 股 ｜ 实际风险 <b>' + actual.toFixed(0) + '</b> 元（' + (actual / A * 100).toFixed(2) +
+      '%） ｜ 市值 <b>' + mv.toFixed(0) + '</b>（占比 ' + pct.toFixed(1) + '%）' +
+      (lots === 0 ? ' <b style="color:#d33a2c">（不足一手：要么放弃，要么账户/风险%不支持这个止损距离）</b>' : '');
+  }
+  ['pc-a', 'pc-r', 'pc-e', 'pc-s'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', run);
+  });
+  run();
+})();
+var questions = [
+  { q: '仓位公式与整手规则：', options: ['仓位=账户×风险%÷止损距离，整手向下取整（风险只能小于等于预算）', '固定每次买1000股', '固定每次市值10万', '凭感觉'], answer: 0, explain: '盘前三个已知数的除法——立讯例：1000÷4.28=233→200股。' },
+  { q: '“风险以止损为界不以市值为界”的例子：立讯单市值占 8%、风险占 0.85%——你的预算消耗是：', options: ['8%', '0.85%', '一半一半', '看心情'], answer: 1, explain: '系统说的仓位是风险预算；新闻说的仓位是市值占比——两个语言别混。' },
+  { q: '同 1% 风险下，止损距离 7% 的单比 10.7% 的单仓位：', options: ['更小', '更大（距离是分母——波动大的品种自动小仓位）', '一样', '随机'], answer: 1, explain: '波动率倒数加权的裸K版：不需要 ATR，止损距离就是结构化的波动度量。' },
+  { q: '我们算出的加密五币平均日收益相关 0.68、BTC×ETH 0.84——含义：', options: ['五个币充分分散', '买五个币≈买1.7个币——数量分散是幻觉', '币间负相关', '只有BTC能买'], answer: 1, explain: '相关组=一组风险：加密组的预算要按“几乎同一个风险源”来砍。' },
+  { q: '真分散出现在哪里（本课数据）：', options: ['同市场多买几只', '跨市场：SPY×上证 0.02、SPY×BTC −0.03', '同一板块多只', '杠杆产品'], answer: 1, explain: '跨市场相关性接近零——代价是三套微观结构都要适配（4008）。' },
+  { q: '总风险预算 3R 封顶的用途：', options: ['装饰', '给连亏数学留缓冲——三组同时满仓当日最大理论损失 3%', '券商要求', '限制盈利'], answer: 1, explain: '4006 的连亏序列砸在预算垫上，而不是砸穿账户。' },
+  { q: '危机日的相关性压力测试口径：', options: ['按历史平均', '按相关性=0.8 重算——“暴跌时所有相关性奔向1”', '按0', '不用测'], answer: 1, explain: '相关系数是历史统计，尾部会集体飙升。' },
+  { q: '课程对加仓的立场与理由：', options: ['鼓励金字塔', '初学者不加仓——加仓同时改写成本、R定义、心理负荷三个已定变量；想加仓的冲动先按“再开一单”过一遍 setup', '每天加一次', '亏损加仓摊成本'], answer: 1, explain: '浮亏加仓（摊成本）不在讨论范围——那是没有止损的另一种说法。' },
+  { q: '升仓 1%→1.5% 的前置条件（写死的流程）：', options: ['今天手感好', '≥30笔回测+≥30笔模拟/小仓的期望证明 + 每次只升0.5% + 回撤触线降档', '群友都升了', '账户翻倍就升'], answer: 1, explain: '仓位是期望的函数——期望的证明材料齐了，仓位才有资格动。' },
+  { q: 'A股 T+1 让“入场日的保护”变成什么：', options: ['止损单', '仓位本身——当日买入不可卖，实际风险=市值波动，仓位要过极端波动检查', '没有风险', '券商兜底'], answer: 1, explain: '4003 §05 的伏笔在本课落地：T+1 市场的仓位公式之后还有一道当日检查。' },
+  { q: '【复 4006】“仓位是期望的函数，不是信心的函数”在本课的落地是：', options: ['信心足就多买', '升降档规则与证明材料——样本/统计/幅度三段流程写进一页纸', '每次随机', '永远满仓'], answer: 1, explain: '§05 的流程就是把这句话制度化。' },
+  { q: '综合：一页纸“风险”栏的完整内容：', options: ['只写“止损纪律”四个字', '单笔风险%（含升降档规则）+ 相关组划分与各组上限 + 总预算 3R + 危机压测口径', '写券商电话', '不写'], answer: 1, explain: '风险栏是 4006+4007 两课的合并输出——4009 课组装。' }
+];
+Quiz.mount('#trainer', { title: '4007 训练场', questions: questions,
+  verdicts: [[12,'全对——风险模型在手，进 4008 四市场微观结构'], [9,'不错——回看相关性表与升仓流程'], [0,'回读 §03–§05 再来']] });
+</script>
+
+<style>
+.mcbox { border: 1px solid var(--line); border-radius: 10px; padding: .8rem .9rem; background: #fff; margin: 1rem 0; }
+.mcrow { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .7rem; font-size: .9rem; margin-bottom: .6rem; }
+.mcrow input { font-family: var(--sans); }
+.mclab { color: var(--faint); margin-left: .6rem; }
+.mcstats { font-size: .92rem; line-height: 1.9; }
+.mcstats b { font-family: var(--sans); }
+</style>
+
+</body>
+</html>

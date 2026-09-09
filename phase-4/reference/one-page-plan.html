@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一页纸交易计划模板 — K线训练营 Phase 4</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.plan-sheet { border: 2px solid var(--ink); border-radius: 12px; overflow: hidden; margin: 1.2rem 0; background: #fff; }
+.plan-head { background: var(--ink); color: #fff; padding: .55rem .95rem; }
+.plan-head .ttl { font-weight: 700; font-size: 1.02rem; }
+.plan-head .meta { font-family: var(--sans); font-size: .78rem; opacity: .85; margin-top: .15rem; }
+table.plan { margin: 0; font-size: .9rem; width: 100%; }
+table.plan td { padding: .55rem .85rem; vertical-align: top; line-height: 1.8; }
+table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-space: nowrap; }
+.hint { color: var(--faint); font-size: .78rem; font-family: var(--sans); }
+.fill { color: #b0aaa0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+@media print {
+  body { background: #fff; }
+  .noprint { display: none !important; }
+  .plan-sheet { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 4 · 参考卡（可打印）</div>
+  <h1>一页纸交易计划模板</h1>
+  <p class="sub">4009 课的交付物。打印 → 手填 → 贴屏幕边；4010 课的手工回测将逐字执行这张纸。填写提示的灰色斜体是问题不是答案——每个格子填<b>可执行的规则</b>，不填形容词。<a class="noprint" href="../lessons/4009-one-page-plan.html">← 回到 4009 课（带填范例与逐栏讲解）</a></p>
+</header>
+
+<div class="plan-sheet" id="plan-sheet">
+  <div class="plan-head">
+    <div class="ttl">交易计划 v____（版本号必填）</div>
+    <div class="meta">制定日期 ____ ｜ 市场与周期 ____ ｜ 复盘周期 ____ ｜ 外行测试：□ 已通过</div>
+  </div>
+  <table class="plan">
+    <tr><td class="k">① 市场与周期</td><td><span class="hint">哪块土壤（A股/美股/加密）、哪个决策周期？单市场起步（4008 路径）</span><br><br></td></tr>
+    <tr><td class="k">② 标的池</td><td><span class="hint">交易什么（可量化的筛选）、永不碰什么（ST/次新/看不懂）？</span><br><br></td></tr>
+    <tr><td class="k">③ Setup 清单</td><td><span class="hint">S1 名称+编号条件（全部可打勾）+否定条件+过滤器（量能/位置）。一页最多 2–3 个；初学 1 个</span><br><br><br></td></tr>
+    <tr><td class="k">④ 入场执行</td><td><span class="hint">信号后订单怎么挂（时点/价位/单型/当日未成交怎么办）？</span><br><br></td></tr>
+    <tr><td class="k">⑤ 止损</td><td><span class="hint">价格（结构位×可成交性交集）+ 动作（无条件离场）+ 极端条款（跌停/跳空怎么办）</span><br><br></td></tr>
+    <tr><td class="k">⑥ 出场与目标</td><td><span class="hint">目标（尺子+数值+用法：全平/减仓/加速跟踪）+ 时间出场根数 + 政策版本（A/B/C）</span><br><br></td></tr>
+    <tr><td class="k">⑦ 风险与仓位</td><td><span class="hint">单笔 %（含升降档规则：样本→统计→幅度）+ 相关组划分与各组上限 + 总预算 + 压测口径（两板/财报跳空/闪崩）</span><br><br><br></td></tr>
+    <tr><td class="k">⑧ 记录</td><td><span class="hint">九字段（日期/代码/setup/入场/止损/目标/R/结果/错误分类）+ 复盘节奏（每10笔小/30笔大）</span><br><br></td></tr>
+    <tr><td class="k">⑨ 修改规则</td><td><span class="hint">唯一合法路径：复盘提案 → 回测对比 → 新版本号。连亏期间/大赚一周内修改权冻结</span><br><br></td></tr>
+    <tr><td class="k">签名栏</td><td>我理解每一条并愿为其背书：________　日期：________　（给一个不交易的朋友看过 60 秒：________）</td></tr>
+  </table>
+</div>
+
+<h2><span class="no">附</span>与范例的对照检查</h2>
+<div class="two">
+<div class="plan-sheet">
+  <div class="plan-head"><div class="ttl" style="font-size:.92rem">训练者一号·A股版（4009 范例精简）</div></div>
+  <table class="plan">
+    <tr><td class="k">①②</td><td>A股日线；主板/创业板趋势股，排除 ST/次新/画不出结构</td></tr>
+    <tr><td class="k">③</td><td>S1 回调恢复：20根内60根收盘新高 + 3–12根确认摆动低点 + 收盘创10根新高；否定：一字板、风险∉(1%,12%]；过滤：量能>20日均量1/3</td></tr>
+    <tr><td class="k">④</td><td>次日 9:25 后按开盘±0.5% 限价；当日未成交撤单不追</td></tr>
+    <tr><td class="k">⑤</td><td>收盘破 L 次日开盘离场；封死跌停→次日竞价挂跌停价（立讯条款）</td></tr>
+    <tr><td class="k">⑥</td><td>+2R 当日收盘全平；20根时间出场；混合政策待 v2</td></tr>
+    <tr><td class="k">⑦</td><td>单笔1%；A股组≤2R；总3R；单票跳两板组合回撤≤5%；30笔期望>0才升0.5%</td></tr>
+    <tr><td class="k">⑧⑨</td><td>九字段+10/30笔复盘；修改走复盘→回测→版本</td></tr>
+  </table>
+</div>
+<div>
+  <p><b>逐栏自检五问</b>（填完对照）：</p>
+  <ol>
+    <li>每一行能溯源到哪门课？（溯源不到=拍脑袋行，删或补课）</li>
+    <li>条件全部可打勾？两个人读出同一答案？（4001 三标准）</li>
+    <li>错误会在哪里被打脸？（每格都有失效判据）</li>
+    <li>极端情形写了吗——跌停封死/财报跳空/周末闪崩？（4008）</li>
+    <li>外行 60 秒能复述生死三问：什么时候买、什么时候卖、亏多少走？（4009）</li>
+  </ol>
+  <p><b>版本纪律</b>：v1 只求“完整且可执行”，不求“最优”。30 笔回测（4010）+ 模拟盘记录（Phase 5）会告诉你 v2 该改哪一行——在那之前，改动的冲动都记在背面“v2 提案”里排队。</p>
+</div>
+</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../lessons/4009-one-page-plan.html">← 第 4009 课</a>
+    <a href="../lessons/4010-backtest-graduation.html">第 4010 课 →</a>
+    <a href="../index.html">Phase 4 主页</a>
+    <a href="glossary-p4.html">Phase 4 词汇</a>
+  </div>
+  <div class="citations">结构依据 Grimes (2012) Part IV 与课程 4001–4009 各课；范例条款均可溯源（见 4009 带读）。打印建议：A4 纵向、缩放 100%、勾选“打印背景图形”。</div>
+</footer>
+
+</body>
+</html>

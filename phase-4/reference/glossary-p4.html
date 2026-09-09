@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 4 词汇速查 — K线训练营</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: .7rem 1.1rem; margin: 1rem 0 2.2rem; }
+.term { border: 1px solid var(--line); border-radius: 10px; padding: .7rem .95rem; background: #fff; break-inside: avoid; }
+.term dt { font-weight: 700; font-size: .98rem; margin: 0 0 .3rem; }
+.term dt .en { display: block; font-weight: 400; font-size: .76rem; color: var(--faint); font-family: var(--sans); letter-spacing: .03em; margin-top: .15rem; }
+.term dd { margin: 0; font-size: .88rem; line-height: 1.7; }
+.term dd .src { font-family: var(--sans); font-size: .74rem; color: var(--faint); }
+h2 { scroll-margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡</div>
+  <h1>Phase 4 词汇速查（系统篇）</h1>
+  <p class="sub">Phase 4 十课的新词，15 条。前面阶段的全部词汇见 <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">全量术语手册</a>（P0/P1/P2 + 中文圈语境对照组）。每条注明出处课。</p>
+</header>
+
+<h2><span class="no">§</span>系统与执行</h2>
+<dl class="gloss-grid">
+<div class="term"><dt>Setup（候场条件）<span class="en">Setup</span></dt><dd>入场前必须全部满足的客观条件清单。三条标准：完全客观（两人同答）、预先写死、错了会被打脸。<span class="src">4001</span></dd></div>
+<div class="term"><dt>触发器<span class="en">Trigger</span></dt><dd>setup 条件中被“等待”的最后一项（如收盘创十根新高）——它把候场变成动作。<span class="src">4001</span></dd></div>
+<div class="term"><dt>五步决策链<span class="en">Grimes' trade sequence</span></dt><dd>setup → 入场 → 初始止损 → 目标 → 仓位。五点全部盘前有答案，盘中只执行。<span class="src">4001（Grimes Part III）</span></dd></div>
+<div class="term"><dt>训练者一号<span class="en">Trainer No.1</span></dt><dd>课程示范系统：趋势过滤+回调摆动低点+动能恢复信号；次日开盘入场、结构止损、2R 目标、20 根时间出场。87 笔全样本期望 +0.204R。<span class="src">4001–4010</span></dd></div>
+<div class="term"><dt>逆向选择（限价单）<span class="en">Adverse selection</span></dt><dd>愿意回调到你限价位的行情偏弱、头也不回的行情偏强——限价单的成交样本被市场反向筛选。实测：踏空 46 笔基线 +0.40R/72% 胜率。<span class="src">4002</span></dd></div>
+<div class="term"><dt>结构止损<span class="en">Structural stop</span></dt><dd>止损放在论点死亡线（如回调摆动低点），而非金额或百分比算术位——先问“错在哪”，再算“亏多少”。<span class="src">4003</span></dd></div>
+<div class="term"><dt>噪音带<span class="en">Noise band</span></dt><dd>入场价附近正常呼吸的波动范围。止损设在带内=把生死交给随机（紧止损死法）。<span class="src">4003</span></dd></div>
+<div class="term"><dt>三族出场<span class="en">Exit families</span></dt><dd>目标（确定性，砍右尾）/跟踪（右尾，付胜率）/时间（资金效率）——出场是政策不是动作，同时改写期望公式四个变量。<span class="src">4004</span></dd></div>
+<div class="term"><dt>合流<span class="en">Confluence</span></dt><dd>两把以上尺子（量度目标/高度投影/Profile 边缘/回撤比例）量出同一价格带（容差约 0.5%）——单独不下注，合流才加权。<span class="src">4005</span></dd></div>
+</dl>
+
+<h2><span class="no">§</span>数学与风控</h2>
+<dl class="gloss-grid">
+<div class="term"><dt>R 倍数<span class="en">R-multiple</span></dt><dd>盈亏金额 ÷ 初始风险（1R）。止损单永远 −1R。R 化让跨品种、跨仓位、跨统计可比。<span class="src">4006</span></dd></div>
+<div class="term"><dt>期望值<span class="en">Expectancy</span></dt><dd>E = p×平均盈利 − (1−p)×平均亏损（R 计价）。BT30：+0.095R——微正期望的真实长相。<span class="src">4006</span></dd></div>
+<div class="term"><dt>凯利公式<span class="en">Kelly criterion</span></dt><dd>f* = p − (1−p)/b：复利增长最优的风险比例（Kelly 1956）。仓位精度≤参数精度——课程用 1% 买参数误差/非平稳/心理三层保险。<span class="src">4006</span></dd></div>
+<div class="term"><dt>破产风险<span class="en">Risk of ruin</span></dt><dd>不是“亏光”，是“回撤深到你不再执行系统”。本课操作定义：最大回撤 ≥50% 的事实性破产线。<span class="src">4006/4007</span></dd></div>
+<div class="term"><dt>风险预算<span class="en">Risk budget</span></dt><dd>以止损为界的仓位配给：单笔 1%、相关组上限（A股 2R/美股 2R/加密 1R）、总预算 3R、危机日按相关 0.8 压测。<span class="src">4007</span></dd></div>
+<div class="term"><dt>一页纸交易计划<span class="en">One-page trading plan</span></dt><dd>九栏（市场/标的池/setup/入场/止损/出场/风险/记录/修改）装进一张 A4——边界即筛子、60 秒可检索、体系的版本载体。<span class="src">4009</span></dd></div>
+</dl>
+
+<h2><span class="no">§</span>微观结构与验证</h2>
+<dl class="gloss-grid">
+<div class="term"><dt>流动性提供/消耗<span class="en">Liquidity making / taking</span></dt><dd>限价单提供流动性（报价者），市价单消耗（吃价者），价差是配送费——价格行为=流动性事件史（Harris）。<span class="src">4002/4008</span></dd></div>
+<div class="term"><dt>止损单聚集<span class="en">Stop-loss clustering</span></dt><dd>止损单堆积于前高前低与整数关口（Osler 2003）——假突破/弹簧扫流动性池的微观基础；知道池子≠知道谁去扫。<span class="src">4008</span></dd></div>
+<div class="term"><dt>手工回测<span class="en">Manual backtest</span></dt><dd>逐根推进、无未来函数、九字段记账、冻结参数的 30 笔验证——判断过程变成可审计表格。<span class="src">4010</span></dd></div>
+<div class="term"><dt>无未来函数<span class="en">No lookahead</span></dt><dd>任何判定只用当根及以前的信息：摆动点确认后才可用、收盘信号次日开盘成交、同棒双触记最坏。<span class="src">4010</span></dd></div>
+</dl>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 4 主页</a>
+    <a href="one-page-plan.html">一页纸模板</a>
+    <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">全量术语手册</a>
+  </div>
+  <div class="citations">定义依据 Grimes (2012)、Harris (2003)、Kelly (1956)、Osler (2003) 与课程 4001–4010 各课正文；统计数字均出自训练者一号可复算数据（scan_p4.py）。</div>
+</footer>
+
+</body>
+</html>
