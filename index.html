@@ -3,17 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>K线训练营 — 技术分析大师之路</title>
+<title>K线训练营 — 技术分析大师之路 · 完整路线图</title>
 <link rel="stylesheet" href="phase-0/assets/course.css">
 <style>
-  /* 首页专用：规划中阶段的卡片形态（不改动共享 course.css） */
-  .lesson-card.upcoming { border-style: dashed; background: transparent; cursor: default; }
-  .lesson-card.upcoming .t { font-size: 1.02rem; }
-  .lesson-card.upcoming .tag {
-    font-family: var(--sans); font-size: .72rem; color: var(--faint);
-    border: 1px solid var(--line); border-radius: 99px; padding: .05rem .6rem;
-    margin-left: .5em; vertical-align: 2px; white-space: nowrap;
-  }
+  /* 路线图页专用（不动共享 course.css） */
+  .honest { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.2rem 0; }
+  .honest .cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+  .honest .n { font-size: 1.3rem; font-weight: 700; color: var(--accent, #0f4c81); }
+  .honest .l { font-size: .78rem; color: var(--faint); }
+  .honest .note { grid-column: 1/-1; font-size: .78rem; color: var(--faint); padding: .4rem .2rem 0; }
+  .verbs { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; }
+  .verbs span { font-size: .78rem; border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: .15rem .7rem; }
+  .verbs span b { color: var(--accent, #0f4c81); }
+  .verbs .arr { align-self: center; color: var(--faint); font-size: .7rem; padding: 0; border: 0; background: none; }
+  .phase { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1.05rem 1.25rem; margin: .9rem 0; }
+  .phase .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; }
+  .phase .badge { font-size: .72rem; color: #fff; background: var(--accent, #0f4c81); border-radius: 99px; padding: .1rem .7rem; }
+  .phase .name { font-weight: 700; font-size: 1.06rem; }
+  .phase .anchor { font-size: .8rem; color: var(--faint); margin: .35rem 0 .1rem; }
+  .phase .anchor b { color: var(--ink); }
+  .phase .meta { font-size: .76rem; color: var(--faint); margin-top: .5rem; }
+  .phase a.go { font-size: .8rem; color: var(--accent, #0f4c81); text-decoration: none; border-bottom: 1px solid var(--accent, #0f4c81); }
+  .ms { display: flex; gap: .65rem; align-items: baseline; padding: .4rem 0; border-top: 1px dashed var(--line); font-size: .86rem; }
+  .ms .id { font-size: .7rem; color: var(--accent, #0f4c81); white-space: nowrap; font-weight: 600; }
+  .ms .hrs { margin-left: auto; white-space: nowrap; font-size: .75rem; color: var(--faint); }
+  .ms .hrs b { color: var(--ink); font-weight: 600; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: 1px; margin-left: .35em; }
+  .dot.test { background: var(--up); } .dot.ana { background: #b45309; } .dot.guess { background: #fff; border: 1.5px solid var(--faint); }
+  .done { color: var(--faint); } .done .id { color: var(--up); }
+  .upcoming { border-style: dashed; }
+  details.books { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; margin: .9rem 0; }
+  details.books p { font-size: .82rem; margin: .3rem 0; color: var(--faint); }
+  details.books b { color: var(--ink); }
+  .progress-strip { background: #fff; border: 1px dashed var(--line); border-radius: 12px; padding: .8rem 1.25rem; margin: .9rem 0; }
 </style>
 </head>
 <body>
@@ -21,61 +43,117 @@
 <header class="course">
   <div class="kicker">Kbar Bootcamp · K线训练营</div>
   <h1>技术分析大师之路</h1>
-  <p class="sub">一条能力链，每一段都为下一段供弹药：读图 → 流利 → 地形 → 概率 → 系统 → 执行 → 大师。全真实数据 · 可离线可打印 · 免费公开。</p>
+  <p class="sub">一条能力链，每一段都为下一段供弹药：读图 → 流利 → 地形 → 概率 → 系统 → 执行 → 大师。全真实数据 · 可离线可打印 · 免费公开 · <b>不以「上完课」结业，以「能否做到」结业</b>——每个阶段以能力里程碑验收。</p>
 </header>
 
-<h2><span class="no">01</span>阶段路线</h2>
+<h2><span class="no">01</span>诚实估时</h2>
+<div class="honest">
+  <div class="cell"><div class="n">118–192 小时</div><div class="l">到独立交易者（24 个里程碑的掌握投入）</div></div>
+  <div class="cell"><div class="n">＋6–8 周</div><div class="l">并行实盘（不可压缩，单独计）</div></div>
+  <div class="cell"><div class="n">＋35–70 小时</div><div class="l">到输出者（原创研究 + 生涯节奏）</div></div>
+  <div class="note">口径：估的是<b>掌握投入</b>（含练习与复测），不是课时——课程内容时长合计 ≈60.5 小时（52 课，课内实测）。对照 CMT 三级 300–420h（广而全，含指标/组合/伦理）：本站窄而深，裸K价格行为专精。每个里程碑的估时带置信度标记（<span class="dot test"></span>实测 <span class="dot ana"></span>类比 <span class="dot guess"></span>猜测），随第一位学员的实际数据逐档校准。</div>
+</div>
 
-<a class="lesson-card" href="phase-0/">
-  <div class="day">PHASE 0 · 读图 · 已上线</div>
-  <div class="t">从读一根K线，到读一张图</div>
-  <div class="d">词汇与语法：单根解剖 → 双K对话 → 位置语法 → 市场结构 → 量能验证 → 多周期协同 → 训练系统。7 课 × 60 分钟 + 课外作业，3 个盲图考场，1 个毕业考。</div>
-  <div class="meta">7 课 · 66–79 min/课（视觉增强版）· 3 考场 · 毕业考 · 跨课实例总表（A股/美股/加密 27 例）· 适配 A股 / 美股 / 加密 / 期货</div>
-</a>
+<h2><span class="no">02</span>能力动词阶梯 · 考核随层级升级</h2>
+<div class="verbs">
+  <span>P0 <b>辨认</b></span><span class="arr">→</span>
+  <span>P1 <b>复述推理</b></span><span class="arr">→</span>
+  <span>P2 <b>作图应用</b></span><span class="arr">→</span>
+  <span>P3 <b>概率引用</b></span><span class="arr">→</span>
+  <span>P4 <b>组装综合</b></span><span class="arr">→</span>
+  <span>P5 <b>执行自律</b></span><span class="arr">→</span>
+  <span>P6 <b>贡献输出</b></span>
+</div>
+<p style="font-size:.78rem;color:var(--faint);margin:.8rem 0 0">验收形式随动词升级：辨认/口述（P0–1）→ 盲图报告「如写给基金经理」（P2–3）→ 真实产物：交易计划/回测报告/实盘记录（P4–5）→ 原创研究（P6）。螺旋配额：毕业考 ≥4/12 跨阶段题——低阶能力是高阶验收的必要构件。</p>
 
-<a class="lesson-card" href="phase-1/">
-  <div class="day">PHASE 1 · 流利 · 逐根推理（Brooks 体系）· 已上线</div>
-  <div class="t">把词连成句</div>
-  <div class="d">Always-In、紧度光谱与 Spike & Channel、数腿 H2、二次入场、三推楔形、量度目标、缺口分类、TTR 与磁吸、失败突破目录——十课 + 逐根带读 + SOL 盲图毕业考。ETH 锚定 60 根真实数据，九课换镜头重读。</div>
-  <div class="meta">10 课 + 画线工具附录课 · 66–76 min/课（视觉增强版）· 毕业考 12 题 · 复盘 2.0 模板 · A股/美股图例 · grounded on Brooks 三部曲逐章</div>
-</a>
+<h2><span class="no">03</span>阶段路线 · 每阶段的里程碑</h2>
 
-<a class="lesson-card" href="phase-2/">
-  <div class="day">PHASE 2 · 地形 · 供需区域地图（Wyckoff + Profile）· 已上线</div>
-  <div class="t">知道"为什么"这里有钱</div>
-  <div class="d">复合操盘手与三大定律、吸筹/派发五幕剧（A–E）、Spring 与 Upthrust、努力与结果量价系统、Volume Profile 地形成像、三层地形图与三写预案——八课 + 毕业作业 + LINK 盲图毕业考。XRP 完整周期锚定（派发→下跌→吸筹→拉升一图打尽），剖面由 2906 根 1h 数据逐档计算。</div>
-  <div class="meta">8 课 · 64–68 min/课（视觉增强版）· 毕业考 12 题 · 复盘 3.0 模板 · 术语全量版 94 词条（22 词条嵌示意图）· A股/美股图例 · grounded on Villahermosa×2 / Weis / Dalton / 孟洪涛逐章</div>
-</a>
+<div class="phase">
+  <div class="head"><span class="badge">P0 · 辨认</span><span class="name">读图：从读一根K线，到读一张图</span><a class="go" href="phase-0/">进入子站 →</a></div>
+  <p class="anchor">结业锚点：<b>任给一根K线 10 秒说出胜负/战场/干净度</b>；训练系统运转中</p>
+  <div class="ms done"><span class="id">M0.1 ✓</span>单K与双K辨认<span class="hrs"><b>4–6h</b><span class="dot test"></span>实测·已达成</span></div>
+  <div class="ms"><span class="id">M0.2</span>位置与结构辨认<span class="hrs"><b>4–6h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M0.3</span>量价与多周期辨认<span class="hrs"><b>4–6h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M0.4</span>训练系统运转（结业）<span class="hrs"><b>2–4h</b>＋日课 <span class="dot ana"></span></span></div>
+  <p class="meta">7 课 · 内容时长 71–81 min/课 · 3 盲图考场 · 毕业考 · Nison 形态族谱 · A股/美股/加密 27 例 · 心理表征与一万小时批判（Ericsson）</p>
+</div>
 
-<a class="lesson-card" href="phase-3/">
-  <div class="day">PHASE 3 · 概率 · 形态统计全景（Bulkowski / Morris）· 已上线</div>
-  <div class="t">形态是概率语言，不是信号</div>
-  <div class="d">读胜率表方法论、十形态统计身份证（33 品种×5 年、3594 例三市场扫描）、失败形态学、Morris 过滤工程、20 样本人工统计实验、体系解剖学（两轴矩阵评估任何流派）+ 毕业考。</div>
-  <div class="meta">7 课 · 70–73 min/课 · 毕业考 12 题 · 形态统计总表（三市场）· 学术柱 LMW/Marshall/AMH · A股/美股图例</div>
-</a>
+<div class="phase">
+  <div class="head"><span class="badge">P1 · 复述推理</span><span class="name">流利：逐根推理（Brooks 体系）</span><a class="go" href="phase-1/">进入子站 →</a></div>
+  <p class="anchor">结业锚点：<b>任给 60 根行情，连续说出 always-in 每次翻转及依据</b></p>
+  <div class="ms"><span class="id">M1.1</span>紧度与回踩<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M1.2</span>入场几何<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M1.3</span>区间与失败<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M1.4</span>60 根盲图连续推理（结业）<span class="hrs"><b>10–16h</b><span class="dot ana"></span></span></div>
+  <p class="meta">10 课 + 画线工具附录 · ETH 锚定 60 根 · SOL 盲图毕业考 · grounded on Brooks 三部曲逐章</p>
+</div>
 
-<a class="lesson-card" href="phase-4/">
-  <div class="day">PHASE 4 · 系统 · 组装交易系统（Grimes / Brooks / Harris / Kelly）· 已上线</div>
-  <div class="t">从"看到"到"等到"到"算到"</div>
-  <div class="d">Setup 正式定义与示范系统"训练者一号"（33 品种×5 年、87 笔真实交易·胜率 59%·期望 +0.204R）、限价 vs 停损单对照实验（逆向选择实测）、结构止损双结局、三族出场政策对决（59%↔36%↔54%）、凯利公式与破产风险（交互蒙特卡洛 + 精确连亏概率）、四市场微观结构（T+1/涨跌停/PDT/杠杆爆仓）、一页纸交易计划 + 30 笔手工回测毕业考。结业里程碑：开模拟盘。</div>
-  <div class="meta">10 课 · 65–80 min/课 · 毕业考 12 题（META/XOM 盲图与课件不同源）· 一页纸模板（可打印）· 词汇速查 15 词 · 学术柱 Harris/Osler/Kelly · 相关性矩阵 33 品种实测</div>
-</a>
+<div class="phase">
+  <div class="head"><span class="badge">P2 · 作图应用</span><span class="name">地形：供需区域地图（Wyckoff + Profile）</span><a class="go" href="phase-2/">进入子站 →</a></div>
+  <p class="anchor">结业锚点：<b>任一品种完整地形图 + 价值区内/外操作含义</b>（盲图报告考场五维量规）</p>
+  <div class="ms"><span class="id">M2.1</span>周期与结构作图<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M2.2</span>陷阱与量价作图（含波图课 2009）<span class="hrs"><b>4–7h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M2.3</span>完整地形图（结业·并列）<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M2.4</span>日型战术辨认（结业·并列）<span class="hrs"><b>8–12h</b><span class="dot guess"></span></span></div>
+  <p class="meta">8+2 课（波图 2009 · 日型 2010）· XRP 完整周期锚定 · LINK 盲图 + 盲图报告考场 · 复盘 3.0 模板</p>
+</div>
 
-<a class="lesson-card" href="phase-5/">
-  <div class="day">PHASE 5 · 执行 · 心理与实盘（Douglas + 行为金融第三柱）· 已上线</div>
-  <div class="t">从"知道"到"做到"</div>
-  <div class="d">概率思维五大基本事实（逐条对接自有数据）、与盈亏脱钩的八项决策记分卡、认知偏差目录与弱点画像（前景理论 KT 1979 + 处置效应 Shefrin-Statman 1985 / Odean 1998 一万账户）、回撤期协议（BT30 水下 21 笔解剖）、60 秒执行检查单（B-17/手术清单血统）、升仓阶梯（模拟→0.25%→1%）+ 毕业考。自有实证：18 笔止损研究（扛单 0/18 转正、39% 更深、22% 回本诱惑=间歇性强化）。</div>
-  <div class="meta">6 课 · 65–73 min/课 · 毕业考 12 题 · 执行工具包（记分卡/检查单/回撤协议/阶梯，可打印）· 词汇 16 词 · 交互组件×4 · 里程碑：6–8 周并行实盘</div>
-</a>
+<div class="phase">
+  <div class="head"><span class="badge">P3 · 概率引用</span><span class="name">概率：形态统计全景（Bulkowski / Morris）</span><a class="go" href="phase-3/">进入子站 →</a></div>
+  <p class="anchor">结业锚点：<b>任给形态 30 秒说出统计预期+过滤+失效</b>（盲图报告+统计引用，六维量规）</p>
+  <div class="ms"><span class="id">M3.1</span>形态统计引用<span class="hrs"><b>4–7h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M3.2</span>失败与过滤引用<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M3.3</span>自建统计（结业）<span class="hrs"><b>8–14h</b><span class="dot ana"></span></span></div>
+  <p class="meta">7 课 · 33 品种×5 年 3594 例 · 20 样本人工统计实验 · 体系解剖学（两轴矩阵）· 盲图报告考场</p>
+</div>
 
-<div class="lesson-card upcoming">
-  <div class="day">PHASE 6 · 大师 · 输出与体系化</div>
-  <div class="t">教是最好的学<span class="tag">持续 · 不是课，是修行</span></div>
-  <div class="d">公开复盘写作、社区检验、季度体系回顾——课程越来越少，实盘 + 复盘 + 输出越来越多。</div>
+<div class="phase">
+  <div class="head"><span class="badge">P4 · 组装综合</span><span class="name">系统：组装交易系统（Grimes / Brooks / Harris）</span><a class="go" href="phase-4/">进入子站 →</a></div>
+  <p class="anchor">结业锚点：<b>一页纸交易计划 + 30 笔无未来函数回测</b>；通过＝开模拟盘</p>
+  <div class="ms"><span class="id">M4.1</span>规则组装<span class="hrs"><b>8–14h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M4.2</span>资金与市场组装<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M4.3</span>一页纸系统+30 笔验证（结业）<span class="hrs"><b>10–18h</b><span class="dot ana"></span></span></div>
+  <p class="meta">10 课 · 示范系统「训练者一号」87 笔真实交易 · 交互蒙特卡洛/仓位计算器 · 学术柱 Harris/Osler/Kelly</p>
+</div>
+
+<div class="phase">
+  <div class="head"><span class="badge">P5 · 执行自律</span><span class="name">执行：心理与实盘（Douglas + 行为金融 + Tendler）</span><a class="go" href="phase-5/">进入子站 →</a></div>
+  <p class="anchor">结业锚点：<b>30 笔模拟/小仓，决策质量评分达标</b>（与盈亏脱钩）</p>
+  <div class="ms"><span class="id">M5.1</span>决策质量自律（含 tilt 修复课 5007）<span class="hrs"><b>5–9h</b><span class="dot ana"></span></span></div>
+  <div class="ms"><span class="id">M5.2</span>实盘执行协议（结业）<span class="hrs"><b>6–10h</b>＋实盘 6–8 周 <span class="dot guess"></span></span></div>
+  <p class="meta">6+1 课（tilt 诊断与修复）· 18 笔止损研究 · 四件执行工具 · 前景理论/处置效应学术柱</p>
+</div>
+
+<div class="phase upcoming">
+  <div class="head"><span class="badge">P6 · 贡献输出</span><span class="name">大师：输出与体系化</span><span style="font-size:.72rem;color:var(--faint);border:1px dashed var(--line);border-radius:99px;padding:.05rem .6rem">4 课建设ing + 生涯协议</span></div>
+  <p class="anchor">结业锚点：<b>一篇预审通过的原创研究</b>（3000–5000 字，大纲预审+可退回重写）</p>
+  <div class="ms"><span class="id">M6.1</span>分析写作工坊<span class="hrs"><b>8–15h</b><span class="dot ana"></span>课待建</span></div>
+  <div class="ms"><span class="id">M6.2</span>案例复盘写作<span class="hrs"><b>6–12h</b><span class="dot ana"></span>课待建</span></div>
+  <div class="ms"><span class="id">M6.3</span>原创研究（结业）<span class="hrs"><b>15–30h</b><span class="dot guess"></span>课待建</span></div>
+  <div class="ms"><span class="id">M6.4</span>费曼教学与社区检验<span class="hrs"><b>6–12h</b><span class="dot ana"></span>课待建</span></div>
+  <p class="meta">周复盘写作 · 季度手册修订 v1→v2→v3 · Brooks 论坛 / r/Daytrading 社区检验 · 升仓阶梯持续运转</p>
+</div>
+
+<h2><span class="no">04</span>教学的证据基础</h2>
+<details class="books">
+  <summary>22 本经典（按阶段分组，主书加粗）</summary>
+  <p><b>P0：</b><b>Nison《日本蜡烛图技术》第2版</b>（丁圣元 译，形态命名标准源）· Marshall-Young-Rose (2006, JBF)</p>
+  <p><b>P1：</b><b>Brooks 三部曲</b>（Trends / Trading Ranges / Reversals）· Bulkowski《Encyclopedia of Chart Patterns》v3（统计引用）</p>
+  <p><b>P2：</b><b>Villahermosa W1/W2</b> · <b>Weis《Trades About to Happen》</b>（波图）· Dalton《Mind Over Markets》 · 孟洪涛《新威科夫操盘法》</p>
+  <p><b>P3：</b><b>Bulkowski 百科 v3 + 蜡烛百科 + Visual Guide</b> · Morris《蜡烛图精解》v3 + Workbook</p>
+  <p><b>P4：</b><b>Grimes《The Art &amp; Science of Technical Analysis》</b> · Harris《交易与交易所》 · Tharp《Trade Your Way》 · Kelly (1956)</p>
+  <p><b>P5：</b><b>Douglas《交易心理分析》</b> · <b>Tendler《The Mental Game of Trading》</b> · Steenbarger《Daily Trading Coach》</p>
+  <p><b>P6 / 贯穿：</b>Ericsson《刻意练习》 · Brown《认知天性》</p>
+</details>
+<p style="font-size:.78rem;color:var(--faint)">全部词条见 <a href="glossary.html">全站术语手册</a>（154+ 词条，P0–P5）。引用政策：方法与统计数据注明出处引用、按原书逻辑用自有数据重绘，不整章复刻。</p>
+
+<div class="progress-strip">
+  <b>第一位学员（站主）· 1/24 里程碑</b><br>
+  <span style="font-size:.8rem;color:var(--faint)">M0.1 已实测达成；全部估时置信度随其学习记录逐档升级——本站估时会随真实学习数据变准。</span>
 </div>
 
 <footer class="course">
-  <p class="citations"><b>关于本站</b> · 全部课件为自包含 HTML，无外部依赖、可离线、可打印。站点与课件源码见 <a href="https://github.com/ChevyWang/kbar">GitHub</a>。教学立场取自经典原著与统计检验（Nison、Grimes、Brooks、Wyckoff、Bulkowski、Morris、Douglas 及学术研究）。</p>
+  <p class="citations"><b>关于本站</b> · 全部课件自包含 HTML，无外部依赖、可离线、可打印。站点与课件源码见 <a href="https://github.com/ChevyWang/kbar">GitHub</a>。教学立场取自经典原著与统计检验（Nison、Grimes、Brooks、Wyckoff、Bulkowski、Morris、Douglas、Tendler 及学术研究）。行情数据来自交易所公开 API，仅供教学演示，不构成投资建议。</p>
 </footer>
 
 </body>
