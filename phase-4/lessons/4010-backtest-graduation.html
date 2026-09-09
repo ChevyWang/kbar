@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · 第 4010 课 · 毕业课</div>
 <h1>手工回测：验证自己的规则，然后毕业</h1>
-  <p class="sub">Phase 4 的验收原文：<b>写出自己的一页纸交易计划 + 30 笔样本手工验证报告</b>。本课教协议（逐根推进、无未来函数、九字段记账），带一遍全流程，交付我们按同一协议抽出的 30 笔真实样本（BT30：A股14+美股10+加密6）全表与统计——然后把两张<b>与全部课件不同源的盲图</b>交给你，毕业考。通过即开模拟盘（Phase 4 里程碑）。本课约 80 分钟（含毕业考 21 分钟）。</p>
+  <p class="sub">Phase 4 的验收原文：<b>写出自己的一页纸交易计划 + 30 笔样本手工验证报告</b>。本课教协议（逐根推进、无未来函数、九字段记账），带一遍全流程，交付我们按同一协议抽出的 30 笔真实样本（BT30：A股14+美股10+加密6）全表与统计——然后把两张<b>与全部课件不同源的盲图</b>交给你，毕业考。通过即开模拟盘（Phase 4 里程碑）。本课约 83 分钟（含毕业考 21 分钟）。</p>
 </header>
 
 <div class="lesson-map">
@@ -27,7 +27,11 @@
   </ol>
 </div>
 
-<h2 id="s01"><span class="no">01</span>为什么必须手工回测 <span class="t">≈</span> <span class="time-chip">≈8 min</span></h2>
+
+<h3 id="edge-method">两次实践的公共方法论：找 edge 的调查法（Steenbarger Ch.10）</h3>
+<p>3006 的人工统计与本课的手工回测，是同一门手艺的两次实践——Steenbarger《Daily Trading Coach》第 10 章把它命名为「<b>在市场历史中寻找形态</b>」，立场一句话：<b>历史研究是「生成假设」的研究，不是「检验假设」的研究</b>（qualitative research is hypothesis-generating, not hypothesis-testing）。基本假设永远是：<b>「下一个交易期与刚过去的若干期不会有显著差异」</b>——形态若在过去 N 期存在，就假设它在下一期延续；<b>这是一个可检验的命题（a testable proposition），有证据支撑的想法，但绝不是可以闭眼交易的固定真理</b>。你的 30 笔回测报告因此有了正确的读法：它不是「证明系统有效」的判决书，是「生成了一组可继续检验的假设」的档案——这与 3001 的口径纪律、3007 的两轴矩阵一脉相承：所有统计结论都住在假设里，不住在真理里。</p>
+
+<h2 id="s01"><span class="no">01</span>为什么必须手工回测 <span class="t">≈</span> <span class="time-chip">≈11 min</span></h2>
 <p>三个理由，一个比一个硬：①<b>眼睛的适应</b>——回放 30 笔信号等于让视觉系统见 30 次自己 setup 的真实变体（认知天性的提取练习，3006 同款），这是模拟盘替代不了的；②<b>规则的漏洞暴露</b>——写规则时想不到的边界（一字板无法入场、信号当天就是目标价、止损位恰好是前低 1 分钱）只在逐根推进里现身；③<b>期望的第一次自我估计</b>——4010 之前你的一切统计都是“我们的”，回测完这 30 笔，你第一次拥有“我的”期望与连亏体验。注意：<b>手工回测是统计训练，不是编程课</b>（MISSION 边界）——纸、笔、表格、回放工具，足够。</p>
 
 <h2 id="s02"><span class="no">02</span>回测协议：逐根推进与无未来函数 <span class="t">≈</span> <span class="time-chip">≈11 min</span></h2>
@@ -97,7 +101,7 @@
     <a href="https://chevywang.github.io/kbar/phase-5/lessons/5001-probability-mindset.html">Phase 5 第 5001 课 →</a>
     <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
   </div>
-  <p><b>主资源（本课 grounded on）：</b>Adam Grimes (2012) Part III–IV（交易测试与交易者成长）；《认知天性》（提取练习与测试效应——回测的学习学基础）；训练者一号 BT30 数据。</p>
+  <p><b>主资源（本课 grounded on）：</b>Adam Grimes (2012) Part III–IV（交易测试与交易者成长）；《认知天性》（提取练习与测试效应——回测的学习学基础）；训练者一号 BT30 数据；调查方法论总纲 = Steenbarger《Daily Trading Coach》第 10 章（hypothesis-generating research）。。</p>
   <div class="citations"><b>延伸阅读：</b>Harris《交易与交易所》Ch.21–22（交易成本与业绩评估——回测报告与记分卡的学术延伸）。<b>引用：</b>Grimes (2012) · Brown, Roediger &amp; McDaniel (2014)。数据：BT30 为 seed=44 分层抽样（A股14/美股10/加密6），scan_p4.py 可复算；盲图为 META 2023-05 与 XOM 2025-04 真实日线（yfinance）——与全部教学案例不同源。</div>
 </footer>
 
