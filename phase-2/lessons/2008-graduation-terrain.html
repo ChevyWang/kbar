@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 2 地形 · 第 2008 课 · 毕业课</div>
   <h1>综合作业与毕业考：画一张完整地形图</h1>
-  <p class="sub">Phase 2 的验收标准（CURRICULUM）："对任一品种画出地形图，写出价值区内/外的操作含义。"本课两件事：①你在一张<b>空白</b>的锚定图上亲手画完整地形图（作业）；②换一个从未见过的品种窗口，12 题毕业考（LINK/USDT 日线，2025-07 → 09，与全部课程数据不同源）。本课约 60 分钟（作业讲解 20 + 毕业考 30 + 收尾 10）。</p>
+  <p class="sub">Phase 2 的验收标准（CURRICULUM）："对任一品种画出地形图，写出价值区内/外的操作含义。"本课两件事：①你在一张<b>空白</b>的锚定图上亲手画完整地形图（作业）；②换一个从未见过的品种窗口，12 题毕业考（LINK/USDT 日线，2025-07 → 09，与全部课程数据不同源）。本课约 66 分钟（视觉增强版：作业讲解 20 + 实例与图解 6 + 毕业考 30 + 收尾 10）（作业讲解 20 + 毕业考 30 + 收尾 10）。</p>
 </header>
 
 <div class="lesson-map">
@@ -20,12 +20,15 @@
     <li>作业说明：交付物是什么 <span class="t">≈5 min</span></li>
     <li>作图协议：十二步 <span class="t">≈8 min</span></li>
     <li>范例与自评表 <span class="t">≈7 min</span></li>
+    <li>一图带走：作图协议十二步 <span class="t">≈3 min</span></li>
     <li>毕业考：LINK 92 根 · 十二题 <span class="t">≈30 min</span></li>
     <li>毕业标准与下一步 <span class="t">≈8 min</span></li>
     <li>小结 <span class="t">≈2 min</span></li>
   </ol>
 </div>
 
+<h2 id="s06c"><span class="no">附C</span>一图带走：作图协议十二步 <span class="time-chip">≈3 min</span></h2>
+<div class="schem" id="schem-proto"></div>
 <h2 id="s01"><span class="no">01</span>作业说明：交付物是什么 <span class="time-chip">≈5 min</span></h2>
 
 <p>打开你的交易软件（或打印下图），对 XRP <b>05-10 → 08-19</b>（102 根，下面提供无标注底图）完成一张地形图。交付物四件套：</p>
@@ -356,5 +359,27 @@ Quiz.mount('#trainer', {
 });
 </script>
 
+<script>
+var P12 = [
+  {o:96, h:97, l:93, c:93.5}, {o:93.5, h:94, l:89, c:89.5}, {o:89.5, h:91, l:85, c:85.5},
+  {o:85.5, h:87, l:80, c:81}, {o:81, h:83.5, l:79.5, c:83}, {o:83, h:84, l:80.5, c:81},
+  {o:81, h:82, l:77.5, c:78}, {o:78, h:84, l:77.5, c:83.5}, {o:83.5, h:88, l:83, c:87},
+  {o:87, h:92, l:86.5, c:91.5}
+];
+document.getElementById('schem-proto').innerHTML = Kbar.schematic({
+  bars: P12, w: 700, h: 280,
+  ann: [
+    {t: 'phase', i1: 0, i2: 3, text: '①-② 通读·找量能极值（SC/BC候选）', color: '#8a6d1f'},
+    {t: 'phase', i1: 3, i2: 6, text: '③-⑦ 事件·分段·区间三问', color: '#4a6fa5'},
+    {t: 'phase', i1: 6, i2: 7, text: '⑧ Spring', color: '#b3541e'},
+    {t: 'phase', i1: 7, i2: 9, text: '⑨-⑫ 剖面·合流·定性·三写', color: '#d33a2c'},
+    {t: 'label', i: 3, text: 'SC', pos: 'below', color: '#1a7f37'},
+    {t: 'label', i: 4, text: 'AR', pos: 'above', color: '#8a6d1f'},
+    {t: 'label', i: 6, text: 'Spring', pos: 'below', color: '#b3541e'},
+    {t: 'label', i: 8, text: 'SOS', pos: 'above', color: '#d33a2c'},
+    {t: 'brace', i1: 3, i2: 6, text: '先描述、后解释、再预判——不许跳步', pos: 'below'}
+  ]
+}) + '<div class="schem-cap"><b>作图协议十二步。</b>通读找极值 → 事件命名 → 分段（省界）→ 区间三问 → Spring 三查 → 剖面 → 三层合流描粗 → 坐标定性 → 阶段判断（带确认坐标）→ 三写预案。<b>每一步只允许使用之前步骤的产出</b>——这是把七课压成肌肉记忆的顺序。';
+</script>
 </body>
 </html>

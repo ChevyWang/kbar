@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 2 地形 · 第 2007 课</div>
   <h1>区域地图：Profile × 水平位 × 结构合流</h1>
-  <p class="sub">Phase 0 教你"位置>形态"（0003 三来源）；Phase 1 给位置装上趋势线与磁铁（1011/1008）；Phase 2 的剖面给位置装上"哪里打过仗"（2006）。这一课把三张图层叠成一张<b>地形图</b>——Wyckoff 语境的"作战地图"（W2 Part 7 的 Context/Zones/Scenarios 三步法），并回答课程验收问题：<b>价值区内/外各怎么操作</b>。本课约 60 分钟（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
+  <p class="sub">Phase 0 教你"位置>形态"（0003 三来源）；Phase 1 给位置装上趋势线与磁铁（1011/1008）；Phase 2 的剖面给位置装上"哪里打过仗"（2006）。这一课把三张图层叠成一张<b>地形图</b>——Wyckoff 语境的"作战地图"（W2 Part 7 的 Context/Zones/Scenarios 三步法），并回答课程验收问题：<b>价值区内/外各怎么操作</b>。本课约 64 分钟（视觉增强版：知识 30 + 案例 11 + 图示化小结 4 + 重演 3 + 训练场 14 + 小结 2）（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
 </header>
 
 <div class="lesson-map">
@@ -22,6 +22,7 @@
     <li>价值区内/外：主动型与响应型 <span class="t">≈8 min</span></li>
     <li>剧情规划：双写预案的地图版 <span class="t">≈5 min</span></li>
     <li>案例深读：XRP 完整地形图与三问 <span class="t">≈11 min</span></li>
+    <li>一图带走：三层地图与三证据 <span class="t">≈4 min</span></li>
     <li>亲手重演 + 训练场：十二题 <span class="t">≈20 min</span></li>
     <li>小结 <span class="t">≈2 min</span></li>
   </ol>
@@ -76,6 +77,8 @@
 <h3>带读三 · 三写预案的实例（写于 8/31 收盘后）</h3>
 <p>①若放量接受于 1.46 上方 → 主动型多，目标 1.70（8/22 高点磁铁）与量度目标（区间高度 1.16−0.99=0.17 投影到 1.46 上方≈1.63，两磁铁重叠区 1.63–1.70）；②若在墙内 1.42 附近乏力（缩量+上影）→ 响应型：墙内均值回归思路，观察位 1.3352；③若放量跌破 1.3352 → 派发剧本激活，第一目标 VAH 1.156（真空穿越预期），止损/反手依据 LPSY。<b>注意三写的每个数字都来自地图坐标而非临场情绪</b>——这就是 2008 课毕业作业要你亲手做一遍的东西。</p>
 
+<h2 id="s07b"><span class="no">附B</span>一图带走：三层地图与三证据 <span class="time-chip">≈4 min</span></h2>
+<div class="schem" id="schem-map3"></div>
 <h2 id="s06"><span class="no">06</span>亲手重演 + 训练场 <span class="time-chip">≈20 min</span></h2>
 <p>逐根揭示 8/19 之后的 12 根。每根问三问：在哪一层？该层性质？第几幕？——用带读二的地图对照你的判断。</p>
 <div id="pb1"></div>
@@ -288,5 +291,26 @@ Quiz.mount('#trainer', {
 });
 </script>
 
+<script>
+var M3 = [
+  {o:95, h:96, l:93.5, c:95.5}, {o:95.5, h:96, l:92.5, c:93}, {o:93, h:93.5, l:90, c:90.5},
+  {o:90.5, h:91, l:88.5, c:89}, {o:89, h:90, l:87.5, c:88.5}, {o:88.5, h:90.5, l:88, c:90},
+  {o:90, h:91, l:88.5, c:89}, {o:89, h:90, l:87.8, c:88.5}, {o:88.5, h:92.5, l:88.3, c:92},
+  {o:92, h:93, l:91, c:91.5}, {o:91.5, h:96, l:91.2, c:95.5}, {o:95.5, h:97.5, l:95, c:97}
+];
+document.getElementById('schem-map3').innerHTML = Kbar.schematic({
+  bars: M3, w: 700, h: 280,
+  ann: [
+    {t: 'phase', i1: 0, i2: 2, text: '结构层：下跌', color: '#1a7f37'},
+    {t: 'phase', i1: 3, i2: 8, text: '结构层：区间（筑因）', color: '#4a6fa5'},
+    {t: 'phase', i1: 9, i2: 11, text: '接受→迁移', color: '#d33a2c'},
+    {t: 'band', i1: 3, i2: 8, y1: 87.5, y2: 90.8, text: '剖面层：低位换手=P形', color: '#4a6fa5'},
+    {t: 'hline', y: 90.8, text: '水平位层：VAH=接受裁决线', color: '#8a6d1f'},
+    {t: 'label', i: 8, text: '出区', pos: 'below', color: '#d33a2c'},
+    {t: 'label', i: 9, text: '证据①回踩不回区', pos: 'below', color: '#d33a2c'},
+    {t: 'label', i: 11, text: '证据②新区间中部收盘', pos: 'above', color: '#d33a2c'}
+  ]
+}) + '<div class="schem-cap"><b>三层地图与三证据。</b>结构层（第几幕）×水平位层（坐标）×剖面层（换手背书）——重叠处才有分量。出区后的裁决看<b>接受三证据</b>：①回踩不回区间 ②在新区间中部收盘（有人愿意持续成交）③回踩缩量——三证齐=主动型（迁移），证据缺=响应型（回归）。';
+</script>
 </body>
 </html>

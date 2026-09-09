@@ -324,5 +324,142 @@
     draw();
   }
 
-  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, UP: UP, DOWN: DOWN };
+  /* ---------- v4：合成示意图（教科书K线 + 标注原语）----------
+   * spec: {bars:[{o,h,l,c}...], w, h, vol:[可选合成量能], ann:[标注]}
+   * ann 原语：
+   *   {t:'label', i, text, pos:'above'|'below', color}          K线上下文字
+   *   {t:'arrow', i1,p1, i2,p2, text, color}                    走势箭头
+   *   {t:'brace', i1,i2, text, pos:'above'|'below', color}       跨度括线
+   *   {t:'band',  i1,i2, y1,y2, text, color}                     区域带
+   *   {t:'line',  i1,p1, i2,p2, text, color, dash}               直线
+   *   {t:'hline', y, text, color, dash}                          水平线
+   *   {t:'phase', i1,i2, text, color}                            顶部阶段带
+   *   {t:'vline', i}                                             垂直分隔
+   * 示意图纪律：仅教形状——固定水印，绝不携带真实数字。
+   */
+  function schematic(spec) {
+    spec = spec || {};
+    var bars = spec.bars || [];
+    var n = bars.length;
+    if (!n) return '';
+    var w = spec.w || 640, h = spec.h || 260;
+    var hasVol = !!(spec.vol && spec.vol.length === n);
+    var volH = hasVol ? Math.round(h * 0.16) : 0;
+    var hasPhase = (spec.ann || []).some(function (a) { return a.t === 'phase'; });
+    var padT = (spec.padT != null) ? spec.padT : (hasPhase ? 34 : 14), padL = 8, padR = 52;
+    var capH = 10;
+    var plotW = w - padL - padR, plotH = h - padT - volH - capH;
+
+    var lo = Infinity, hi = -Infinity;
+    bars.forEach(function (k) { if (k.l < lo) lo = k.l; if (k.h > hi) hi = k.h; });
+    (spec.ann || []).forEach(function (a) {
+      if (a.y != null) { if (a.y < lo) lo = a.y; if (a.y > hi) hi = a.y; }
+      if (a.y1 != null) { if (a.y1 < lo) lo = a.y1; if (a.y1 > hi) hi = a.y1; }
+      if (a.y2 != null) { if (a.y2 < lo) lo = a.y2; if (a.y2 > hi) hi = a.y2; }
+      if (a.p1 != null) { if (a.p1 < lo) lo = a.p1; if (a.p1 > hi) hi = a.p1; }
+      if (a.p2 != null) { if (a.p2 < lo) lo = a.p2; if (a.p2 > hi) hi = a.p2; }
+    });
+    var range = (hi - lo) || 1;
+    lo -= range * 0.03; hi += range * 0.03; range = hi - lo;
+    var y = function (p) { return padT + (1 - (p - lo) / range) * plotH; };
+    var x = function (i) { return padL + plotW * (i + 0.5) / n; };
+    var step = plotW / n, bw = Math.min(step * 0.62, 22);
+
+    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
+
+    (spec.ann || []).forEach(function (a) {
+      if (a.t !== 'phase') return;
+      var pc = a.color || '#8a6d1f';
+      var x1 = padL + step * a.i1, x2 = padL + step * (a.i2 + 1);
+      s += '<rect x="' + x1 + '" y="6" width="' + Math.max(x2 - x1, 8) + '" height="13" rx="3" fill="' + pc + '" fill-opacity="0.16"/>';
+      s += '<text x="' + ((x1 + x2) / 2) + '" y="16" text-anchor="middle" font-family="' + SANS + '" font-size="9.5" font-weight="700" fill="' + pc + '">' + a.text + '</text>';
+    });
+    (spec.ann || []).forEach(function (a) {
+      var c = a.color || INK;
+      if (a.t === 'band') {
+        var yT = y(Math.max(a.y1, a.y2)), yB = y(Math.min(a.y1, a.y2));
+        s += '<rect x="' + x(a.i1) + '" y="' + yT + '" width="' + Math.max(x(a.i2) - x(a.i1), 4) + '" height="' + Math.max(yB - yT, 2) + '" fill="' + c + '" fill-opacity="0.09"/>';
+        if (a.text) s += '<text x="' + (x(a.i1) + 3) + '" y="' + (yT - 3) + '" font-family="' + SANS + '" font-size="10" fill="' + c + '">' + a.text + '</text>';
+      } else if (a.t === 'hline') {
+        s += '<line x1="' + padL + '" y1="' + y(a.y) + '" x2="' + (padL + plotW) + '" y2="' + y(a.y) + '" stroke="' + c + '" stroke-width="1.3" stroke-dasharray="' + (a.dash || '6 5') + '"/>';
+        if (a.text) s += '<text x="' + (padL + plotW + 4) + '" y="' + (y(a.y) + 3.5) + '" font-family="' + SANS + '" font-size="10" fill="' + c + '">' + a.text + '</text>';
+      } else if (a.t === 'line') {
+        s += '<line x1="' + x(a.i1) + '" y1="' + y(a.p1) + '" x2="' + x(a.i2) + '" y2="' + y(a.p2) + '" stroke="' + c + '" stroke-width="1.4" stroke-dasharray="' + (a.dash || '7 5') + '"/>';
+        if (a.text) s += '<text x="' + (x(a.i2) + 4) + '" y="' + (y(a.p2) - 4) + '" font-family="' + SANS + '" font-size="10" fill="' + c + '">' + a.text + '</text>';
+      } else if (a.t === 'vline') {
+        s += '<line x1="' + x(a.i) + '" y1="' + padT + '" x2="' + x(a.i) + '" y2="' + (padT + plotH) + '" stroke="' + (a.color || FAINT) + '" stroke-width="1" stroke-dasharray="3 4"/>';
+      }
+    });
+
+    bars.forEach(function (k, i) {
+      var bull = k.c >= k.o, col = bull ? UP : DOWN;
+      var cx = x(i);
+      var yO = y(k.o), yC = y(k.c);
+      var bodyTop = Math.min(yO, yC), bodyH = Math.max(Math.abs(yC - yO), 2.2);
+      s += '<line x1="' + cx + '" y1="' + y(k.h) + '" x2="' + cx + '" y2="' + bodyTop + '" stroke="' + col + '" stroke-width="1.7"/>';
+      s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="1.7"/>';
+      s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
+    });
+
+    (spec.ann || []).forEach(function (a) {
+      var c = a.color || INK;
+      if (a.t === 'label') {
+        var k = bars[Math.max(0, Math.min(n - 1, a.i))];
+        var yy = a.pos === 'below' ? y(k.l) + 15 : y(k.h) - 8;
+        s += '<text x="' + x(a.i) + '" y="' + yy + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" font-weight="700" fill="' + c + '">' + a.text + '</text>';
+      } else if (a.t === 'arrow') {
+        var x1 = x(a.i1), y1 = y(a.p1), x2 = x(a.i2), y2 = y(a.p2);
+        var ang = Math.atan2(y2 - y1, x2 - x1);
+        var ah = 7;
+        s += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + c + '" stroke-width="1.6"/>';
+        s += '<polygon points="' + x2 + ',' + y2 + ' ' + (x2 - ah * Math.cos(ang - 0.42)) + ',' + (y2 - ah * Math.sin(ang - 0.42)) + ' ' + (x2 - ah * Math.cos(ang + 0.42)) + ',' + (y2 - ah * Math.sin(ang + 0.42)) + '" fill="' + c + '"/>';
+        if (a.text) s += '<text x="' + ((x1 + x2) / 2) + '" y="' + ((y1 + y2) / 2 - 6) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10" fill="' + c + '">' + a.text + '</text>';
+      } else if (a.t === 'brace') {
+        var bx1 = x(a.i1), bx2 = x(a.i2);
+        var byy = padT + plotH - 2;
+        var dir = a.pos === 'below' ? 1 : -1;
+        if (a.pos !== 'below') byy = padT + 2;
+        s += '<path d="M ' + bx1 + ' ' + byy + ' L ' + bx1 + ' ' + (byy + dir * 6) + ' L ' + bx2 + ' ' + (byy + dir * 6) + ' L ' + bx2 + ' ' + byy + '" fill="none" stroke="' + c + '" stroke-width="1.2"/>';
+        s += '<text x="' + ((bx1 + bx2) / 2) + '" y="' + (byy + dir * 18) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10" fill="' + c + '">' + a.text + '</text>';
+      }
+    });
+
+    if (hasVol) {
+      var vMax = Math.max.apply(null, spec.vol);
+      var volTop = padT + plotH + 6, volBot = h - capH;
+      for (var vi = 0; vi < n; vi++) {
+        var vh = (spec.vol[vi] / vMax) * (volBot - volTop - 3);
+        var vcol = bars[vi].c >= bars[vi].o ? UP : DOWN;
+        s += '<rect x="' + (x(vi) - bw * 0.32) + '" y="' + (volBot - vh) + '" width="' + (bw * 0.64) + '" height="' + Math.max(vh, 0.8) + '" fill="' + vcol + '" fill-opacity="0.45"/>';
+      }
+    }
+
+    s += '<text x="' + (w - 8) + '" y="12" text-anchor="end" font-family="' + SANS + '" font-size="9.5" fill="' + FAINT + '" letter-spacing="0.08em">示意图 · 非真实行情</text>';
+    s += '</svg>';
+    return s;
+  }
+
+  /* ---------- v4：对比卡（2–3 格真实数据小图并排 + 判别点）----------
+   * panels: [{title, data(K线数组), opts(chart 其余选项), note}]
+   * opts: {w(每格宽,默认640), note:'判别点文字'}
+   * 返回 HTML 字符串（调用方注入容器）。
+   */
+  function compare(panels, opts) {
+    opts = opts || {};
+    if (!panels || !panels.length) return '';
+    var w = opts.w || 640;
+    var cells = panels.map(function (p) {
+      var o = {};
+      for (var k in (p.opts || {})) o[k] = p.opts[k];
+      o.w = w; o.h = o.h || 240;
+      return '<figure class="cmp-cell"><div class="cmp-t">' + (p.title || '') + '</div>' + chart(p.data, o) +
+        (p.note ? '<figcaption>' + p.note + '</figcaption>' : '') + '</figure>';
+    }).join('');
+    return '<div class="cmp-grid">' + cells + '</div>' +
+      (opts.note ? '<div class="cmp-verdict"><b>判别点：</b>' + opts.note + '</div>' : '');
+  }
+
+  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, UP: UP, DOWN: DOWN };
 })();
+
+

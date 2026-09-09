@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 2 地形 · 第 2001 课</div>
   <h1>复合操盘手：Wyckoff 的市场观</h1>
-  <p class="sub">Phase 1 你学会了逐根推理（Brooks：这根K线说了什么）；Phase 2 换一个更高倍的镜头——<b>谁在说、为什么说</b>。Wyckoff 体系回答的是"这段行情背后的大资金在做什么"，本课先立世界观：一个虚构角色、一个永动周期、三大定律。本课约 60 分钟（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
+  <p class="sub">Phase 1 你学会了逐根推理（Brooks：这根K线说了什么）；Phase 2 换一个更高倍的镜头——<b>谁在说、为什么说</b>。Wyckoff 体系回答的是"这段行情背后的大资金在做什么"，本课先立世界观：一个虚构角色、一个永动周期、三大定律。本课约 68 分钟（视觉增强版：知识 30 + 案例 11 + 实例与图解 6 + 重演 3 + 训练场 14 + 小结 2）（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
 </header>
 
 <div class="lesson-map">
@@ -23,6 +23,8 @@
     <li>定律二 · 因果：区间是原因，趋势是结果 <span class="t">≈6 min</span></li>
     <li>定律三 · 努力与结果：量的语言 <span class="t">≈6 min</span></li>
     <li>案例深读：一张图读出整个周期 <span class="t">≈11 min</span></li>
+    <li>实例库：三定律的跨市场对应 <span class="t">≈3 min</span></li>
+    <li>一图带走：市场周期全景 <span class="t">≈3 min</span></li>
     <li>亲手重演：遮住右边猜阶段 <span class="t">≈3 min</span></li>
     <li>训练场：十二题（含隔阶段复习） <span class="t">≈14 min</span></li>
     <li>小结 <span class="t">≈2 min</span></li>
@@ -94,6 +96,18 @@
 <p>逐根揭示到第 60 根（6/19，区间中段）。每揭一根问三问：①当前处于四阶段中的哪一段？②依据是价格行为还是量能行为？③复合操盘手此刻"最可能"在做什么？——猜错了不要跳过，写下你当时以为的阶段，再揭晓。</p>
 <div id="pb1"></div>
 
+<h2 id="s08a"><span class="no">附A</span>实例库：三定律的跨市场对应 <span class="time-chip">≈3 min</span></h2>
+<p>三大定律不是加密市场专属——下表把前两阶段已经解剖过的 A股/美股实例按定律重新归档（同一批图，换镜头重读）。</p>
+<table>
+<tr><th>市场</th><th>品种</th><th>日期/窗口</th><th>概念</th><th>关键读数</th><th>一句话点评</th></tr>
+<tr><td>A股</td><td>中信证券</td><td>2024-10-08→09</td><td>定律三：努力与结果</td><td>10-08 一字(量1.2×)→10-09 十字星(量10.6×上影46%)</td><td>巨量努力只换来收位38%——顶部吸收</td></tr>
+<tr><td>A股</td><td>紫金矿业</td><td>2026-08-05→11</td><td>定律三：和谐与背离</td><td>大阳+6.2%(1.5×量)→六天后大阴−6.4%</td><td>量价和谐被同一只股票的反向和谐终结</td></tr>
+<tr><td>美股</td><td>立讯→谷歌</td><td>2026-03 / 08</td><td>定律一：主动单推动</td><td>立讯转多日+6.2%·1.8×量；谷歌转空日−4.0%·1.5×量</td><td>翻转日=主动单吃光对面挂单的日子</td></tr>
+<tr><td>A股</td><td>上证指数</td><td>2026-08</td><td>定律二：区间=原因</td><td>5棒微通道+4.4%后进入整理</td><td>微通道是"果"，其后的整理在筑下一个"因"</td></tr>
+<tr><td>加密</td><td>XRPUSDT</td><td>2026-04→08</td><td>全定律</td><td>BC 1.5496→SC 282M→吸筹50根→SOS +72.4%</td><td>本课锚定图：一张图读全三定律</td></tr>
+</table>
+<h2 id="s08b"><span class="no">附B</span>一图带走：市场周期全景 <span class="time-chip">≈3 min</span></h2>
+<div class="schem" id="schem-cycle"></div>
 <h2 id="s08"><span class="no">08</span>训练场：十二题（含隔阶段复习） <span class="time-chip">≈14 min</span></h2>
 <div id="trainer"></div>
 
@@ -302,5 +316,28 @@ Quiz.mount('#trainer', {
 });
 </script>
 
+<script>
+var CYC = [
+  {o:96, h:97, l:92, c:92.5}, {o:92.5, h:93, l:88, c:88.5}, {o:88.5, h:90, l:84, c:84.5},
+  {o:84.5, h:85, l:81, c:82}, {o:82, h:83, l:80, c:80.5}, {o:80.5, h:82, l:79.5, c:81.5},
+  {o:81.5, h:83, l:80.8, c:82.5}, {o:82.5, h:84, l:81.5, c:83.5},
+  {o:83.5, h:90, l:83, c:89}, {o:89, h:95, l:88.5, c:94}, {o:94, h:98, l:93.5, c:97},
+  {o:97, h:97.5, l:94, c:94.5}, {o:94.5, h:95, l:91, c:91.5}, {o:91.5, h:92, l:88, c:88.5}
+];
+document.getElementById('schem-cycle').innerHTML = Kbar.schematic({
+  bars: CYC, w: 700, h: 270,
+  ann: [
+    {t: 'phase', i1: 0, i2: 3, text: '下跌（markdown）', color: '#1a7f37'},
+    {t: 'phase', i1: 4, i2: 7, text: '吸筹（accumulation）', color: '#4a6fa5'},
+    {t: 'phase', i1: 8, i2: 10, text: '拉升（markup）', color: '#d33a2c'},
+    {t: 'phase', i1: 11, i2: 13, text: '派发（distribution）', color: '#8a6d1f'},
+    {t: 'label', i: 3, text: 'SC', pos: 'below', color: '#1a7f37'},
+    {t: 'label', i: 6, text: 'Spring', pos: 'below', color: '#b3541e'},
+    {t: 'label', i: 9, text: 'SOS', pos: 'above', color: '#d33a2c'},
+    {t: 'label', i: 10, text: 'BC', pos: 'above', color: '#8a6d1f'},
+    {t: 'brace', i1: 4, i2: 7, text: '区间=构筑原因（定律二）', pos: 'below'}
+  ]
+}) + '<div class="schem-cap"><b>市场周期全景。</b>四阶段永动：下跌的尽头是吸筹的车间，吸筹的出口是拉升，拉升的尽头是派发——区间是趋势的制造车间，不是休息。';
+</script>
 </body>
 </html>

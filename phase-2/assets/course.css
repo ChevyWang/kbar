@@ -190,3 +190,13 @@ details.answer .ans-body p { margin: .5rem 0; }
   figure, .note, details.answer { break-inside: avoid; }
   a { border-bottom: none; color: var(--ink); }
 }
+
+/* v4：对比卡 + 判别点 */
+.cmp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: 1rem; margin: 1.4rem 0 .8rem; }
+.cmp-cell { border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: .7rem .8rem; margin: 0; }
+.cmp-cell .cmp-t { font-family: var(--sans); font-weight: 700; font-size: .92rem; margin-bottom: .45rem; }
+.cmp-cell figcaption { text-align: left; margin-top: .45rem; font-size: .84rem; }
+.cmp-verdict { border: 1.5px dashed var(--faint); border-radius: 10px; padding: .7rem 1rem; font-size: .9rem; line-height: 1.7; background: var(--note-bg); margin: .6rem 0 1.8rem; }
+/* 示意图容器 */
+.schem { margin: 1.6rem 0; }
+.schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: center; }
