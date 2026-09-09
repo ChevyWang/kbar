@@ -7,6 +7,7 @@
  *       opts: { w, h, caps:[每根下方文字], hl:高亮第i根,
  *               vol:[成交量数组],
  *               levels:[{y,label,color,dash}],   // 水平位虚线+右标签
+ *               lines:[{i1,p1,i2,p2,color,dash,label}], // 斜线（趋势线/通道线，i为0-based棒索引）
  *               zones:[{y1,y2,label,color}],     // 支撑/阻力区域底纹
  *               marks:[{i,text,pos:'above'|'below'}], // 摆动点标注（HH/HL/LH/LL）
  *               reveal:前k根,                     // 逐根揭示（刻度仍按全集固定）
@@ -151,7 +152,10 @@
     var capH = (hasCaps || opts.hl != null) ? 30 : 12;
     var volH = opts.vol ? Math.round(h * 0.17) : 0;
     var hasLevels = !!(opts.levels && opts.levels.length);
-    var padT = 16, padL = 10, padR = (hasLevels || opts.yLabels) ? 52 : 10;
+    var prof = opts.profile || null;                       // {bins:[[lo,hi,vol]...], vpoc, va:[lo,hi], width, label}
+    var profW = prof ? (prof.width || 88) : 0;
+    var padT = (opts.phases && opts.phases.length) ? 36 : 16, padL = 10;
+    var padR = (hasLevels || opts.yLabels || prof) ? (prof ? Math.max(profW + 54, 60) : 52) : 10;
     var plotW = w - padL - padR;
     var plotH = h - padT - volH - capH;
 
@@ -163,11 +167,24 @@
       var zl = Math.min(Z.y1, Z.y2), zh = Math.max(Z.y1, Z.y2);
       if (zl < lo) lo = zl; if (zh > hi) hi = zh;
     });
+    if (prof) {
+      if (prof.va) { if (prof.va[0] < lo) lo = prof.va[0]; if (prof.va[1] > hi) hi = prof.va[1]; }
+      if (prof.vpoc != null) { if (prof.vpoc < lo) lo = prof.vpoc; if (prof.vpoc > hi) hi = prof.vpoc; }
+    }
     var range = (hi - lo) || 1;
     var y = function (p) { return padT + (1 - (p - lo) / range) * plotH; };
     var step = plotW / n, bw = Math.min(step * 0.6, 26);
 
     var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
+
+    // 顶部阶段带（Wyckoff A–E）：{i1,i2,label,color}，i 为 0-based 棒索引
+    (opts.phases || []).forEach(function (P, idx) {
+      var pc = P.color || '#8a6d1f';
+      var x1 = padL + step * P.i1, x2 = padL + step * (P.i2 + 1);
+      var by = 6 + (P.row || 0) * 15;
+      s += '<rect x="' + x1 + '" y="' + by + '" width="' + Math.max(x2 - x1, 10) + '" height="13" rx="3" fill="' + pc + '" fill-opacity="0.16"/>';
+      s += '<text x="' + ((x1 + x2) / 2) + '" y="' + (by + 10) + '" text-anchor="middle" font-family="' + SANS + '" font-size="9.5" font-weight="700" fill="' + pc + '">' + P.label + '</text>';
+    });
 
     // 区域底纹（支撑/阻力区）
     (opts.zones || []).forEach(function (Z) {
@@ -180,12 +197,41 @@
       if (Z.label) s += '<text x="' + (padL + 4) + '" y="' + (yTop - 3) + '" font-family="' + SANS + '" font-size="10.5" fill="' + zc + '">' + Z.label + '</text>';
     });
 
+    // Volume Profile（右侧水平剖面）：bins 由脚本从 1h 数据预算，与正文数字一致
+    if (prof) {
+      var bMax = 0;
+      prof.bins.forEach(function (b) { if (b[2] > bMax) bMax = b[2]; });
+      var px0 = padL + plotW + 6;               // 剖面左基线（柱子向右伸展）
+      var profRight = px0 + profW;
+      if (prof.va) {                             // 价值区带：贯穿绘图区
+        var vaTop = y(Math.max(prof.va[0], prof.va[1])), vaBot = y(Math.min(prof.va[0], prof.va[1]));
+        s += '<rect x="' + padL + '" y="' + vaTop + '" width="' + plotW + '" height="' + Math.max(vaBot - vaTop, 2) + '" fill="#4a6fa5" fill-opacity="0.07"/>';
+        s += '<line x1="' + padL + '" y1="' + vaTop + '" x2="' + profRight + '" y2="' + vaTop + '" stroke="#4a6fa5" stroke-width="1" stroke-dasharray="5 4" stroke-opacity="0.65"/>';
+        s += '<line x1="' + padL + '" y1="' + vaBot + '" x2="' + profRight + '" y2="' + vaBot + '" stroke="#4a6fa5" stroke-width="1" stroke-dasharray="5 4" stroke-opacity="0.65"/>';
+        s += '<text x="' + (padL + 4) + '" y="' + (vaBot - 3) + '" font-family="' + SANS + '" font-size="9.5" fill="#4a6fa5">VA ' + prof.va[0] + '–' + prof.va[1] + '</text>';
+      }
+      prof.bins.forEach(function (b) {
+        if (b[1] < lo || b[0] > hi) return;      // 越界分箱不画
+        var yT = y(Math.min(b[1], hi)), yB = y(Math.max(b[0], lo));
+        var isPoc = prof.vpoc != null && b[0] <= prof.vpoc && prof.vpoc <= b[1];
+        var bl = bMax > 0 ? (b[2] / bMax) * profW : 0;
+        s += '<rect x="' + px0 + '" y="' + yT + '" width="' + Math.max(bl, 0.5) + '" height="' + Math.max(yB - yT, 1) +
+          '" fill="' + (isPoc ? '#b3541e' : '#8a8578') + '" fill-opacity="' + (isPoc ? 0.9 : 0.5) + '"/>';
+      });
+      if (prof.vpoc != null) {                   // VPOC 贯穿线
+        s += '<line x1="' + padL + '" y1="' + y(prof.vpoc) + '" x2="' + profRight + '" y2="' + y(prof.vpoc) +
+          '" stroke="#b3541e" stroke-width="1.6"/>';
+        s += '<text x="' + (profRight + 4) + '" y="' + (y(prof.vpoc) + 3.5) + '" font-family="' + SANS + '" font-size="10" font-weight="700" fill="#b3541e">VPOC ' + prof.vpoc + '</text>';
+      }
+      if (prof.label) s += '<text x="' + (px0 + profW / 2) + '" y="' + (h - 7) + '" text-anchor="middle" font-family="' + SANS + '" font-size="9.5" fill="' + MUTED + '">' + prof.label + '</text>';
+    }
+
     // 水平位虚线
     (opts.levels || []).forEach(function (L) {
       var lc = L.color || MUTED;
       s += '<line x1="' + padL + '" y1="' + y(L.y) + '" x2="' + (padL + plotW) + '" y2="' + y(L.y) +
         '" stroke="' + lc + '" stroke-width="1.3" stroke-dasharray="' + (L.dash || '6 5') + '"/>';
-      if (L.label) s += '<text x="' + (padL + plotW + 5) + '" y="' + (y(L.y) + 3.5) + '" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
+      if (L.label) s += '<text x="' + (w - 4) + '" y="' + (y(L.y) + 3.5) + '" text-anchor="end" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
     });
 
     // 右侧价格刻度
@@ -196,6 +242,15 @@
         s += '<text x="' + (padL + plotW + 5) + '" y="' + (y(p) + 3.5) + '" font-family="' + SANS + '" font-size="10" fill="' + FAINT + '">' + fmtPrice(p, range) + '</text>';
       });
     }
+
+    // 斜线（趋势线/通道线）：{i1,p1,i2,p2,color,dash,label}，i 为 0-based 棒索引
+    (opts.lines || []).forEach(function (L) {
+      var lc = L.color || '#8a6d1f';
+      var x1 = padL + step * (L.i1 + 0.5), x2 = padL + step * (L.i2 + 0.5);
+      s += '<line x1="' + x1 + '" y1="' + y(L.p1) + '" x2="' + x2 + '" y2="' + y(L.p2) +
+        '" stroke="' + lc + '" stroke-width="1.4" stroke-dasharray="' + (L.dash || '7 5') + '"/>';
+      if (L.label) s += '<text x="' + (x2 + 4) + '" y="' + (y(L.p2) - 4) + '" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
+    });
 
     // K线（仅前 reveal 根）
     candles.forEach(function (k, i) {
@@ -406,3 +461,5 @@
 
   window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, UP: UP, DOWN: DOWN };
 })();
+
+
