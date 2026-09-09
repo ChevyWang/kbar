@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5002 · 决策质量 vs 结果质量 — K线训练营 Phase 5</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 5 执行 · 第 5002 课</div>
+  <h1>决策质量 vs 结果质量：与盈亏脱钩的记分卡</h1>
+  <p class="sub">职业牌手 Annie Duke 给这个致命错误起了名字：<b>resulting</b>（结果偏差）——用结果质量评判决策质量。好决策会有坏结果（止损单 39% 更深但 0/18 转正的反面：止损本身常常“错”），坏决策会有好结果（满仓抄底蒙对了）。本课交付 Phase 5 的验收工具：<b>八项决策质量记分卡</b>——一个不含盈亏字段的评分系统，每笔 0–100 分，与 P&amp;L 完全脱钩。含交互记分器。本课约 65 分钟。</p>
+</header>
+
+<div class="lesson-map">
+  <div class="lm-title">本课地图</div>
+  <ol>
+    <li>Resulting：扑克桌上的教训 <span class="t">≈9 min</span></li>
+    <li>四象限：决策×结果的所有组合 <span class="t">≈11 min</span></li>
+    <li>八项记分卡：设计原理 <span class="t">≈12 min</span></li>
+    <li>交互记分器 + 用它重读 BT30 <span class="t">≈10 min</span></li>
+    <li>制度化：每笔打分、月度聚合、与盈亏并排 <span class="t">≈8 min</span></li>
+    <li>训练场：十二题 <span class="t">≈13 min</span></li>
+    <li>小结 <span class="t">≈2 min</span></li>
+  </ol>
+</div>
+
+<h2 id="s01"><span class="no">01</span>Resulting：扑克桌上的教训 <span class="t">≈</span> <span class="time-chip">≈9 min</span></h2>
+<p>Duke（《Thinking in Bets》）的核心案例：一位牌手在锦标赛关键时刻用 QQ 全下，对手 A-K 跟注——翻牌一张 A，牌手出局。赛后所有人（包括他自己第一反应）都说“那手打错了”。<b>错。决策在当时信息下近乎完美（QQ 对 A-K 约 55:45 领先），坏结果不改变这个事实。</b>扑克的启示直译到交易：你的止损单被打掉、你的信号失败、你的 2R 目标差 0.5% 没到——这些都是“A 出现在翻牌”，它告诉你<b>结果</b>，不告诉你<b>决策</b>。为什么交易比扑克更难？因为扑克一晚几百手、反馈密集，交易一个月几十笔、噪音占比更大——<b>结果与决策的相关性被稀释到几乎无法用肉眼判断</b>。所以必须用制度代替肉眼：记分卡。</p>
+
+<h2 id="s02"><span class="no">02</span>四象限：决策×结果的所有组合 <span class="t">≈</span> <span class="time-chip">≈11 min</span></h2>
+<table>
+<tr><th></th><th><b>好结果</b></th><th><b>坏结果</b></th></tr>
+<tr><td><b>好决策</b></td><td>名至实归——唯一不该做的事是“总结经验放大胆子”</td><td><b>最危险的象限（被冤枉的好决策）</b>：止损被打、信号失败——第一反应是怀疑系统，正确反应是查执行、看样本</td></tr>
+<tr><td><b>坏决策</b></td><td><b>最阴险的象限（被奖励的坏决策）</b>：无止损扛单回本（紫金型）、盘外信号赚了、加倍报复单赚了——<b>奖励会教学，这是行为链的起点</b></td><td>活该——但价值在于错误归档（0007 五分类），不在自责</td></tr>
+</table>
+<p>带读右上象限：5001 课 18 笔止损研究就是它的实证——止损决策是好的（0/18 转正、39% 更深），其中 4 笔的“结果”却像在惩罚你（22% 回本诱惑）。<b>没有记分卡，你只能看见结果；有了记分卡，你才能看见自己站在哪个象限。</b>左下象限（被奖励的坏决策）是 Phase 5 的头号敌人：5003 课的偏差目录里，几乎每一条都靠这个象限存活。</p>
+
+<h2 id="s03"><span class="no">03</span>八项记分卡：设计原理 <span class="t">≈</span> <span class="time-chip">≈12 min</span></h2>
+<p>设计约束三条：①<b>零盈亏字段</b>——分数与 P&amp;L 在数学上无关（这是“脱钩”的硬保证）；②每项可从 4010 课的九字段记录直接判 0/1（不引入新的主观空间）；③八项覆盖决策链全程（4001 五步）+ Douglas 的两个心理位（接受风险、无保留执行）。每项 12.5 分：</p>
+<table>
+<tr><th>#</th><th>项目</th><th>满分判据（从记录直接读出）</th><th>对应</th></tr>
+<tr><td>1</td><td>Setup 合规</td><td>四项检查表逐项打勾在案（含否定条件排查）</td><td>4001</td></tr>
+<tr><td>2</td><td>入场执行</td><td>按一页纸④栏执行（时点/单型/价位），当日未成交即撤</td><td>4002</td></tr>
+<tr><td>3</td><td>风险预定义</td><td>止损价与仓位在下单前写死（截图/记录可证）</td><td>4003/4007</td></tr>
+<tr><td>4</td><td>止损未动</td><td>持仓期间止损位未向下移动、未删除</td><td>4003</td></tr>
+<tr><td>5</td><td>出场合规</td><td>按政策离场（目标/跟踪/时间），无盘中发明</td><td>4004/4005</td></tr>
+<tr><td>6</td><td>记录完整</td><td>九字段当日填写完毕</td><td>4010</td></tr>
+<tr><td>7</td><td>盘外零交易</td><td>无规则卡之外的信号入场（含“顺手单”“加仓冲动单”）</td><td>4009</td></tr>
+<tr><td>8</td><td>情绪标记</td><td>执行时的情绪状态已标记（平静/恐惧/报复/FOMO…）——只标记不扣分</td><td>Douglas</td></tr>
+</table>
+<p>注意第 8 项的设计：情绪<b>不扣分</b>——分数度量的是“规则服从度”，情绪是数据不是罪。被标记为“报复”的交易会自然与低分项共现（跳过 setup、盘外入场），模式在月度聚合里现形，不在单笔里审判。</p>
+
+<h2 id="s04"><span class="no">04</span>交互记分器 + 用它重读 BT30 <span class="t">≈</span> <span class="time-chip">≈10 min</span></h2>
+<div id="scorecard" class="mcbox"></div>
+<p>用它重读 BT30 的任何一笔（4010 课的 30 行全表）：机械系统的每一笔在 1–7 项上都是满分——<b>这就是“系统”的定义：把决策质量从 60 分焊死在 100 分</b>。也解释了为什么 4010 的回测期望 +0.204R 而“差不多但手痒”的实盘常拿不到：差的那部分不在市场里，在第 4、5、7 项上。记分卡的真正用途：每笔实盘/模拟后打分，<b>月度聚合看两条曲线——R 曲线（结果）与分数曲线（过程）</b>。分数曲线下行先于 R 曲线崩溃：挪止损（4→0）通常比账户见血早好几笔——记分卡是 R 曲线的预警系统。</p>
+
+<h2 id="s05"><span class="no">05</span>制度化：每笔打分、月度聚合、与盈亏并排 <span class="t">≈</span> <span class="time-chip">≈8 min</span></h2>
+<p>三个制度细节：①<b>谁来打</b>——你（收盘后），但月度聚合让另一个人看（家人/同伴/未来的自己）：外部视角防自欺；②<b>怎么用</b>——分数用于两个决策门：月均分 &lt;75 → 仓位降档（4007 升降规则接上心理维度）；连续两月 ≥90 且 R 曲线正常 → 考虑升档——<b>分数是升仓的资格证，R 不是</b>（R 可能来自被奖励的坏决策）；③<b>何时失效</b>——如果你发现自己为了分数走形式（勾了“记录完整”但记录是收盘后补编的），记分卡进入自欺模式——此时回到 5003 的偏差画像重新校准。工具的寿命取决于诚实，诚实的寿命取决于工具不审判你（第 8 项不扣分的原因）。</p>
+
+<h2 id="s06"><span class="no">06</span>训练场：十二题 <span class="t">≈</span> <span class="time-chip">≈13 min</span></h2>
+<div id="trainer"></div>
+
+<h2 id="s07"><span class="no">07</span>小结 <span class="t">≈</span> <span class="time-chip">≈2 min</span></h2>
+<p><b>本课带走四样：</b>①resulting（结果偏差）——结果与决策的相关性在交易里稀薄到肉眼不可判，必须制度化；②四象限地图——最危险的是被冤枉的好决策（止损被 22% 回本诱惑污名化），最阴险的是被奖励的坏决策（扛单回本）；③八项记分卡——零盈亏字段、九字段直读、覆盖决策链+心理位，把决策质量从 60 分焊死在 100 分（系统的定义）；④制度化——分数是升仓资格证、R 不是；分数曲线下行先于 R 曲线崩溃。<b>下一课</b>：记分卡抓“做了什么”，偏差画像抓“为什么会那么做”——行为金融第三柱（KT 1979 / Shefrin-Statman 1985 / Odean 1998）首次进场。</p>
+
+<footer class="course">
+  <div class="nav">
+    <a href="5001-probability-mindset.html">← 第 5001 课</a>
+    <a href="../index.html">Phase 5 主页</a>
+    <a href="5003-bias-catalog.html">第 5003 课 →</a>
+    <a href="../reference/toolkit.html">执行工具包（含可打印记分卡）</a>
+  </div>
+  <p><b>主资源（本课 grounded on）：</b>Annie Duke《Thinking in Bets》(2018)（resulting、决策质量 vs 结果质量）；Mark Douglas《Trading in the Zone》(2000)（“像机器一样交易”的纪律框架）；课程九字段记录体系（4010）。</p>
+  <div class="citations"><b>引用：</b>Duke (2018) · Douglas (2000)。记分卡八项与 4001–4010 各课的映射见表；BT30 重读引用 4010 课全表。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script src="../assets/quiz.js"></script>
+<script>
+(function () {
+  var host = document.getElementById('scorecard');
+  var items = [
+    '1 · Setup 检查表四绿在案（含否定条件排查）',
+    '2 · 入场按一页纸④栏执行（时点/单型/价位）',
+    '3 · 止损价与仓位在下单前写死',
+    '4 · 持仓期间止损未下移、未删除',
+    '5 · 出场按政策执行，无盘中发明',
+    '6 · 九字段记录当日填写完毕',
+    '7 · 零盘外交易（无顺手单/冲动加仓）',
+    '8 · 情绪状态已标记（平静/恐惧/报复/FOMO）'
+  ];
+  var html = '<div class="sc-list">' + items.map(function (t, i) {
+    return '<label class="sc-item"><input type="checkbox" id="sc' + i + '"/><span>' + t + '</span></label>';
+  }).join('') + '</div><div id="sc-out" class="mcstats"></div>';
+  host.innerHTML = html;
+  function run() {
+    var n = 0, emo = false;
+    items.forEach(function (_, i) {
+      var c = document.getElementById('sc' + i).checked;
+      if (c) { n++; if (i === 7) emo = true; }
+    });
+    var score = Math.round(n * 12.5);
+    var verdict = score === 100 ? '满格——这笔属于系统，不属于你' :
+      score >= 75 ? '合格——丢分项进错误归档（0007 五分类）' :
+      score >= 50 ? '警告——低于 75 分连续出现即触发仓位降档' :
+      '过程失控——这笔的盈亏不说明任何事，先复盘执行';
+    document.getElementById('sc-out').innerHTML = '本笔决策分 <b>' + score + '</b> / 100 ｜ ' + verdict +
+      '<div class="hint" style="font-size:.78rem;color:var(--faint)">注意：这个数字里没有盈亏字段——+2R 的坏决策和 −1R 的好决策在这里得分相同。这才是脱钩。</div>';
+  }
+  items.forEach(function (_, i) { document.getElementById('sc' + i).addEventListener('change', run); });
+  run();
+})();
+var questions = [
+  { q: 'Resulting（结果偏差）指：', options: ['结果好就是好', '用结果质量评判决策质量——扑克 QQ 全下被一张 A 淘汰不改变决策近乎完美', '复盘方法', '佣金问题'], answer: 1, explain: 'Duke《Thinking in Bets》的核心命名。' },
+  { q: '交易比扑克更需要记分卡的原因：', options: ['交易金额更大', '反馈稀疏、噪音占比大——结果与决策的相关性稀释到肉眼不可判', '扑克更简单', '交易没有概率'], answer: 1, explain: '一晚几百手 vs 一月几十笔，必须用制度代替肉眼。' },
+  { q: '四象限里“最危险”的象限及原因：', options: ['好决策×好结果——容易骄傲', '好决策×坏结果（被冤枉的好决策）——第一反应是怀疑系统，正确反应是查执行看样本', '坏决策×坏结果', '没有危险象限'], answer: 1, explain: '18 笔止损研究：0/18 转正但 22% 回本诱惑在污名化止损。' },
+  { q: '“最阴险”的象限及原因：', options: ['坏决策×好结果（被奖励的坏决策）——奖励会教学，是行为链的起点', '好决策×坏结果', '好决策×好结果', '坏决策×坏结果'], answer: 0, explain: '扛单回本、盘外信号赚了——5003 的偏差几乎都靠这个象限存活。' },
+  { q: '记分卡“零盈亏字段”的硬约束意味着：', options: ['盈亏不重要', '分数与 P&L 数学上无关——+2R 的坏决策和 −1R 的好决策得分相同', '忘记盈亏', '只看分数'], answer: 1, explain: '脱钩不是口号，是字段设计：卡上根本没有那一栏。' },
+  { q: '八项中“情绪标记”不扣分的设计理由：', options: ['凑数', '分数度量规则服从度，情绪是数据不是罪——被标记的模式在月度聚合里现形', '情绪无法观察', '为了好看'], answer: 1, explain: '工具不审判你，你才愿意诚实；诚实，工具才有寿命。' },
+  { q: '机械系统每笔 1–7 项全满分说明：', options: ['机器有情绪优势', '系统的定义就是决策质量被焊死——实盘拿不到期望差的那部分在第 4/5/7 项上', '回测造假', '样本太小'], answer: 1, explain: '4010 回测 +0.204R 与“手痒版实盘”的差距不在市场里。' },
+  { q: '分数曲线与 R 曲线的预警关系：', options: ['同时变化', '分数曲线下行通常先于 R 曲线崩溃——挪止损（第4项）常比账户见血早好几笔', 'R 曲线先行', '无关系'], answer: 1, explain: '记分卡是 R 曲线的预警系统。' },
+  { q: '月均分 <75 触发的动作（与 4007 接轨）：', options: ['删除系统', '仓位降档——分数进了升降规则，心理维度接入风险模型', '加倍交易', '换市场'], answer: 1, explain: '升仓看分数资格，降仓由分数触发——R 不做资格证。' },
+  { q: '记分卡失效的信号：', options: ['分数太低', '走形式（记录收盘后补编、勾选变成了仪式）——进入自欺模式，回偏差画像校准', '分数太高', 'R 为负'], answer: 1, explain: '工具的寿命取决于诚实；不审判（第8项不扣分）是诚实的前提。' },
+  { q: '【复 4010】九字段记录与记分卡的关系：', options: ['重复', '九字段是原始数据，记分卡从它直接判 0/1——不引入新的主观空间', '互相替代', '只给模拟盘用'], answer: 1, explain: '设计约束②：每项可从九字段直读，防评分本身变成千人千面。' },
+  { q: '综合：本月分数 92、R 曲线 −4R，你的判断：', options: ['系统坏了', '执行在轨、结果在噪音区——对照 4006 连亏表查概率，继续执行并加大记录颗粒度', '该改参数', '运气用完了'], answer: 1, explain: '分数高说明过程健康；此时改系统是 resulting 的变体——给坏结果找一个“做了什么”的替罪羊。' }
+];
+Quiz.mount('#trainer', { title: '5002 训练场', questions: questions,
+  verdicts: [[12,'全对——记分卡在手，进 5003 偏差目录'], [9,'不错——回看四象限与八项设计'], [0,'回读 §02–§03 再来']] });
+</script>
+
+<style>
+.mcbox { border: 1px solid var(--line); border-radius: 10px; padding: .8rem .9rem; background: #fff; margin: 1rem 0; }
+.sc-list { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem .9rem; margin-bottom: .6rem; }
+.sc-item { display: flex; gap: .5rem; align-items: baseline; font-size: .9rem; line-height: 1.5; }
+.mcstats { font-size: .92rem; line-height: 1.9; }
+.mcstats b { font-family: var(--sans); }
+@media (max-width: 640px) { .sc-list { grid-template-columns: 1fr; } }
+</style>
+
+</body>
+</html>

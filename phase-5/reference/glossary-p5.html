@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 5 词汇速查 — K线训练营</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: .7rem 1.1rem; margin: 1rem 0 2.2rem; }
+.term { border: 1px solid var(--line); border-radius: 10px; padding: .7rem .95rem; background: #fff; break-inside: avoid; }
+.term dt { font-weight: 700; font-size: .98rem; margin: 0 0 .3rem; }
+.term dt .en { display: block; font-weight: 400; font-size: .76rem; color: var(--faint); font-family: var(--sans); letter-spacing: .03em; margin-top: .15rem; }
+.term dd { margin: 0; font-size: .88rem; line-height: 1.7; }
+.term dd .src { font-family: var(--sans); font-size: .74rem; color: var(--faint); }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡</div>
+  <h1>Phase 5 词汇速查（执行篇）</h1>
+  <p class="sub">Phase 5 六课的新词，16 条。前面阶段的词汇见 <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">全量术语手册</a>（P0–P2 + 中文圈语境对照组）与 <a href="https://chevywang.github.io/kbar/phase-4/reference/glossary-p4.html">Phase 4 词汇（系统篇）</a>。每条注明出处课与学术锚。</p>
+</header>
+
+<h2><span class="no">§</span>思维与评价</h2>
+<dl class="gloss-grid">
+<div class="term"><dt>概率思维<span class="en">Probabilistic mindset</span></dt><dd>以样本为单位思考：单笔结果是噪音，期望只在 30 笔以上的聚合里兑现。<span class="src">5001（Douglas）</span></dd></div>
+<div class="term"><dt>五大基本事实<span class="en">Five fundamental truths</span></dt><dd>Douglas 概率思维的五块基石：任何事都可能发生/不需要预测也能赚/输赢随机分布/优势只是概率倾斜/每刻独一无二。<span class="src">5001</span></dd></div>
+<div class="term"><dt>样本思维 vs 单笔思维<span class="en">Sample vs single-trade thinking</span></dt><dd>赌场按样本（单注是噪音），散户按单笔（每笔都是审判）——评价周期：30 笔/一季 vs 今天。<span class="src">5001</span></dd></div>
+<div class="term"><dt>结果偏差<span class="en">Resulting</span></dt><dd>用结果质量评判决策质量。扑克术语带入交易：止损被打（好决策坏结果）与扛单回本（坏决策好结果）都常见。<span class="src">5002（Duke）</span></dd></div>
+<div class="term"><dt>决策质量记分卡<span class="en">Decision quality scorecard</span></dt><dd>八项×12.5 分、零盈亏字段的每笔评分——分数是升仓资格证，R 不是；分数曲线下行先于 R 曲线崩溃。<span class="src">5002</span></dd></div>
+</dl>
+
+<h2><span class="no">§</span>行为金融（学术第三柱）</h2>
+<dl class="gloss-grid">
+<div class="term"><dt>前景理论<span class="en">Prospect theory</span></dt><dd>KT 1979：价值函数三形状——参照点依赖/损失厌恶 λ≈2.25/亏损区间风险寻求。“扛单”的可证伪解释。<span class="src">5003</span></dd></div>
+<div class="term"><dt>损失厌恶<span class="en">Loss aversion</span></dt><dd>等额损失的痛 ≈ 等额快乐的 2.25 倍——“落袋为安”与“不肯认亏”同源。<span class="src">5003（KT 1979）</span></dd></div>
+<div class="term"><dt>处置效应<span class="en">Disposition effect</span></dt><dd>太早卖赢家、太久持输家。Odean 一万账户：PGR/PLR≈1.5 倍，卖出的赢家此后一年比留下的输家多涨 3.4%。<span class="src">5003（SS 1985 / Odean 1998）</span></dd></div>
+<div class="term"><dt>PGR / PLR<span class="en">Proportion of Gains/Losses Realized</span></dt><dd>可实现盈利/亏损中被实现（卖出）的比例——处置效应的度量：0.148 vs 0.098。<span class="src">5003（Odean 1998）</span></dd></div>
+<div class="term"><dt>间歇性强化<span class="en">Intermittent reinforcement</span></dt><dd>行为偶尔被奖励而被强化（老虎机机理）——扛单 22% 回本率正是它的交易版。<span class="src">5001/5003</span></dd></div>
+<div class="term"><dt>弱点画像<span class="en">Weakness profile</span></dt><dd>问卷 × 记分卡情绪标记 × 错误统计的三方合成——两方以上指向同一条即主偏差；带版本号随系统进化。<span class="src">5003</span></dd></div>
+</dl>
+
+<h2><span class="no">§</span>流程与协议</h2>
+<dl class="gloss-grid">
+<div class="term"><dt>系统内 / 系统外回撤<span class="en">Systematic vs execution drawdown</span></dt><dd>规则全绿的方差回撤（照常执行）vs 记分卡掉分的执行回撤（先停后修）——分型工具是记分卡曲线。<span class="src">5004</span></dd></div>
+<div class="term"><dt>回撤期协议<span class="en">Drawdown protocol</span></dt><dd>5R 触发的事前 if-then 六条：分型/冻结/降档/最低剂量/判据复出——回撤中的你只做执行者。<span class="src">5004</span></dd></div>
+<div class="term"><dt>执行检查单<span class="en">Execution checklist</span></dt><dd>信号→下单的七项 60–90 秒清单（B-17/手术清单的血统）——全绿才按，价格跑了不追。<span class="src">5005（Gawande）</span></dd></div>
+<div class="term"><dt>盘中脚本<span class="en">If-then scripts</span></dt><dd>三个高危想法的预制应答（命名→引用纸面→物理间隔）——情绪不消失，行动链可切断。<span class="src">5005</span></dd></div>
+<div class="term"><dt>升仓阶梯<span class="en">Scaling ladder</span></dt><dd>模拟（名义1%）→小仓（0.25%）→计划（0.5%→1%）：每级有分数门与降级线，分数门在 R 门之前。<span class="src">5006</span></dd></div>
+<div class="term"><dt>疫苗剂量<span class="en">Vaccine dose（0.25%）</span></dt><dd>小仓期的单笔风险设计：足够疼（激活真实价值函数）又不触发回撤协议——心理系统的渐进加量。<span class="src">5006</span></dd></div>
+</dl>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 5 主页</a>
+    <a href="toolkit.html">执行工具包</a>
+    <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">全量术语手册</a>
+  </div>
+  <div class="citations">定义依据 Douglas (2000) / Duke (2018) / Kahneman-Tversky (1979) / Shefrin-Statman (1985) / Odean (1998) / Gawande (2009) 与课程 5001–5006 正文；统计数字均出自课程可复算数据（scan_p4.py / p5_extras.py）。</div>
+</footer>
+
+</body>
+</html>
