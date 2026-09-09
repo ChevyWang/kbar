@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2010 · 日型战术：今天会是哪种天 — K线训练营 Phase 2</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .dt-table { width: 100%; border-collapse: collapse; font-size: .85rem; background: #fff; }
+  .dt-table th, .dt-table td { border: 1px solid var(--line); padding: .4rem .55rem; text-align: left; vertical-align: top; }
+  .dt-table th { font-size: .74rem; color: var(--faint); background: #f6f5f2; }
+  .dt-conviction { margin: 1rem 0; }
+  .dt-conviction .lane { display: flex; align-items: center; gap: .5rem; font-size: .82rem; margin: .35rem 0; }
+  .dt-conviction .bar { height: 14px; border-radius: 4px; background: var(--accent, #4a6fa5); }
+  .schem-cap { font-size: .8rem; color: var(--faint); margin: .4rem 0 1.2rem; }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 2 地形 · 第 2010 课（P2 收口课，M2.4 里程碑）</div>
+  <h1>日型战术：今天会是哪种天</h1>
+  <p class="sub">2006 给了你静态地形图，2009 给了你波账——缺的最后一环是<b>动态转接头</b>：「今天开盘之后，该用哪套战术？」Dalton 的六种日型按「方向信念」从无到排满，配 Brooks 的首小时剧本，把「看到什么打什么」升级成「开局先判型、按型取战术」。学完的标志：开盘 90 分钟内写出今日日型假设 + 对应战术清单，收盘对答案。本课约 75 分钟（知识 38 + 案例 12 + 实例与图解 5 + 训练场 14 + 小结 6）。前置：第 2008 课（地形图）+ 第 2009 课（波图）。</p>
+</header>
+
+<div class="lesson-map">
+  <div class="lm-title">本课地图</div>
+  <ol>
+    <li>为什么需要「今天会是哪种天」 <span class="t">≈8 min</span></li>
+    <li>Dalton 六型图鉴：方向信念的光谱 <span class="t">≈16 min</span></li>
+    <li>首小时剧本：开盘 90 分钟判型流程 <span class="t">≈14 min</span></li>
+    <li>案例深读：XRP 134 天的日型分布 <span class="t">≈12 min</span></li>
+    <li>一图带走：判型五问 <span class="t">≈3 min</span></li>
+    <li>训练场：十二题 <span class="t">≈14 min</span></li>
+    <li>小结与日型日记协议 <span class="t">≈8 min</span></li>
+  </ol>
+</div>
+
+<h2 id="s01"><span class="no">01</span>为什么需要「今天会是哪种天」 <span class="time-chip">≈8 min</span></h2>
+
+<p>地形图回答「哪里有钱、哪里是墙」，波账回答「这一段谁的弹药多」——但每个交易日早晨你都面对同一个问题：<b>今天的行情大概率和哪一种走法同构？</b>这个问题的答案决定战术：趋势日的正确动作是「早追+别轻易下车」，无趋势日的正确动作是「什么都不做」。用错战术比看错方向更伤——在无趋势日追突破，方向对了也会被磨死。</p>
+
+<p>Dalton《Mind Over Markets》第 2 章的贡献是把这件事变成了<b>分类学</b>：日型不是六种孤立的形状，而是摆在一条<b>方向信念（directional conviction）</b>的光谱上——从完全无信念（无趋势日）一路升到信念排满（趋势日）。判型的本质，是在开盘后尽早读出「今天的市场此刻在这条光谱的哪个位置」。</p>
+
+<p>关键角色先认识一下：<b>OTF（other timeframe，其他周期参与者）</b>——比当日短线更强的账户（机构、波段资金）。日型是谁定的？不是日内散户，是 OTF 进场的时间与力度。六型的差异，本质都是「OTF 什么时候来、来得多凶」。</p>
+
+<h2 id="s02"><span class="no">02</span>Dalton 六型图鉴：方向信念的光谱 <span class="time-chip">≈16 min</span></h2>
+
+<div class="dt-conviction">
+  <div class="lane"><span style="width:7.5em">无趋势日</span><div class="bar" style="width:12%"></div>信念 ≈0</div>
+  <div class="lane"><span style="width:7.5em">中性日</span><div class="bar" style="width:30%"></div>双方都在、观点接近</div>
+  <div class="lane"><span style="width:7.5em">常态日</span><div class="bar" style="width:50%"></div>早盘定型、双边拍卖</div>
+  <div class="lane"><span style="width:7.5em">常态变形</span><div class="bar" style="width:68%"></div>早盘平静、后段发力</div>
+  <div class="lane"><span style="width:7.5em">双分布趋势</span><div class="bar" style="width:85%"></div>中途歇脚再走一段</div>
+  <div class="lane"><span style="width:7.5em">趋势日</span><div class="bar" style="width:100%"></div>开盘到收盘单边</div>
+</div>
+<p class="schem-cap">方向信念光谱（Dalton 图 2.10 的示意重绘）：判型 = 尽早定位今天在这条线上的位置。</p>
+
+<table class="dt-table">
+  <tr><th style="width:13%">日型</th><th>动态（OTF 在干什么）</th><th>结构特征</th><th>操作含义</th></tr>
+  <tr><td><b>趋势日</b></td><td>OTF 从开盘到收盘掌控拍卖，单边推进，持续吸引新生意（高量）</td><td><b>开盘即极值</b>（大多数趋势日的开盘就是当日最高或最低）；实体大、收盘近极值</td><td>早追 + 结构止损跟随，别逆势摸顶；回踩浅、别等深回踩</td></tr>
+  <tr><td><b>双分布趋势日</b></td><td>趋势中途暂停、在半山腰建第二个价值区，再续一段</td><td>第一段推进→横住（第二分布）→再推进；全天仍单边收盘</td><td>第二分布的边缘是当天最好的加仓位；误判成反转会被第二段打穿</td></tr>
+  <tr><td><b>常态变形</b></td><td>早盘平静，OTF 观望后中途入场，大幅延伸区间</td><td>初始区间窄，午后（后段）突然拉出方向</td><td>上午别急着定性；区间破位时跟随 OTF 的中途发力</td></tr>
+  <tr><td><b>常态日</b></td><td>OTF 早盘快速进场，定出宽初始区间，随后双边拍卖来回</td><td>开盘不久即打出全天大部分区间，之后围绕价值来回（Dalton 提醒：名为常态，实为少数派）</td><td>区间思维：边缘做空/做多、中间不动；追突破大概率失败</td></tr>
+  <tr><td><b>中性日</b></td><td>OTF 买卖双方观点接近，都在场但不打仗，来回拍卖</td><td>区间宽、影线长、双向拒绝；收盘回到中段</td><td>两边的极值都是「试探不是信号」；等收盘结构再定方向</td></tr>
+  <tr><td><b>无趋势日</b></td><td>大消息/假期前，无人出手，参与度枯竭</td><td>区间窄、量枯竭、像趋势日的开局但没有后续延伸</td><td>不交易；记账（波动率压缩=方向选择的引线，对接 0002 内包逻辑）</td></tr>
+</table>
+
+<h2 id="s03"><span class="no">03</span>首小时剧本：开盘 90 分钟判型流程 <span class="time-chip">≈14 min</span></h2>
+
+<p>Dalton 的光谱是分类学，Brooks 给的是<b>判型的时钟</b>（首小时剧本：开盘即趋势 vs 区间开盘， Trends Ch.23–25 / Reversals Ch.11–20 的日型家族）。合并成可执行的五问流程——开盘后 60–90 分钟内完成：</p>
+
+<ol>
+  <li><b>开在哪？</b>价值区之内（2006 的 VA）还是之外？——之外=OTF 已经表过态，倾向趋势/常态变形；之内=默认区间家族。</li>
+  <li><b>初始区间宽吗？</b>头 60–90 分钟打出的区间幅度。开局即宽=常态日族（区间早定型）；开局即窄+单边=趋势日候选。</li>
+  <li><b>开盘是极值吗？</b>价格自开盘后从未回访开盘价一侧——趋势日的最强早期特征（Dalton：趋势日开盘常为当日极值）。</li>
+  <li><b>量能跟上了吗？</b>方向冲动必须有量背书（0005 纪律）；无量冲高=常态变形或陷阱。</li>
+  <li><b>波账怎么说？</b>（2009）当前处于第几波、顺向波量是否压倒逆向——趋势日的波账是「同向波量逐波放大」。</li>
+</ol>
+
+<p><b>输出</b>：日型假设（三选一倾向：趋势家族 / 区间家族 / 观望）+ 对应战术清单（趋势家族=早追跟随；区间家族=边缘战术+不追突破；观望=不动）。注意这是<b>假设</b>不是判决——盘中证伪就换剧本，这正是 Dalton「剧本随证据改写」的用法（W2 FAQ §2.2 的标签改写思想）。</p>
+
+<h2 id="s04"><span class="no">04</span>案例深读：XRP 134 天的日型分布 <span class="time-chip">≈12 min</span></h2>
+
+<p>把 2009 课那条 XRP 日线（134 根，2026-04→08）按「日型气质」逐日分类。<b>口径声明</b>：完整日内判型需要盘中数据；日线转译版用实体占比/收盘位置/相对量（对 20 日均量）三指标近似，趋势日族合并标准型与双分布型——数字由脚本从真实数据计算：</p>
+
+<table class="dt-table">
+  <tr><th>日型（日线转译）</th><th>判别口径</th><th>天数</th><th>占比</th></tr>
+  <tr><td>趋势日族</td><td>实体≥60% + 收盘位置≥0.8 或 ≤0.2 + 相对量≥1.15×</td><td><b>5</b></td><td>3.7%</td></tr>
+  <tr><td>常态变形</td><td>单边收盘（位置极值）但量能平平（&lt;1.15×）</td><td>20</td><td>14.9%</td></tr>
+  <tr><td>常态日</td><td>其余中等参与度的普通交易日</td><td>55</td><td>41.0%</td></tr>
+  <tr><td>中性日</td><td>实体≤30% 且相对量≥1.0×（双向长影+有参与）</td><td>19</td><td>14.2%</td></tr>
+  <tr><td>无趋势日</td><td>实体≤25–35% 且量能枯竭/区间窄</td><td>35</td><td>26.1%</td></tr>
+</table>
+
+<p>三个战术级结论（全部由上表长出来）：</p>
+<ul>
+  <li><b>趋势日是稀有事件</b>：134 天只有 5 天（3.7%）——其中 4 天向下、<b>唯一向上的是 08-21（+14.7%、4.8× 量）</b>，正是 2009 课 W10 那波的启动日。含义：日线体系里「追涨的一天」一年没几天，追势战术必须与「等待」绑定。</li>
+  <li><b>26% 的日子是「不该交易的日子」</b>（无趋势日）+14% 中性日——四成时间市场的正确动作是记账不动。这与 1008 课 TTR 磁吸的教训互为印证。</li>
+  <li><b>常态变形比趋势日多 4 倍</b>（20 vs 5）：单边收盘但量能平平的日子，「看着像趋势」的诱惑大多数是变形不是趋势——量能口径（第④问）是分水岭。</li>
+</ul>
+
+<h2 id="s05b"><span class="no">附</span>一图带走：判型五问 <span class="t">≈3 min</span></h2>
+<p><b>开在哪（价值区内/外）→ 初始区间宽吗 → 开盘是极值吗 → 量能跟上吗 → 波账怎么说——五问出假设，证伪换剧本。</b></p>
+
+<h2 id="s06"><span class="no">06</span>训练场：十二题 <span class="time-chip">≈14 min</span></h2>
+<div id="trainer"></div>
+
+<h2 id="s07"><span class="no">07</span>小结与日型日记协议 <span class="time-chip">≈8 min</span></h2>
+
+<p><b>本课交付</b>（M2.4 里程碑）：六型光谱 + 判型五问 + 战术映射。日型把 Phase 2 的三件兵器串成晨间流程：地形图（开在哪）× 日型光谱（今天哪种天）× 波账（弹药在谁手里）。</p>
+<p><b>日型日记协议</b>（结业要件，连续两周）：每天开盘 90 分钟内写一行——「日期 / 日型假设（趋势·区间·观望）/ 战术清单一句话」；收盘后补「实际日型 / 假设对错 / 一句教训」。两周后统计：你的假设命中率与「该空仓日却持仓」的次数——这就是你自己的战术-日型匹配表，Phase 4 写交易计划时直接引用。</p>
+
+<div class="nav">
+  <a href="2009-wave-chart.html">← 第 2009 课（波图）</a>
+  <a href="../index.html">课程主页</a>
+  <a href="../reference/glossary.html">术语手册</a>
+  <a href="https://chevywang.github.io/kbar/phase-3/">Phase 3（概率）→</a>
+</div>
+<p><b>主资源（本课 grounded on）：</b>James Dalton《Mind Over Markets》第 2 章（六型定义、方向信念光谱图 2.10、OTF 概念、趋势日开盘即极值）；Brooks《Trends》Ch.23–25 与《Reversals》Ch.11–20 的日型家族（首小时剧本/开盘即趋势 vs 区间开盘，作判型时钟的辅线）；W2 FAQ §2.2 的剧本改写思想（标签随证据更新）。</p>
+<div class="citations"><b>引用：</b>Dalton, Mind Over Markets (2nd ed.) Ch.2 · Brooks (2011–2012) 三部曲日型章 · Villahermosa W2 · 日型分布数据：Binance 公开日线（XRPUSDT 134 根，2026-04-20 → 08-31），分类脚本口径见第 04 节表格，数字经发布校验。本课为 Dalton 日内日型的<b>日线转译</b>，完整日内判型需盘中数据。</div>
+
+<script src="../assets/candles.js"></script>
+<script src="../assets/quiz.js"></script>
+<script>
+var questions = [
+  { q: 'Dalton 把六种日型摆在一条什么光谱上？', options: ['方向信念：从无趋势日的零信念到趋势日的满信念', '成交量：从地量日到天量日的单向排列', '波动率：从窄幅日到宽幅日的简单排序', '时间：按 OTF 进场早晚从早到晚排列'], answer: 0, explain: '图 2.10 的核心：日型不是六个孤立形状，是一条 gradually ascending 的信念谱——判型=定位今天在谱上的位置。' },
+  { q: 'OTF（other timeframe）指的是：', options: ['比当日短线更强的周期参与者——机构与波段资金', '下一根K线的未知未来走势', '交易所做市商的自动化报单程序', '与你自己持仓周期相同的其他散户'], answer: 0, explain: '日型由 OTF 进场的时间与力度决定——六型差异本质都是「OTF 什么时候来、来得多凶」。' },
+  { q: '趋势日最常见的结构特征是：', options: ['开盘即当日极值——开盘后从未回访开盘一侧', '收盘总在全天区间的正中间', '成交量显著低于二十日均量', '上下影线等长的完美对称'], answer: 0, explain: 'Dalton 原文：The open forms the upper or lower extreme in the large majority of cases——判型第③问就是它。' },
+  { q: '双分布趋势日的关键战术位是：', options: ['第二分布的边缘——中途歇脚处的加仓位', '开盘第一根K线的高点——突破即全仓', '全天最低点——跌破止损反手做空', '午盘整点——时钟到了就下单'], answer: 0, explain: '趋势中途暂停建第二个价值区再续一段；把歇脚误判成反转会被第二段打穿。' },
+  { q: '「常态日」这个名字的陷阱在于：', options: ['它其实少数派——常态日反而是例外', '它只出现在期货市场股票没有', '它必然演变成趋势日需要追入', '它只能在周线图上被识别'], answer: 0, explain: 'Dalton 原文提醒 the label is misleading：名为常态，实为少数——别默认每天都是它。' },
+  { q: '无趋势日的正确动作是：', options: ['不交易，但记账——波动率压缩是方向选择的引线', '重仓突破——窄幅之后必有大行情立即追', '加倍做空——无量代表买方已经放弃', '切换到分钟图高频交易赚回时间'], answer: 0, explain: '大消息前无人出手、参与度枯竭；窄区间+量枯竭=内包逻辑（0002）在日尺度的样子——记账等选择。' },
+  { q: '判型第①问「开在哪」的参照系来自：', options: ['2006 课的价值区（VA）——价值区内还是之外', '昨日收盘价的确切数字', '本周开盘价的整数关口', '交易所公告的重大新闻'], answer: 0, explain: '开在价值区外=OTF 已表态（趋势/变形倾向）；开在价值区内=默认区间家族——地形图直接喂给判型。' },
+  { q: '判型第④问「量能跟上了吗」要排除的是：', options: ['单边收盘但量能平平的常态变形日冒充趋势日', '高量冲高回落的中性日', '窄幅无量的无趋势日', '双向长影的中性日'], answer: 0, explain: 'XRP 案例里常态变形（20 天）是趋势日族（5 天）的四倍——量能口径是分水岭。' },
+  { q: 'XRP 134 天的分布：趋势日族仅 5 天（3.7%）。战术含义是：', options: ['追势战术必须与「等待」绑定——趋势日是稀有事件', '应该每天都追势因为趋势日利润极高', '趋势日占比低说明数据不适合日线分析', '应该放弃趋势策略只做区间震荡'], answer: 0, explain: '四成时间是「不该交易的日子」（无趋势 26%+中性 14%）；会等的交易者才接得住那 3.7%。' },
+  { q: 'XRP 唯一一次向上趋势日（08-21，+14.7%、4.8× 量）对应波账的：', options: ['W10 启动日——最重上攻波量的第一天', 'W1 派发阴跌段的普通一天', 'W11 回踩波的中段', '与波账无关的独立行情'], answer: 0, explain: '日型（当天）与波账（这一段）在 08-21 交汇：这一天同时是趋势日与 W10 的起点——两把尺子量同一时刻。' },
+  { q: '【回望】日型与 2008 地形图的关系：', options: ['地形图是静态地图，日型是每天早晨的动态转接头', '两者重复——会画地形图就不需要日型', '日型是地形图的替代品应该二选一', '地形图管日内、日型管周线周期'], answer: 0, explain: '判型第①问直接调用 VA（2006/2008）：地图告诉你位置含义，日型告诉你今天用什么战术。' },
+  { q: '【回望·跨阶段】Phase 1 的 TTR 磁吸课（1008）与无趋势日的共同教训：', options: ['大部分时间的正确动作是等待——到铁前不猜方向', '窄幅区间应该立即双向挂单捞波动', '越窄的区间越应该重仓赌突破', '区间与趋势的区分属于主观判断没有价值'], answer: 0, explain: '磁吸（别在磁铁前猜反转）与无趋势日不交易（26% 的日子）是同一条纪律的两个尺度——螺旋复习：低阶纪律在高阶语境重现。' }
+];
+Quiz.mount('#trainer', {
+  title:'日型训练',
+  questions: questions,
+  verdicts: [
+    [12,'全对。开盘 90 分钟的判断框架已就位——开始你的日型日记。'],
+    [9,'良好。错题回对应日型或判型五问，明天重练。'],
+    [6,'及格。重读第 02 节六型表与第 03 节五问，三天后重考。'],
+    [0,'别灰心——把方向信念光谱抄在便签上，对照案例表逐型过一遍，再考。']
+  ]
+});
+</script>
+</body>
+</html>
