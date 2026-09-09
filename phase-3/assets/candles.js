@@ -231,7 +231,7 @@
       var lc = L.color || MUTED;
       s += '<line x1="' + padL + '" y1="' + y(L.y) + '" x2="' + (padL + plotW) + '" y2="' + y(L.y) +
         '" stroke="' + lc + '" stroke-width="1.3" stroke-dasharray="' + (L.dash || '6 5') + '"/>';
-      if (L.label) s += '<text x="' + (padL + plotW + 5) + '" y="' + (y(L.y) + 3.5) + '" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
+      if (L.label) s += '<text x="' + (w - 4) + '" y="' + (y(L.y) + 3.5) + '" text-anchor="end" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
     });
 
     // 右侧价格刻度
