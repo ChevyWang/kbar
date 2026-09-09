@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · 第 4001 课</div>
   <h1>Setup 的正式定义：从“看到”到“等到”</h1>
-  <p class="sub">Phase 0–3 你积累了词汇（形态）、语法（位置语境）、地形（结构）与概率（统计）。Phase 4 把它们组装成一台机器：<b>交易系统</b>。第一课先定义机器的第一个零件——setup（候场条件）。标准只有一句：<b>规则能预先写死吗？错了会被打脸吗？</b>（3007 课两轴矩阵的自己动手版）。本课约 70 分钟（知识 34 + 案例 20 + 训练 14 + 小结 2）。</p>
+  <p class="sub">Phase 0–3 你积累了词汇（形态）、语法（位置语境）、地形（结构）与概率（统计）。Phase 4 把它们组装成一台机器：<b>交易系统</b>。第一课先定义机器的第一个零件——setup（候场条件）。标准只有一句：<b>规则能预先写死吗？错了会被打脸吗？</b>（3007 课两轴矩阵的自己动手版）。本课约 73 分钟（知识 37 + 案例 20 + 训练 14 + 小结 2）。</p>
 </header>
 
 <div class="lesson-map">
@@ -66,7 +66,7 @@
 <p>左图是 2025-08 的立讯精密：7 月趋势腿（新鲜趋势）→ 8 月初回调出摆动低点 → 8-20 收盘 39.83 创十根收盘新高（信号）→ 次日开盘 39.88 入场，止损 35.60（10.7%），13 根后达标 +2R。检查表四项全过。<b>右图是 2024-09-24 的东方财富</b>——政策组合拳日的暴力大阳。它过三项：趋势✓（9 月初有过 60 根收盘新高）、回调✓（9-18 摆动低点 10.23）、信号✓（收盘创十根新高）。<b>死在第四项</b>：次日开盘 12.22，距止损 10.23 已有 <b>16.3% &gt; 12% 上限</b>——风险过滤把它毙了。</p>
 <p>诚实的后记：它后来真的涨了（9 月末连续涨停，20% 板）。系统错过了它。<b>这不是系统的 bug，是过滤器的使命</b>：过滤器不是用来抓住所有行情的，是用“错过一部分”换“活着等到属于自己口径的行情”。那天追进去的人拿的是 16% 止损距离的单——同类暴力突破失败时（3003–3004 课的统计：失败率常在 40%+），一次就伤筋动骨。错过的钱不是亏的钱。</p>
 
-<h2 id="s05"><span class="no">05</span>Setup 卡片与原子库：组装你自己的 <span class="time-chip">≈10 min</span></h2>
+<h2 id="s05"><span class="no">05</span>Setup 卡片与原子库：组装你自己的 <span class="time-chip">≈13 min</span></h2>
 <p>每个 setup 写成一张卡片（4009 课它会进你的一页纸）：<b>名称 / 适用市场与周期 / 条件清单（编号）/ 否定条件（出现即弃）/ 失效价位（止损逻辑）/ 目标逻辑 / 过滤器（引用 Phase 3 统计）</b>。条件清单的每个原子都应该是你已经在前面阶段练过的：</p>
 <table>
 <tr><th>原子</th><th>来自</th><th>在卡片里的角色</th></tr>
@@ -79,6 +79,21 @@
 <tr><td>形态统计基线与过滤</td><td>3002/3005 课</td><td>概率过滤器（分桶）</td></tr>
 </table>
 <p>Grimes 自己的卡片库（Ch.10 Trade Examples）给了六类范本：趋势延续 / 趋势终结 / <b>失败测试（failure test——就是 2004 课 Spring 的系统化，他给过统计）</b> / 抛物线高潮 / The Anti / 支撑阻力位交易。组装三原则：<b>宁少勿多</b>（一页纸最多 2–3 个 setup）、<b>每个原子可单独打勾</b>、<b>整卡可回测</b>（4010 课的验收）。</p>
+
+
+<h3 id="s05a">两个理由筛子：资格之上的日常门槛（Brooks TR Ch.26）</h3>
+
+<p>三标准回答「这是不是一个合格的 setup」；Brooks 的另一条规则回答更日常的问题——「此刻要不要出手」：<b>任何入场都需要两个独立的理由，而任何两个理由都够用</b>（Need two reasons to take a trade, and any two are good enough）。单一信号——哪怕是你最喜欢的信号——永远只是候选。</p>
+
+<p>「独立」是关键：形态+同一形态的变体不算两个；<b>形态 + 位置</b>、<b>磁吸目标 + 数腿</b>、<b>趋势线突破 + 二次入场</b>算。凑齐两个的理由是数学的：两个 ~60% 独立证据叠加，联合胜率显著高于任一单独（这就是交易者方程里那个概率敢填 60% 的底气——上一课 #4002 的方程入口）。</p>
+
+<p>三条豁免（Brooks 原文，仅一处例外可只凭一票）：</p>
+<ul>
+  <li><b>强趋势中的回踩</b>：高 1/低 1 就够，不必等第二票（趋势本身就是第一票）；</li>
+  <li><b>趋势通道线过冲 + 像样的反转棒</b>：可单票反抽；</li>
+  <li><b>二次入场</b>（1004 课）：首次失败本身已是一票证据。</li>
+</ul>
+<p>注意边界：数腿 setup（H2/L2）<b>不是趋势反转形态</b>——陡峭下跌里找 H2 做多是规则误用；逆势必须有先行的趋势线突破或过冲（豁免第一条的反面）。</p>
 
 <h2 id="s06"><span class="no">06</span>案例深读：立讯精密的候场时刻 <span class="time-chip">≈10 min</span></h2>
 <figure><div id="ch-002475"></div>
@@ -99,7 +114,7 @@
     <a href="4002-entries.html">第 4002 课 →</a>
     <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
   </div>
-  <p><b>主资源（本课 grounded on）：</b>Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链与 setup 客观性要求；Ch.10 六类 setup 范例与 failure test 统计）；Al Brooks《Trading Price Action》三部曲（H2/二次入场结构——训练者一号的骨架）。</p>
+  <p><b>主资源（本课 grounded on）：</b>Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链与 setup 客观性要求；Ch.10 六类 setup 范例与 failure test 统计）；Al Brooks《Trading Price Action》三部曲（H2/二次入场结构——训练者一号的骨架）；两个理由规则与三条豁免 = 《Trading Ranges》第 26 章（Need Two Reasons to Take a Trade）。>
   <div class="citations"><b>引用：</b>Grimes (2012) Wiley，目录见出版社页（Part III: Trading Strategies）· Brooks (2011–2012)。数据：33 品种×5 年日线（yfinance + Binance + 通达信核对）；训练者一号 87 笔由 scan_p4.py 可复算，抽样 30 笔见 4010 课。</div>
 </footer>
 

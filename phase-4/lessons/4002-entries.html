@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · 第 4002 课</div>
   <h1>入场技术：限价单 vs 停损单及其心理学</h1>
-  <p class="sub">同一个 setup、同一个晚上、同一个你——挂单方式不同，五年后的账户不同。本课用训练者一号的 87 个真实信号做实验：停损单入场（基线）vs 限价单埋伏（变体），成交率、期望、被筛选掉的都是谁。结论会颠覆直觉：<b>你在等好价格，市场在筛弱信号</b>。本课约 70 分钟（知识 36 + 案例 10 + 训练 22 + 小结 2）。</p>
+  <p class="sub">同一个 setup、同一个晚上、同一个你——挂单方式不同，五年后的账户不同。本课用训练者一号的 87 个真实信号做实验：停损单入场（基线）vs 限价单埋伏（变体），成交率、期望、被筛选掉的都是谁。结论会颠覆直觉：<b>你在等好价格，市场在筛弱信号</b>。本课约 73 分钟（知识 39 + 案例 10 + 训练 22 + 小结 2）。</p>
 </header>
 
 <div class="lesson-map">
@@ -51,7 +51,7 @@
 </table>
 <p>同样的信号、同样的止损逻辑、同样的目标——<b>期望差了 3.6 倍</b>。每笔“省下”的 1% 价格，换来的不是利润而是样本恶化。价格是看得见的，被价格筛掉的样本是看不见的。</p>
 
-<h2 id="s05"><span class="no">05</span>逆向选择：为什么限价单筛到你的是弱信号 <span class="time-chip">≈8 min</span></h2>
+<h2 id="s05"><span class="no">05</span>逆向选择：为什么限价单筛到你的是弱信号 <span class="time-chip">≈11 min</span></h2>
 <p>把踏空的 46 笔和成交的 41 笔分开对账（用基线结局算账）：</p>
 <table>
 <tr><th>分组</th><th>基线胜率</th><th>基线平均 R</th></tr>
@@ -61,6 +61,23 @@
 <figure><div id="ch-601066"></div>
 <figcaption><b>活例。</b>中信建投 2024-09：信号 09-20（收盘 19.43），次日开盘 19.51 入场（红箭头），首日回踩低点 19.22（−1.5%）——限价 −1% 挂 19.24，差 2 分钱没成交。随后 5 根 +29%。这一笔踏空 = 少赚 2R。</figcaption></figure>
 <p>这就是限价单的<b>逆向选择</b>：愿意给你好价格的行情，恰恰是涨不动的行情；头也不回的行情，恰恰是最强的行情。“等回调”不是免费的耐心，是一张卖出的选择权——你把“不被套”留给自己，把“错过大涨”也留给了自己。<b>两条诚实脚注</b>：①这是趋势系统的结论——均值回归系统（低位接恐慌）里限价单是主角，你的系统类型决定挂单哲学；②本实验未计滑点——计入后停损单的期望会被扣一点，但量级不改变结论（4010 课回测协议里会计滑点假设）。</p>
+
+
+<h3 id="s05a">交易者方程：扣扳机前的最后一问（Brooks TR Ch.25）</h3>
+
+<p>挂单方式决定你怎么进，但「这一单该不该进」是另一个问题——Brooks 把它写成了一个公式。<b>交易者方程（trader's equation）</b>：</p>
+
+<p style="text-align:center;font-size:1.05rem"><b>P(成功) × 收益 &gt; P(失败) × 风险</b></p>
+
+<p>三个变量全部由你参与设定：收益=到目标位的距离，风险=到止损位的距离，概率=目标先于止损被触到的机会。三条铁律（全部原文观点）：</p>
+
+<ul>
+  <li><b>完美交易不存在</b>。三者此消彼长：赔率极佳（风险小收益大）的交易概率必然低；概率高的交易赔率必然平庸——「好得不像话的 setup」一出现，所有人都抢，对手盘消失，它随即死亡。你在 3002 见过它的统计版（高价值形态各有短板），这是它的逐笔版。</li>
+  <li><b>概率只能估</b>，且永远无法确知。Brooks 的实用近似：不确定时按 50% 起步；信号确实好看时按 60% 算——然后看方程两边还剩多少。这正是 4006 组合层期望值计算的逐笔入口：单笔用方程估，一百笔用期望值验。</li>
+  <li><b>数学随每个 tick 变化</b>。价格每动一下，三个变量全部改写——这就是为什么盘前要把「什么情况下方程翻边」写进计划，而不是盘中现算。</li>
+</ul>
+
+<p>与 4001 的分工：三标准管 <b>setup 的资格</b>（这个候场条件成立吗）；交易者方程管 <b>这一笔的经济性</b>（成立了也值得做吗）。资格✓ + 方程✓，才轮到本课的挂单方式问题。</p>
 
 <h2 id="s06"><span class="no">06</span>四市场的订单现实 <span class="time-chip">≈10 min</span></h2>
 <table>
@@ -85,7 +102,7 @@
     <a href="4003-initial-stop.html">第 4003 课 →</a>
     <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
   </div>
-  <p><b>主资源（本课 grounded on）：</b>Larry Harris《Trading and Exchanges: Market Microstructure for Practitioners》(Oxford 2003) 关于订单类型与流动性的论述；Adam Grimes (2012) Part III / Ch.8 Trade Management（入场与执行）；Al Brooks 三部曲（突破确认与失败突破的统计背景）。</p>
+  <p><b>主资源（本课 grounded on）：</b>Larry Harris《Trading and Exchanges: Market Microstructure for Practitioners》(Oxford 2003) 关于订单类型与流动性的论述；Adam Grimes (2012) Part III / Ch.8 Trade Management（入场与执行）；Al Brooks 三部曲（突破确认与失败突破的统计背景）；交易者方程与「完美交易不存在」= 《Trading Ranges》第 25 章（Mathematics of Trading）。>
   <div class="citations"><b>引用：</b>Harris (2003) · Grimes (2012) · FINRA PDT 规则页。数据：训练者一号 87 信号的两个挂单变体由 scan_p4.py + p4_variants.py 可复算（同棒双触最坏口径；滑点未计，声明见 §05）。</div>
 </footer>
 
