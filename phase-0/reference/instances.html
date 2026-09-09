@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实例库总表（Phase 0）· K线训练营</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.inst-tag { font-family: var(--sans); font-size: .7rem; border-radius: 4px; padding: .08rem .4rem; color: #fff; }
+.inst-tag.a { background: #d33a2c; }
+.inst-tag.u { background: #4a6fa5; }
+.inst-tag.c { background: #8a6d1f; }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡 · 实例库</div>
+  <h1>跨课实例总表（Phase 0）</h1>
+  <p class="sub">七课全部真实图例的索引。<b>用途</b>：盲测抽图（遮住右半边当靶子）、跨市场对照（同一概念在 A股/美股/加密的三副面孔）、复习检索（按课号倒查）。数据口径：A股/美股为 yfinance 复权日线（量能单位：股），加密为 Binance 现货；A股另经通达信行情协议（pytdx）交叉核对。加密实例占比 ≤25%——刻意为之，跨市场同语言是本阶段的隐藏训练目标。</p>
+</header>
+
+<h2><span class="no">00</span>按市场筛选</h2>
+<p><span class="inst-tag a">A股</span> 15 例 · <span class="inst-tag u">美股</span> 9 例 · <span class="inst-tag c">加密</span> 3 例（合计 27 个窗口）。</p>
+
+<h2><span class="no">01</span>总表</h2>
+<table>
+<tr><th>市场</th><th>品种</th><th>日期</th><th>概念</th><th>关键读数</th><th>出现于</th></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>中信证券</td><td>2024-10-08</td><td>涨停一字</td><td>四价合一 +10.0%</td><td><a href="../lessons/0001-anatomy-of-a-candle.html">0001 附A</a></td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>立讯精密</td><td>2025-04-07</td><td>跌停一字</td><td>四价合一 −10.0%</td><td>0001 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>紫金矿业</td><td>2026-08-05</td><td>光头光脚大阳</td><td>实体93% 收位93% +6.2%</td><td>0001 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>紫金矿业</td><td>2026-08-11</td><td>光头光脚大阴</td><td>实体93% 收位3% −6.4%</td><td>0001 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>赛力斯</td><td>2026-08-17</td><td>长下影（锤子候选）</td><td>下影83% 收位91%</td><td>0001/0002 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>宁德时代</td><td>2026-08-14</td><td>长上影（流星候选）</td><td>上影82% 收位3%</td><td>0001/0002 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>英伟达</td><td>2026-06-29</td><td>长下影</td><td>下影63% 收位81%</td><td>0002 附A / <a href="../lessons/0006-multiple-timeframes.html">0006 附A</a></td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>特斯拉</td><td>2026-08-17</td><td>长上影</td><td>上影60% 收位23%</td><td>0002 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>苹果</td><td>2026-06-30</td><td>大实体阳线</td><td>实体89% 收位94% +2.7%</td><td>0001 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>立讯精密</td><td>2026-07-23</td><td>看涨吞没（严格）</td><td>包2.8倍 +3.4%</td><td>0002 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>苹果</td><td>2026-06-30</td><td>看涨吞没（严格）</td><td>包1.6倍 +2.7%</td><td>0002 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>长江电力</td><td>2026-08-14</td><td>内包日</td><td>母线实体77%</td><td>0002 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>微软</td><td>2026-08-13</td><td>内包日</td><td>母线实体76%</td><td>0002 附A / <a href="../lessons/0005-volume-confirms.html">0005 附A</a></td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>宁德时代</td><td>2026-08-06</td><td>假突破（向上）</td><td>穿20日高0.5% 收−4.2%</td><td><a href="../lessons/0003-position-beats-pattern.html">0003 附A</a></td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>埃克森美孚</td><td>2026-08-11</td><td>假突破（向上，温和）</td><td>穿0.8% 收平</td><td>0003 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>苹果</td><td>2026-07-31</td><td>向下跳空真破位</td><td>跳空−5.7% 收−7.4%</td><td>0003 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>东方财富</td><td>2023-03 → 06</td><td>结构翻转（标准三拍）</td><td>HH顶19.57→LH→LL 15.18</td><td><a href="../lessons/0004-market-structure.html">0004 附A</a></td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>特斯拉</td><td>2021-12 → 2022-03</td><td>结构翻转（凶版）</td><td>HH 402.67→直接LL 326.67</td><td>0004 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>中信建投</td><td>2026-06-02</td><td>放量背书</td><td>3.6×量 +6.2%</td><td>0005 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>微软</td><td>2026-06-26</td><td>放量背书</td><td>4.3×量 +5.7%</td><td>0005 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>摩根大通</td><td>2026-08-12</td><td>缩量新高（真空）</td><td>0.58×量 +0.9%</td><td>0005 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>贵州茅台</td><td>2026-08-03</td><td>缩量新高（真空）</td><td>0.70×量 +0.6%</td><td>0005 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>中信证券</td><td>2024-10-09</td><td>高潮量（一字次日）</td><td>10.6×量 上影46%</td><td>0005 附A</td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>苹果</td><td>2024-09-20</td><td>高潮量</td><td>6.8×量 上影57%</td><td>0005 附A</td></tr>
+<tr><td><span class="inst-tag a">A股</span></td><td>中信证券</td><td>2024-09 → 11</td><td>日周双镜头</td><td>52日/12周</td><td><a href="../lessons/0006-multiple-timeframes.html">0006 附A</a></td></tr>
+<tr><td><span class="inst-tag u">美股</span></td><td>英伟达</td><td>2026-06 → 09</td><td>日周双镜头</td><td>69日/15周</td><td>0006 附A</td></tr>
+<tr><td><span class="inst-tag c">加密</span></td><td>ETHUSDT / BTCUSDT</td><td>各课锚定图</td><td>全概念混合</td><td>—</td><td>0001–0007 案例深读</td></tr>
+</table>
+
+<div class="note"><b>盲测用法</b>：任选一行 → 打开对应课的图例 → 遮住右侧 1/3 → 逐根揭示并朗读判词 → 对照该课的带读文字。<b>跨市场对照用法</b>：同一概念的三行并排读（如"长下影"的赛力斯/英伟达），体会"参数相同、语境不同"。</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 0 主页</a>
+    <a href="glossary.html">术语手册</a>
+    <a href="../lessons/0007-chart-reading-training.html">0007 训练系统课</a>
+  </div>
+  <div class="citations">数据源：yfinance（A股 .SS/.SZ 与美股，复权日线）+ 通达信行情协议（pytdx，交叉核对）+ Binance 公开数据。全部读数由脚本从原始数据计算。窗口选取：对 28 个品种 × 5 年日线做概念扫描（合计 8000+ 候选）后按参数硬度人工精选。</div>
+</footer>
+
+</body>
+</html>

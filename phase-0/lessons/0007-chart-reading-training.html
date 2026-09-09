@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · 第 0007 课 · Day 7 / 7</div>
   <h1>盘感训练法：复盘流程、盲图盲测与毕业考</h1>
-  <p class="sub">前六课给你武器，本课给你训练系统——并把七天所学装进一条完整的决策链。本课约 60 分钟（知识 30 + 毕业考 20 + 路线 10）+ 毕业作业。前置：第 0001–0006 课。</p>
+  <p class="sub">前六课给你武器，本课给你训练系统——并把七天所学装进一条完整的决策链。本课约 66 分钟（知识 33 + 实例与图解 3 + 毕业考 20 + 路线 10）+ 毕业作业。前置：第 0001–0006 课。</p>
 </header>
 
 <div class="lesson-map">
@@ -21,7 +21,8 @@
     <li>每日复盘流程：10 分钟版 <span class="t">≈8 min</span></li>
     <li>盲图盲测协议：自我对弈 <span class="t">≈7 min</span></li>
     <li>交易日志模板与错误分类 <span class="t">≈5 min</span></li>
-    <li>七课决策链总装 <span class="t">≈5 min</span></li>
+    <li>七课决策链总装 <span class="t">≈8 min</span></li>
+    <li>一图带走：训练循环全景 <span class="t">≈3 min</span></li>
     <li>毕业考：真实盲图综合十二题 <span class="t">≈20 min</span></li>
     <li>后续路线与 90 天训练计划 <span class="t">≈8 min</span></li>
   </ol>
@@ -89,7 +90,7 @@
 
 <p>每月数一次各类错误的占比——<b>占比最大的那一类，就是下个月的训练重点</b>。这就是自我教学闭环：错误日志驱动课程复习。</p>
 
-<h2 id="s05"><span class="no">05</span>七课决策链总装 <span class="time-chip">≈5 min</span></h2>
+<h2 id="s05"><span class="no">05</span>七课决策链总装 <span class="time-chip">≈8 min</span></h2>
 
 <div class="flow">
   <div class="step"><b>① 大周期结构</b><span class="via">HH+HL？LH+LL？重叠？→ 许可方向</span></div>
@@ -116,6 +117,10 @@
   <li>看任何信号先问"哪个周期、大周期许可吗"（0006）</li>
   <li>有每日复盘清单 + 错误五分类，在持续运转（0007）</li>
 </ul>
+
+<h2 id="s05b"><span class="no">附</span>一图带走：训练循环全景 <span class="time-chip">≈3 min</span></h2>
+<p>训练系统的全循环，一张图记全。<b>跨课实例总表</b>（三个市场全部图例的索引，按市场/概念可查）见 <a href="../reference/instances.html">实例库总表</a>——盲测时可以直接从总表抽图当靶子。</p>
+<div class="schem" id="schem-loop"></div>
 
 <h2 id="s06"><span class="no">06</span>毕业考：真实盲图综合十二题 <span class="time-chip">≈20 min</span></h2>
 
@@ -264,6 +269,24 @@ Quiz.mount('#trainer', {
     [0,'别灰心——把第 05 节决策链抄在便签上，对着这张图逐维走一遍，再考一次。']
   ]
 });
+</script>
+<script>
+document.getElementById('schem-loop').innerHTML = Kbar.schematic({
+  bars: [
+    {o:95, h:99, l:93, c:98}, {o:98, h:100, l:95, c:96}, {o:96, h:104, l:95.5, c:103},
+    {o:103, h:105, l:100, c:101}, {o:101, h:102, l:97, c:98}, {o:98, h:103, l:97.5, c:102.5},
+    {o:102.5, h:106, l:102, c:105.5}, {o:105.5, h:107, l:103, c:104}
+  ],
+  w: 680, h: 250,
+  vol: [45, 30, 90, 35, 25, 60, 80, 40],
+  ann: [
+    {t: 'phase', i1: 0, i2: 1, text: '①盲测：遮右预判', color: '#4a6fa5'},
+    {t: 'phase', i1: 2, i2: 3, text: '②揭示：对答案', color: '#d33a2c'},
+    {t: 'phase', i1: 4, i2: 5, text: '③归档：错误分类', color: '#8a6d1f'},
+    {t: 'phase', i1: 6, i2: 7, text: '④间隔重测', color: '#1a7f37'},
+    {t: 'arrow', i1: 7, p1: 103, i2: 0, p2: 92.5, text: '循环', color: '#6e6c64'}
+  ]
+}) + '<div class="schem-cap"><b>训练循环。</b>盲测→揭示→归档→间隔重测——每天 10–20 分钟，错误五分类月度复盘指向下月重点。盘感不是天赋，是这个循环的复利。';
 </script>
 </body>
 </html>
