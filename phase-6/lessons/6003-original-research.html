@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6003 · 原创研究方法 — K线训练营 Phase 6</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .wt { width: 100%; border-collapse: collapse; font-size: .86rem; background: #fff; }
+  .wt th, .wt td { border: 1px solid var(--line); padding: .4rem .6rem; text-align: left; vertical-align: top; }
+  .wt th { font-size: .74rem; color: var(--faint); background: #f6f5f2; }
+  blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .3rem 0 .3rem 1rem; color: var(--faint); }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 6 输出 · 第 6003 课（M6.3 · P6 结业件）</div>
+  <h1>原创研究方法：从假设到发表</h1>
+  <p class="sub">Phase 6 的结业不是「上完课」，是<b>立一件东西</b>：一篇 3000–5000 字的原创统计分析，走过 MFTA 式流程——选题→<b>大纲预审</b>→数据与口径→写作→<b>可退回重写</b>→发表。本课把这条流水线拆给你，并把课程里两次「小研究」（3006 手工统计、4010 回测）升级成完整研究的方法论。学完的标志：一份通过预审的研究大纲（结业第一步）。本课约 70 分钟（知识 40 + 案例路线图 12 + 训练场 14 + 小结 4）。前置：第 3006/4010 课（两次实践）+ 3001（口径纪律）。</p>
+</header>
+
+<div class="lesson-map">
+  <div class="lm-title">本课地图</div>
+  <ol>
+    <li>为什么结业件是研究不是文章 <span class="t">≈7 min</span></li>
+    <li>MFTA 流水线国产化：六步 <span class="t">≈14 min</span></li>
+    <li>选题三型 <span class="t">≈11 min</span></li>
+    <li>案例路线图：20 样本→一篇研究 <span class="t">≈12 min</span></li>
+    <li>训练场：十二题 <span class="t">≈14 min</span></li>
+    <li>小结与预审提交 <span class="t">≈12 min</span></li>
+  </ol>
+</div>
+
+<h2 id="s01"><span class="no">01</span>为什么结业件是研究不是文章 <span class="time-chip">≈7 min</span></h2>
+
+<p>IFTA 的 MFTA（Master of Financial Technical Analysis）大师衔不看课时不看考试，只认一件东西：<b>3000–5000 字的原创研究</b>，且配套两道质量机制——大纲预审（开工前研究计划须过审）与可退回重写（交付后不达标打回）。为什么顶级的「大师」认证用研究而不是考试？因为研究同时检验三样考试考不了的东西：<b>提出可检验问题的能力、自己找数据的工程能力、把结论放回证据约束里的诚实</b>。这三样恰好是本课程三个阶段的合体：3007 的两轴矩阵（可检验性）、3006/4010 的数据管线（工程）、3001 的口径纪律（诚实）。</p>
+
+<h2 id="s02"><span class="no">02</span>MFTA 流水线国产化：六步 <span class="time-chip">≈14 min</span></h2>
+
+<table class="wt">
+  <tr><th style="width:16%">步</th><th>做什么</th><th>防的坑</th></tr>
+  <tr><td><b>① 选题</b></td><td>窄而可答——一个形态/一个规则/一个行为，能用一句话写成问题</td><td>「论技术分析」式的大题（不可检验）</td></tr>
+  <tr><td><b>② 大纲预审</b></td><td>交一页纸：问题/数据源/口径/预期输出/工作量——<b>过审才开工</b></td><td>沉没成本：做三个月才发现问题问错了</td></tr>
+  <tr><td><b>③ 数据与口径</b></td><td>品种/周期/时间窗/检测规则全部写成可复算的文字（3001 的口径声明模板）</td><td>口径漂移：中途改规则造成的隐性数据挖掘</td></tr>
+  <tr><td><b>④ 写作</b></td><td>论文四件套：问题→方法→结果→局限（局限段不是谦虚，是证据边界）</td><td>把愿望写进结论（3007：结论要住在假设里）</td></tr>
+  <tr><td><b>⑤ 可退回重写</b></td><td>审稿意见回来，改到过——<b>退回是流程不是失败</b>（MFTA 惯例）</td><td>把批评当攻击（社区检验的预演：5002 脱钩的学术版）</td></tr>
+  <tr><td><b>⑥ 发表</b></td><td>任一渠道公开；写明数据截止日与复算路径</td><td>抽屉研究（没发表=没结业：公开可打脸才是完整闭环）</td></tr>
+</table>
+
+<h2 id="s03"><span class="no">03</span>选题三型 <span class="time-chip">≈11 min</span></h2>
+
+<p>课程史里已有三个现成的选题家族，各有一次先例实践：</p>
+<table class="wt">
+  <tr><th>型</th><th>问什么</th><th>先例（课程内）</th><th>扩展方向举例</th></tr>
+  <tr><td><b>统计检验型</b></td><td>某形态/规则在我的口径下表现如何？</td><td>3006 的 20 样本人工统计、33 品种扫描</td><td>「三推楔形在 A股日线：突破方向占比与失败率（N 年 × M 品种）」</td></tr>
+  <tr><td><b>体系审计型</b></td><td>某方法/指标按两轴矩阵该怎么摆？</td><td>3007 五流派过刀</td><td>「均线系统的可检验性审计：参数自由度与证伪条件」</td></tr>
+  <tr><td><b>行为审计型</b></td><td>我/群体的行为偏差在数据里长什么样？</td><td>5001 的 18 笔止损研究、5003 偏差画像</td><td>「我 30 笔的入场时间分布：报复单的时间签名」</td></tr>
+</table>
+<p>选题的统一裁决器：<b>一句话能写出可检验的问题 + 数据在你伸手可及的地方</b>（课程的扫描管线/instancelib/你的交易日志）。两者缺一，换题。</p>
+
+<h2 id="s04"><span class="no">04</span>案例路线图：20 样本→一篇研究 <span class="time-chip">≈12 min</span></h2>
+
+<p>3006 那次「人肉检测器」实验（20 样本判定对真值）就是一篇研究的前半生。升级路线图：</p>
+<table class="wt">
+  <tr><th>3006 已有</th><th>→ 研究需要补的</th></tr>
+  <tr><td>问题：我的肉眼判定与检测器一致吗？</td><td>收窄成可答句：「对 X 形态，受训肉眼判定的准确率/偏差方向如何（N=100，双市场）？」</td></tr>
+  <tr><td>20 样本、单人一次</td><td>样本扩到 100+；两人独立判定（可复核性=预审最爱）；间隔两周重判（稳定性）</td></tr>
+  <tr><td>口径在课件里</td><td>口径独立成节：检测器参数/判定规则/去重规则全文可复算</td></tr>
+  <tr><td>课堂讨论</td><td>局限段：样本期、品种偏集、检测器本身的假设——把边界画出来</td></tr>
+</table>
+<p>工作量表：扩样 6–10 小时 + 写作 8–12 小时 + 修改 4–8 小时——这就是 005 号票给 M6.3 估 15–30h 的构成。分四周做完，每周一块。</p>
+
+<h2 id="s05"><span class="no">05</span>训练场：十二题 <span class="time-chip">≈14 min</span></h2>
+<div id="trainer"></div>
+
+<h2 id="s06"><span class="no">06</span>小结与预审提交 <span class="time-chip">≈12 min</span></h2>
+
+<p><b>本课交付</b>（M6.3 开题）：六步流水线、选题三型、扩样路线图。<b>作业（结业件第一步）</b>：写一页研究大纲——问题一句话/数据源与口径/预期输出/工作量估算，提交预审（教练或自审皆可，预审清单：问题可检验吗？数据可及吗？口径可复算吗？局限能预画吗？）。<b>四字头警告</b>：预审不通过就换题——沉没成本从大纲层拦截，这正是 MFTA 把预审放在开工前的原因。</p>
+
+<div class="nav">
+  <a href="6002-review-writing.html">← 第 6002 课</a>
+  <a href="../index.html">课程主页</a>
+  <a href="../reference/glossary-p6.html">词汇速查</a>
+  <a href="6004-feynman-community.html">第 6004 课：费曼教学与社区检验 →</a>
+</div>
+<p><b>主资源（本课 grounded on）：</b>IFTA MFTA 制度（原创研究+大纲预审+可退回重写，003 调研）；Steenbarger 第 10 章（历史研究=hypothesis-generating：结论住在假设里）；课程自有管线（3001 口径/3006 人工统计/3007 两轴矩阵/4010 回测）。</p>
+<div class="citations"><b>引用：</b>IFTA MFTA 要求（3000–5000 字原创研究·大纲预审·可退回重写）· Steenbarger (2009) Ch.10 · Bulkowski 统计方法论（3001 已引）。工作量估算参照 005 里程碑口径（15–30h，猜测档，随实测校准）。</div>
+
+<script src="../assets/candles.js"></script>
+<script src="../assets/quiz.js"></script>
+<script>
+var questions = [
+  { q: 'MFTA 式结业检验的三样「考试考不了」的东西是：', options: ['提出可检验问题/自己找数据/结论放回证据约束', '背谱速度/画线速度/喊单气势', '学历/从业年限/资金规模', '粉丝数/阅读量/互动率'], answer: 0, explain: '研究=问题力+工程力+诚实力的合体考试。' },
+  { q: '大纲预审要防的坑是：', options: ['沉没成本——做三个月才发现问题问错了', '字数不够显得不专业', '审稿人抢走选题创意', '数据源收费太贵'], answer: 0, explain: 'MFTA 把预审放在开工前：一页纸拦下三个月的错方向。' },
+  { q: '「可退回重写」在流程里的身份是：', options: ['质量机制——退回是流程不是失败', '惩罚机制——退回即淘汰', '形式流程——基本都会通过', '可选环节——作者可以跳过'], answer: 0, explain: 'MFTA 惯例：打回改到过；同时它是社区检验的预演（批评=数据）。' },
+  { q: '研究四件套中「局限」段的功能是：', options: ['画出证据边界（不是谦虚）', '给审稿人留下好印象', '预留推卸责任的余地', '凑够字数到达三千'], answer: 0, explain: '样本期/品种偏集/检测器假设——边界画得越清，结论越可信。' },
+  { q: '选题的统一裁决器是：', options: ['一句话可检验 + 数据伸手可及', '话题够热 + 标题够炸', '前人没做过（独创性至上）', '导师推荐 + 周期流行'], answer: 0, explain: '两者缺一就换题——窄而可答，好过大而空。' },
+  { q: '「三推楔形在A股日线：突破方向占比与失败率」属于选题三型的哪一型？', options: ['统计检验型', '体系审计型', '行为审计型', '叙事综述型'], answer: 0, explain: '先例=3006 人工统计/33 品种扫描——一个形态+你的口径。' },
+  { q: '「我 30 笔的入场时间分布：报复单的时间签名」属于：', options: ['行为审计型', '统计检验型', '体系审计型', '文献综述型'], answer: 0, explain: '先例=18 笔止损研究——自己的行为数据当研究对象。' },
+  { q: '把 3006 的 20 样本升级为研究，最不该省的一步是：', options: ['口径独立成节（可复算）', '把图表做成彩色更好看', '引用尽量多的名家名言', '结论写得斩钉截铁'], answer: 0, explain: '检测器参数/判定规则/去重规则全文可复算——这是研究与「两张图证明」的分界。' },
+  { q: '两人独立判定+间隔两周重判，分别对应：', options: ['可复核性与稳定性', '速度与成本', '样本量与多样性', '显著性与功效'], answer: 0, explain: '预审最爱的问题：别人能复核你的判定吗？你自己两周后还同意自己吗？' },
+  { q: '口径漂移指的是：', options: ['中途改规则造成的隐性数据挖掘', '不同交易所的时钟不一致', '翻译导致的术语走样', '图表比例尺没有对齐'], answer: 0, explain: '开工前把口径写成可复算文字并冻结——研究中途不改规则。' },
+  { q: '【回望】「结论要住在假设里」的原始出处是：', options: ['Steenbarger Ch.10（hypothesis-generating）', 'Douglas 态度调查表', 'Brooks 78 条准则', 'Dalton 日型光谱'], answer: 0, explain: '历史研究生成可检验命题，不是固定真理——4010 已把它写进回测的读法。' },
+  { q: '【回望】M6.3 估时 15–30h 的置信度档位与含义是：', options: ['猜测档——无同类先例，随第一位学员实测校准', '实测档——已有完成数据', '类比档——同类研究外推', '权威档——MFTA 官方统计'], answer: 0, explain: '005 号票标注：原创研究是全路线图最重的单件，猜测档——你的四周年表会把它变成实测。' }
+];
+Quiz.mount('#trainer', {
+  title:'研究方法训练',
+  questions: questions,
+  verdicts: [
+    [12,'全对。去写那一页大纲——预审清单四个问题过一遍再提交。'],
+    [9,'良好。错题回六步流水线或选题三型表，明天重练。'],
+    [6,'及格。重读第 02/04 节，对照路线图走一遍，三天后重考。'],
+    [0,'别灰心——把六步流水线抄贴手边，从选题三型里挑一个先动手，再考。']
+  ]
+});
+</script>
+</body>
+</html>
