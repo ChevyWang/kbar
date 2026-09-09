@@ -11,17 +11,18 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 1 逐根推理 · 第 1004 课 · Day 4 / 10</div>
   <h1>二次入场：第二次机会为何比第一次值钱</h1>
-  <p class="sub">第一次反转尝试大多失败——但失败本身就是信息。本课约 60 分钟（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
+  <p class="sub">第一次反转尝试大多失败——但失败本身就是信息。本课约 66 分钟（知识 33 + 案例 11 + 图示化小结 3 + 重演 3 + 训练场 14 + 小结 2）——新增二次入场图解。。</p>
 </header>
 
 <div class="lesson-map">
   <div class="lm-title">本课地图</div>
   <ol>
     <li>为什么首次尝试大多失败 <span class="t">≈4 min</span></li>
-    <li>二次入场的定义与两种面孔 <span class="t">≈9 min</span></li>
-    <li>首次 vs 二次：胜率、止损与盈亏比 <span class="t">≈9 min</span></li>
+    <li>二次入场的定义与两种面孔 <span class="t">≈10 min</span></li>
+    <li>首次 vs 二次：胜率、止损与盈亏比 <span class="t">≈10 min</span></li>
     <li>二次入场的纪律与误用 <span class="t">≈8 min</span></li>
     <li>案例深读：底部与顶部的两场演出 <span class="t">≈11 min</span></li>
+    <li>一图带走：首次与二次全景 <span class="t">≈3 min</span></li>
     <li>亲手重演：等第二次 <span class="t">≈3 min</span></li>
     <li>训练场：十二题（含隔阶段复习） <span class="t">≈14 min</span></li>
     <li>小结与课外作业 <span class="t">≈2 min</span></li>
@@ -32,13 +33,13 @@
 
 <p>Phase 0 的统计冷水说过：形态单独使用≈抛硬币。Brooks（《Trends》第 10 章）给出的结构性解释：趋势有<b>惯性挂单</b>——首次冲向反转方向的尝试，撞上的是最厚的一层逆势供给/需求（获利了结盘、突破跟风盘、机构分批建仓的第一批）。第一棒把这一层撞松，第二棒才有机会撞穿。所以<b>首次尝试的失败不是坏消息，而是第二次机会的预付费</b>。</p>
 
-<h2 id="s02"><span class="no">02</span>二次入场的定义与两种面孔 <span class="time-chip">≈9 min</span></h2>
+<h2 id="s02"><span class="no">02</span>二次入场的定义与两种面孔 <span class="time-chip">≈10 min</span></h2>
 
 <div class="note"><b>定义：</b>同一个方向信号，在<b>第一次尝试失败后</b>再次出现的第二次机会。多头侧=首次上攻回落后的再次上攻；空头侧=首次下攻收回后的再次下攻。</div>
 
 <p>两种面孔要分清：①<b>回调中的二次入场（顺势）</b>——趋势里 H1 失败后的 H2（1003 课），或突破回踩后的再入场——这是<b>主流</b>用法；②<b>反转中的二次入场（逆势）</b>——高潮后首次反转棒回落、再出第二根强棒（1001 课的"第二票"）——高盈亏比但属逆势，仓位纪律从严。两副面孔共享同一个引擎：<b>假动作已经被消耗</b>。</p>
 
-<h2 id="s03"><span class="no">03</span>首次 vs 二次：胜率、止损与盈亏比 <span class="time-chip">≈9 min</span></h2>
+<h2 id="s03"><span class="no">03</span>首次 vs 二次：胜率、止损与盈亏比 <span class="time-chip">≈10 min</span></h2>
 
 <table>
 <tr><th></th><th>首次入场</th><th>二次入场</th></tr>
@@ -74,6 +75,9 @@
 <h2 id="s06"><span class="no">06</span>亲手重演：等第二次 <span class="time-chip">≈3 min</span></h2>
 <p>逐根过第 5–15 根与第 52–60 根。每次第一根强棒出现时，先说"首次尝试，等回落"；回落结束时找"第二次"。感受两边剧本的镜像。</p>
 <div id="pb1"></div>
+
+<h2 id="s06b"><span class="no">附</span>一图带走：首次与二次全景 <span class="time-chip">≈3 min</span></h2>
+<div class="schem" id="schem-second"></div>
 
 <h2 id="s07"><span class="no">07</span>训练场：十二题（含隔阶段复习） <span class="time-chip">≈14 min</span></h2>
 <div id="trainer"></div>
@@ -200,6 +204,26 @@ Quiz.mount('#trainer', {
     [0,'别灰心——把首/二次对照表抄在手边，再考一次。']
   ]
 });
+</script>
+<script>
+var SECOND = [
+  {o:99, h:100.5, l:96, c:96.5}, {o:96.5, h:99, l:95.8, c:98.6}, {o:98.6, h:99.2, l:95.5, c:96},
+  {o:96, h:101.5, l:95.8, c:101}, {o:101, h:101.5, l:99.5, c:100.2}, {o:100.2, h:105, l:100, c:104.5}
+];
+document.getElementById('schem-second').innerHTML = Kbar.schematic({
+  bars: SECOND, w: 680, h: 250,
+  vol: [55, 30, 40, 85, 35, 70],
+  ann: [
+    {t: 'phase', i1: 0, i2: 0, text: '首次尝试（假突破）', color: '#8a6d1f'},
+    {t: 'phase', i1: 1, i2: 2, text: '回落：假动作消化', color: '#4a6fa5'},
+    {t: 'phase', i1: 3, i2: 5, text: '二次入场（真突破）', color: '#d33a2c'},
+    {t: 'label', i: 0, text: '首次：过线即回', pos: 'above', color: '#8a6d1f'},
+    {t: 'label', i: 3, text: '二次：守住并跟进', pos: 'below', color: '#d33a2c'},
+    {t: 'hline', y: 99.3, text: '参照位', color: '#6e6c64'},
+    {t: 'brace', i1: 0, i2: 0, text: '止损远', pos: 'below'},
+    {t: 'brace', i1: 3, i2: 3, text: '止损近', pos: 'below'}
+  ]
+}) + '<div class="schem-cap"><b>首次 vs 二次。</b>同样的判断、同一个方向：首次入场止损挂在整段回调之下（远、贵），二次入场止损只挂信号棒下（近、便宜）——<b>等待买的不是确定性，是赔率</b>（§03 算术）。';
 </script>
 </body>
 </html>
