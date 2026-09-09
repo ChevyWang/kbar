@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>复盘 3.0 模板（Phase 2 版）· K线训练营</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.rv-meta { font-family: var(--sans); font-size: .8rem; color: var(--muted); display: flex; gap: 1.5rem; flex-wrap: wrap;
+  border: 1px solid var(--line); border-radius: 8px; padding: .5rem .9rem; background: #fff; margin: 1rem 0 1.6rem; }
+.rv-group { border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: .9rem 1.1rem; margin: 1rem 0; }
+.rv-group h3 { margin: 0 0 .1rem; font-size: 1.02rem; }
+.rv-group .g-meta { font-family: var(--sans); font-size: .74rem; color: var(--faint); margin-bottom: .6rem; }
+.rv-item { display: flex; gap: .7rem; padding: .5rem 0; border-bottom: 1px dashed var(--line); align-items: baseline; }
+.rv-item:last-child { border-bottom: none; }
+.rv-item .chk { color: var(--faint); font-size: 1.05rem; min-width: 1.2rem; }
+.rv-item .q { min-width: 13.5rem; font-size: .92rem; }
+.rv-item .fill { flex: 1; border-bottom: 1px solid var(--line); min-height: 1.3rem; font-family: var(--sans); font-size: .82rem; color: var(--ink); }
+.rv-item .hint { font-family: var(--sans); font-size: .74rem; color: var(--faint); min-width: 7.5rem; text-align: right; }
+.rv-log table { width: 100%; }
+.rv-log td { border: 1px solid var(--line); padding: .45rem .6rem; font-size: .85rem; }
+.rv-log td:first-child { white-space: nowrap; font-family: var(--sans); font-size: .78rem; color: var(--muted); width: 6.5rem; }
+.et-row td { height: 1.6rem; }
+@media print {
+  body { font-size: 10.5pt; max-width: none; padding: 0; }
+  .rv-group, .rv-meta { break-inside: avoid; }
+  .no-print { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · 参考卡 · 复盘 3.0（Phase 2 版）</div>
+  <h1>每日复盘模板 · 十四维六组</h1>
+  <p class="sub">Phase 1 用 <a href="https://chevywang.github.io/kbar/phase-1/reference/review-template.html">复盘 2.0</a>（十二维五组）；Phase 2 毕业后切换本模板。新增 <b>F 地形组</b>（VPOC 位置/结构阶段/坐标事件），设计原则不变：条目变多、时间不变——地形是<b>慢变量</b>（省界变了才重画，坐标一周核一次），所以新增三问只多花 2 分钟。打印每日一份，或抄进笔记。</p>
+</header>
+
+<div class="rv-meta">
+  <span>品种/周期：＿＿＿＿＿＿＿</span>
+  <span>日期：＿＿＿＿＿＿＿</span>
+  <span>用时目标：≤15 min</span>
+  <span>状态组打勾即过 · 事件组发生才写 · 地形组是慢变量</span>
+</div>
+
+<div class="rv-group">
+  <h3>A · 状态组 <span class="g-meta">确认或更新 · 约2 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>① always-in 与票数</b></span><span class="fill"></span><span class="hint">多/空/中性/存疑+第几票（1001）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>② 结构序列</b></span><span class="fill"></span><span class="hint">HH+HL / LH+LL / 重叠（0004）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>③ 紧度档位</b></span><span class="fill"></span><span class="hint">微通道/通道/宽通道（1002）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>F · 地形组（新增）<span class="g-meta">慢变量 · 约2 min · 多数日子确认即过</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>④ VPOC 上下与 VA 内外</b></span><span class="fill"></span><span class="hint">价在 VPOC 上=买方控制；VA 内=平衡/VA 外=失衡待裁决（2006/2007）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑤ 结构阶段猜测</b></span><span class="fill"></span><span class="hint">当前区间是吸筹/派发/再吸筹/未知 + 第几幕（A–E）；确认条件是哪个坐标（2002/2003）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑥ 地形事件</b></span><span class="fill"></span><span class="hint">今日是否触碰磁铁/墙/真空？量价反应是接受还是乏力（2005/2007）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>B · 地图组 <span class="g-meta">画在图上，不写在表里 · 约3 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑦ 关键区域更新</b></span><span class="fill"></span><span class="hint">三层地图：剖面 VA/前高低/量度目标——重叠处描粗（0003/2007）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑧ 磁铁清单（按距离排序）</b></span><span class="fill"></span><span class="hint">量度目标/通道线/VPOC 与 HVN/前极值/整数关（1006/1008/2006）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑨ 未回访区 / 缺口</b></span><span class="fill"></span><span class="hint">20根未触碰区=有效缺口；LVN=快速穿越带（1007/2006）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>C · 棒组 <span class="g-meta">当日K线本身 · 约3 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑩ 当日三问 + 两度量</b></span><span class="fill"></span><span class="hint">谁赢/战场在哪/干净吗；实体占比、收盘位置（0001）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑪ 双K / 数腿 / 事件词</b></span><span class="fill"></span><span class="hint">H几窗口；今日可命名的事件（SC/ST/Spring/SOS…）（0002/2002）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑫ 三推计数</b></span><span class="fill"></span><span class="hint">若有：第几推、幅度对比（1005）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>D · 确认组 <span class="g-meta">约2 min</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑬ 量能判词（四象限）</b></span><span class="fill"></span><span class="hint">今日量÷20日均量；和谐/吸收/真空/枯竭哪个象限（0005/2005）</span></div>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑭ 三镜头协同</b></span><span class="fill"></span><span class="hint">日/4h/1h 判词一致吗（0006）</span></div>
+</div>
+
+<div class="rv-group">
+  <h3>E · 输出组 <span class="g-meta">约3 min · 禁止预测，只写条件</span></h3>
+  <div class="rv-item"><span class="chk">☐</span><span class="q"><b>⑮ 明日三写预案</b></span><span class="fill"></span><span class="hint">坐标A放量接受→顺做至磁铁B；乏力拒绝→响应回归；穿越真空→不追（2007）</span></div>
+</div>
+
+<div class="rv-group rv-log">
+  <h3>事件日志 <span class="g-meta">发生了才填 · 类型见错误七分类表</span></h3>
+  <table>
+    <tr><td>事件类型</td><td>结构事件（BC/SC/Spring/UTAD/SOS/SOW/确认）/ 磁铁抵达 / 量枯竭 / 接受或拒绝 / 失败突破①–⑤</td></tr>
+    <tr><td>位置与次数</td><td></td></tr>
+    <tr><td>我的响应</td><td></td></tr>
+    <tr><td>正确响应应为</td><td></td></tr>
+  </table>
+</div>
+
+<div class="rv-group">
+  <h3>错误七分类 <span class="g-meta">月度统计占比 → 下月训练重点（0007 + Phase 1/2 增补）</span></h3>
+  <table>
+    <tr><td>形状错</td><td>影线归属搞反、吞没没包两端、Pin参数不过线</td><td>0001/0002</td></tr>
+    <tr><td>位置错</td><td>半空形态当信号、整数关没标、突破判定用影线</td><td>0003</td></tr>
+    <tr><td>结构错</td><td>回调读成反转、区间中央开仓、BOS分寸不对</td><td>0004</td></tr>
+    <tr><td>量能错</td><td>缩量突破当真、高潮量当启动量、跨市场比绝对量</td><td>0005</td></tr>
+    <tr><td>周期错</td><td>用1h信号逆日线重仓、止损放错级别</td><td>0006</td></tr>
+    <tr><td>紧度错</td><td>止损单位与形态单位不匹配、斜率衰减视而不见</td><td>1002/1011</td></tr>
+    <tr><td><b>地形错</b>（新增）</td><td>标签先于证据（未确认就喊吸筹/派发）、把单一剖面当预测、真空带里追价、磁铁位前逆势接刀、地形图三个月不更新</td><td>2002/2003/2006/2007</td></tr>
+  </table>
+</div>
+
+<div class="note no-print">
+<b>使用说明：</b>①打印本页或抄写结构；②状态组+地形组都是"确认或更新"——地形是慢变量（W2：context 不常变），没变就打勾过；③地图组画在行情图上（剖面/区域/磁铁——画法见 <a href="../lessons/2007-terrain-map.html">2007 地形图课</a>与 <a href="../lessons/2006-volume-profile.html">2006 剖面课</a>），表里只记结论；④三写预案取代双写预案——多写的那一条"穿越真空不追"专治追价冲动；⑤事件日志新增结构事件类型（BC/SC/Spring/UTAD/SOS/SOW）——它们是月度统计里"地形错"的原料；⑥每周日加一次周复盘（20 min）：省界（分段）变了吗？哪面墙被接受了？本周最大一个错误归哪类？
+</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 2 主页</a>
+    <a href="glossary.html">术语手册</a>
+    <a href="../lessons/2008-graduation-terrain.html">2008 毕业课</a>
+    <a href="https://chevywang.github.io/kbar/phase-1/reference/review-template.html">复盘 2.0（Phase 1 版）</a>
+  </div>
+  <div class="citations">设计依据：《认知天性》（提取练习/合意困难——分层控制提取深度）· 复盘 2.0 模板（Phase 1）· Villahermosa《Wyckoff 2.0》Part 7（context 慢变量/zone/scenario）· Dalton《Mind Over Markets》Ch.3（initiative/responsive）· Phase 2 八课（2001–2008 各维度）。</div>
+</footer>
+
+</body>
+</html>
