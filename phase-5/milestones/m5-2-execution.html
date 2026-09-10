@@ -33,6 +33,7 @@ button.mbtn.dark { background: var(--ink); color: #fff; }
   <h1>执行协议：归因、按因复出与证据分流</h1>
   <p class="sub">12 道情境题：回撤四线归因（可并存）、按因复出（资金回本不算）、关键违规不可抵消、执行分与系统有效性分离、tilt 纠偏失败的处理、检查单与证据、自报记录的身份边界、课程三态。包间场景换数字换情境，口径与修订后的 5002/5004/5005/5006 一致。<b>通过＝「M5.2 执行协议知识任务通过」；不构成实盘或加仓授权。</b></p>
 </header>
+<p style="margin:1rem"><a href="../mastery.html">统一能力验收与学习档案（与本页专门实作分别记录）</a></p>
 
 <details class="lesson-map">
   <summary><b>教学卡</b></summary>
@@ -55,10 +56,11 @@ button.mbtn.dark { background: var(--ink); color: #fff; }
   <div class="citations">情境题确定性生成（同包重做=同题练习）；口径与 5002/5004/5005/5006/5007 修订版课文一致（四线归因、按因必选复出、资金收复不作恢复条件、三态边界）。</div>
 </footer>
 
+<script src="../assets/learning-store.js"></script>
 <script>
 function rot(a, k) { k = ((k % a.length) + a.length) % a.length; return a.slice(k).concat(a.slice(0, k)); }
 function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
-var LS = store(), KEY = 'kbar-answer::M5.2::';
+var LS = window.KbarLearningStore.storage, KEY = 'kbar-answer::M5.2::';
 function loadRec(p) { if (!LS) return { attempts: [] }; try { return JSON.parse(LS.getItem(KEY + p) || '') || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
 function saveRec(p, r) { if (LS) { try { LS.setItem(KEY + p, JSON.stringify(r)); } catch (e) {} } }
 var PACKS = [{ id: 'A', role: '首次验收' }, { id: 'B', role: '复考换情境' }, { id: 'C', role: '备用' }, { id: 'D', role: '备用二' }];
@@ -90,42 +92,42 @@ function buildQuestions(pid) {
     answer: 2,
     explain: '三态边界：课程任务通过／自报实践记录／课程外资金决定。课程页面与判词永不出现"允许实盘/推荐仓位"。' });
 
-  Q.push({ key: false, q: 'tilt 信号灯亮起，你走了身体打断与四步，但手仍然点了下单。正确动作：',
+  Q.push({ key: true, q: 'tilt 信号灯亮起，你走了身体打断与四步，但手仍然点了下单。正确动作：',
     options: ['既然单子进了就拿着', '立即停止开新风险；已有仓位按预案保护（收紧保护或按规则退出），事后复盘"纠偏失败"并升级预防', '加倍把损失赚回', '删除记录当没发生'],
     answer: 1,
     explain: '5007：识别后无法按计划行动=纠偏失败路径——停开新风险、保护既有风险、复盘升级；不制造真实亏损也能演练。' });
 
-  Q.push({ key: false, q: '执行检查单 60 秒内全部打勾、耗时达标。但其中"止损单已挂"一栏你并没有真的挂单。放行判定：',
+  Q.push({ key: true, q: '执行检查单 60 秒内全部打勾、耗时达标。但其中"止损单已挂"一栏你并没有真的挂单。放行判定：',
     options: ['打勾了就算过，流程完成', '不放行——全勾但证据缺失不放行；检查单核对的是证据不是速度', '下次注意即可', '速度达标可以抵消'],
     answer: 1,
     explain: '5005：核对≤30 秒不能抵消证据缺失；勾选必须有对应事实（挂单回执/委托号）。' });
 
-  Q.push({ key: false, q: '你导入了自己 ' + mon + '的 30 笔实盘记录。课程工具会做什么、不做什么：',
+  Q.push({ key: true, q: '你导入了自己 ' + mon + '的 30 笔实盘记录。课程工具会做什么、不做什么：',
     options: ['验证真实性并认证我的执行水平', '只做格式与规则一致性检查（字段/公式/版本），不验证真实性、不构成认证', '自动给我升级仓位档', '按盈亏排名给出建议'],
     answer: 1,
     explain: '自报记录=一致性检查（5006）；真实性无法由静态页面认证。盈亏只作描述。' });
 
-  Q.push({ key: false, q: '回撤期你连续冒出"把止损放宽到 12% 这几笔都活了"的念头。协议动作：',
+  Q.push({ key: true, q: '回撤期你连续冒出"把止损放宽到 12% 这几笔都活了"的念头。协议动作：',
     options: ['小改一下试试', '参数修改权冻结——想法记进 v2 提案栏排队，回撤结束后按版本流程评估', '立即改，反正就这一笔', '问群友'],
     answer: 1,
     explain: '5004 ③冻结条款：水下任何参数调整都在制造无回测的新系统；提案排队、事后按流程处置。' });
 
-  Q.push({ key: false, q: '信号连续 ' + [4, 5, 6, 7][pi] + ' 笔未触发（踏空），你按规则空仓等待中。月末复盘正确表述：',
+  Q.push({ key: true, q: '信号连续 ' + [4, 5, 6, 7][pi] + ' 笔未触发（踏空），你按规则空仓等待中。月末复盘正确表述：',
     options: ['错过了行情，执行失误', '合规的"没有交易"——机会分母里记为"未触发/资金不足拒绝"，与盈亏分开统计', '下月放宽触发条件补回来', '踏空=亏损，计入回撤'],
     answer: 1,
     explain: '机会分母包含未成交/拒绝（X-05 反例家族）；"充分论证观望"可以合格，不因没凑单判落后。' });
 
-  Q.push({ key: false, q: '一笔交易：决策质量记分卡满分，止损被打，−1R。另一笔：挪了止损扛回，+2R。记账与结论：',
+  Q.push({ key: true, q: '一笔交易：决策质量记分卡满分，止损被打，−1R。另一笔：挪了止损扛回，+2R。记账与结论：',
     options: ['+2R 那笔贡献大，整体正确', '前者=合格过程×不利结果（正常）；后者=违规×有利结果（事故）——分账记录，后者进纠偏流程', '都算赢', '只看净额'],
     answer: 1,
     explain: '决策质量与盈亏脱钩（5001/5002）；违规盈利是间歇性强化（22% 回本诱惑），不改变违规性质。' });
 
-  Q.push({ key: false, q: '回撤调查：成本台账干净、执行零违规、品种波动结构也无明显变化——三条线都查不出原因。协议把它归为：',
+  Q.push({ key: true, q: '回撤调查：成本台账干净、执行零违规、品种波动结构也无明显变化——三条线都查不出原因。协议把它归为：',
     options: ['正常方差，继续原仓位', '"未知"是合法状态：维持低剂量继续记录，直到证据变化；不允许凭"感觉是方差"恢复满档', '系统失效，立即弃用', '随机换品种再试'],
     answer: 1,
     explain: '5004 ④+§05：未知≠正常方差。0.5% 维持+连续 20 笔观察或新证据明确，才谈恢复。' });
 
-  Q.push({ key: false, q: '课程页面/导出里，以下哪种状态组合会被如实分开显示：',
+  Q.push({ key: true, q: '课程页面/导出里，以下哪种状态组合会被如实分开显示：',
     options: ['"课程核心任务通过"与"开放报告已自评"合并为"已掌握"', '"AI 反馈已附"自动转为"执行已认证"', '课程任务通过 / 自报记录一致性已检查 / 开放自评已提交 ——三种状态分开显示，互不冒充', '全部合成一个总分'],
     answer: 2,
     explain: '三态（+AI 可选态）分开显示是课程纪律（主计划§4.3）；任何单一总分都会掩盖关键事实错误。' });
@@ -134,7 +136,7 @@ function buildQuestions(pid) {
 }
 
 var cur = 'A', quiz = null, qi = 0, picks = null;
-function packState(p) { var r = loadRec(p).attempts; return r.length ? (r[r.length - 1].passed ? '已通过' : '未通过（' + r[r.length - 1].score + '/12）') : '未开始'; }
+function packState(p) { var r = loadRec(p).attempts; if(r.some(function(a){return a.passed && !a.repeated;}))return '已通过'; return r.length ? (r[r.length-1].practicePassed ? '练习全对，待独立验证' : '未通过（'+r[r.length-1].score+'/12）') : '未开始'; }
 function renderTabs() {
   document.getElementById('packtabs').innerHTML = PACKS.map(function (p) {
     var st = packState(p.id), ok = st === '已通过';
@@ -144,7 +146,7 @@ function renderTabs() {
   document.getElementById('statusline').innerHTML = PACKS.map(function (p) { return '<span class="msb' + (packState(p.id) === '已通过' ? ' ok' : '') + '">' + p.id + '：' + packState(p.id) + '</span>'; }).join('');
 }
 function start() {
-  renderTabs(); quiz = buildQuestions(cur); qi = 0; picks = [];
+  renderTabs(); quiz = buildQuestions(cur); var draft=loadRec(cur).draft; picks=draft&&Array.isArray(draft.picks)?draft.picks:[]; qi=picks.length;
   document.getElementById('verdict').innerHTML = '';
   renderQ();
 }
@@ -157,6 +159,7 @@ function renderQ() {
     o.onclick = function () {
       if (picks[qi] != null) return;
       picks[qi] = parseInt(o.dataset.i, 10);
+      var draftRec=loadRec(cur);draftRec.draft={picks:picks.slice(),savedAt:new Date().toISOString()};saveRec(cur,draftRec);
       var right = picks[qi] === q.answer;
       el.querySelectorAll('.q-opt').forEach(function (o2, j) { o2.classList.add('dim'); if (j === q.answer) o2.classList.add('right-hint'); });
       o.classList.remove('dim'); o.classList.add(right ? 'picked-right' : 'picked-wrong');
@@ -172,14 +175,16 @@ function finish() {
   var correct = quiz.map(function (q, i) { return picks[i] === q.answer; });
   var score = correct.filter(Boolean).length;
   var keysOk = quiz.every(function (q, i) { return !q.key || correct[i]; });
-  var passed = score >= 10 && keysOk;
+  var passed = score === quiz.length && keysOk;
   var r = loadRec(cur);
-  r.attempts.push({ attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), picks: picks, correct: correct, score: score, keysPassed: keysOk, passed: passed });
+  var repeat = r.attempts.length > 0;
+  r.draft = null;
+  r.attempts.push({ attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), picks: picks, correct: correct, score: score, keysPassed: keysOk, passed: passed && !repeat, practicePassed: passed, repeated: repeat });
   saveRec(cur, r);
-  document.getElementById('verdict').innerHTML = '<div class="verdict"><b>' + (passed ? '✓ M5.2 执行协议知识任务通过（' + cur + ' 包）' : '✗ 未通过（' + cur + ' 包）') + '</b><br>得分 ' + score + '/12（通过线 ≥10）；关键项 ' + (keysOk ? '全过' : '<b style="color:#d33a2c">有未过（不可抵消）</b>') + '。' +
+  document.getElementById('verdict').innerHTML = '<div class="verdict"><b>' + (passed && !repeat ? '✓ M5.2 执行协议知识任务通过（' + cur + ' 包）' : (repeat ? '熟悉材料练习，不新增能力通过（' : '✗ 未通过（') + cur + ' 包）') + '</b><br>得分 ' + score + '/12（全部核心项12/12）；关键项 ' + (keysOk ? '全过' : '<b style="color:#d33a2c">有未过（不可抵消）</b>') + '。' +
     (passed ? '通过范围：情境知识任务——实际执行看你的记录（自报另计）；真实资金是课程外个人决定。' : '错题回看对应课节，再用 ' + (cur === 'A' ? 'B' : cur === 'B' ? 'C' : 'A') + ' 包复考。首次成绩已保留。') +
     '<div style="margin-top:.5rem"><button class="mbtn" id="redo">重做本包（练习记录）</button></div></div>';
-  document.getElementById('redo').onclick = start;
+  document.getElementById('redo').onclick = function(){var rec=loadRec(cur);rec.draft=null;saveRec(cur,rec);start();};
   renderTabs();
 }
 document.getElementById('export-btn').onclick = function () {

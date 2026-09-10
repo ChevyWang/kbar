@@ -50,7 +50,7 @@
     var yO = y(o), yC = y(c), yH = y(h_), yL = y(l);
     var bodyTop = Math.min(yO, yC), bodyH = Math.max(Math.abs(yC - yO), 3);
 
-    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
     s += '<line x1="' + cx + '" y1="' + yH + '" x2="' + cx + '" y2="' + bodyTop + '" stroke="' + col + '" stroke-width="2"/>';
     s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + yL + '" stroke="' + col + '" stroke-width="2"/>';
     s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH +
@@ -89,7 +89,7 @@
     var bodyTop = Math.min(yO, yC), bodyH = Math.abs(yC - yO);
     var col = bull ? UP : DOWN;
 
-    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
     // 价格阶梯（右缘）
     [[k.h, '最高 ' + k.h], [Math.max(k.o, k.c), bull ? '收 ' + k.c : '开 ' + k.o], [Math.min(k.o, k.c), bull ? '开 ' + k.o : '收 ' + k.c], [k.l, '最低 ' + k.l]].forEach(function (t) {
       s += '<line x1="' + mainX + '" y1="' + y(t[0]) + '" x2="' + (mainX + 70) + '" y2="' + y(t[0]) + '" stroke="' + FAINT + '" stroke-width="1" stroke-dasharray="3 4"/>';
@@ -133,7 +133,7 @@
     var range = (hi - lo) || 1;
     var step = w / n, bw = Math.min(step * 0.52, 30);
     var y = function (p) { return pad + (1 - (p - lo) / range) * (h - pad * 2 - capH); };
-    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
     candles.forEach(function (k, i) {
       var bull = k.c >= k.o, col = bull ? UP : DOWN;
       var cx = step * (i + 0.5);
@@ -207,7 +207,7 @@
     var y = function (p) { return padT + (1 - (p - lo) / range) * plotH; };
     var step = plotW / layoutN, bw = Math.min(step * 0.6, 26);
 
-    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
 
     // 顶部阶段带（Wyckoff A–E）：{i1,i2,label,color}，i 为 0-based 棒索引
     phases.forEach(function (P, idx) {
@@ -398,7 +398,7 @@
     var x = function (i) { return padL + plotW * (i + 0.5) / n; };
     var step = plotW / n, bw = Math.min(step * 0.62, 22);
 
-    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
 
     (spec.ann || []).forEach(function (a) {
       if (a.t !== 'phase') return;
@@ -492,7 +492,26 @@
       (opts.note ? '<div class="cmp-verdict"><b>判别点：</b>' + opts.note + '</div>' : '');
   }
 
-  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, UP: UP, DOWN: DOWN };
+  function setPalette(palette) {
+    var international = palette === 'international', oldUp=UP,oldDown=DOWN;
+    UP=international?'#1a7f37':'#d33a2c';DOWN=international?'#d33a2c':'#1a7f37';
+    if(typeof document!=='undefined' && UP!==oldUp) document.querySelectorAll('svg[data-kbar-chart] [fill],svg[data-kbar-chart] [stroke]').forEach(function(el){
+      ['fill','stroke'].forEach(function(attr){var v=el.getAttribute(attr);if(v===oldUp)el.setAttribute(attr,UP);else if(v===oldDown)el.setAttribute(attr,DOWN);});
+    });
+    if(window.Kbar){window.Kbar.UP=UP;window.Kbar.DOWN=DOWN;}
+    try{window.localStorage.setItem('kbar-palette',international?'international':'cn');}catch(e){}
+    return international?'international':'cn';
+  }
+  try { if(window.localStorage.getItem('kbar-palette')==='international'){UP='#1a7f37';DOWN='#d33a2c';} } catch(e){}
+  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, setPalette:setPalette, UP: UP, DOWN: DOWN };
+  if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('DOMContentLoaded',function(){
+    if(document.getElementById('kbar-palette-toggle'))return;
+    var bar=document.createElement('div'),button=document.createElement('button');
+    button.id='kbar-palette-toggle';button.type='button';button.style.cssText='font:inherit;padding:.4rem .7rem;cursor:pointer';
+    var update=function(){button.textContent=UP==='#d33a2c'?'当前红涨绿跌 · 切换绿涨红跌':'当前绿涨红跌 · 切换红涨绿跌';};
+    button.onclick=function(){setPalette(UP==='#d33a2c'?'international':'cn');update();};update();bar.appendChild(button);
+    var note=document.createElement('span');note.textContent=' 阳线空心、阴线实心；配色不改变方向与评分。';bar.appendChild(note);bar.style.cssText='font:13px/1.7 sans-serif;margin:1rem 0';document.body.insertBefore(bar,document.body.firstChild);
+  });
 })();
 
 

@@ -11,8 +11,9 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 5 执行 · 第 5003 课 · 学术主课</div>
   <h1>认知偏差目录与个人弱点画像</h1>
-  <p class="sub">“扛单”第一次获得了可证伪的解释链：前景理论（Kahneman &amp; Tversky 1979）说清了<b>为什么</b>亏 1000 元比赚 1000 元疼两倍多、为什么人在亏损区间变成赌徒；处置效应（Shefrin &amp; Statman 1985 命名，Odean 1998 用一万个账户证实）说清了<b>大家真的这么干</b>——卖出盈利仓的几率是卖出亏损仓的 1.5 倍，而卖出的赢家此后一年比留下的输家多涨 3.4%。本课把偏差从“性格缺陷”改写成“人性默认设置 + 可安装的防线”，交付你的个人弱点画像。本课约 74 分钟。</p>
+  <p>前景理论和处置效应提供候选解释，不是个人诊断。λ≈2.25来自1992累积前景理论特定实验拟合，并非每个人痛感的常数。先记录机会分母、既定退出政策及替代解释，再提出一个行为干预并在新情景复测；可使用模拟日志，不需实盘凑情绪。</p>
 </header>
+<aside class="callout"><b>版本与验证范围（2026-09-10复核）</b>：现行研究实现 trader1-v2.1 / ohlc-gross-reference-v1 为33品种日线毛R参照：594笔、胜率46.1%、均值+0.0908R；剔上证指数576笔、+0.0956R。旧v2.0的732笔混入5分钟且有退出索引错误，相关旧统计仅供审计，不背书现行规则。历史图例与BT30-v1均为已揭晓算术材料。<b>主教学轨 cn-mainboard-cash-v1</b>为普通主板现金只多，按订单回报、100股买入单位、T+1、现金、成本和未知成交独立验收；研究参照不模拟这些约束，不是可交易净收益或账户曲线。全部风险百分比仅为指定教学情景参数，无默认实盘额度。</aside>
 
 <div class="lesson-map">
   <div class="lm-title">本课地图</div>
@@ -32,7 +33,7 @@
 <table>
 <tr><th>形状</th><th>含义</th><th>交易翻译</th></tr>
 <tr><td><b>参照点依赖</b></td><td>得失相对参照点（常是成本价）衡量，不是相对总财富</td><td>浮亏 5% 的痛以<b>你的成本价</b>为原点——市场不知道你的成本</td></tr>
-<tr><td><b>损失厌恶（λ≈2.25）</b></td><td>等额损失的痛约是等额快乐的 2.25 倍</td><td>赚 1R 的爽 ≈ 亏 0.44R 的痛——所以“落袋为安”和“不肯认亏”同源</td></tr>
+<tr><td><b>损失厌恶（λ≈2.25）</b></td><td>1992特定实验的损失厌恶参数估计；不直接测量个人痛感</td><td>不能把拟合参数换算为个人风险额度；卖盈留亏也可能符合预写规则</td></tr>
 <tr><td><b>亏损区间风险寻求</b></td><td>确定的小亏 vs 可能翻盘的赌——人在亏损侧选赌</td><td>“再等等也许回来”是价值函数的形状，不是你的性格</td></tr>
 </table>
 <p>第三个形状是全部课程的心理学枢纽：<b>止损单 = 用规则预先替你做“确定的小亏”选择</b>，因为到了亏损区间，那个会做理性选择的你已经被价值函数接管了。这也是为什么 4003 课要求止损在入场<b>前</b>写死——不是流程洁癖，是在清醒状态下替未来的自己签字。</p>
@@ -62,8 +63,8 @@
 <table>
 <tr><th>偏差</th><th>盘中声音</th><th>学术锚</th><th>防线（全部是流程，不是意志力）</th></tr>
 <tr><td><b>处置效应</b></td><td>“再等等，它回来了就不用认亏了”</td><td>SS1985 / Odean1998</td><td>止损单下单时挂好（清醒时签字）；每周看一次 18 笔研究的三张面孔</td></tr>
-<tr><td><b>损失厌恶</b></td><td>浮亏的痛让人不敢看盘、不敢按信号入场</td><td>KT1979 λ≈2.25</td><td>仓位按 1% 定（痛感≈0.44R 级）；跳过信号也要记录并说明理由</td></tr>
-<tr><td><b>过度自信</b></td><td>连赢后“我看得很准”，加仓</td><td>KT1979 确定性效应一系</td><td>升仓只认 30 笔统计（4007）；连赢期仓位锁死</td></tr>
+<tr><td><b>损失厌恶</b></td><td>浮亏的痛让人不敢看盘、不敢按信号入场</td><td>Tversky–Kahneman1992参数</td><td>风险额度不由心理拟合值决定；跳过信号也要记录并说明理由</td></tr>
+<tr><td><b>过度自信</b></td><td>连赢后“我看得很准”，加仓</td><td>KT1979 确定性效应一系</td><td>不由30笔自动升仓（4007）；连赢期仓位锁死</td></tr>
 <tr><td><b>近因效应</b></td><td>最近三笔的权重 &gt; 过去三十笔</td><td>KT 可得性一系</td><td>评价一律 30 笔滚动窗口；复盘先看表再看记忆</td></tr>
 <tr><td><b>锚定</b></td><td>“它到过 39.88，回到那我就走”</td><td>KT1974 锚定实验</td><td>出场位由政策（2R/跟踪/20根）给出——入场价不配出现在离场决策里</td></tr>
 <tr><td><b>确认偏误</b></td><td>持仓后只读利多、把反证读成洗盘</td><td>经典实验（Wason 一系）</td><td>持仓检查单强制列“杀死论点的三个条件”（5005 清单第 6 项）</td></tr>
@@ -89,8 +90,8 @@
     <a href="../reference/toolkit.html">执行工具包</a>
   </div>
   <p><b>主资源（本课 grounded on）：</b>Kahneman &amp; Tversky (1979)《Prospect Theory》Econometrica 47(2)；Shefrin &amp; Statman (1985) JF 40(3)；Odean (1998) JF 53(5)；训练者一号止损/时间出场研究（p5_extras.py）；信念三部曲与态度调查表 = Douglas Ch.8–10 + 书末 Attitude Survey（16 题自评）。>
-  <div class="citations"><b>延伸阅读：</b>Douglas《交易心理分析》Ch.5–6（认知动力：信念如何扭曲所见——偏差目录的机制层，学术版已覆盖，按需深读）。<b>引用：</b><a href="https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Behavioral_Decision_Theory/Kahneman_Tversky_1979_Prospect_theory.pdf">KT 1979 原文 PDF（MIT 托管）</a> · <a href="https://www.jstor.org/stable/2327802">Shefrin-Statman 1985（JSTOR）</a> · <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/0022-1082.00072">Odean 1998（Wiley）</a>。PGR/PLR 与 3.4% 为原文数字；λ≈2.25 为 KT 原文估计。</div>
-</footer>
+  <div class="citations"><b>延伸阅读：</b>Douglas《交易心理分析》Ch.5–6（认知动力：信念如何扭曲所见——偏差目录的机制层，学术版已覆盖，按需深读）。<b>引用：</b><a href="https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Behavioral_Decision_Theory/Kahneman_Tversky_1979_Prospect_theory.pdf">KT 1979 前景理论原文 PDF（MIT 托管）</a> · <a href="https://www.jstor.org/stable/2327802">Shefrin-Statman 1985（JSTOR）</a> · <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/0022-1082.00072">Odean 1998（Wiley）</a>。PGR/PLR 与 3.4% 为原文数字；λ≈2.25出自Tversky与Kahneman 1992累积前景理论特定实验拟合，不是每个人的固定倍数。</div>
+<p><a href="https://doi.org/10.1007/BF00122574">Tversky &amp; Kahneman (1992)，累积前景理论原论文</a>：参数适用范围应与1979理论分开引用。</p></footer>
 
 <script src="../assets/candles.js"></script>
 <script src="../assets/quiz.js"></script>
