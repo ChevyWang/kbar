@@ -301,7 +301,7 @@
       s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="1.7"/>';
       s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 7) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
-      if (opts.hl === i && (reveal === n || asOf != null)) {
+      if (opts.hl === i && i < reveal) {
         var uy = h - capH + 14;
         s += '<line x1="' + (cx - bw / 2) + '" y1="' + uy + '" x2="' + (cx + bw / 2) + '" y2="' + uy + '" stroke="' + INK + '" stroke-width="2.5"/>';
         s += '<polygon points="' + cx + ',' + (uy - 4.5) + ' ' + (cx - 4.5) + ',' + (uy + 0.5) + ' ' + (cx + 4.5) + ',' + (uy + 0.5) + '" fill="' + INK + '"/>';
@@ -340,7 +340,9 @@
     return s;
   }
 
-  /* ---------- v2：交互式逐根揭示训练器 ---------- */
+  /* ---------- v2：交互式逐根揭示训练器 ----------
+   * opts 增补（v6）：notes:[每根解说（HTML），索引=已揭示根数-1]，prompt:[无解说根的默认提示]
+   *                 hl 未显式给出时，当前根自动带"下划线+三角"标记（随回放移动） */
   function playback(sel, candles, opts) {
     opts = opts || {};
     var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
@@ -350,10 +352,16 @@
 
     function draw() {
       var o = {};
-      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'asOf' && key !== 'reveal') o[key] = opts[key];
+      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'asOf' && key !== 'reveal' && key !== 'notes' && key !== 'prompt') o[key] = opts[key];
       if (live) o.asOf = k - 1; else o.reveal = k;
+      if (opts.hl == null) o.hl = k - 1;                 // 当前根=标记根（全站统一"下划线+三角"）
+      var note = '';
+      if (opts.notes) {
+        var txt = opts.notes[k - 1] || opts.prompt || '';
+        if (txt) note = '<div class="pb-note" style="max-width:' + ((o.w || 640) - 20) + 'px;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + txt + '</div>';
+      }
       root.innerHTML =
-        '<div class="pb-chart">' + chart(candles, o) + '</div>' +
+        '<div class="pb-chart">' + chart(candles, o) + '</div>' + note +
         '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + k + ' / ' + candles.length + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
         '<button type="button" class="pb-btn" data-a="prev">← 退一根</button>' +
         '<button type="button" class="pb-btn pb-next" data-a="next">下一根 →</button>' +
@@ -363,6 +371,42 @@
       root.querySelector('[data-a="next"]').onclick = function () { k = Math.min(candles.length, k + 1); draw(); };
       root.querySelector('[data-a="prev"]').onclick = function () { k = Math.max(1, k - 1); draw(); };
       root.querySelector('[data-a="reset"]').onclick = function () { k = 1; draw(); };
+    }
+    draw();
+  }
+
+  /* ---------- v6：实例库幻灯片（真实K线图逐张切换）----------
+   * slides: [{title, data, opts(chart 其余选项), note}]   note 支持简单 HTML
+   * opts: {w,h, selfTest:true → 判词先遮住，读图后点"揭晓"}
+   * 复用 course.css 的 pb-btn/pb-count 按钮样式。 */
+  function gallery(sel, slides, opts) {
+    opts = opts || {};
+    var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
+    if (!root || !slides || !slides.length) return;
+    var i = 0, revealed = !opts.selfTest;
+    var w = opts.w || 640, h = opts.h || 300;
+    function draw() {
+      var sl = slides[i];
+      var o = { w: w, h: h, yLabels: true };
+      for (var key in (sl.opts || {})) o[key] = sl.opts[key];
+      var html = '<div class="gal-title" style="font-family:var(--sans);font-weight:700;font-size:.95rem;margin:.4rem 0 .2rem;text-align:center">' + sl.title + '</div>' +
+        '<div class="pb-chart">' + chart(sl.data, o) + '</div>';
+      if (revealed && sl.note) {
+        html += '<div style="max-width:' + (w - 20) + 'px;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + sl.note + '</div>';
+      } else if (!revealed) {
+        html += '<div style="text-align:center;margin-top:.6rem"><button type="button" class="pb-btn" data-a="reveal">先自己读图 · 再点这里揭晓判词</button></div>';
+      }
+      html += '<div class="pb-ctrl"><button type="button" class="pb-btn" data-a="prev">← 上一例</button>' +
+        '<span class="pb-count">' + (i + 1) + ' / ' + slides.length + '</span>' +
+        '<button type="button" class="pb-btn" data-a="next">下一例 →</button></div>';
+      root.innerHTML = html;
+      var prev = root.querySelector('[data-a="prev"]'), next = root.querySelector('[data-a="next"]');
+      prev.disabled = i <= 0;
+      next.disabled = i >= slides.length - 1;
+      prev.onclick = function () { i--; revealed = !opts.selfTest; draw(); };
+      next.onclick = function () { i++; revealed = !opts.selfTest; draw(); };
+      var rv = root.querySelector('[data-a="reveal"]');
+      if (rv) rv.onclick = function () { revealed = true; draw(); };
     }
     draw();
   }
@@ -513,7 +557,7 @@
     return international?'international':'cn';
   }
   try { if(window.localStorage.getItem('kbar-palette')==='international'){UP='#1a7f37';DOWN='#d33a2c';} } catch(e){}
-  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, setPalette:setPalette, UP: UP, DOWN: DOWN };
+  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, gallery: gallery, setPalette:setPalette, UP: UP, DOWN: DOWN };
   if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('DOMContentLoaded',function(){
     if(document.getElementById('kbar-palette-toggle'))return;
     var bar=document.createElement('div'),button=document.createElement('button');
