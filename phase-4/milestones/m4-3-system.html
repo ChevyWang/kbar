@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M4.3 · 系统与验证 — 里程碑验收 — K线训练营 Phase 4</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.pack-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0; font-family: var(--sans); }
+.pack-tab { border: 1.5px solid var(--line); border-radius: 10px; padding: .6rem 1rem; background: #fff; cursor: pointer; text-align: left; min-width: 190px; }
+.pack-tab.active { border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.pack-tab .pt-state { font-size: .74rem; font-weight: 700; display: block; margin-top: .2rem; }
+.q-card { border: 1.5px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1rem 0; background: #fff; font-family: var(--sans); }
+.q-card .q-text { font-size: .97rem; font-weight: 600; margin: .3rem 0 .7rem; line-height: 1.65; }
+.q-opt { display: block; border: 1.5px solid var(--line); border-radius: 8px; padding: .5rem .9rem; margin: .45rem 0; cursor: pointer; background: var(--paper); font-size: .93rem; line-height: 1.55; }
+.q-opt.picked-right { border-color: #1a7f37; background: #eef7ee; }
+.q-opt.picked-wrong { border-color: #d33a2c; background: #fdeeec; }
+.q-opt.right-hint { border-color: #1a7f37; border-style: dashed; }
+.q-opt.dim { opacity: .55; cursor: default; }
+.q-explain { border-top: 1px dashed var(--line); margin-top: .7rem; padding-top: .6rem; font-size: .88rem; line-height: 1.7; }
+.key-badge { display: inline-block; font-size: .7rem; border: 1px solid #b3541e; color: #b3541e; border-radius: 99px; padding: 0 .5rem; margin-left: .4rem; }
+.verdict { border: 2px solid var(--ink); border-radius: 12px; padding: 1rem 1.3rem; margin: 1.2rem 0; font-family: var(--sans); background: var(--note-bg); }
+.case-card { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin: .4rem 0 1rem; line-height: 1.7; }
+button.mbtn { font-family: var(--sans); font-size: .9rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .45rem 1.05rem; cursor: pointer; background: #fff; margin: .3rem .5rem .3rem 0; }
+button.mbtn.dark { background: var(--ink); color: #fff; }
+.msb { display: inline-block; font-size: .74rem; border-radius: 99px; padding: .05rem .6rem; border: 1px solid var(--line); margin-right: .4rem; }
+.msb.ok { border-color: #1a7f37; color: #1a7f37; font-weight: 700; }
+.msb.no { border-color: #d33a2c; color: #d33a2c; }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 4 系统 · 里程碑验收 M4.3（代表任务 5/6）</div>
+  <h1>系统与验证：规则、R 与证据分层</h1>
+  <p class="sub">12 道结构化题：R 算术与仓位重算、版本纪律（改一条规则=新系统）、相等极点与确认不足的边界、订单语义与跳空/T+1 现实约束、并行信号的预注册顺序、"60 日新高"的比较窗、图表上的已确认摆动识别、以及回测结果到底能支持什么。<b>通过＝「M4.3 规则与验证知识任务通过」——不证明任何系统有正期望，更不是实盘授权。</b></p>
+</header>
+
+<details class="lesson-map">
+  <summary><b>教学卡</b></summary>
+  <ol>
+    <li><b>先修</b>：4001（Setup 三标准）、4002（订单）、4003（止损现实）、4006/4007（R 与仓位）、4009（一页纸与版本）、4010（回测协议）。</li>
+    <li><b>评分</b>：≥10/12 且 4 道关键项（★：R 重算、版本纪律、订单语义、比较窗/未来信息）全对。关键错项不可被总分抵消。</li>
+    <li><b>成绩范围</b>：知识任务通过≠系统被验证；真实系统的证据要走 4010 证据计划（预注册、未见窗口、成本台账）。</li>
+    <li><b>包角色</b>：A 首次 / B 复考（换数字换窗）/ C 备用。</li>
+  </ol>
+</details>
+
+<div class="pack-tabs" id="packtabs"></div>
+<div id="workspace">
+  <div class="case-card" id="casecard"></div>
+  <div id="chart"></div>
+  <div id="quiz"></div>
+  <div id="verdict"></div>
+  <div class="state-line" id="statusline"></div>
+  <div style="margin:.6rem 0 1.4rem"><button class="mbtn" id="export-btn" type="button">导出 M4.3 档案（JSON）</button></div>
+</div>
+
+<footer class="course">
+  <div class="nav"><a href="../index.html">← Phase 4 主页</a><a href="../lessons/4010-backtest-graduation.html">回到 4010</a></div>
+  <div class="citations">图表数据：instancelib 未曝光日线窗（契约 private/m43-cases.json）；题目确定性生成（同包重做=同题练习记录）。口径与 4001/4002/4003/4009/4010 课文一致。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script>
+var WINDOWS = {"A":{"sym":"立讯精密","range":["2023-01-03","2023-04-03"],"bars":[[30.9112,31.3901,30.2564,30.8037,42583625],[30.491,30.5105,27.7253,27.7253,182030574],[28.3996,28.7514,27.7253,28.7319,147581393],[28.0967,28.5267,27.7253,28.1944,91100438],[28.1748,28.6146,28.1748,28.4289,57421456],[28.4876,29.2303,28.0576,28.9762,61175602],[28.986,29.416,28.6928,28.6928,39790521],[28.8198,29.0348,28.468,28.7905,29387862],[28.7612,28.9078,28.2823,28.5755,36166631],[28.3996,29.4942,28.3703,29.1033,70538556],[29.113,30.5887,28.9958,30.3346,75035306],[30.2858,30.4519,30.0219,30.1001,33701760],[30.1001,30.3835,29.8264,30.2955,28039415],[30.3639,30.7158,30.1978,30.3835,30586823],[31.3021,32.5335,31.1751,31.8983,96629607],[31.9178,32.2305,31.478,31.7419,35712673],[31.7517,32.4553,31.5269,32.3576,48989587],[32.3771,32.7192,31.8689,31.8885,39514599],[31.7712,32.3185,31.1653,32.0351,48332291],[31.5464,31.8201,30.9308,31.1946,56937923],[31.3608,31.4976,30.8819,31.0187,35235395],[31.0871,31.4194,30.7353,30.8917,33620930],[30.7646,31.7419,30.7158,31.7028,44329759],[31.566,31.8103,31.2533,31.3998,30056808],[31.048,32.2696,31.0089,32.211,55097698],[32.211,32.3478,31.9471,32.2305,32635530],[32.2794,32.8364,32.1328,32.4748,35209202],[32.4553,33.2274,32.0253,32.2794,56823264],[32.2794,32.6214,30.9601,31.0285,46261068],[30.8819,31.0285,29.6408,30.5887,72295634],[30.5594,31.0773,30.4323,30.7451,34513345],[30.403,30.491,29.6701,30.061,50228304],[30.0805,31.566,29.9828,30.9894,72418403],[31.0578,31.0578,30.1489,30.2955,43673896],[30.2858,30.4519,29.1228,29.3183,78645155],[29.2987,29.8069,29.0739,29.2596,45971647],[29.3378,30.2271,29.2694,30.1978,61036588],[30.1001,30.2467,29.7678,29.8167,31817692],[29.9535,30.0805,29.3183,29.5626,38698398],[29.5626,29.631,29.1228,29.328,35000307],[29.2401,29.2889,28.5364,28.6635,40845941],[28.4485,28.5853,28.2921,28.468,34728239],[28.5364,28.7514,28.2726,28.6146,30362550],[28.341,28.5364,28.0967,28.1455,34635287],[28.0282,28.2726,27.7839,28.1455,34155660],[28.1455,28.1846,27.1682,27.6862,56423009],[27.8523,28.6146,27.7839,28.0869,46008327],[27.8035,27.9989,27.051,27.0901,52927147],[27.3735,27.6764,26.8751,26.963,44719431],[26.9728,27.6471,26.5819,27.266,65925939],[27.3637,27.5982,27.0803,27.5982,36474283],[27.608,28.3019,27.4712,28.2042,49779626],[28.1455,29.1717,27.9989,28.6635,77009087],[29.201,30.7939,29.1521,30.5887,178939932],[30.5887,31.1751,29.8069,30.2955,102554393],[30.188,30.276,28.9567,29.0935,81846188],[29.4746,29.9535,29.3183,29.5137,52126517],[30.0414,30.2858,29.1717,29.758,48236586],[29.3183,29.846,29.1228,29.6212,41466970],[29.6212,30.0219,29.5039,29.8851,51652955]]},"B":{"sym":"中际旭创","range":["2023-01-03","2023-04-03"],"bars":[[26.924,28.2801,26.6072,28.0128,11300000],[27.9237,28.5672,27.8149,28.389,7476851],[28.2702,28.4979,28.1316,28.3791,6724233],[28.389,28.389,27.993,28.1316,6878072],[28.2504,28.2504,27.6961,27.9138,6913667],[27.9138,28.0623,27.7357,27.9633,3806115],[28.0623,28.0623,27.6367,27.6763,4175945],[27.7258,27.9831,27.5476,27.8248,4138900],[27.8248,27.9039,27.4189,27.5377,4945464],[27.5872,28.2108,27.4288,27.9237,5829436],[28.0128,28.2702,27.8842,28.0326,4846974],[28.0326,28.5671,27.8248,28.4088,6034334],[28.4088,28.6463,28.2702,28.5671,4651683],[28.6661,28.9928,28.4385,28.6958,5732232],[29.1017,29.1512,28.5276,28.6166,7223416],[29.2007,29.6659,28.7849,28.8047,12389389],[29.6956,29.9925,28.9235,29.5273,12556601],[29.7946,30.3588,29.4481,30.042,15688552],[30.0717,31.3783,29.9925,31.2398,21736490],[31.606,31.9722,31.0319,31.7149,21355549],[32.2395,34.2588,32.1702,33.4867,39873288],[33.8629,34.536,32.6651,32.7641,20606867],[32.6651,35.1002,31.9228,34.823,36872470],[34.8428,36.5058,34.0014,34.5954,46895778],[34.9319,36.0108,34.4766,35.6149,33537941],[35.219,36.0801,34.437,34.7933,28198434],[34.5063,36.2781,34.2489,35.4169,34029218],[35.1695,36.2286,34.3479,34.6844,25396158],[34.4766,34.536,32.8334,33.0116,28433285],[33.0611,33.9322,32.9621,33.853,17724119],[33.853,34.0608,33.1898,33.3778,11523183],[33.2294,33.9816,33.0413,33.358,10989088],[33.2096,33.5956,33.0116,33.1601,7605910],[33.4273,35.021,33.4273,34.5162,26228747],[34.4073,34.9121,34.041,34.2291,12327370],[35.5159,36.4068,34.6547,35.1398,27987011],[35.1497,36.1296,34.9418,35.5456,26757604],[35.4367,37.3867,35.2981,36.2484,31634951],[35.308,35.9712,34.724,35.0705,27396267],[34.8923,36.1098,34.8923,35.2091,19342203],[34.9517,35.4367,34.0212,34.0608,18415205],[34.1499,34.6151,33.655,34.2786,14643564],[33.9618,34.5656,33.6352,34.0806,11646616],[33.7045,34.7438,33.6154,33.9717,14109847],[33.8629,34.8131,33.3976,34.4073,17362003],[34.0806,34.9913,33.2096,33.2096,23481801],[33.5164,33.8332,32.388,32.5266,18357081],[32.2989,32.8928,32.0316,32.2989,11881195],[32.5464,35.0903,32.4672,34.2588,27024099],[34.2984,37.0007,34.2687,35.4565,40527279],[35.6347,36.8225,34.7636,36.4563,27890482],[36.5751,43.7515,36.5751,43.7515,77700043],[45.2957,50.9774,44.7908,49.4926,92458953],[50.631,52.284,48.8195,51.7,85860366],[50.4825,56.4612,50.2845,55.4713,79971210],[54.1449,55.4812,52.7592,53.264,58615336],[53.452,57.1937,53.3333,54.9863,64673215],[54.5211,55.9168,51.4723,54.4419,53093610],[54.0559,59.5891,53.066,58.3023,60914995],[59.9851,67.8544,58.9952,66.5577,76753469]]},"C":{"sym":"中芯国际","range":["2023-01-03","2023-04-03"],"bars":[[41.08,41.56,40.99,41.54,8854457],[41.6,41.93,41.55,41.92,11913486],[41.8,41.91,41.6,41.87,9509462],[41.87,42.2,41.62,41.68,12997488],[41.8,42.05,41.43,41.53,11049908],[41.6,41.78,41.49,41.56,7974800],[41.48,41.78,41.17,41.18,8520867],[41.18,41.33,40.8,40.82,8934767],[40.93,41.3,40.9,41.3,7885574],[41.21,42.3,41.1,41.92,17181615],[42.13,42.45,41.91,42.1,13855925],[42.15,42.24,41.94,42.0,8087896],[41.88,42.53,41.85,42.5,13013950],[42.48,42.81,42.41,42.59,12193675],[42.7,43.08,42.37,42.37,20134875],[42.3,42.6,41.67,41.86,15429794],[41.99,43.55,41.96,43.46,31300298],[43.61,43.95,43.16,43.42,25836115],[43.2,43.62,42.81,43.33,15667454],[43.09,43.26,42.75,43.0,11690473],[42.91,43.18,42.91,43.18,11785296],[43.2,43.4,42.62,42.62,11217876],[42.5,43.6,42.45,43.6,21329264],[43.09,43.64,42.86,43.07,19643736],[43.08,43.43,42.8,42.98,17006742],[43.01,43.47,42.83,43.03,12155366],[43.03,43.1,42.73,42.86,11255193],[42.88,43.19,41.8,41.98,20639265],[42.0,42.45,41.78,41.81,15648883],[41.98,42.26,41.61,42.26,10839686],[42.27,42.57,42.2,42.35,9709061],[42.39,42.53,42.2,42.3,7365217],[42.28,42.45,42.06,42.16,7184573],[42.15,42.32,41.94,41.97,8107140],[41.94,42.06,41.57,41.63,9078708],[41.78,42.2,41.53,42.02,13282253],[41.99,42.46,41.92,42.37,13702373],[42.41,42.65,42.25,42.46,11467111],[42.88,43.88,42.88,43.32,31028164],[43.12,43.84,42.9,43.4,21569578],[43.32,43.66,42.68,42.73,17573604],[42.7,42.93,42.56,42.84,10804796],[42.8,43.88,42.8,43.27,23576388],[43.0,43.67,42.73,43.0,19976053],[43.0,43.74,42.56,43.6,21649827],[43.65,48.88,43.38,48.01,136354996],[48.01,50.95,47.88,48.88,127567145],[48.77,50.5,48.74,49.31,95121436],[50.1,52.98,49.1,52.57,140129777],[52.6,53.66,51.66,51.81,100525197],[51.81,52.66,50.95,52.11,67444912],[51.95,52.5,51.36,52.3,58823142],[52.0,53.38,50.6,52.32,90834222],[52.0,52.1,50.69,50.8,67605117],[50.5,50.77,48.89,49.5,64911284],[49.75,50.12,48.71,49.1,45494114],[49.19,50.32,47.98,49.36,70892622],[49.02,50.19,48.8,49.08,45779561],[49.1,50.65,48.91,50.11,50483423],[50.33,54.6,49.87,54.58,133989588]]}};
+
+function rot(a, k) { k = ((k % a.length) + a.length) % a.length; return a.slice(k).concat(a.slice(0, k)); }
+function idxOf(a, v) { return a.indexOf(v); }
+function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
+var LS = store(), KEY = 'kbar-answer::M4.3::';
+function loadRec(p) { if (!LS) return { attempts: [] }; try { return JSON.parse(LS.getItem(KEY + p) || '') || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
+function saveRec(p, r) { if (LS) { try { LS.setItem(KEY + p, JSON.stringify(r)); } catch (e) {} } }
+
+var PACKS = [
+  { id: 'A', role: '首次验收' }, { id: 'B', role: '复考换窗' }, { id: 'C', role: '备用' }
+];
+
+/* N=3 严格摆动（与课程口径一致；确认滞后 3 根） */
+function lastConfirmedSwingLow(bars) {
+  var last = null;
+  for (var i = 3; i <= bars.length - 4; i++) {
+    var ok = true;
+    for (var j = 1; j <= 3; j++) if (!(bars[i][2] < bars[i - j][2] && bars[i][2] < bars[i + j][2])) { ok = false; break; }
+    if (ok) last = i;
+  }
+  return last;
+}
+
+function buildQuestions(pid) {
+  var pi = { A: 0, B: 1, C: 2 }[pid];
+  var R = [
+    { e: 12.40, s: 11.70, t: 13.80 },
+    { e: 25.80, s: 24.60, t: 28.20 },
+    { e: 8.15, s: 7.60, t: 9.45 }
+  ][pi];
+  var risk = +(R.e - R.s).toFixed(2), reward = +(R.t - R.e).toFixed(2), rr = +(reward / risk).toFixed(1);
+  var w = WINDOWS[pid];
+  var swingBar = lastConfirmedSwingLow(w.bars) + 1; // 1-based
+  var Q = [];
+
+  Q.push({ key: true, q: '（★）系统规则：入场 ' + R.e + '，结构止损 ' + R.s + '，目标 ' + R.t + '。账户风险预算 1%＝10,000 元。这笔的正确算术与仓位是：',
+    options: ['风险 ' + risk + ' 元/股，目标收益 ' + reward + '（' + rr + 'R）；仓位 = 10000 ÷ ' + risk + ' ≈ ' + Math.floor(10000 / risk) + ' 股',
+      '仓位 = 10000 ÷ 入场价 ≈ ' + Math.floor(10000 / R.e) + ' 股（按价格买）',
+      '风险 ' + risk + '，仓位随意——止损会保护我',
+      '目标收益 ' + reward + ' 元，先算能赚多少再定股数'],
+    answer: 0,
+    explain: '仓位＝风险额÷每股风险（4007）。按入场价买股是把"市值"当"风险"。盈亏比 ' + rr + 'R 只描述结构，不授权仓位。' });
+
+  Q.push({ key: true, q: '（★）回测时你把「收盘确认止损」改成「盘中触价止损」，其余不变。正确动作是：',
+    options: ['小改动，沿用原回测结果直接上', '视为新版本：重新登记规则版本并重跑/重验；旧版本结果不得为新规则背书', '实盘小仓试一下就知道', '只改文档不改版本号'],
+    answer: 1,
+    explain: '4009：任何触发/离场语义变化=新系统。规则版本＋数据版本＋执行配置＋变体＋样本区间五项对得上才能互相背书（SE-01）。' });
+
+  Q.push({ key: false, q: '两个候选摆动低点价格完全相等（都能当止损锚）。按课程冻结约定你应该：',
+    options: ['选看起来更"有意义"的那个', '取更早的', '取最近的一个——约定写死，不事后挑选', '取更深的'],
+    answer: 2,
+    explain: '「相等取最近」是课程为可复算定的约定（不是唯一真理）。关键在于：事先写死，任何人任何时间重算得到同一结果。' });
+
+  Q.push({ key: false, q: '一个摆动低点右侧目前只有 2 根更高的低点（课程 N=3）。它现在能充当入场的失效锚吗？',
+    options: ['能，形状已经很明显', '不能——它只是候选；确认要等右侧第 3 根，之前不可作为有效结构位', '能，只要我自己确信', '看成交量决定'],
+    answer: 1,
+    explain: '候选(t)→确认(t+3)（0004/4001）。用未确认位做止损锚=用还没发生的事保护仓位。' });
+
+  Q.push({ key: true, q: '（★）信号次日：开盘 19.51，你挂买限 19.24（−1%），当日最低 19.22。按"触价即成交"的教学口径：',
+    options: ['没成交——差 2 分钱', '应当成交在 19.24（最低已低于买限）；若实际未成交，原因在排队/瞬时穿越等日线无法判定的层面，记"未知"', '一定成交，无任何不确定性', '数据不足，无法判断是否触及'],
+    answer: 1,
+    explain: '4002 订单力学版：买限挂在当日最低之上，"没碰到"不成立；理论口径与真实撮合不确定性分开标注。' });
+
+  Q.push({ key: false, q: '30 笔模拟交易走完了流程（记录齐全、执行 89 分、净结果 +3R）。这 30 笔证明的是：',
+    options: ['系统有正期望，可以加仓', '优势已稳定，进入实盘', '记录与执行流程可运转（流程校准批次）；优势是否存在要按证据计划另验', '30 笔够小样本显著了'],
+    answer: 2,
+    explain: '4010：30 笔是流程批次。期望结论走证据计划（预注册判据、未见窗口、成本台账）；执行分数与系统有效性分属不同证据层（5002/5004）。' });
+
+  Q.push({ key: false, q: '隔夜重大利空，开盘 11.00 直接开在止损 11.70 之下。这笔的实际损失：',
+    options: ['按 −1R 记账（止损单保证）', '大于 1R——跳空穿价按可成交价记录，损失不截断；这属于必须显式建模的现实约束', '记 0（订单没执行）', '记 −0.5R 折中'],
+    answer: 1,
+    explain: '4003：止损单不保证成交价。跳空、T+1、锁板都属于"计划止损≠最大损失"——回测必须显式假设（E-02）。' });
+
+  Q.push({ key: false, q: 'A股 T+1：今天买入的股票，今天盘中触发退出条件。正确处理：',
+    options: ['立即市价卖出', '当日不可卖——记录"继续暴露"事实，明日按规则处理；回测里不得模拟当日自由卖出', '改用融券对冲（默认所有人都有权限）', '忽略退出条件'],
+    answer: 1,
+    explain: 'A股当日买入不可卖（E-03）。模拟把它当可卖=系统性高估系统表现。' });
+
+  Q.push({ key: false, q: '同一天三个信号同时出现，现金只够一个。按课程协议：',
+    options: ['选近期表现最好的那个', '选波动最大的', '按事先登记的顺序取第一个，其余记录为"资金不足拒绝"——全部机会留档', '等明天看谁涨再补'],
+    answer: 2,
+    explain: '并行信号的取舍顺序必须预注册（SE-01）。事后选赢家=把选择偏差写进系统（E-06）。' });
+
+  Q.push({ key: true, q: '（★）规则写「收盘创 60 日新高」。「60 日」的正确比较窗是：',
+    options: ['含信号棒在内共 60 根', '信号棒<b>之前</b>已收盘的 60 根——判定只用截至信号棒当时可知的数据', '未来 60 根（验证用）', '随便，误差不大'],
+    answer: 1,
+    explain: '索引集合必须写死且不含未来（4001）。"含本根共60"与"此前60"是两个不同系统；"未来60根"直接是未来函数。' });
+
+  Q.push({ key: false, q: '看图（下划线=最后一根）。按 N=3 严格口径，图中<b>最新的已确认摆动低</b>在第几根？',
+    options: [String(swingBar), String(Math.max(1, swingBar - 7)), String(Math.min(60, swingBar + 5)), '最后一根自己'],
+    answer: 0,
+    explain: '已确认=右侧已有 3 根更高低点；最后一根右侧为空，永远只是候选。正确答案：第 ' + swingBar + ' 根。' });
+
+  Q.push({ key: false, q: '回测报告：净期望 +0.21R/笔，扣成本后 +0.15R，样本含未见窗口。这份结果最支持的行动是：',
+    options: ['满仓实盘复制回测参数', '证明系统永久有效', '支持"继续按证据计划验证/小剂量试运行"，且随时准备被新证据推翻', '直接对外宣称稳定盈利'],
+    answer: 2,
+    explain: '证据分层：定义与数据正确→系统证据（范围内支持/不支持/不充分）→执行质量→判断质量。回测支持的是"有资格继续被检验"，不是盈利承诺。' });
+
+  return Q;
+}
+
+/* ---------- 与 M0.1 相同的作答引擎 ---------- */
+var cur = 'A', quiz = null, qi = 0, picks = null;
+function packState(p) { var r = loadRec(p).attempts; return r.length ? (r[r.length - 1].passed ? '已通过' : '未通过（' + r[r.length - 1].score + '/12）') : '未开始'; }
+function renderTabs() {
+  document.getElementById('packtabs').innerHTML = PACKS.map(function (p) {
+    var st = packState(p.id), ok = st === '已通过';
+    return '<button type="button" class="pack-tab' + (p.id === cur ? ' active' : '') + '" data-p="' + p.id + '"><b>' + p.id + ' · ' + p.role + '</b><span class="pt-state" style="color:' + (ok ? '#1a7f37' : st === '未开始' ? 'var(--muted)' : '#d33a2c') + '">' + st + '</span></button>';
+  }).join('');
+  document.querySelectorAll('.pack-tab').forEach(function (b) { b.onclick = function () { cur = b.dataset.p; start(); }; });
+  document.getElementById('statusline').innerHTML = PACKS.map(function (p) { return '<span class="msb' + (packState(p.id) === '已通过' ? ' ok' : '') + '">' + p.id + '：' + packState(p.id) + '</span>'; }).join('');
+}
+function start() {
+  renderTabs();
+  var w = WINDOWS[cur];
+  document.getElementById('casecard').innerHTML = '<b>图表窗口（第 11 题用）</b> · ' + w.sym + ' · 日线 60 根（' + w.range[0] + ' → ' + w.range[1] + '）· 案例号 M4.3-' + cur + '-2026a · asOf=末根（无隐藏未来）。';
+  document.getElementById('chart').innerHTML = Kbar.chart(w.bars.map(function (r) { return { o: r[0], h: r[1], l: r[2], c: r[3] }; }), { w: 780, h: 280, yLabels: true, vol: w.bars.map(function (r) { return r[4]; }), hl: w.bars.length - 1 });
+  quiz = buildQuestions(cur); qi = 0; picks = [];
+  document.getElementById('verdict').innerHTML = '';
+  renderQ();
+}
+function renderQ() {
+  if (qi >= quiz.length) return finish();
+  var q = quiz[qi], el = document.getElementById('quiz');
+  el.innerHTML = '<div class="q-card"><div style="font-size:.76rem;color:var(--muted)">第 ' + (qi + 1) + '/12 题' + (q.key ? '<span class="key-badge">★ 关键项</span>' : '') + '</div><div class="q-text">' + q.q + '</div>' +
+    q.options.map(function (o, i) { return '<div class="q-opt" data-i="' + i + '">' + o + '</div>'; }).join('') + '<div class="q-explain" id="qx" style="display:none"></div></div>';
+  el.querySelectorAll('.q-opt').forEach(function (o) {
+    o.onclick = function () {
+      if (picks[qi] != null) return;
+      picks[qi] = parseInt(o.dataset.i, 10);
+      var right = picks[qi] === q.answer;
+      el.querySelectorAll('.q-opt').forEach(function (o2, j) { o2.classList.add('dim'); if (j === q.answer) o2.classList.add('right-hint'); });
+      o.classList.remove('dim'); o.classList.add(right ? 'picked-right' : 'picked-wrong');
+      var x = document.getElementById('qx');
+      x.style.display = 'block';
+      x.innerHTML = (right ? '<b style="color:#1a7f37">✓</b> ' : '<b style="color:#d33a2c">✗</b> ') + q.explain +
+        '<div style="margin-top:.5rem"><button class="mbtn dark" id="qn">' + (qi === 11 ? '交卷 →' : '下一题 →') + '</button></div>';
+      document.getElementById('qn').onclick = function () { qi++; renderQ(); };
+    };
+  });
+}
+function finish() {
+  var correct = quiz.map(function (q, i) { return picks[i] === q.answer; });
+  var score = correct.filter(Boolean).length;
+  var keysOk = quiz.every(function (q, i) { return !q.key || correct[i]; });
+  var passed = score >= 10 && keysOk;
+  var r = loadRec(cur);
+  r.attempts.push({ attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), picks: picks, correct: correct, score: score, keysPassed: keysOk, passed: passed, caseId: 'M4.3-' + cur + '-2026a' });
+  saveRec(cur, r);
+  document.getElementById('verdict').innerHTML = '<div class="verdict"><b>' + (passed ? '✓ M4.3 规则与验证知识任务通过（' + cur + ' 包）' : '✗ 未通过（' + cur + ' 包）') + '</b><br>得分 ' + score + '/12（通过线 ≥10）；关键项 ' + (keysOk ? '全过' : '<b style="color:#d33a2c">有未过（不可抵消）</b>') + '。' +
+    (passed ? '通过范围：规则理解/R 算术/证据分层的知识任务——系统有效性要按 4010 证据计划另行验证。' : '错题回看对应课节（每题解析已给出），再用 ' + (cur === 'A' ? 'B' : cur === 'B' ? 'C' : 'A') + ' 包复考。首次成绩已保留。') +
+    '<div style="margin-top:.5rem"><button class="mbtn" id="redo">重做本包（练习记录）</button></div></div>';
+  document.getElementById('redo').onclick = start;
+  renderTabs();
+}
+document.getElementById('export-btn').onclick = function () {
+  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M4.3', courseVersion: 'rev-2026-09-10', exportedAt: new Date().toISOString(), packs: PACKS.map(function (p) { return { pack: p.id, record: loadRec(p.id) }; }) };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'm4-3-system.json'; a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+};
+start();
+</script>
+</body>
+</html>

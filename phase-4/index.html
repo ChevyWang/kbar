@@ -11,7 +11,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · Grimes / Brooks / Harris / Kelly</div>
   <h1>系统：组装交易系统</h1>
-  <p class="sub">十天 · 十课 · 内容时长 65–80 min/课 + 毕业考 · 全真实数据（同一套示范系统“训练者一号”跑 33 品种×5 年：87 笔真实交易、胜率 59%、期望 +0.204R；限价/跟踪/混合三种执行变体对照实验；四市场微观结构活例）· 可离线可打印。前置：Phase 0–3。<b>里程碑：本阶段末开模拟盘。</b></p>
+  <p class="sub">十天 · 十课 · 内容时长 65–80 min/课 + 毕业考 · 全真实数据（示范系统“训练者一号”跑 33 品种×5 年：现行 v2 协议 732 笔/期望 +0.047R，v1 审计样本 87 笔/+0.204R 的版本故事本身就是选择偏差的活教材；限价/跟踪/混合三种执行变体对照实验；四市场微观结构活例）· 可离线可打印。前置：Phase 0–3。<b>里程碑：本阶段末开模拟盘。</b></p>
 </header>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
@@ -21,7 +21,7 @@
 <p><b>不教：</b>自动致富（期望是数学函数不是愿望函数）；参数优化玄学（回测协议先防自欺）；编程回测（手工回测是统计训练，MISSION 边界不变）；经典指标（MACD/均线/布林仍 out of scope——止损距离就是波动度量，不需要指标）。</p>
 
 <div class="note">
-<b>教材依据（grounding）：</b>①经典原著——Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链、Ch.8 Trade Management 的止损与目标、Ch.10 六类 setup）+ Part IV（自我导向交易者的计划与风控）；Al Brooks 三部曲（H2/出场/通道线实务）；②微观结构——Larry Harris《Trading and Exchanges》(2003)（订单与流动性）+ Osler (2000/2003)（限价/止损单聚集）；③数学——Kelly (1956)（信息速率与最优赌注）+ Thorp（分数凯利实务）；④真实数据——训练者一号 87 笔全样本与 BT30 抽样（seed=44）、相关性矩阵（33 品种日收益）、涨跌停/暴跌事件，全部脚本可复算。
+<b>教材依据（grounding）：</b>①经典原著——Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链、Ch.8 Trade Management 的止损与目标、Ch.10 六类 setup）+ Part IV（自我导向交易者的计划与风控）；Al Brooks 三部曲（H2/出场/通道线实务）；②微观结构——Larry Harris《Trading and Exchanges》(2003)（订单与流动性）+ Osler (2000/2003)（限价/止损单聚集）；③数学——Kelly (1956)（信息速率与最优赌注）+ Thorp（分数凯利实务）；④真实数据——训练者一号 v2（732 笔，scan_p4_v2.py）与 v1 审计样本 BT30（seed=44）、相关性矩阵（33 品种日收益，日期对齐口径）、涨跌停/暴跌事件，全部脚本可复算。
 </div>
 
 <h2><span class="no">01</span>十课地图</h2>
@@ -29,14 +29,14 @@
 <a class="lesson-card" href="lessons/4001-setup-definition.html">
   <div class="day">DAY 1 · 第 4001 课</div>
   <div class="t">Setup 的正式定义：从“看到”到“等到”</div>
-  <div class="d">五步决策链、三条标准（客观/预先写死/会被打脸）、训练者一号全规则（87 笔·胜率 59%·期望+0.204R）、诱惑检查表——东方财富 2024-09-24 死于风险过滤的教训：过滤器用错过换生存。</div>
-  <div class="meta">73 min · 12 题 · Grimes Part III + Brooks TR Ch.25/26 + 我们的 87 笔</div>
+  <div class="d">五步决策链、三条标准（客观/预先写死/会被打脸）、训练者一号 v2 全规则（732 笔·44.4%·+0.047R；v1 +0.204R 的隐藏过滤故事）、诱惑检查表——东方财富 2024-09-24 死于风险过滤的教训：过滤器用错过换生存。</div>
+  <div class="meta">73 min · 12 题 · Grimes Part III + Brooks TR Ch.25/26 + 训练者一号 v2 协议</div>
 </a>
 
 <a class="lesson-card" href="lessons/4002-entries.html">
   <div class="day">DAY 2 · 第 4002 课</div>
   <div class="t">入场技术：限价单 vs 停损单及其心理学</div>
-  <div class="d">订单簿与你的对手盘（Harris）；87 信号对照实验——限价 −1% 让期望从 +0.204R 塌到 +0.056R；踏空的 46 笔恰是最强样本（+0.40R/72%）——逆向选择；四市场订单现实。</div>
+  <div class="d">订单簿与你的对手盘（Harris）；87 信号对照实验（v1 审计样本）——限价 −1% 让期望从 +0.204R 塌到 +0.056R；踏空的 46 笔恰是最强样本（+0.40R/72%）——逆向选择；四市场订单现实。</div>
   <div class="meta">73 min · 12 题 · Harris + 挂单变体实验 + TR Ch.25</div>
 </a>
 
@@ -50,7 +50,7 @@
 <a class="lesson-card" href="lessons/4004-exits.html">
   <div class="day">DAY 4 · 第 4004 课</div>
   <div class="t">移动止损与出场机制：分布整形器</div>
-  <div class="d">三族出场（目标/跟踪/时间）；87 信号三种政策对决：59%↔36%↔54% 胜率、期望 +0.204↔+0.136↔+0.170R；摆动点跟踪实拍；出场政策即心理合同。</div>
+  <div class="d">三族出场（目标/跟踪/时间）；87 信号（v1 审计样本）三种政策对决：59%↔36%↔54% 胜率、期望 +0.204↔+0.136↔+0.170R；摆动点跟踪实拍；出场政策即心理合同。</div>
   <div class="meta">70 min · 12 题 · Grimes Ch.8 + 出场变体实验</div>
 </a>
 
@@ -93,7 +93,7 @@
   <div class="day">DAY 10 · 第 4010 课 · 毕业课</div>
   <div class="t">手工回测：验证自己的规则，然后毕业</div>
   <div class="d">回测协议（逐根推进/无未来函数/九字段/滑点/冻结参数）；中信建投全流程带走一遍；BT30 三十笔全表与统计；五种自欺与防线；毕业考 12 题（META/XOM 盲图与全部课件不同源）——通过即开模拟盘。</div>
-  <div class="meta">80 min · 毕业考 12 题 · 认知天性 + BT30</div>
+  <div class="meta">80 min · 毕业考 12 题 · 认知天性 + BT30 · <a href="milestones/m4-3-system.html">M4.3 里程碑验收 →</a></div>
 </a>
 
 <h2><span class="no">02</span>配套资料</h2>
@@ -107,7 +107,7 @@
     <a href="https://chevywang.github.io/kbar/phase-3/">Phase 3 主页</a>
     <a href="reference/one-page-plan.html">计划模板</a>
   </div>
-  <div class="citations">主资源：Grimes (2012) Part III–IV · Brooks 三部曲 · Harris (2003) · Osler (2000/2003) · Kelly (1956)。数据：33 品种×5 年（yfinance + Binance + 通达信核对）；训练者一号 87 笔与 BT30（seed=44）、执行/出场变体、相关性矩阵、事件窗口，全部脚本可复算。</div>
+  <div class="citations">主资源：Grimes (2012) Part III–IV · Brooks 三部曲 · Harris (2003) · Osler (2000/2003) · Kelly (1956)。数据：33 品种×5 年（yfinance + Binance + 通达信核对）；训练者一号 v2 732 笔（scan_p4_v2.py）与 v1 审计 87 笔/BT30（seed=44）、执行/出场变体、相关性矩阵（日期对齐）、事件窗口，全部脚本可复算。</div>
 </footer>
 
 </body>

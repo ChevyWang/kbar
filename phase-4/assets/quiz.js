@@ -67,7 +67,7 @@
         '<div class="verdict">' +
         '<div class="big">' + correct + ' / ' + order.length + '</div>' +
         '<p>' + (v ? v[1] : '') + '</p>' +
-        '<button class="next">再练一遍（重新出题）</button></div>';
+        '<button class="next">再练一遍（重排顺序）</button></div>';
       root.querySelector('.next').addEventListener('click', function () {
         order = shuffle(order); idx = 0; correct = 0; render();
       });
