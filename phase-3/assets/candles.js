@@ -12,7 +12,20 @@
  *               marks:[{i,text,pos:'above'|'below'}], // 摆动点标注（HH/HL/LH/LL）
  *               reveal:前k根,                     // 逐根揭示（刻度仍按全集固定）
  *               yLabels:布尔 }                    // 右侧价格刻度
+ *
+ *   —— 截至时点视图（v5，决策时点训练用；不传则行为与旧版完全一致）——
+ *       asOf: t        // 决策时点（0-based 棒索引，含 t）。只画 [0..t]，
+ *                      // 纵轴/量能比例尺只由 [0..t] 与当时已可见的注释决定；
+ *                      // 横轴仍按整个数组的宽度预留（任务长度预声明，图不横向重排）。
+ *       span: N        // 预声明的任务总长（横轴预留 N 根宽度；默认=candles.length）。
+ *                      // 同一前缀用 span 渲染与在全窗中裁切渲染输出完全一致（裁切身份）。
+ *       注释可用时间：levels/zones/marks/phases 可带 at（0-based 棒索引，默认视为窗口前已知/成立即知）：
+ *         at ≤ asOf 才绘制并参与比例尺；at > asOf 的未来注释在揭示前不可见、不进比例尺。
+ *         marks 的默认 at = M.i（锚点棒即知）；phases 默认 at = P.i1；swing 确认类标注请显式传确认棒索引。
+ *         lines 的两个锚点棒都必须 ≤ asOf 才可画（斜率锚点必须已知；线段本身可延伸）。
+ *         profile 在 asOf 模式必须带 at（其数据窗收棒时点）；否则视为未来信息，整块不画。
  *   Kbar.playback(selector, candles, opts) -> 交互式逐根揭示训练器（基于 chart 的 reveal）
+ *       opts.live:true  // 时点模式：每步按已揭示前缀重算纵轴/量能比例尺（默认 false=固定全集刻度，示范用）
  * 约定: 红涨绿跌（A股惯例）。方向的双重无障碍编码，勿删：
  *   ① 阳线实体空心（描边不填充），阴线实体实心——红绿色盲与黑白打印下"空心=涨、实心=跌"仍可辨；
  *   ② 单根图开=左侧刻度、收=右侧刻度。
@@ -146,24 +159,43 @@
     opts = opts || {};
     var n = candles.length;
     if (!n) return '';
-    var reveal = opts.reveal == null ? n : Math.max(1, Math.min(n, opts.reveal));
+    // 截至时点视图：asOf=t 只看 [0..t]；不传 asOf 时一切行为与旧版一致
+    var asOf = opts.asOf == null ? null : Math.max(0, Math.min(n - 1, Math.floor(opts.asOf)));
+    var reveal = asOf != null ? asOf + 1 : (opts.reveal == null ? n : Math.max(1, Math.min(n, opts.reveal)));
+    var scaleN = asOf != null ? reveal : n;                 // 比例尺只看已揭示前缀（asOf 模式）
+    var layoutN = asOf != null ? Math.max(opts.span || n, reveal) : n; // 横轴预留宽度（任务长度预声明）
+    // 注释可见性（asOf 模式）：at ≤ asOf 才可见；不可见者不绘制、不进比例尺、不占布局（T1/T2）
+    var visList = function (arr, dflt) {
+      if (!arr || !arr.length) return arr || [];
+      if (asOf == null) return arr;
+      return arr.filter(function (e) { return (e.at == null ? dflt(e) : e.at) <= asOf; });
+    };
+    var levels = visList(opts.levels, function () { return 0; });
+    var zones = visList(opts.zones, function () { return 0; });
+    var marks = visList(opts.marks, function (M) { return M.i; });
+    var phases = visList(opts.phases, function (P) { return P.i1; });
+    var lines = asOf == null ? (opts.lines || []) : (opts.lines || []).filter(function (L) {
+      return Math.max(L.i1, L.i2) <= asOf;                 // 斜率锚点必须已知
+    });
+
     var w = opts.w || 640, h = opts.h || 280;
     var hasCaps = opts.caps && opts.caps.some(function (c) { return c; });
     var capH = (hasCaps || opts.hl != null) ? 30 : 12;
     var volH = opts.vol ? Math.round(h * 0.17) : 0;
-    var hasLevels = !!(opts.levels && opts.levels.length);
     var prof = opts.profile || null;                       // {bins:[[lo,hi,vol]...], vpoc, va:[lo,hi], width, label}
+    if (prof && asOf != null && (prof.at == null || prof.at > asOf)) prof = null; // 未知收棒时点的剖面=未来信息
+    var hasLevels = !!levels.length;
     var profW = prof ? (prof.width || 88) : 0;
-    var padT = (opts.phases && opts.phases.length) ? 36 : 16, padL = 10;
+    var padT = (phases && phases.length) ? 36 : 16, padL = 10;
     var padR = (hasLevels || opts.yLabels || prof) ? (prof ? Math.max(profW + 54, 60) : 52) : 10;
     var plotW = w - padL - padR;
     var plotH = h - padT - volH - capH;
 
-    // 刻度永远按全集计算（reveal 揭示时图不跳动）
+    // 比例尺：asOf 模式只由已揭示前缀与当时可见注释决定（未来极值不得泄漏进纵轴）
     var lo = Infinity, hi = -Infinity;
-    candles.forEach(function (k) { if (k.l < lo) lo = k.l; if (k.h > hi) hi = k.h; });
-    (opts.levels || []).forEach(function (L) { if (L.y < lo) lo = L.y; if (L.y > hi) hi = L.y; });
-    (opts.zones || []).forEach(function (Z) {
+    for (var si = 0; si < scaleN; si++) { var sk = candles[si]; if (sk.l < lo) lo = sk.l; if (sk.h > hi) hi = sk.h; }
+    levels.forEach(function (L) { if (L.y < lo) lo = L.y; if (L.y > hi) hi = L.y; });
+    zones.forEach(function (Z) {
       var zl = Math.min(Z.y1, Z.y2), zh = Math.max(Z.y1, Z.y2);
       if (zl < lo) lo = zl; if (zh > hi) hi = zh;
     });
@@ -173,12 +205,12 @@
     }
     var range = (hi - lo) || 1;
     var y = function (p) { return padT + (1 - (p - lo) / range) * plotH; };
-    var step = plotW / n, bw = Math.min(step * 0.6, 26);
+    var step = plotW / layoutN, bw = Math.min(step * 0.6, 26);
 
     var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
 
     // 顶部阶段带（Wyckoff A–E）：{i1,i2,label,color}，i 为 0-based 棒索引
-    (opts.phases || []).forEach(function (P, idx) {
+    phases.forEach(function (P, idx) {
       var pc = P.color || '#8a6d1f';
       var x1 = padL + step * P.i1, x2 = padL + step * (P.i2 + 1);
       var by = 6 + (P.row || 0) * 15;
@@ -187,7 +219,7 @@
     });
 
     // 区域底纹（支撑/阻力区）
-    (opts.zones || []).forEach(function (Z) {
+    zones.forEach(function (Z) {
       var zc = Z.color || '#8a6d1f';
       var yTop = y(Math.max(Z.y1, Z.y2)), yBot = y(Math.min(Z.y1, Z.y2));
       s += '<rect x="' + padL + '" y="' + yTop + '" width="' + plotW + '" height="' + Math.max(yBot - yTop, 2) +
@@ -227,7 +259,7 @@
     }
 
     // 水平位虚线
-    (opts.levels || []).forEach(function (L) {
+    levels.forEach(function (L) {
       var lc = L.color || MUTED;
       s += '<line x1="' + padL + '" y1="' + y(L.y) + '" x2="' + (padL + plotW) + '" y2="' + y(L.y) +
         '" stroke="' + lc + '" stroke-width="1.3" stroke-dasharray="' + (L.dash || '6 5') + '"/>';
@@ -244,7 +276,7 @@
     }
 
     // 斜线（趋势线/通道线）：{i1,p1,i2,p2,color,dash,label}，i 为 0-based 棒索引
-    (opts.lines || []).forEach(function (L) {
+    lines.forEach(function (L) {
       var lc = L.color || '#8a6d1f';
       var x1 = padL + step * (L.i1 + 0.5), x2 = padL + step * (L.i2 + 0.5);
       s += '<line x1="' + x1 + '" y1="' + y(L.p1) + '" x2="' + x2 + '" y2="' + y(L.p2) +
@@ -263,11 +295,11 @@
       s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="1.7"/>';
       s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 7) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
-      if (opts.hl === i && reveal === n) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 14) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 14) + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      if (opts.hl === i && (reveal === n || asOf != null)) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 14) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 14) + '" stroke="' + INK + '" stroke-width="2.5"/>';
     });
 
     // 结构标注（摆动点等）
-    (opts.marks || []).forEach(function (M) {
+    marks.forEach(function (M) {
       if (M.i >= reveal) return;
       var k = candles[M.i];
       var cx = padL + step * (M.i + 0.5);
@@ -281,7 +313,7 @@
     // 量能柱（颜色随K线方向；比例尺为全集最大值）
     if (opts.vol) {
       var vMax = 0;
-      for (var vi = 0; vi < n; vi++) if (opts.vol[vi] > vMax) vMax = opts.vol[vi];
+      for (var vi = 0; vi < scaleN && vi < n; vi++) if (opts.vol[vi] > vMax) vMax = opts.vol[vi];
       var volTop = padT + plotH + 6, volBot = h - capH;
       s += '<line x1="' + padL + '" y1="' + volTop + '" x2="' + (padL + plotW) + '" y2="' + volTop + '" stroke="#e4e2d9" stroke-width="1"/>';
       for (var i = 0; i < reveal && i < n; i++) {
@@ -304,14 +336,15 @@
     var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
     if (!root) return;
     var k = Math.max(1, Math.min(candles.length, opts.start == null ? 1 : opts.start));
+    var live = !!opts.live; // 时点模式：每步按已揭示前缀重算纵轴/量能比例尺（默认 false=固定全集刻度，示范用）
 
     function draw() {
       var o = {};
-      for (var key in opts) if (key !== 'start') o[key] = opts[key];
-      o.reveal = k;
+      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'asOf' && key !== 'reveal') o[key] = opts[key];
+      if (live) o.asOf = k - 1; else o.reveal = k;
       root.innerHTML =
         '<div class="pb-chart">' + chart(candles, o) + '</div>' +
-        '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + k + ' / ' + candles.length + ' 根</span>' +
+        '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + k + ' / ' + candles.length + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
         '<button type="button" class="pb-btn" data-a="prev">← 退一根</button>' +
         '<button type="button" class="pb-btn pb-next" data-a="next">下一根 →</button>' +
         '<button type="button" class="pb-btn" data-a="reset">⟲ 重播</button></div>';

@@ -17,7 +17,7 @@ td.dim { color: var(--faint); }
 <header class="course">
   <div class="kicker">K线训练营 · 参考卡 · 形态统计</div>
   <h1>形态统计总表（三市场 × 十形态）</h1>
-  <p class="sub">33 品种（A股 17 + 美股 11 + 加密 5）× 5 年日线，pivot 几何检测器，去重后 3594 例。<b>口径</b>（3001§05）：突破=收盘越界；失败=突破后 5 根内收盘收回；达标=20 根内走满形态高度投影；顺幅=突破后 20 根内最大顺向幅度（平均，会被极端值拉高——配中位数心读）。<span class="pst-tag pst-a">A股</span><span class="pst-tag pst-u">美股</span><span class="pst-tag pst-c">加密</span>样本构成约 55%/30%/15%。脚本与原始数据在私有库，可复算。</p>
+  <p class="sub">33 品种（A股 17 + 美股 11 + 加密 5）× 5 年日线，pivot 几何检测器，去重后 3594 例。<b>口径</b>（3001§05）：突破=收盘越界；失败=突破后 5 根内收盘收回；达标=20 根内走满形态高度投影；顺幅=突破后 20 根内最大顺向幅度（平均，会被极端值拉高——配中位数心读）。<b>失败与达标是独立时窗事件、不互补</b>——全样本四格：失败未达标 1308 / 失败且达标 427 / 未失败达标 1055 / 两者皆无 804；两列百分比各量各的事，不能拼成胜率。<span class="pst-tag pst-a">A股</span><span class="pst-tag pst-u">美股</span><span class="pst-tag pst-c">加密</span>样本构成约 55%/30%/15%。脚本与原始数据在私有库，可复算。</p>
 </header>
 
 <h2><span class="no">00</span>总表</h2>

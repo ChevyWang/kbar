@@ -38,10 +38,10 @@
 </div>
 
 <h2 id="s01"><span class="no">01</span>实验协议 <span class="time-chip">≈6 min</span></h2>
-<p>每个样本给你 <b>40 根日线</b>：左段是形态成形过程，最右的粗标记是<b>突破棒</b>（我们的口径：收盘越界）。你的任务分两步：<b>①判死活</b>——这次突破会在 5 根内失败（收盘收回）吗？<b>②判幅度</b>——20 根内会走满形态高度投影（达标）吗？两步都基于你 Phase 0–2 的全部工具（位置/量能/结构）。<b>不许回看</b>——每个样本只判断一次，这是提取练习的规则（一次猜多次看=自我欺骗）。20 题做完，页面汇总你的判定，与脚本真值对照。</p>
+<p>每个样本是一段日线窗口（长度见题面计数，样本间略有不同）：左段是形态成形过程，画面<b>只显示到突破棒</b>（最右的粗标记；我们的口径：收盘越界）——形态已成形、结局未揭示。你的任务分两步：<b>①判死活</b>——这次突破会在 5 根内失败（收盘收回）吗？<b>②判幅度</b>——20 根内会走满形态高度投影（达标）吗？两步都基于你 Phase 0–2 的全部工具（位置/量能/结构）。<b>注意这两个事件并不互斥</b>——同一形态完全可以既在 5 根内收回、又在 20 根内走满投影（下面的样本里就有）；所以选项①只回答"死活"，不暗示后续幅度。作答后页面才展示后续走势。<b>不许回看</b>——每个样本只判断一次，这是提取练习的规则（一次猜多次看=自我欺骗）。20 题做完，页面汇总你的判定，与脚本真值对照。</p>
 
 <h2 id="s02"><span class="no">02</span>20 样本人工判定 <span class="time-chip">≈35 min</span></h2>
-<div class="tally-box" id="tally"></div>
+<div class="tally-box" id="tally-box"></div>
 
 <h2 id="s03"><span class="no">03</span>对答案与训练场 <span class="time-chip">≈22 min</span></h2>
 <div id="tally-final" class="tally-final">完成上面 20 题后，这里会出现你的汇总表与脚本真值的对照。</div>
@@ -98,8 +98,9 @@ var TALLY = [
     var vol = s.map(function (_, i) { return 40 + 30 * Math.abs(Math.sin(i * 1.7)); }); // 量能示意（盲测不需要真量能柱）
     box.innerHTML =
       '<div class="tally-meta"><span>样本 ' + (idx + 1) + ' / ' + TALLY.length +
-      ' · ' + t.mkt + ' · ' + t.sym + ' · ' + t.d + '</span><span>形态提示：' + t.p + '</span></div>' +
-      '<div class="tally-chart">' + Kbar.chart(s, { w: 760, h: 260, yLabels: true, hl: t.brk }) + '</div>' +
+      ' · ' + t.mkt + ' · ' + t.sym + ' · ' + t.d + ' · 共 ' + s.length + ' 根</span><span>形态提示：' + t.p + '</span></div>' +
+      '<div class="tally-chart">' + Kbar.chart(s, { w: 760, h: 260, yLabels: true, hl: t.brk, asOf: t.brk, span: s.length, vol: vol }) + '</div>' +
+      '<div class="tally-note" style="font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.3rem 0">决策时点视图：只显示到突破棒（最右粗标记）——形态已成形、结局未揭示。作答后展示后续走势。</div>' +
       '<div class="tally-btns">' +
       '<button data-r="fail">① 5根内<b>失败</b>（收回）</button>' +
       '<button data-r="hit">② 不失败且<b>达标</b>（走满投影）</button>' +
@@ -110,10 +111,18 @@ var TALLY = [
         var mine = b.dataset.r;
         var truth = t.failed ? 'fail' : (t.hit ? 'hit' : 'none');
         var ok = mine === truth;
-        ans.push({ mine: mine, truth: truth, ok: ok, p: t.p, mkt: t.mkt });
+        ans.push({ mine: mine, truth: truth, ok: ok, p: t.p, mkt: t.mkt, failed: t.failed, hit: t.hit });
+        var reveal = t.failed && t.hit
+          ? '两件事<b>都</b>发生了：5 根内收回，且 20 根内走满投影'
+          : t.failed ? '5 根内收回；20 根内未达标'
+          : t.hit ? '5 根内未收回，且 20 根内达标'
+          : '既未在 5 根内收回，也未在 20 根内达标';
+        var chartBox = box.querySelector('.tally-chart');
+        if (chartBox) chartBox.innerHTML = Kbar.chart(s, { w: 760, h: 260, yLabels: true, hl: t.brk, vol: vol }) +
+          '<div style="font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.3rem 0">已揭示后续走势（作答后展示）——对照你的判定看路径。</div>';
         var r = document.getElementById('tres');
         r.innerHTML = (ok ? '<b style="color:#1a7f37">✓ 判对</b>' : '<b style="color:#d33a2c">✗ 判错</b>') +
-          '　真值：' + (truth === 'fail' ? '失败（5根内收回）' : truth === 'hit' ? '达标' : '未达标也未失败') +
+          '　真值：' + reveal +
           '　<button class="tb-next" style="font-family:var(--sans);border:1.5px solid var(--ink);border-radius:8px;padding:.4rem 1rem;cursor:pointer">下一个 →</button>';
         r.querySelector('.tb-next').onclick = function () { idx++; draw(); };
         r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -124,7 +133,9 @@ var TALLY = [
     var n = ans.length;
     var okc = ans.filter(function (a) { return a.ok; }).length;
     var byMine = { fail: 0, hit: 0, none: 0 }, byTruth = { fail: 0, hit: 0, none: 0 };
-    ans.forEach(function (a) { byMine[a.mine]++; byTruth[a.truth]++; });
+    var cell = { both: 0, failOnly: 0, hitOnly: 0, neither: 0 };
+    ans.forEach(function (a) { byMine[a.mine]++; byTruth[a.truth]++;
+      if (a.failed && a.hit) cell.both++; else if (a.failed) cell.failOnly++; else if (a.hit) cell.hitOnly++; else cell.neither++; });
     var fmt = function (o) { return '失败 ' + o.fail + ' · 达标 ' + o.hit + ' · 都不 ' + o.none; };
     box.innerHTML = '<div class="tally-meta"><span>实验完成</span></div>' +
       '<table><tr><th></th><th>你的判定</th><th>脚本真值</th></tr>' +
@@ -132,10 +143,10 @@ var TALLY = [
       '<tr><td>失败率</td><td>' + Math.round(byMine.fail / n * 100) + '%</td><td>' + Math.round(byTruth.fail / n * 100) + '%（真值）</td></tr>' +
       '<tr><td>达标率</td><td>' + Math.round(byMine.hit / n * 100) + '%</td><td>' + Math.round(byTruth.hit / n * 100) + '%（真值）</td></tr>' +
       '<tr><td>判定一致</td><td colspan="2">' + okc + ' / ' + n + '（' + Math.round(okc / n * 100) + '%）</td></tr></table>' +
-      '<p style="font-size:.88rem;font-family:var(--sans);margin-top:.6rem">判错的样本集中在哪类形态/市场？那就是你的语境盲区——记进复盘模板的错误分类。</p>';
+      '<p style="font-size:.88rem;font-family:var(--sans);margin-top:.6rem"><b>真值四格表</b>（失败与达标是两个独立事件，不互斥）：都发生 ' + cell.both + ' · 只失败 ' + cell.failOnly + ' · 只达标 ' + cell.hitOnly + ' · 都没发生 ' + cell.neither + '。判错的样本集中在哪类形态/市场？那就是你的语境盲区——记进复盘模板的错误分类。</p>';
     document.getElementById('tally-final').innerHTML =
       '<b>你的表 vs 脚本表：</b>两张表的差 = 你与口径的分歧。注意即便方向全对，20 样本的比率也有 ±10pt 的固有噪声——' +
-      '这就是"任何 20 样本的胜率都是幻觉"的体感版。全样本真值见 <a href="../reference/pattern-stats.html">统计总表</a>（N=3594）。';
+      '这就是"任何 20 样本的胜率都是幻觉"的体感版。全样本见 <a href="../reference/pattern-stats.html">统计总表</a>（N=3594；注意总表里 failed/hit 是两个独立事件标志，存在两者兼有的样本——读四格分布，别当成互斥三类）。';
   }
   draw();
 })();
