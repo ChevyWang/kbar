@@ -61,13 +61,13 @@ function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.r
 var LS = store(), KEY = 'kbar-answer::M5.2::';
 function loadRec(p) { if (!LS) return { attempts: [] }; try { return JSON.parse(LS.getItem(KEY + p) || '') || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
 function saveRec(p, r) { if (LS) { try { LS.setItem(KEY + p, JSON.stringify(r)); } catch (e) {} } }
-var PACKS = [{ id: 'A', role: '首次验收' }, { id: 'B', role: '复考换情境' }, { id: 'C', role: '备用' }];
+var PACKS = [{ id: 'A', role: '首次验收' }, { id: 'B', role: '复考换情境' }, { id: 'C', role: '备用' }, { id: 'D', role: '备用二' }];
 
 function buildQuestions(pid) {
-  var pi = { A: 0, B: 1, C: 2 }[pid];
-  var dd = [5, 6, 7][pi];            // 回撤触发 R 数
-  var sc = [86, 88, 91][pi];         // 执行分
-  var mon = ['三月', '四月', '五月'][pi];
+  var pi = { A: 0, B: 1, C: 2, D: 3 }[pid];
+  var dd = [5, 6, 7, 8][pi];            // 回撤触发 R 数
+  var sc = [86, 88, 91, 93][pi];         // 执行分
+  var mon = ['三月', '四月', '五月', '六月'][pi];
   var Q = [];
 
   Q.push({ key: true, q: '（★）回撤协议触发（峰值回撤 ' + dd + 'R）。你拉出最近 10 笔记分卡：均分 ' + sc + '、零关键违规；同时核对成本台账发现滑点连续两周超回测假设，且品种波动结构明显换轨。正确结论：',
@@ -110,7 +110,7 @@ function buildQuestions(pid) {
     answer: 1,
     explain: '5004 ③冻结条款：水下任何参数调整都在制造无回测的新系统；提案排队、事后按流程处置。' });
 
-  Q.push({ key: false, q: '信号连续 ' + [4, 5, 6][pi] + ' 笔未触发（踏空），你按规则空仓等待中。月末复盘正确表述：',
+  Q.push({ key: false, q: '信号连续 ' + [4, 5, 6, 7][pi] + ' 笔未触发（踏空），你按规则空仓等待中。月末复盘正确表述：',
     options: ['错过了行情，执行失误', '合规的"没有交易"——机会分母里记为"未触发/资金不足拒绝"，与盈亏分开统计', '下月放宽触发条件补回来', '踏空=亏损，计入回撤'],
     answer: 1,
     explain: '机会分母包含未成交/拒绝（X-05 反例家族）；"充分论证观望"可以合格，不因没凑单判落后。' });
