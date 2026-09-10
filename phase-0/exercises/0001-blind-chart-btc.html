@@ -17,10 +17,10 @@
 <header class="course">
   <div class="kicker">K线训练营 · 作业考场 001（覆盖第 0001、0002 课）</div>
   <h1>真实盘面盲读</h1>
-  <p class="sub">BTC 日线 · 最近 30 根（截至 2026-09-05）。无日期、无指标、无量能——只有你学过的东西。</p>
+  <p class="sub">BTC 日线 · 最近 30 根（截至 2026-09-05）。无日期、无指标、无量能——只有你学过的东西，和右侧一列价格刻度。</p>
 </header>
 
-<div class="note">规则：只用第 0001、0002 课的知识作答。三题答案<b>写在纸上或笔记里</b>，全部做完后再展开文末参考答案自批。<b>禁止先看答案——那是作弊，骗的是自己的盘感。</b>图中每 5 根标一次号（第5、10、15…），末根有下划线标记。</div>
+<div class="note">规则：只用第 0001、0002 课的知识作答。三题答案<b>写在纸上或笔记里</b>，全部做完后再展开文末参考答案自批。<b>禁止先看答案——那是作弊，骗的是自己的盘感。</b>图右侧带<b>价格刻度</b>（网格线为整数步进），读价位用它；每 5 根标一次号（第5、10、15…），末根有下划线+三角标记。</div>
 
 <div class="exam-window"><div class="win-label">窗口一 · 第 1–15 根</div><div id="win1"></div></div>
 <div class="exam-window"><div class="win-label">窗口二 · 第 16–30 根（下划线=第30根·最新）</div><div id="win2"></div></div>
@@ -88,8 +88,8 @@ function caps(arr, offset){
     return n % 5 === 0 ? '第' + n + '根' : '';
   });
 }
-document.getElementById('win1').innerHTML = Kbar.row(K.slice(0, 15), {w:640, h:210, caps: caps(K.slice(0,15), 0)});
-document.getElementById('win2').innerHTML = Kbar.row(K.slice(15), {w:640, h:210, caps: caps(K.slice(15), 15), hl: 14});
+document.getElementById('win1').innerHTML = Kbar.chart(K.slice(0, 15), {w:720, h:320, yLabels:true, caps:caps(K.slice(0,15), 0)});
+document.getElementById('win2').innerHTML = Kbar.chart(K.slice(15), {w:720, h:320, yLabels:true, caps:caps(K.slice(15), 15), hl:14});
 </script>
 </body>
 </html>

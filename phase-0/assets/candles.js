@@ -143,7 +143,11 @@
       s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="2"/>';
       s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="2" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 8) + '" text-anchor="middle" font-family="' + SANS + '" font-size="11" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
-      if (opts.hl === i) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 15) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 15) + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      if (opts.hl === i) {
+      var uy2 = h - capH + 15;
+      s += '<line x1="' + (cx - bw / 2) + '" y1="' + uy2 + '" x2="' + (cx + bw / 2) + '" y2="' + uy2 + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      s += '<polygon points="' + cx + ',' + (uy2 - 4.5) + ' ' + (cx - 4.5) + ',' + (uy2 + 0.5) + ' ' + (cx + 4.5) + ',' + (uy2 + 0.5) + '" fill="' + INK + '"/>';
+    }
     });
     s += '</svg>';
     return s;
@@ -266,13 +270,15 @@
       if (L.label) s += '<text x="' + (w - 4) + '" y="' + (y(L.y) + 3.5) + '" text-anchor="end" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
     });
 
-    // 右侧价格刻度
+    // 右侧价格刻度：整数步进网格（1/2/2.5/5×10^k），供读价位使用
     if (opts.yLabels) {
-      [0, 1, 2, 3].forEach(function (i) {
-        var p = lo + range * i / 3;
+      var raw = range / 5, mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10)), nm = raw / mag;
+      var ystep = (nm <= 1 ? 1 : nm <= 2 ? 2 : nm <= 2.5 ? 2.5 : nm <= 5 ? 5 : 10) * mag;
+      for (var tk = Math.ceil(lo / ystep - 1e-9); tk * ystep <= hi + 1e-9; tk++) {
+        var p = tk * ystep;
         s += '<line x1="' + padL + '" y1="' + y(p) + '" x2="' + (padL + plotW) + '" y2="' + y(p) + '" stroke="#e4e2d9" stroke-width="1"/>';
         s += '<text x="' + (padL + plotW + 5) + '" y="' + (y(p) + 3.5) + '" font-family="' + SANS + '" font-size="10" fill="' + FAINT + '">' + fmtPrice(p, range) + '</text>';
-      });
+      }
     }
 
     // 斜线（趋势线/通道线）：{i1,p1,i2,p2,color,dash,label}，i 为 0-based 棒索引
@@ -295,7 +301,11 @@
       s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="1.7"/>';
       s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 7) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
-      if (opts.hl === i && (reveal === n || asOf != null)) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 14) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 14) + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      if (opts.hl === i && (reveal === n || asOf != null)) {
+        var uy = h - capH + 14;
+        s += '<line x1="' + (cx - bw / 2) + '" y1="' + uy + '" x2="' + (cx + bw / 2) + '" y2="' + uy + '" stroke="' + INK + '" stroke-width="2.5"/>';
+        s += '<polygon points="' + cx + ',' + (uy - 4.5) + ' ' + (cx - 4.5) + ',' + (uy + 0.5) + ' ' + (cx + 4.5) + ',' + (uy + 0.5) + '" fill="' + INK + '"/>';
+      }
     });
 
     // 结构标注（摆动点等）
