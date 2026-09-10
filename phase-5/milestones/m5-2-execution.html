@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M5.2 · 执行协议 — 里程碑验收 — K线训练营 Phase 5</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.pack-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0; font-family: var(--sans); }
+.pack-tab { border: 1.5px solid var(--line); border-radius: 10px; padding: .6rem 1rem; background: #fff; cursor: pointer; text-align: left; min-width: 190px; }
+.pack-tab.active { border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.pack-tab .pt-state { font-size: .74rem; font-weight: 700; display: block; margin-top: .2rem; }
+.q-card { border: 1.5px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1rem 0; background: #fff; font-family: var(--sans); }
+.q-card .q-text { font-size: .97rem; font-weight: 600; margin: .3rem 0 .7rem; line-height: 1.65; }
+.q-opt { display: block; border: 1.5px solid var(--line); border-radius: 8px; padding: .5rem .9rem; margin: .45rem 0; cursor: pointer; background: var(--paper); font-size: .93rem; line-height: 1.55; }
+.q-opt.picked-right { border-color: #1a7f37; background: #eef7ee; }
+.q-opt.picked-wrong { border-color: #d33a2c; background: #fdeeec; }
+.q-opt.right-hint { border-color: #1a7f37; border-style: dashed; }
+.q-opt.dim { opacity: .55; cursor: default; }
+.q-explain { border-top: 1px dashed var(--line); margin-top: .7rem; padding-top: .6rem; font-size: .88rem; line-height: 1.7; }
+.key-badge { display: inline-block; font-size: .7rem; border: 1px solid #b3541e; color: #b3541e; border-radius: 99px; padding: 0 .5rem; margin-left: .4rem; }
+.verdict { border: 2px solid var(--ink); border-radius: 12px; padding: 1rem 1.3rem; margin: 1.2rem 0; font-family: var(--sans); background: var(--note-bg); }
+button.mbtn { font-family: var(--sans); font-size: .9rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .45rem 1.05rem; cursor: pointer; background: #fff; margin: .3rem .5rem .3rem 0; }
+button.mbtn.dark { background: var(--ink); color: #fff; }
+.msb { display: inline-block; font-size: .74rem; border-radius: 99px; padding: .05rem .6rem; border: 1px solid var(--line); margin-right: .4rem; }
+.msb.ok { border-color: #1a7f37; color: #1a7f37; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 5 执行 · 里程碑验收 M5.2（代表任务 6/6）</div>
+  <h1>执行协议：归因、按因复出与证据分流</h1>
+  <p class="sub">12 道情境题：回撤四线归因（可并存）、按因复出（资金回本不算）、关键违规不可抵消、执行分与系统有效性分离、tilt 纠偏失败的处理、检查单与证据、自报记录的身份边界、课程三态。包间场景换数字换情境，口径与修订后的 5002/5004/5005/5006 一致。<b>通过＝「M5.2 执行协议知识任务通过」；不构成实盘或加仓授权。</b></p>
+</header>
+
+<details class="lesson-map">
+  <summary><b>教学卡</b></summary>
+  <ol>
+    <li><b>先修</b>：5002（记分卡）、5004（四线归因与按因复出）、5005（检查单）、5006（三态与阶梯）、5007（tilt）。</li>
+    <li><b>评分</b>：≥10/12 且 4 道关键项（★：归因并存、按因复出、执行分≠系统有效性、三态边界）全对。</li>
+    <li><b>成绩范围</b>：情境知识任务通过≠实际执行已被认证——后者看你自己的记录（自报另计）。</li>
+    <li><b>包角色</b>：A 首次 / B 复考（换情境）/ C 备用。</li>
+  </ol>
+</details>
+
+<div class="pack-tabs" id="packtabs"></div>
+<div id="quiz"></div>
+<div id="verdict"></div>
+<div class="state-line" id="statusline"></div>
+<div style="margin:.6rem 0 1.4rem"><button class="mbtn" id="export-btn" type="button">导出 M5.2 档案（JSON）</button></div>
+
+<footer class="course">
+  <div class="nav"><a href="../index.html">← Phase 5 主页</a><a href="../lessons/5006-scaling-graduation.html">回到 5006</a></div>
+  <div class="citations">情境题确定性生成（同包重做=同题练习）；口径与 5002/5004/5005/5006/5007 修订版课文一致（四线归因、按因必选复出、资金收复不作恢复条件、三态边界）。</div>
+</footer>
+
+<script>
+function rot(a, k) { k = ((k % a.length) + a.length) % a.length; return a.slice(k).concat(a.slice(0, k)); }
+function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
+var LS = store(), KEY = 'kbar-answer::M5.2::';
+function loadRec(p) { if (!LS) return { attempts: [] }; try { return JSON.parse(LS.getItem(KEY + p) || '') || { attempts: [] }; } catch (e) { return { attempts: [] }; } }
+function saveRec(p, r) { if (LS) { try { LS.setItem(KEY + p, JSON.stringify(r)); } catch (e) {} } }
+var PACKS = [{ id: 'A', role: '首次验收' }, { id: 'B', role: '复考换情境' }, { id: 'C', role: '备用' }];
+
+function buildQuestions(pid) {
+  var pi = { A: 0, B: 1, C: 2 }[pid];
+  var dd = [5, 6, 7][pi];            // 回撤触发 R 数
+  var sc = [86, 88, 91][pi];         // 执行分
+  var mon = ['三月', '四月', '五月'][pi];
+  var Q = [];
+
+  Q.push({ key: true, q: '（★）回撤协议触发（峰值回撤 ' + dd + 'R）。你拉出最近 10 笔记分卡：均分 ' + sc + '、零关键违规；同时核对成本台账发现滑点连续两周超回测假设，且品种波动结构明显换轨。正确结论：',
+    options: ['执行 ' + sc + ' 分→"系统内方差"，照常执行', '四条线可并存：执行线干净只是排除其一；成本数据线与市场/模型线各有问题要按各自流程处理', '以最高分那条线为准，其余忽略', '无法归因，直接停用系统'],
+    answer: 1,
+    explain: '5004 四线归因：执行/数据成本/市场模型/未知并存。执行高分不能把成本恶化与换轨"平均"掉——每条线对应不同动作。' });
+
+  Q.push({ key: true, q: '（★）归因为执行偏差（挪止损 2 笔）后你降档修复。恢复原档位的条件：',
+    options: ['账户资金回到降档时水平即可', '按因必选：近 10 笔均分 ≥90 且关键项零违规；资金回本不算恢复条件（可被运气污染）', '自我感觉良好+连续三天盈利', '满两周自动恢复'],
+    answer: 1,
+    explain: '按因复出且全部必选；资金收复永远不是恢复条件（回本幻觉的对侧约束）。' });
+
+  Q.push({ key: true, q: '（★）八项记分卡七项合格，唯一失败项是"删除了保护性止损"但该笔最终盈利。判定：',
+    options: ['87.5 分及格线以上，通过', '关键门失败——删保护是不可抵消项；盈利不改变违规性质', '结果好就行，记录一笔', '扣两分了事'],
+    answer: 1,
+    explain: '关键违规不可被总分抵消（5002/X-01）；"盈利但违规"与"亏损但合规"必须分开记账——这是课程从 P0 贯彻到 P5 的原则。' });
+
+  Q.push({ key: true, q: '（★）Phase 5 课程任务三件全部完成、毕业考 12/12。这意味着：',
+    options: ['获得小仓实盘资格，可以开始 L2', '实盘授权到手，仓位自己定', 'M5.2 课程任务通过；是否用真实资金、何时、多少，始终是课程之外的个人决定——课程交付协议与工具，不授权', '可以直接上计划仓位'],
+    answer: 2,
+    explain: '三态边界：课程任务通过／自报实践记录／课程外资金决定。课程页面与判词永不出现"允许实盘/推荐仓位"。' });
+
+  Q.push({ key: false, q: 'tilt 信号灯亮起，你走了身体打断与四步，但手仍然点了下单。正确动作：',
+    options: ['既然单子进了就拿着', '立即停止开新风险；已有仓位按预案保护（收紧保护或按规则退出），事后复盘"纠偏失败"并升级预防', '加倍把损失赚回', '删除记录当没发生'],
+    answer: 1,
+    explain: '5007：识别后无法按计划行动=纠偏失败路径——停开新风险、保护既有风险、复盘升级；不制造真实亏损也能演练。' });
+
+  Q.push({ key: false, q: '执行检查单 60 秒内全部打勾、耗时达标。但其中"止损单已挂"一栏你并没有真的挂单。放行判定：',
+    options: ['打勾了就算过，流程完成', '不放行——全勾但证据缺失不放行；检查单核对的是证据不是速度', '下次注意即可', '速度达标可以抵消'],
+    answer: 1,
+    explain: '5005：核对≤30 秒不能抵消证据缺失；勾选必须有对应事实（挂单回执/委托号）。' });
+
+  Q.push({ key: false, q: '你导入了自己 ' + mon + '的 30 笔实盘记录。课程工具会做什么、不做什么：',
+    options: ['验证真实性并认证我的执行水平', '只做格式与规则一致性检查（字段/公式/版本），不验证真实性、不构成认证', '自动给我升级仓位档', '按盈亏排名给出建议'],
+    answer: 1,
+    explain: '自报记录=一致性检查（5006）；真实性无法由静态页面认证。盈亏只作描述。' });
+
+  Q.push({ key: false, q: '回撤期你连续冒出"把止损放宽到 12% 这几笔都活了"的念头。协议动作：',
+    options: ['小改一下试试', '参数修改权冻结——想法记进 v2 提案栏排队，回撤结束后按版本流程评估', '立即改，反正就这一笔', '问群友'],
+    answer: 1,
+    explain: '5004 ③冻结条款：水下任何参数调整都在制造无回测的新系统；提案排队、事后按流程处置。' });
+
+  Q.push({ key: false, q: '信号连续 ' + [4, 5, 6][pi] + ' 笔未触发（踏空），你按规则空仓等待中。月末复盘正确表述：',
+    options: ['错过了行情，执行失误', '合规的"没有交易"——机会分母里记为"未触发/资金不足拒绝"，与盈亏分开统计', '下月放宽触发条件补回来', '踏空=亏损，计入回撤'],
+    answer: 1,
+    explain: '机会分母包含未成交/拒绝（X-05 反例家族）；"充分论证观望"可以合格，不因没凑单判落后。' });
+
+  Q.push({ key: false, q: '一笔交易：决策质量记分卡满分，止损被打，−1R。另一笔：挪了止损扛回，+2R。记账与结论：',
+    options: ['+2R 那笔贡献大，整体正确', '前者=合格过程×不利结果（正常）；后者=违规×有利结果（事故）——分账记录，后者进纠偏流程', '都算赢', '只看净额'],
+    answer: 1,
+    explain: '决策质量与盈亏脱钩（5001/5002）；违规盈利是间歇性强化（22% 回本诱惑），不改变违规性质。' });
+
+  Q.push({ key: false, q: '回撤调查：成本台账干净、执行零违规、品种波动结构也无明显变化——三条线都查不出原因。协议把它归为：',
+    options: ['正常方差，继续原仓位', '"未知"是合法状态：维持低剂量继续记录，直到证据变化；不允许凭"感觉是方差"恢复满档', '系统失效，立即弃用', '随机换品种再试'],
+    answer: 1,
+    explain: '5004 ④+§05：未知≠正常方差。0.5% 维持+连续 20 笔观察或新证据明确，才谈恢复。' });
+
+  Q.push({ key: false, q: '课程页面/导出里，以下哪种状态组合会被如实分开显示：',
+    options: ['"课程核心任务通过"与"开放报告已自评"合并为"已掌握"', '"AI 反馈已附"自动转为"执行已认证"', '课程任务通过 / 自报记录一致性已检查 / 开放自评已提交 ——三种状态分开显示，互不冒充', '全部合成一个总分'],
+    answer: 2,
+    explain: '三态（+AI 可选态）分开显示是课程纪律（主计划§4.3）；任何单一总分都会掩盖关键事实错误。' });
+
+  return Q;
+}
+
+var cur = 'A', quiz = null, qi = 0, picks = null;
+function packState(p) { var r = loadRec(p).attempts; return r.length ? (r[r.length - 1].passed ? '已通过' : '未通过（' + r[r.length - 1].score + '/12）') : '未开始'; }
+function renderTabs() {
+  document.getElementById('packtabs').innerHTML = PACKS.map(function (p) {
+    var st = packState(p.id), ok = st === '已通过';
+    return '<button type="button" class="pack-tab' + (p.id === cur ? ' active' : '') + '" data-p="' + p.id + '"><b>' + p.id + ' · ' + p.role + '</b><span class="pt-state" style="color:' + (ok ? '#1a7f37' : st === '未开始' ? 'var(--muted)' : '#d33a2c') + '">' + st + '</span></button>';
+  }).join('');
+  document.querySelectorAll('.pack-tab').forEach(function (b) { b.onclick = function () { cur = b.dataset.p; start(); }; });
+  document.getElementById('statusline').innerHTML = PACKS.map(function (p) { return '<span class="msb' + (packState(p.id) === '已通过' ? ' ok' : '') + '">' + p.id + '：' + packState(p.id) + '</span>'; }).join('');
+}
+function start() {
+  renderTabs(); quiz = buildQuestions(cur); qi = 0; picks = [];
+  document.getElementById('verdict').innerHTML = '';
+  renderQ();
+}
+function renderQ() {
+  if (qi >= quiz.length) return finish();
+  var q = quiz[qi], el = document.getElementById('quiz');
+  el.innerHTML = '<div class="q-card"><div style="font-size:.76rem;color:var(--muted)">第 ' + (qi + 1) + '/12 题' + (q.key ? '<span class="key-badge">★ 关键项</span>' : '') + ' · 情境包 ' + cur + '</div><div class="q-text">' + q.q + '</div>' +
+    q.options.map(function (o, i) { return '<div class="q-opt" data-i="' + i + '">' + o + '</div>'; }).join('') + '<div class="q-explain" id="qx" style="display:none"></div></div>';
+  el.querySelectorAll('.q-opt').forEach(function (o) {
+    o.onclick = function () {
+      if (picks[qi] != null) return;
+      picks[qi] = parseInt(o.dataset.i, 10);
+      var right = picks[qi] === q.answer;
+      el.querySelectorAll('.q-opt').forEach(function (o2, j) { o2.classList.add('dim'); if (j === q.answer) o2.classList.add('right-hint'); });
+      o.classList.remove('dim'); o.classList.add(right ? 'picked-right' : 'picked-wrong');
+      var x = document.getElementById('qx');
+      x.style.display = 'block';
+      x.innerHTML = (right ? '<b style="color:#1a7f37">✓</b> ' : '<b style="color:#d33a2c">✗</b> ') + q.explain +
+        '<div style="margin-top:.5rem"><button class="mbtn dark" id="qn">' + (qi === 11 ? '交卷 →' : '下一题 →') + '</button></div>';
+      document.getElementById('qn').onclick = function () { qi++; renderQ(); };
+    };
+  });
+}
+function finish() {
+  var correct = quiz.map(function (q, i) { return picks[i] === q.answer; });
+  var score = correct.filter(Boolean).length;
+  var keysOk = quiz.every(function (q, i) { return !q.key || correct[i]; });
+  var passed = score >= 10 && keysOk;
+  var r = loadRec(cur);
+  r.attempts.push({ attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), picks: picks, correct: correct, score: score, keysPassed: keysOk, passed: passed });
+  saveRec(cur, r);
+  document.getElementById('verdict').innerHTML = '<div class="verdict"><b>' + (passed ? '✓ M5.2 执行协议知识任务通过（' + cur + ' 包）' : '✗ 未通过（' + cur + ' 包）') + '</b><br>得分 ' + score + '/12（通过线 ≥10）；关键项 ' + (keysOk ? '全过' : '<b style="color:#d33a2c">有未过（不可抵消）</b>') + '。' +
+    (passed ? '通过范围：情境知识任务——实际执行看你的记录（自报另计）；真实资金是课程外个人决定。' : '错题回看对应课节，再用 ' + (cur === 'A' ? 'B' : cur === 'B' ? 'C' : 'A') + ' 包复考。首次成绩已保留。') +
+    '<div style="margin-top:.5rem"><button class="mbtn" id="redo">重做本包（练习记录）</button></div></div>';
+  document.getElementById('redo').onclick = start;
+  renderTabs();
+}
+document.getElementById('export-btn').onclick = function () {
+  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M5.2', courseVersion: 'rev-2026-09-10', exportedAt: new Date().toISOString(), packs: PACKS.map(function (p) { return { pack: p.id, record: loadRec(p.id) }; }) };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'm5-2-execution.json'; a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+};
+start();
+</script>
+</body>
+</html>
