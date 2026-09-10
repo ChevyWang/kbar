@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M1.4 · 连续推理 — 里程碑验收 — K线训练营 Phase 1</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.pack-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0; font-family: var(--sans); }
+.pack-tab { border: 1.5px solid var(--line); border-radius: 10px; padding: .6rem 1rem; background: #fff; cursor: pointer; text-align: left; min-width: 210px; }
+.pack-tab.active { border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.pack-tab .pt-role { font-size: .74rem; color: var(--muted); display: block; }
+.pack-tab .pt-state { font-size: .74rem; font-weight: 700; display: block; margin-top: .2rem; }
+.panel { border: 1.5px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1rem 0; background: #fff; font-family: var(--sans); font-size: .93rem; }
+.panel b.t { display: block; margin-bottom: .5rem; }
+.st-opt { display: inline-block; border: 1.5px solid var(--line); border-radius: 99px; padding: .3rem 1rem; margin: .2rem .5rem .2rem 0; cursor: pointer; background: var(--paper); }
+.st-opt.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.cp-field { margin: .45rem 0; }
+.cp-field label { display: block; font-size: .8rem; color: var(--muted); }
+.cp-field input { border: 1px solid var(--line); border-radius: 8px; padding: .4rem .6rem; font: inherit; width: 100%; box-sizing: border-box; }
+.gate-msg { font-size: .84rem; margin-top: .4rem; line-height: 1.7; }
+.gate-msg .bad { color: #d33a2c; }
+.logline { font-size: .78rem; color: var(--muted); border-left: 2px solid var(--line); padding-left: .6rem; margin: .15rem 0; font-family: var(--sans); }
+.logline .upd { color: #b3541e; font-weight: 700; }
+button.mbtn { font-family: var(--sans); font-size: .9rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .45rem 1.05rem; cursor: pointer; background: #fff; margin: .3rem .5rem .3rem 0; }
+button.mbtn.dark { background: var(--ink); color: #fff; }
+button.mbtn[disabled] { opacity: .4; cursor: not-allowed; }
+.msb { display: inline-block; font-size: .74rem; border-radius: 99px; padding: .05rem .6rem; border: 1px solid var(--line); margin-right: .4rem; }
+.msb.ok { border-color: #1a7f37; color: #1a7f37; font-weight: 700; }
+.case-card { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin: .4rem 0 1rem; line-height: 1.7; }
+table.ref { width: 100%; border-collapse: collapse; font-size: .82rem; font-family: var(--sans); background: #fff; }
+table.ref th, table.ref td { border: 1px solid var(--line); padding: .35rem .55rem; text-align: left; }
+table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 1 逐根推理 · 里程碑验收 M1.4（代表任务 2/6）</div>
+  <h1>连续推理：60 根逐根档案</h1>
+  <p class="sub">每个决策时点只见截至当根的图（纵轴随已揭示前缀重算——无未来信息）。逐根提交 always-in 判断（维持也要明确确认），在 6 个检查点提交完整结构（状态/证据/价区/触发/失效/替代剧本）并通过事实门禁。<b>确认即存档、不可回改（禁止回写原判断）</b>；草稿自动保存，刷新续作。<b>通过＝「M1.4 结构化过程任务通过（自动可判部分）」——时点纪律与证据合法性；不证明行情预测能力。</b></p>
+</header>
+
+<details class="lesson-map">
+  <summary><b>教学卡（评分依据与流程）</b>——先读再答</summary>
+  <ol>
+    <li><b>目标行为</b>：在只见前缀的图上逐根记录 always-in（多/空/中性存疑）与依据；新信息到来时及时更新并引用证据棒；每 10 根提交一次完整结构（关键价区、触发/失效、替代剧本）。接受"无新信息，维持"——不要求每根编故事。</li>
+    <li><b>先修诊断</b>：1001（always-in 与两票制）、1003（H/L 与候选/确认）、1004/1005（腿与目标）、1009（失败突破）。</li>
+    <li><b>评分（自动可判部分）</b>：60/60 根逐根提交（时点纪律）；6/6 检查点事实门禁通过——证据棒已可见、价位在可见前缀范围内、方向与触发/失效相对位置一致（多：失效&lt;触发；空：触发&lt;失效；中性：观望带上下沿不等）、替代剧本非空。</li>
+    <li><b>不自动判的部分</b>：分支质量（所选状态是否与证据相容、更新是否及时）——完成后与"生成稿参考"对照并做开放自评（三档量规＋一句修订），另记状态、不并入核心通过。人工锚定的评分键属后续工作（台账 B16）。</li>
+    <li><b>包角色</b>：A=首次档案；B=延迟复测（建议距 A ≥24h，记录实际间隔）；C=备用（补测池，A/B 答案曝光耗尽时用）。</li>
+    <li><b>成绩能证明的范围</b>：指定窗口上的过程纪律与证据引用任务达标。</li>
+  </ol>
+</details>
+
+<div class="pack-tabs" id="packtabs"></div>
+
+<div id="workspace">
+  <div class="case-card" id="casecard"></div>
+  <div id="chart"></div>
+  <div id="flow"></div>
+  <div id="history"></div>
+  <div id="final"></div>
+  <div class="state-line" id="statusline"></div>
+  <div style="margin:.6rem 0 1.4rem">
+    <button class="mbtn" id="export-btn" type="button">导出 M1.4 档案（JSON）</button>
+  </div>
+</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 1 主页</a>
+    <a href="../lessons/1010-bar-by-bar.html">回到 1010</a>
+  </div>
+  <div class="citations">数据：instancelib 扫描库（yfinance 口径）未曝光日线窗口，20 根暖身＋60 根任务段；案例契约见源仓 private/m14-cases.json，抽取脚本 tools/pick_m14_windows.py 可复现。图由共享 candles.js 的截至时点视图渲染（asOf：纵轴/量能比例尺只由已揭示前缀决定）。本页无账号、无网络、无 AI 依赖。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script>
+var CASES = {
+  A: {sym:"亚马逊",mkt:"美股·会话",warm:20,bars:[{d:"2022-06-03",o:124.2,h:124.4,l:121.0465,c:122.35,v:97604000},{d:"2022-06-06",o:125.25,h:128.99,l:123.81,c:124.79,v:135269000},{d:"2022-06-07",o:122.01,h:124.1,l:120.63,c:123.0,v:85156700},{d:"2022-06-08",o:122.61,h:123.75,l:120.75,c:121.18,v:64926600},{d:"2022-06-09",o:119.99,h:121.3,l:116.1,c:116.15,v:67029800},{d:"2022-06-10",o:113.42,h:114.5,l:109.05,c:109.65,v:87266000},{d:"2022-06-13",o:104.19,h:106.54,l:101.86,c:103.67,v:99277700},{d:"2022-06-14",o:104.19,h:104.88,l:101.43,c:102.31,v:69728800},{d:"2022-06-15",o:103.86,h:109.06,l:103.53,c:107.67,v:85011100},{d:"2022-06-16",o:104.47,h:104.58,l:102.01,c:103.66,v:82186300},{d:"2022-06-17",o:102.8,h:106.98,l:102.51,c:106.22,v:99772100},{d:"2022-06-21",o:108.2,h:111.63,l:103.56,c:108.68,v:70901200},{d:"2022-06-22",o:107.43,h:112.13,l:107.02,c:108.95,v:60040100},{d:"2022-06-23",o:110.39,h:113.0,l:107.93,c:112.44,v:64345300},{d:"2022-06-24",o:112.38,h:116.71,l:111.43,c:116.46,v:69867600},{d:"2022-06-27",o:117.09,h:117.98,l:112.7,c:113.22,v:62133200},{d:"2022-06-28",o:113.5,h:114.85,l:107.04,c:107.4,v:74942900},{d:"2022-06-29",o:107.38,h:110.99,l:106.91,c:108.92,v:66375300},{d:"2022-06-30",o:108.11,h:108.18,l:102.52,c:106.21,v:97679400},{d:"2022-07-01",o:106.29,h:109.75,l:105.85,c:109.56,v:73021200},{d:"2022-07-05",o:107.6,h:114.08,l:106.32,c:113.5,v:76583700},{d:"2022-07-06",o:113.21,h:115.48,l:112.01,c:114.33,v:66958900},{d:"2022-07-07",o:113.85,h:116.99,l:113.49,c:116.33,v:57872300},{d:"2022-07-08",o:114.6,h:116.58,l:113.69,c:115.54,v:45719700},{d:"2022-07-11",o:114.08,h:114.3,l:110.87,c:111.75,v:53487600},{d:"2022-07-12",o:112.16,h:113.23,l:108.34,c:109.22,v:54280300},{d:"2022-07-13",o:107.03,h:111.78,l:106.01,c:110.4,v:61353800},{d:"2022-07-14",o:110.24,h:111.18,l:107.58,c:110.63,v:51163100},{d:"2022-07-15",o:112.5,h:115.59,l:111.59,c:113.55,v:84317800},{d:"2022-07-18",o:115.0,h:117.24,l:113.15,c:113.76,v:59115400},{d:"2022-07-19",o:115.7,h:118.95,l:114.03,c:118.21,v:60990000},{d:"2022-07-20",o:118.62,h:123.48,l:118.32,c:122.77,v:71268300},{d:"2022-07-21",o:123.2,h:124.85,l:121.26,c:124.63,v:60239900},{d:"2022-07-22",o:125.01,h:125.5,l:121.35,c:122.42,v:51463800},{d:"2022-07-25",o:122.7,h:123.64,l:120.03,c:121.14,v:50221300},{d:"2022-07-26",o:115.79,h:118.15,l:114.53,c:114.81,v:67075100},{d:"2022-07-27",o:117.31,h:121.9,l:117.16,c:120.97,v:61582000},{d:"2022-07-28",o:121.57,h:122.84,l:118.08,c:122.28,v:82245500},{d:"2022-07-29",o:134.9,h:137.65,l:132.41,c:134.95,v:148892900},{d:"2022-08-01",o:134.96,h:138.83,l:133.51,c:135.39,v:76846900},{d:"2022-08-02",o:134.72,h:137.44,l:134.09,c:134.16,v:61922400},{d:"2022-08-03",o:136.21,h:140.49,l:136.05,c:139.52,v:71827800},{d:"2022-08-04",o:140.58,h:143.56,l:139.55,c:142.57,v:70585000},{d:"2022-08-05",o:140.1,h:142.86,l:139.6,c:140.8,v:50686900},{d:"2022-08-08",o:142.05,h:144.23,l:138.29,c:139.41,v:52229000},{d:"2022-08-09",o:138.05,h:138.95,l:136.21,c:137.83,v:40434700},{d:"2022-08-10",o:142.9,h:144.6,l:141.01,c:142.69,v:54773800},{d:"2022-08-11",o:143.86,h:144.49,l:139.76,c:140.64,v:44867300},{d:"2022-08-12",o:142.05,h:143.57,l:140.12,c:143.55,v:47643500},{d:"2022-08-15",o:142.8,h:143.76,l:141.49,c:143.18,v:39014600},{d:"2022-08-16",o:143.91,h:146.57,l:142.0,c:144.78,v:59102900},{d:"2022-08-17",o:142.69,h:143.38,l:140.78,c:142.1,v:48149800},{d:"2022-08-18",o:141.32,h:142.77,l:140.38,c:142.3,v:37458700},{d:"2022-08-19",o:140.47,h:141.11,l:137.91,c:138.23,v:47792800},{d:"2022-08-22",o:135.72,h:136.32,l:132.85,c:133.22,v:50461500},{d:"2022-08-23",o:133.41,h:134.99,l:132.95,c:133.62,v:36252100},{d:"2022-08-24",o:132.75,h:135.47,l:132.1,c:133.8,v:38627000},{d:"2022-08-25",o:135.26,h:137.42,l:134.28,c:137.28,v:37496300},{d:"2022-08-26",o:136.55,h:137.83,l:130.5,c:130.75,v:53322700},{d:"2022-08-29",o:129.9,h:131.95,l:128.77,c:129.79,v:48101600},{d:"2022-08-30",o:131.25,h:132.07,l:126.85,c:128.73,v:49203000},{d:"2022-08-31",o:129.45,h:130.59,l:126.74,c:126.77,v:53648700},{d:"2022-09-01",o:126.0,h:128.02,l:123.66,c:127.82,v:56636100},{d:"2022-09-02",o:129.5,h:131.38,l:126.39,c:127.51,v:57429800},{d:"2022-09-06",o:127.92,h:128.62,l:124.74,c:126.11,v:43888600},{d:"2022-09-07",o:126.12,h:129.82,l:125.4,c:129.48,v:47900300},{d:"2022-09-08",o:127.72,h:130.28,l:127.1,c:129.82,v:43988500},{d:"2022-09-09",o:130.91,h:133.69,l:130.76,c:133.27,v:49387600},{d:"2022-09-12",o:134.1,h:136.49,l:134.0,c:136.45,v:53826900},{d:"2022-09-13",o:131.01,h:131.4,l:126.27,c:126.82,v:72694000},{d:"2022-09-14",o:127.36,h:128.84,l:126.33,c:128.55,v:45316800},{d:"2022-09-15",o:127.38,h:130.37,l:125.5,c:126.28,v:52887200},{d:"2022-09-16",o:122.78,h:123.87,l:120.7,c:123.53,v:115667800},{d:"2022-09-19",o:122.16,h:124.71,l:121.8,c:124.66,v:47279700},{d:"2022-09-20",o:123.35,h:124.4,l:121.14,c:122.19,v:47698400},{d:"2022-09-21",o:122.49,h:123.76,l:118.45,c:118.54,v:58498900},{d:"2022-09-22",o:117.08,h:118.79,l:116.26,c:117.31,v:55229200},{d:"2022-09-23",o:116.0,h:116.05,l:112.06,c:113.78,v:65126700},{d:"2022-09-26",o:113.3,h:117.34,l:113.13,c:115.15,v:62723300},{d:"2022-09-27",o:117.2,h:118.32,l:113.05,c:114.41,v:60094700}]},
+  B: {sym:"BNB/USDT",mkt:"加密·连续",warm:20,bars:[{d:"2022-01-01",o:511.5,h:527.9,l:511.4,c:527.3,v:446171.541},{d:"2022-01-02",o:527.4,h:533.9,l:518.0,c:531.0,v:404475.541},{d:"2022-01-03",o:531.0,h:532.8,l:510.0,c:511.9,v:663841.021},{d:"2022-01-04",o:511.9,h:520.0,l:502.0,c:506.9,v:687436.638},{d:"2022-01-05",o:506.9,h:516.0,l:457.0,c:474.1,v:985152.004},{d:"2022-01-06",o:474.2,h:481.3,l:458.8,c:472.6,v:986669.9},{d:"2022-01-07",o:472.6,h:473.9,l:437.5,c:448.1,v:1331260.03},{d:"2022-01-08",o:448.1,h:459.7,l:415.0,c:429.9,v:1062788.589},{d:"2022-01-09",o:429.8,h:444.5,l:427.0,c:438.7,v:688777.347},{d:"2022-01-10",o:438.8,h:445.5,l:405.6,c:424.7,v:1221504.738},{d:"2022-01-11",o:424.8,h:467.7,l:421.3,c:463.6,v:1266092.819},{d:"2022-01-12",o:463.6,h:489.9,l:456.6,c:487.8,v:836124.928},{d:"2022-01-13",o:487.8,h:489.8,l:466.5,c:475.2,v:908052.937},{d:"2022-01-14",o:475.1,h:492.3,l:467.6,c:490.0,v:797022.181},{d:"2022-01-15",o:489.9,h:500.9,l:485.0,c:494.5,v:548626.203},{d:"2022-01-16",o:494.5,h:506.0,l:488.6,c:498.6,v:507042.332},{d:"2022-01-17",o:498.6,h:499.1,l:466.9,c:475.2,v:757806.035},{d:"2022-01-18",o:475.1,h:479.6,l:457.2,c:471.4,v:707501.577},{d:"2022-01-19",o:471.5,h:473.1,l:453.7,c:461.9,v:585750.3},{d:"2022-01-20",o:461.9,h:478.7,l:438.2,c:440.2,v:1137854.894},{d:"2022-01-21",o:440.2,h:444.6,l:373.7,c:383.9,v:1891179.594},{d:"2022-01-22",o:383.8,h:389.6,l:336.3,c:358.3,v:2635609.386},{d:"2022-01-23",o:358.3,h:389.0,l:356.3,c:383.9,v:1297043.923},{d:"2022-01-24",o:384.0,h:384.0,l:336.0,c:371.3,v:1900214.42},{d:"2022-01-25",o:371.2,h:389.5,l:357.4,c:385.1,v:1006111.155},{d:"2022-01-26",o:385.1,h:402.4,l:366.4,c:375.1,v:1073520.172},{d:"2022-01-27",o:375.1,h:393.8,l:360.0,c:389.9,v:962060.888},{d:"2022-01-28",o:389.9,h:395.9,l:375.8,c:385.9,v:752320.615},{d:"2022-01-29",o:385.9,h:397.3,l:380.7,c:389.3,v:534573.782},{d:"2022-01-30",o:389.4,h:389.6,l:372.2,c:377.2,v:536436.123},{d:"2022-01-31",o:377.2,h:385.4,l:365.2,c:374.3,v:620113.734},{d:"2022-02-01",o:374.4,h:388.4,l:373.7,c:384.2,v:555347.277},{d:"2022-02-02",o:384.1,h:386.1,l:366.1,c:366.9,v:572340.04},{d:"2022-02-03",o:367.1,h:372.4,l:359.6,c:372.3,v:495715.227},{d:"2022-02-04",o:372.2,h:399.7,l:369.5,c:399.5,v:849825.828},{d:"2022-02-05",o:399.6,h:431.0,l:396.3,c:413.7,v:1031046.87},{d:"2022-02-06",o:413.8,h:422.5,l:407.0,c:419.9,v:542631.176},{d:"2022-02-07",o:419.9,h:439.0,l:413.3,c:433.5,v:758247.667},{d:"2022-02-08",o:433.5,h:445.4,l:406.2,c:407.8,v:1148555.321},{d:"2022-02-09",o:407.9,h:427.7,l:407.1,c:422.9,v:633880.431},{d:"2022-02-10",o:422.9,h:434.9,l:410.0,c:414.7,v:956240.339},{d:"2022-02-11",o:414.7,h:418.9,l:390.5,c:400.0,v:700843.2},{d:"2022-02-12",o:400.0,h:407.1,l:393.3,c:403.6,v:521080.237},{d:"2022-02-13",o:403.6,h:407.8,l:394.7,c:397.9,v:388657.052},{d:"2022-02-14",o:398.0,h:404.5,l:390.6,c:403.4,v:472210.318},{d:"2022-02-15",o:403.4,h:443.0,l:402.7,c:432.4,v:1184143.99},{d:"2022-02-16",o:432.4,h:433.5,l:422.2,c:427.3,v:606252.493},{d:"2022-02-17",o:427.3,h:431.1,l:400.0,c:402.4,v:661874.717},{d:"2022-02-18",o:402.4,h:411.0,l:392.2,c:399.2,v:611936.679},{d:"2022-02-19",o:399.2,h:406.4,l:393.0,c:399.8,v:410279.304},{d:"2022-02-20",o:399.8,h:400.0,l:375.0,c:380.6,v:624148.525},{d:"2022-02-21",o:380.7,h:393.7,l:355.0,c:356.6,v:1219652.481},{d:"2022-02-22",o:356.7,h:375.4,l:348.7,c:374.3,v:940456.822},{d:"2022-02-23",o:374.3,h:384.2,l:365.3,c:365.6,v:698692.661},{d:"2022-02-24",o:365.6,h:371.3,l:323.5,c:361.2,v:1949035.935},{d:"2022-02-25",o:361.2,h:377.2,l:356.8,c:375.0,v:783242.16},{d:"2022-02-26",o:375.0,h:386.1,l:370.5,c:373.7,v:548687.941},{d:"2022-02-27",o:373.7,h:381.2,l:358.1,c:360.1,v:677364.949},{d:"2022-02-28",o:360.1,h:397.2,l:355.8,c:395.6,v:773064.48},{d:"2022-03-01",o:395.7,h:424.9,l:390.4,c:408.7,v:1403695.832},{d:"2022-03-02",o:408.7,h:415.7,l:403.8,c:409.3,v:788499.443},{d:"2022-03-03",o:409.3,h:413.2,l:397.4,c:402.6,v:577002.325},{d:"2022-03-04",o:402.6,h:403.5,l:372.0,c:374.2,v:756176.61},{d:"2022-03-05",o:374.1,h:387.3,l:367.2,c:384.7,v:453970.242},{d:"2022-03-06",o:384.8,h:387.3,l:371.6,c:375.0,v:489079.158},{d:"2022-03-07",o:375.0,h:385.9,l:362.8,c:380.6,v:949294.91},{d:"2022-03-08",o:380.6,h:388.7,l:375.3,c:381.4,v:647492.047},{d:"2022-03-09",o:381.4,h:402.7,l:381.0,c:393.2,v:1012850.747},{d:"2022-03-10",o:393.2,h:394.5,l:363.0,c:372.0,v:791332.984},{d:"2022-03-11",o:372.1,h:380.0,l:364.7,c:371.9,v:510174.586},{d:"2022-03-12",o:371.9,h:379.2,l:371.1,c:372.4,v:402475.646},{d:"2022-03-13",o:372.4,h:377.2,l:360.1,c:361.4,v:424762.642},{d:"2022-03-14",o:361.4,h:373.9,l:359.5,c:373.4,v:467814.984},{d:"2022-03-15",o:373.4,h:374.7,l:361.7,c:371.7,v:440890.823},{d:"2022-03-16",o:371.7,h:386.6,l:367.8,c:385.4,v:668878.615},{d:"2022-03-17",o:385.3,h:393.5,l:381.7,c:391.8,v:569457.408},{d:"2022-03-18",o:391.9,h:400.0,l:384.0,c:397.2,v:553763.586},{d:"2022-03-19",o:397.2,h:406.4,l:394.9,c:399.9,v:459996.613},{d:"2022-03-20",o:399.9,h:400.8,l:386.2,c:390.8,v:398984.429},{d:"2022-03-21",o:390.8,h:399.5,l:384.8,c:396.0,v:541479.78}]},
+  C: {sym:"东方财富",mkt:"A股·会话",warm:20,bars:[{d:"2023-01-03",o:15.7535,h:15.8766,l:15.105,c:15.8192,v:270208629},{d:"2023-01-04",o:15.7535,h:16.1311,l:15.7206,c:15.8848,v:156108897},{d:"2023-01-05",o:16.0901,h:16.755,l:16.0654,c:16.7222,v:378385930},{d:"2023-01-06",o:16.6647,h:16.911,l:16.5826,c:16.7222,v:200311386},{d:"2023-01-09",o:16.8617,h:17.5185,l:16.8289,c:17.2968,v:298775046},{d:"2023-01-10",o:17.2722,h:17.6498,l:17.1573,c:17.2393,v:218552452},{d:"2023-01-11",o:17.3543,h:17.6909,l:17.1244,c:17.1655,v:184036530},{d:"2023-01-12",o:17.2722,h:17.3953,l:17.0834,c:17.3214,v:135021394},{d:"2023-01-13",o:17.4035,h:17.855,l:17.2804,c:17.855,v:254143218},{d:"2023-01-16",o:17.9207,h:19.2178,l:17.8961,c:18.4871,v:526275333},{d:"2023-01-17",o:18.3968,h:18.7827,l:18.3476,c:18.717,v:219332802},{d:"2023-01-18",o:18.4789,h:18.9469,l:18.4789,c:18.6103,v:164054070},{d:"2023-01-19",o:18.5939,h:19.1685,l:18.4789,c:19.1603,v:227886422},{d:"2023-01-20",o:19.111,h:19.1275,l:18.7991,c:19.07,v:180481369},{d:"2023-01-30",o:19.6693,h:19.7678,l:18.6431,c:18.7991,v:302934776},{d:"2023-01-31",o:18.8155,h:18.9715,l:18.3312,c:18.4625,v:240147999},{d:"2023-02-01",o:18.5775,h:19.1767,l:18.3968,c:19.1767,v:240015806},{d:"2023-02-02",o:19.2752,h:19.3491,l:18.6349,c:18.6349,v:320417857},{d:"2023-02-03",o:18.52,h:18.7581,l:18.3394,c:18.5364,v:175436774},{d:"2023-02-06",o:18.2245,h:18.323,l:17.6088,c:17.9946,v:250966096},{d:"2023-02-07",o:18.1013,h:18.1916,l:17.9782,c:18.1424,v:129717139},{d:"2023-02-08",o:18.1424,h:18.1834,l:17.814,c:17.8386,v:134753176},{d:"2023-02-09",o:17.814,h:18.323,l:17.7812,c:18.2655,v:184204033},{d:"2023-02-10",o:18.1998,h:18.2983,l:17.9289,c:18.0356,v:128799690},{d:"2023-02-13",o:17.9371,h:18.2409,l:17.855,c:18.208,v:138702343},{d:"2023-02-14",o:18.2491,h:18.2819,l:17.9043,c:18.0931,v:112556604},{d:"2023-02-15",o:18.0603,h:18.1342,l:17.7647,c:17.7812,v:143772260},{d:"2023-02-16",o:17.814,h:18.2819,l:17.4856,c:17.6909,v:270760285},{d:"2023-02-17",o:17.5759,h:17.7319,l:17.1737,c:17.1983,v:187615696},{d:"2023-02-20",o:17.3625,h:18.1342,l:17.305,c:18.0521,v:263628907},{d:"2023-02-21",o:17.9618,h:18.2983,l:17.9536,c:18.167,v:166518007},{d:"2023-02-22",o:18.0356,h:18.1424,l:17.7483,c:17.855,v:141481252},{d:"2023-02-23",o:17.8386,h:18.2409,l:17.8386,c:17.8961,v:158388117},{d:"2023-02-24",o:17.9371,h:17.9618,l:17.0834,c:17.1573,v:331713294},{d:"2023-02-27",o:16.9192,h:17.108,l:16.7468,c:16.9356,v:146475885},{d:"2023-02-28",o:17.0587,h:17.2065,l:16.8864,c:17.1737,v:128546346},{d:"2023-03-01",o:17.1737,h:17.5677,l:17.0752,c:17.4692,v:210614743},{d:"2023-03-02",o:17.3789,h:17.4528,l:17.2476,c:17.2968,v:110183078},{d:"2023-03-03",o:17.4117,h:17.6088,l:17.1983,c:17.5267,v:147668949},{d:"2023-03-06",o:17.5103,h:17.5103,l:17.1162,c:17.2065,v:143543991},{d:"2023-03-07",o:17.1326,h:17.2393,l:16.4595,c:16.4677,v:289763737},{d:"2023-03-08",o:16.4595,h:16.5744,l:16.3445,c:16.5334,v:137269098},{d:"2023-03-09",o:16.558,h:16.599,l:16.3035,c:16.4184,v:142531152},{d:"2023-03-10",o:16.2707,h:16.558,l:16.2542,c:16.3199,v:144443697},{d:"2023-03-13",o:16.2214,h:16.5334,l:16.2214,c:16.5005,v:123413653},{d:"2023-03-14",o:16.4348,h:16.5005,l:16.0901,c:16.3938,v:134404923},{d:"2023-03-15",o:16.5416,h:16.7058,l:16.4266,c:16.4266,v:132706010},{d:"2023-03-16",o:16.3363,h:16.4431,l:16.1393,c:16.1886,v:143635437},{d:"2023-03-17",o:16.4184,h:16.8699,l:16.4184,c:16.6729,v:270311258},{d:"2023-03-20",o:16.6154,h:16.7796,l:16.3528,c:16.402,v:191170150},{d:"2023-03-21",o:16.5005,h:16.6647,l:16.3856,c:16.5662,v:160482922},{d:"2023-03-22",o:16.5416,h:16.6072,l:15.3923,c:15.5975,v:619141548},{d:"2023-03-23",o:15.3923,h:16.0736,l:15.3676,c:16.049,v:340000555},{d:"2023-03-24",o:16.3199,h:16.6647,l:16.2625,c:16.6154,v:395252371},{d:"2023-03-27",o:16.4759,h:17.3214,l:16.4759,c:16.9274,v:439345381},{d:"2023-03-28",o:16.7796,h:16.8781,l:16.2378,c:16.361,v:261373330},{d:"2023-03-29",o:16.4184,h:16.5416,l:16.2707,c:16.3938,v:161347719},{d:"2023-03-30",o:16.3856,h:16.5416,l:16.1147,c:16.4513,v:183737181},{d:"2023-03-31",o:16.4184,h:16.5334,l:16.2214,c:16.4431,v:201638016},{d:"2023-04-03",o:16.4595,h:18.9222,l:16.4431,c:18.7909,v:1120812874},{d:"2023-04-04",o:18.8812,h:19.5708,l:18.4215,c:18.6349,v:761108665},{d:"2023-04-06",o:18.2327,h:18.4051,l:17.814,c:18.0849,v:444105574},{d:"2023-04-07",o:18.1834,h:18.7663,l:17.9536,c:18.4297,v:400071579},{d:"2023-04-10",o:18.6595,h:18.8237,l:17.7976,c:17.8797,v:375458862},{d:"2023-04-11",o:18.0192,h:18.3065,l:17.6498,c:17.8632,v:319647870},{d:"2023-04-12",o:18.0521,h:18.5939,l:17.855,c:18.1998,v:376399258},{d:"2023-04-13",o:17.9864,h:18.0685,l:17.617,c:17.7073,v:272708199},{d:"2023-04-14",o:17.7155,h:17.855,l:17.4774,c:17.7237,v:225667216},{d:"2023-04-17",o:17.5759,h:18.1177,l:17.5759,c:17.9207,v:359076146},{d:"2023-04-18",o:17.9191,h:18.1663,l:17.7411,c:17.8301,v:258280158},{d:"2023-04-19",o:17.6916,h:17.751,l:17.4642,c:17.4938,v:236216928},{d:"2023-04-20",o:17.4839,h:17.7806,l:17.2763,c:17.7707,v:246629995},{d:"2023-04-21",o:17.6521,h:17.7015,l:16.8214,c:16.8412,v:333818880},{d:"2023-04-24",o:16.3665,h:16.4654,l:15.6545,c:15.8226,v:472887914},{d:"2023-04-25",o:15.8226,h:16.0401,l:15.5852,c:15.9017,v:274246469},{d:"2023-04-26",o:15.7731,h:15.8522,l:15.516,c:15.6841,v:208221279},{d:"2023-04-27",o:15.6248,h:15.6742,l:15.1798,c:15.5061,v:283709762},{d:"2023-04-28",o:15.5753,h:16.1687,l:15.5358,c:15.9116,v:270129765},{d:"2023-05-04",o:15.7632,h:15.9511,l:15.5556,c:15.7929,v:214845034},{d:"2023-05-05",o:15.8127,h:16.2181,l:15.7336,c:15.8226,v:305566185}]}
+};
+
+/* ---------- 常量与工具 ---------- */
+var WARM = 20, TASK = 60, TOTAL = 80, CPS = [10, 20, 30, 40, 50, 60];
+var BASIS = ['无新信息——维持', '创新高/新低', '摆动结构确认变化（HH/HL/LH/LL）', '吞没或大阳/大阴线', '关键价区被拒/被承接', '其他（见备注）'];
+function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
+var LS = store();
+var LS_KEY = 'kbar-answer::M1.4::';
+function loadRec(pid) { if (!LS) return { attempts: [], draft: null }; try { return JSON.parse(LS.getItem(LS_KEY + pid) || '') || { attempts: [], draft: null }; } catch (e) { return { attempts: [], draft: null }; } }
+function saveRec(pid, rec) { if (LS) { try { LS.setItem(LS_KEY + pid, JSON.stringify(rec)); } catch (e) {} } }
+
+var PACKS = [
+  { id: 'A', role: '首次档案', note: '60 根逐根记录，一次性完成或分次续作' },
+  { id: 'B', role: '延迟复测', note: '建议距 A 包首次 ≥24 小时；完成时显示实际间隔' },
+  { id: 'C', role: '备用补测', note: 'A/B 已作答曝光后，补测/复测用' }
+];
+
+/* ---------- 参考生成稿（确定性，只用前缀；仅供对照学习） ---------- */
+function swingsConfirmed(bars, lastIdx) {
+  var out = [];
+  for (var i = 3; i <= lastIdx - 3; i++) {
+    var isH = true, isL = true;
+    for (var j = 1; j <= 3; j++) {
+      if (!(bars[i].h > bars[i - j].h && bars[i].h > bars[i + j].h)) isH = false;
+      if (!(bars[i].l < bars[i - j].l && bars[i].l < bars[i + j].l)) isL = false;
+    }
+    if (isH) out.push({ i: i, type: 'H', p: bars[i].h });
+    if (isL) out.push({ i: i, type: 'L', p: bars[i].l });
+  }
+  return out;
+}
+function refAt(bars, k) { // k=任务根数；绝对可见= bars[0..WARM+k-1]
+  var lastIdx = WARM + k - 1;
+  var sw = swingsConfirmed(bars, lastIdx);
+  var lastH = null, lastL = null;
+  sw.forEach(function (s) { if (s.type === 'H') lastH = s; else lastL = s; });
+  var c = bars[lastIdx].c;
+  var sug = '中性存疑';
+  if (lastH && c > lastH.p) sug = '偏多（收盘越过最近已确认摆动高）';
+  else if (lastL && c < lastL.p) sug = '偏空（收盘跌破最近已确认摆动低）';
+  var swTxt = sw.slice(-4).map(function (s) { return (s.i + 1) + '#' + s.type + ' ' + s.p; }).join(' · ') || '（尚无已确认摆动）';
+  return { abs: lastIdx + 1, swTxt: swTxt, sug: sug, close: c };
+}
+
+/* ---------- 页面状态 ---------- */
+var cur = 'A', bars = null, draft = null;
+if (LS) { try { var lp = LS.getItem(LS_KEY + 'lastPack'); if (lp && CASES[lp]) cur = lp; } catch (e) {} }
+
+function packState(pid) {
+  var rec = loadRec(pid);
+  if (rec.attempts.length) return { label: '已完成 ' + rec.attempts.length + ' 次档案', cls: 'ok' };
+  if (rec.draft && rec.draft.k > 1) return { label: '进行中（第 ' + rec.draft.k + '/60 根）', cls: '' };
+  return { label: '未开始', cls: '' };
+}
+
+function renderTabs() {
+  var el = document.getElementById('packtabs');
+  el.innerHTML = PACKS.map(function (p) {
+    var st = packState(p.id);
+    return '<button type="button" class="pack-tab' + (p.id === cur ? ' active' : '') + '" data-pack="' + p.id + '"><b>' + p.id + ' 包 · ' + p.role + '</b>' +
+      '<span class="pt-role">' + p.note + '</span>' +
+      '<span class="pt-state" style="color:' + (st.cls === 'ok' ? '#1a7f37' : 'var(--muted)') + '">' + st.label + '</span></button>';
+  }).join('');
+  el.querySelectorAll('.pack-tab').forEach(function (b) { b.onclick = function () { cur = b.dataset.pack; if (LS) { try { LS.setItem(LS_KEY + 'lastPack', cur); } catch (e) {} } startPack(); }; });
+}
+
+function renderStatusLine() {
+  var rec = loadRec(cur);
+  var parts = ['<span class="msb">包 ' + cur + '：' + packState(cur).label + '</span>'];
+  if (cur === 'B') {
+    var ra = loadRec('A');
+    var t0 = (ra.attempts[0] && ra.attempts[0].ts) || (ra.draft && ra.draft.startedTs);
+    if (t0) parts.push('<span class="msb">距 A 包开始：' + Math.round((Date.now() - new Date(t0).getTime()) / 3600000) + ' 小时</span>');
+  }
+  if (!LS) parts.push('<span class="msb" style="border-color:#d33a2c;color:#d33a2c">本地存储不可用——进度不保存，请一次性完成并导出</span>');
+  document.getElementById('statusline').innerHTML = parts.join(' ');
+}
+
+function startPack() {
+  renderTabs();
+  var c = CASES[cur];
+  bars = c.bars;
+  var rec = loadRec(cur);
+  draft = rec.draft || { k: 1, startedTs: new Date().toISOString(), states: {}, cps: {} };
+  document.getElementById('casecard').innerHTML = '<b>案例卡</b> · ' + c.mkt + ' · ' + c.sym + ' · 日线 80 根 = 20 根暖身（初始可见）＋ 60 根任务段（逐根揭示）· 案例号 M1.4-' + cur + '-2026a · 出处：instancelib 未曝光窗口（yfinance 口径）· 视图=截至时点（asOf）——纵轴/量能只由已揭示前缀决定。';
+  document.getElementById('final').innerHTML = '';
+  renderStatusLine();
+  drawStep();
+}
+
+function drawStep() {
+  var k = draft.k;
+  var absIdx = WARM + k - 1;                 // 0-based 绝对棒索引
+  document.getElementById('chart').innerHTML =
+    Kbar.chart(bars, { w: 780, h: 320, yLabels: true, vol: bars.map(function (b) { return b.v; }), asOf: absIdx, span: TOTAL, hl: absIdx }) +
+    '<div style="font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.2rem 0 .6rem">第 ' + k + '/60 根任务棒（绝对棒号 ' + (absIdx + 1) + '/80 · ' + bars[absIdx].d + '）——决策时点视图，右侧空白为未揭示的预留空间。</div>';
+  if (draft.states[k] && !isCpPending(k)) renderNextOnly();
+  else if (draft.states[k] && isCpPending(k)) renderCp(k);
+  else renderCommit(k);
+  renderHistory();
+}
+
+function isCpPending(k) {
+  return CPS.indexOf(k) >= 0 && !(draft.cps[k] && draft.cps[k].gate && draft.cps[k].gate.ok);
+}
+
+function prevState(k) {
+  for (var i = k - 1; i >= 1; i--) if (draft.states[i]) return draft.states[i].dir;
+  return null;
+}
+
+function renderCommit(k) {
+  var prev = prevState(k) || '中性';
+  var el = document.getElementById('flow');
+  el.innerHTML = '<div class="panel"><b class="t">第 ' + k + ' 根 · 提交你的判断（确认后不可回改）</b>' +
+    '<div style="margin:.4rem 0">always-in 状态（默认带入上根）：<span id="st-opts">' +
+    ['多', '空', '中性'].map(function (s) { return '<span class="st-opt' + (s === prev ? ' on' : '') + '" data-s="' + s + '">' + s + '</span>'; }).join('') + '</span></div>' +
+    '<div class="cp-field"><label>依据（本根发生了什么）</label><select id="c-basis">' + BASIS.map(function (b) { return '<option>' + b + '</option>'; }).join('') + '</select></div>' +
+    '<div class="cp-field"><label>备注（可选）</label><input id="c-note" type="text" placeholder="一句话即可，如：越过 12.4 摆动高，HH+HL 链完整"></div>' +
+    '<button class="mbtn dark" id="c-commit" type="button">✓ 确认第 ' + k + ' 根（存档）</button>' +
+    '<div class="gate-msg" id="c-msg"></div></div>';
+  var chosen = prev;
+  el.querySelectorAll('.st-opt').forEach(function (o) {
+    o.onclick = function () {
+      el.querySelectorAll('.st-opt').forEach(function (x) { x.classList.remove('on'); });
+      o.classList.add('on'); chosen = o.dataset.s;
+    };
+  });
+  document.getElementById('c-commit').onclick = function () {
+    var basis = document.getElementById('c-basis').value;
+    var note = document.getElementById('c-note').value.trim();
+    var changed = chosen !== prev;
+    draft.states[k] = { bar: k, dir: chosen, basis: basis, note: note, changed: changed, ts: new Date().toISOString() };
+    var rec = loadRec(cur); rec.draft = draft; saveRec(cur, rec);
+    if (isCpPending(k)) renderCp(k); else renderNextOnly();
+    renderHistory();
+  };
+}
+
+function renderNextOnly() {
+  var k = draft.k, el = document.getElementById('flow');
+  var s = draft.states[k];
+  el.innerHTML = '<div class="panel"><b class="t">第 ' + k + ' 根已存档</b>状态：<b>' + s.dir + '</b>' + (s.changed ? ' <span style="color:#b3541e;font-weight:700">（更新）</span>' : '（维持）') + ' · 依据：' + s.basis + (s.note ? ' · ' + s.note : '') +
+    '<div style="margin-top:.5rem"><button class="mbtn dark" id="c-next" type="button"' + (k >= TASK ? ' disabled' : '') + '>揭示下一根 →</button>' +
+    (k >= TASK ? '<button class="mbtn" id="c-finish" type="button">进入完成面板 →</button>' : '') + '</div></div>';
+  var nx = document.getElementById('c-next');
+  if (nx) nx.onclick = function () { draft.k = k + 1; var rec = loadRec(cur); rec.draft = draft; saveRec(cur, rec); renderStatusLine(); drawStep(); };
+  var fin = document.getElementById('c-finish');
+  if (fin) fin.onclick = renderFinal;
+}
+
+function renderCp(k) {
+  var el = document.getElementById('flow');
+  var cp = draft.cps[k] || { first: null, revisions: 0, gate: null, cur: { dir: '', ebar: '', desc: '', lo: '', hi: '', trig: '', inval: '', alt: '' } };
+  var d = cp.cur;
+  el.innerHTML = '<div class="panel" style="border-color:#b3541e"><b class="t">检查点 ' + k + '/60 —— 提交完整结构（须通过事实门禁才能继续）</b>' +
+    '<div style="margin:.3rem 0">当前状态：<span id="cp-opts">' + ['多', '空', '中性'].map(function (s) { return '<span class="st-opt' + (s === (d.dir || draft.states[k].dir) ? ' on' : '') + '" data-s="' + s + '">' + s + '</span>'; }).join('') + '</span></div>' +
+    cpField('证据棒号（绝对 1–' + (WARM + k) + '，须已可见）', 'cp-ebar', d.ebar, '例：23') +
+    cpField('证据描述（看到了什么）', 'cp-desc', d.desc, '例：第23根收盘越过第19根摆动高') +
+    '<div style="display:flex;gap:.6rem;flex-wrap:wrap">' +
+    cpField('关键价区下沿', 'cp-lo', d.lo, '数字') + cpField('关键价区上沿', 'cp-hi', d.hi, '数字') +
+    cpField('触发价', 'cp-trig', d.trig, '数字') + cpField('失效价', 'cp-inval', d.inval, '数字') + '</div>' +
+    cpField('替代剧本一句（如果你的主判断错了，最先看到什么）', 'cp-alt', d.alt, '例：跌破 11.8 摆动低则转中性') +
+    '<button class="mbtn dark" id="cp-submit" type="button">提交检查点（首次提交将留档）</button>' +
+    (cp.gate && !cp.gate.ok ? '<span style="font-size:.8rem;color:var(--muted)">首次提交已留档；修正后重交。</span>' : '') +
+    '<div class="gate-msg" id="cp-msg"></div></div>';
+  var chosen = d.dir || draft.states[k].dir;
+  el.querySelectorAll('.st-opt').forEach(function (o) {
+    o.onclick = function () { el.querySelectorAll('.st-opt').forEach(function (x) { x.classList.remove('on'); }); o.classList.add('on'); chosen = o.dataset.s; };
+  });
+  document.getElementById('cp-submit').onclick = function () {
+    var data = {
+      dir: chosen,
+      ebar: document.getElementById('cp-ebar').value.trim(),
+      desc: document.getElementById('cp-desc').value.trim(),
+      lo: document.getElementById('cp-lo').value.trim(),
+      hi: document.getElementById('cp-hi').value.trim(),
+      trig: document.getElementById('cp-trig').value.trim(),
+      inval: document.getElementById('cp-inval').value.trim(),
+      alt: document.getElementById('cp-alt').value.trim()
+    };
+    var errs = gateCp(data, k);
+    cp.cur = data;
+    if (!cp.first) cp.first = { data: data, errs: errs.map(function (e) { return e; }), ts: new Date().toISOString() };
+    else cp.revisions++;
+    cp.gate = { ok: errs.length === 0, errs: errs };
+    draft.cps[k] = cp;
+    var rec = loadRec(cur); rec.draft = draft; saveRec(cur, rec);
+    var msg = document.getElementById('cp-msg');
+    if (errs.length) {
+      msg.innerHTML = errs.map(function (e) { return '<div class="bad">✗ ' + e + '</div>'; }).join('') + '<div>修正后重新提交（首次提交已留档，不会覆盖）。</div>';
+    } else {
+      msg.innerHTML = '<b style="color:#1a7f37">✓ 检查点 ' + k + ' 事实门禁通过</b>（证据棒可见、价位在已揭示前缀范围内、方向与触发/失效一致）。';
+      setTimeout(renderNextOnly, 350);
+    }
+  };
+}
+function cpField(label, id, val, ph) {
+  return '<div class="cp-field" style="flex:1;min-width:130px"><label>' + label + '</label><input id="' + id + '" type="text" value="' + (val || '') + '" placeholder="' + ph + '"></div>';
+}
+
+function gateCp(d, k) {
+  var errs = [];
+  var lastIdx = WARM + k - 1;
+  var lo = parseFloat(d.lo), hi = parseFloat(d.hi), tr = parseFloat(d.trig), iv = parseFloat(d.inval);
+  var eb = parseInt(d.ebar, 10);
+  var pref = bars.slice(0, lastIdx + 1);
+  var pmin = Math.min.apply(null, pref.map(function (b) { return b.l; }));
+  var pmax = Math.max.apply(null, pref.map(function (b) { return b.h; }));
+  var margin = (pmax - pmin) * 0.10 || 1;
+  if (!Number.isInteger(eb) || eb < 1 || eb > lastIdx + 1) errs.push('证据棒号必须是 1–' + (lastIdx + 1) + ' 的整数（截至当前已可见）');
+  if (!d.desc) errs.push('证据描述不能为空');
+  if (isNaN(lo) || isNaN(hi)) errs.push('关键价区上下沿必须是数字');
+  else if (lo > hi) errs.push('关键价区下沿不能高于上沿');
+  if (!isNaN(lo) && !isNaN(hi) && (lo < pmin - margin || hi > pmax + margin)) errs.push('关键价区超出已揭示前缀范围 ' + Math.round(pmin * 100) / 100 + '–' + Math.round(pmax * 100) / 100 + '（±10% 容差）');
+  if (isNaN(tr) || isNaN(iv)) errs.push('触发价/失效价必须是数字');
+  if (!isNaN(tr) && !isNaN(iv)) {
+    if (tr === iv) errs.push('触发价与失效价不能相同');
+    if (d.dir === '多' && !(iv < tr)) errs.push('方向为多时失效价应低于触发价（止损在下）');
+    if (d.dir === '空' && !(tr < iv)) errs.push('方向为空时触发价应低于失效价（止损在上）');
+    var all = [tr, iv];
+    if (all.some(function (v) { return v < pmin - margin * 3 || v > pmax + margin * 3; })) errs.push('触发/失效价远离已揭示前缀范围（±30% 容差）——引用当前不存在的价位');
+  }
+  if (!d.alt) errs.push('替代剧本不能为空');
+  return errs;
+}
+
+function renderHistory() {
+  var el = document.getElementById('history');
+  var lines = [];
+  for (var k = draft.k; k >= Math.max(1, draft.k - 6); k--) {
+    var s = draft.states[k];
+    if (!s) break;
+    lines.push('<div class="logline">第 ' + k + ' 根 · ' + s.dir + (s.changed ? ' <span class="upd">更新</span>' : ' 维持') + ' · ' + s.basis + (s.note ? ' · ' + s.note : '') + '</div>');
+  }
+  var upd = 0; for (var i = 1; i <= draft.k; i++) if (draft.states[i] && draft.states[i].changed) upd++;
+  el.innerHTML = '<div style="font-family:var(--sans);font-size:.8rem;color:var(--muted);margin:.8rem 0 .2rem">已存档 ' + Math.min(draft.k, TASK) + '/60 根 · 其中更新 ' + upd + ' 次（最近 6 条）：</div>' + lines.join('');
+}
+
+function renderFinal() {
+  var k = TASK;
+  if (isCpPending(k)) { alert('先完成第 60 根的检查点。'); return; }
+  document.getElementById('chart').innerHTML =
+    Kbar.chart(bars, { w: 780, h: 320, yLabels: true, vol: bars.map(function (b) { return b.v; }), hl: TOTAL - 1 }) +
+    '<div style="font-family:var(--sans);font-size:.78rem;color:var(--muted);margin:.2rem 0 .6rem">全窗已揭示（完成后对照用）。</div>';
+  var refRows = CPS.map(function (c) {
+    var r = refAt(bars, c);
+    var mine = draft.cps[c] && draft.cps[c].cur;
+    return '<tr><td>' + c + '</td><td>' + r.swTxt + '</td><td>' + r.sug + '</td><td>' + (mine ? mine.dir + '（证据棒 ' + mine.ebar + '）' : '—') + '</td></tr>';
+  }).join('');
+  var el = document.getElementById('flow');
+  el.innerHTML = '';
+  document.getElementById('final').innerHTML =
+    '<div class="panel"><b class="t">过程核验（自动可判部分）</b>' +
+    '逐根提交：' + TASK + '/' + TASK + ' ✓ · 检查点事实门禁：6/6 ✓ · 无回写（每根确认即存档）✓</div>' +
+    '<div class="panel"><b class="t">参考对照（生成稿 · 仅供学习，不是评分依据）</b>' +
+    '<table class="ref"><tr><th>检查点</th><th>已确认摆动（N=3，棒#类型 价格）</th><th>生成稿建议状态</th><th>你的提交</th></tr>' + refRows + '</table>' +
+    '<div style="font-size:.78rem;color:var(--muted);margin-top:.4rem">生成稿只用截至各检查点的前缀计算（摆动确认滞后 3 根已遵守）。你的判断与它不同不代表错——对照的是证据与时点，不是"猜中未来"。人工锚定的可接受分支评分键属后续工作。</div></div>' +
+    '<div class="panel"><b class="t">开放自评（三档量规，另记状态，不影响核心通过）</b>' +
+    ['时点纪律：我只用了当时可见的信息', '证据引用：每次更新都指向了具体棒/价位', '更新合理性：改变判断有据、维持有理由'].map(function (t, i) {
+      return '<div style="margin:.4rem 0">' + t + '：<select id="sa-' + i + '"><option>满足</option><option>部分满足</option><option>不足</option></select></div>';
+    }).join('') +
+    '<div class="cp-field"><label>一句修订（下次连续推理我最想改进的一点）</label><input id="sa-note" type="text" placeholder="例：先写触发/失效再谈方向"></div>' +
+    '<button class="mbtn dark" id="f-save" type="button">完成任务并存档</button></div>';
+  document.getElementById('f-save').onclick = function () {
+    var sa = [0, 1, 2].map(function (i) { return document.getElementById('sa-' + i).value; });
+    var saNote = document.getElementById('sa-note').value.trim();
+    var rec = loadRec(cur);
+    rec.attempts.push({
+      attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), submittedAt: new Date().toLocaleString(),
+      pack: cur, caseId: 'M1.4-' + cur + '-2026a',
+      states: draft.states, cps: draft.cps,
+      processPassed: true, selfAssessment: sa, selfNote: saNote
+    });
+    rec.draft = null; saveRec(cur, rec);
+    draft = { k: 1, startedTs: new Date().toISOString(), states: {}, cps: {} };
+    document.getElementById('final').innerHTML = '<div class="panel"><b style="color:#1a7f37">✓ M1.4 结构化过程任务通过（' + cur + ' 包 · 自动可判部分）</b><br>时点纪律 60/60、检查点门禁 6/6、开放自评已另记。<b>通过范围声明</b>：本包证明的是指定窗口上的过程纪律与证据引用，不证明行情预测或交易能力。<div style="margin-top:.5rem"><button class="mbtn" id="f-again" type="button">重开本包（新一次档案）</button></div></div>';
+    document.getElementById('f-again').onclick = startPack;
+    renderStatusLine(); renderTabs();
+  };
+}
+
+document.getElementById('export-btn').onclick = function () {
+  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M1.4', courseVersion: 'rev-2026-09-10', exportedAt: new Date().toISOString(),
+    packs: PACKS.map(function (p) { return { pack: p.id, role: p.role, caseId: 'M1.4-' + p.id + '-2026a', record: loadRec(p.id) }; }) };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'm1-4-progress.json'; a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+};
+
+startPack();
+</script>
+</body>
+</html>
