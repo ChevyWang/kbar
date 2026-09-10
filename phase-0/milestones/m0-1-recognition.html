@@ -40,13 +40,14 @@ button.mbtn.dark { background: var(--ink); color: #fff; }
   <h1>单K双K辨认</h1>
   <p class="sub">比例与方向、阳阴镜像、吞没/内包边界、合法 OHLC、路径不可知——五个核心检查点，12 道结构化题目（含 5 道关键项）。完全离线作答，档案本地保存可导出。<b>通过＝「M0.1 课程结构化任务通过」；不证明陌生行情实盘能力，也不是实盘授权。</b></p>
 </header>
+<p style="margin:1rem"><a href="../mastery.html">统一能力验收与学习档案（与本页专门实作分别记录）</a></p>
 
 <details class="lesson-map">
   <summary><b>教学卡（评分依据与流程）</b>——先读再答</summary>
   <ol>
     <li><b>目标行为</b>：任给一根/两根K线，10 秒内说出方向、收盘位置档、实体占比档；正确连读方向×收位（阳头/阴脚=守住，另一侧=被收复）；用严格口径判定内包/吞没边界（端点相等不算）；识别非法 OHLC 与几何硬约束（阳线收位≥实体占比、阴线≤1−实体占比）；承认盘中路径不可知。</li>
     <li><b>先修诊断</b>：0001（三问与两个度量）＋0002（三母题与边界）。未学者先回课，本页不是教材。</li>
-    <li><b>任务与评分</b>：12 题单选，即时反馈；<b>通过线 ≥11/12 且 5 道关键项（★）全对</b>——关键错项（方向镜像、OHLC 合法、路径不可知、几何约束）不可被总分抵消。</li>
+    <li><b>任务与评分</b>：12 题单选，即时反馈；<b>通过线 12/12 且 5 道关键项（★）全对</b>——关键错项（方向镜像、OHLC 合法、路径不可知、几何约束）不可被总分抵消。</li>
     <li><b>补救路径</b>：未通过 → 按错因分类路由到对应课节微任务 → 每类完成 3 题边界变式补练（须做对，可重试）→ 用下一包（未曝光新窗）换题复测。</li>
     <li><b>复测</b>：B 包=补救后换题；C 包=延迟复测（建议距首次 ≥24 小时，页面记录实际间隔）。同一包重复作答按练习记录，<b>首次成绩始终保留</b>。</li>
     <li><b>成绩能证明的范围</b>：指定窗口上的结构化辨认任务达标；不外推为全部真实市场判断能力。</li>
@@ -77,6 +78,7 @@ button.mbtn.dark { background: var(--ink); color: #fff; }
 </footer>
 
 <script src="../assets/candles.js"></script>
+<script src="../assets/learning-store.js"></script>
 <script>
 var CASES = {
   A: {sym:"招商银行",mkt:"A股",bars:[{d:"2023-01-06",o:31.4216,h:31.641,l:30.7958,c:31.194,v:59000699},{d:"2023-01-09",o:31.2184,h:31.7792,l:31.2184,c:31.5354,v:49914886},{d:"2023-01-10",o:31.5191,h:31.5354,l:31.0152,c:31.0884,v:54197159},{d:"2023-01-11",o:31.194,h:31.8442,l:30.9989,c:31.6329,v:54170698},{d:"2023-01-12",o:31.7873,h:31.8198,l:31.4785,c:31.7386,v:30434871},{d:"2023-01-13",o:31.7548,h:32.2344,l:31.6735,c:32.2344,v:46376708},{d:"2023-01-16",o:32.5107,h:33.4372,l:32.3481,c:32.8927,v:88046855},{d:"2023-01-17",o:32.8764,h:33.2747,l:32.7383,c:33.0634,v:43204705},{d:"2023-01-18",o:33.039,h:33.2828,l:32.6976,c:32.8195,v:29467472},{d:"2023-01-19",o:32.6732,h:33.1609,l:32.4457,c:33.039,v:47249021},{d:"2023-01-20",o:33.3072,h:33.4047,l:33.0634,c:33.3641,v:41340273},{d:"2023-01-30",o:34.5832,h:34.6483,l:34.0143,c:34.1606,v:100700740},{d:"2023-01-31",o:34.4207,h:34.4207,l:33.4941,c:33.4941,v:64231185},{d:"2023-02-01",o:33.8436,h:33.8843,l:32.4701,c:32.9496,v:91679130},{d:"2023-02-02",o:33.0796,h:33.1203,l:32.1449,c:32.5351,v:72723293},{d:"2023-02-03",o:32.34,h:32.34,l:31.7061,c:31.9418,v:63816364},{d:"2023-02-06",o:31.4704,h:31.4866,l:30.7876,c:31.1696,v:73100066},{d:"2023-02-07",o:31.2915,h:31.6492,l:31.0152,c:31.2184,v:42657086},{d:"2023-02-08",o:31.2915,h:31.6329,l:31.1778,c:31.2834,v:31706528},{d:"2023-02-09",o:31.2265,h:31.6085,l:31.1452,c:31.2834,v:49817481},{d:"2023-02-10",o:31.129,h:31.2021,l:30.8039,c:31.0152,v:41102639},{d:"2023-02-13",o:30.8039,h:30.8689,l:30.1293,c:30.6576,v:82518134},{d:"2023-02-14",o:30.7063,h:30.9339,l:30.4869,c:30.8852,v:48607663},{d:"2023-02-15",o:30.8852,h:30.9583,l:30.0724,c:30.2106,v:77104778},{d:"2023-02-16",o:30.2349,h:30.7632,l:30.0886,c:30.2918,v:65415231},{d:"2023-02-17",o:30.1943,h:30.3812,l:29.8123,c:29.8367,v:57581280},{d:"2023-02-20",o:29.9261,h:31.2997,l:29.9261,c:31.2834,v:108022830},{d:"2023-02-21",o:31.2346,h:31.5516,l:30.9908,c:31.446,v:53046540},{d:"2023-02-22",o:31.259,h:31.3728,l:30.9989,c:31.0152,v:38309139},{d:"2023-02-23",o:31.0152,h:31.511,l:31.0152,c:31.1046,v:37063824},{d:"2023-02-24",o:31.0233,h:31.0883,l:30.3975,c:30.4463,v:53369015},{d:"2023-02-27",o:30.2918,h:30.5438,l:30.1455,c:30.2024,v:44933367},{d:"2023-02-28",o:30.2106,h:30.4625,l:29.9505,c:30.3244,v:37822552},{d:"2023-03-01",o:30.2756,h:31.1615,l:30.2349,c:31.0884,v:57119401},{d:"2023-03-02",o:30.9177,h:31.2915,l:30.6982,c:31.0884,v:34907009},{d:"2023-03-03",o:31.2915,h:31.511,l:30.8039,c:31.0884,v:35711390}]},
@@ -232,7 +234,7 @@ var CAT_LINKS = {
   unknowable: '../lessons/0001-anatomy-of-a-candle.html#s01'
 };
 function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
-var LS = store();
+var LS = window.KbarLearningStore.storage;
 function loadPack(pid) {
   if (!LS) return { attempts: [], remedied: {} };
   try { return JSON.parse(LS.getItem(LS_KEY + pid) || '') || { attempts: [], remedied: {} }; } catch (e) { return { attempts: [], remedied: {} }; }
@@ -246,7 +248,8 @@ function packState(pid) {
   var rec = loadPack(pid);
   var first = rec.attempts[0], last = rec.attempts[rec.attempts.length - 1];
   if (!last) return { label: '未开始', cls: '' };
-  return last.passed ? { label: '已通过', cls: 'ok' } : { label: '未通过（' + last.score + '/12）', cls: 'no' };
+  if (rec.attempts.some(function(a){return a.passed && a.independent === true;})) return {label:'独立核心通过',cls:'ok'};
+  return last.corePassed ? {label:'已曝光练习全对，需换题',cls:''} : {label:'未通过（'+last.score+'/12）',cls:'no'};
 }
 
 function renderTabs() {
@@ -267,13 +270,15 @@ function caseMeta(pid) {
   return { sym: c.sym, mkt: c.mkt, range: c.bars[0].d + ' → ' + L.d, n: n, d: L.d, vol: c.bars.map(function (k) { return k.v; }) };
 }
 
+var completed=false;
+function saveDraftPicks(){var r=loadPack(cur);r.draft={picks:picks.slice(),startedAt:startedAt.toISOString()};savePack(cur,r);}
 function startPack() {
   renderTabs();
   var m = caseMeta(cur), c = CASES[cur];
   document.getElementById('casecard').innerHTML = '<b>案例卡</b> · ' + m.mkt + ' · ' + m.sym + ' · 日线 ' + m.n + ' 根（' + m.range + '）· 决策棒 ' + m.d +
     '（下划线）· 案例号 M0.1-' + cur + '-2026a · 出处：instancelib 未曝光窗口（yfinance 口径）· 整窗即任务，本页无隐藏未来数据。';
   document.getElementById('chart').innerHTML = Kbar.chart(c.bars, { w: 760, h: 300, yLabels: true, vol: m.vol, hl: c.bars.length - 1 });
-  quiz = buildQuestions(cur); qi = 0; picks = []; startedAt = new Date();
+  quiz = buildQuestions(cur); var saved = loadPack(cur).draft; picks = saved && Array.isArray(saved.picks) ? saved.picks.slice(0,quiz.length) : []; qi = picks.findIndex(function(x){return x == null;}); if(qi < 0) qi=picks.length; startedAt = saved ? new Date(saved.startedAt) : new Date(); completed=false;
   renderStatusLine();
   renderQuestion();
   document.getElementById('verdict').innerHTML = '';
@@ -304,6 +309,7 @@ function renderQuestion() {
     o.onclick = function () {
       if (picks[qi] != null) return;
       picks[qi] = parseInt(o.dataset.i, 10);
+      saveDraftPicks();
       var right = picks[qi] === q.answer;
       el.querySelectorAll('.q-opt').forEach(function (o2, j) {
         o2.classList.add('dim');
@@ -321,21 +327,24 @@ function renderQuestion() {
 }
 
 function finishQuiz() {
+  if(completed)return;completed=true;
   var correct = quiz.map(function (q, i) { return picks[i] === q.answer; });
   var score = correct.filter(Boolean).length;
   var keyIds = quiz.filter(function (q) { return q.key; }).map(function (q) { return q.id; });
   var keysPassed = quiz.every(function (q, i) { return !q.key || correct[i]; });
-  var passed = score >= 11 && keysPassed;
+  var corePassed = correct.every(Boolean);
   var rec = loadPack(cur);
+  var independent = rec.attempts.length === 0;
+  var passed = corePassed && independent;
   rec.attempts.push({
     attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), submittedAt: new Date().toLocaleString(),
     pack: cur, caseId: 'M0.1-' + cur + '-2026a',
-    answers: {}, picks: picks, correct: correct, score: score, keysPassed: keysPassed, passed: passed
+    answers: {}, picks: picks, correct: correct, score: score, keysPassed: keysPassed, corePassed:corePassed, independent:independent, passed: passed
   });
-  savePack(cur, rec);
+  rec.draft=null;savePack(cur, rec);
   var v = document.getElementById('verdict');
-  v.innerHTML = '<div class="verdict"><b>' + (passed ? '✓ M0.1 结构化核心任务通过（' + cur + ' 包）' : '✗ 未通过（' + cur + ' 包）') + '</b><br>' +
-    '得分 ' + score + '/12（通过线 ≥11）；关键项 ' + (keysPassed ? '全部通过' : '<b style="color:#d33a2c">有未通过</b>（关键错项不可被总分抵消）') + '。' +
+  v.innerHTML = '<div class="verdict"><b>' + (passed ? '✓ M0.1 独立核心任务通过（' + cur + ' 包）' : corePassed ? '已曝光练习全对；不计新的独立通过' : '✗ 未通过（' + cur + ' 包）') + '</b><br>' +
+    '得分 ' + score + '/12（全部12项核心须分别通过）；关键项 ' + (keysPassed ? '全部通过' : '<b style="color:#d33a2c">有未通过</b>（关键错项不可被总分抵消）') + '。' +
     (passed
       ? (cur === 'A' ? 'M0.1 首次验收完成——本里程碑通过；延迟复测建议 ≥24 小时后用 C 包。' : cur === 'B' ? '补救后换题复测通过。' : '延迟复测通过——间隔见上方状态栏。')
       : '完成下方错因补练（每类 3 题做对），再用' + (cur === 'A' ? ' B 包' : cur === 'B' ? ' C 包' : ' 下一包') + '换题复测。首次成绩已保留。') +

@@ -267,7 +267,7 @@ function qSwing(kind){
     var lo=cs[3].l; cs[3].l=lo-R(10,14); cs[3].c=cs[3].l+R(3,6); cs[3].o=cs[3].c+R(2,5); cs[3].h=cs[3].o+R(1,3);
     for(i=0;i<7;i++){
       if(i===3) continue;
-      if(cs[i].l>cs[3].l-8){
+      { // Rebuild every neighbor so the requested strict swing is guaranteed.
         var nl=cs[3].l+R(6,10);
         var nc=nl+R(2,5), no=nc+R(1,4);
         cs[i]={o:no,h:no+R(1,3),l:nl,c:nc};
