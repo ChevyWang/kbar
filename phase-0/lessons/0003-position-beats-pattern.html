@@ -106,7 +106,7 @@
 <p>还是那张 ETH 日线（2026-08-08 → 09-06）。第 0002 课的课末钩子说：天花板 2533–2567 被拒五次。现在把它画出来，逐段验证本课的每一条规则。</p>
 
 <figure><div id="case3-full"></div>
-<figcaption><b>三块标记：</b>阻力区 2533–2567（第0002课数过的五次触碰：第17、18、20、23、28根）；支撑 2356–2383（第16、21、26根的低点簇）；底部支撑 1864（第6、7根）。每 5 根标号。</figcaption></figure>
+<figcaption><b>三块标记：</b>阻力区 2533–2567（第0002课数过的五次触碰：第17、18、20、23、28根）；支撑带 2356–2406（第16、21、24、26根低点簇 2356/2406/2406/2356；图中底纹取其核心段 2356–2383）；底部支撑 1864（第6、7根）。每 5 根标号。</figcaption></figure>
 
 <h3>带读一 · 底部 1864：被验证的需求</h3>
 <p>第6、7根连续两根在 <b>1864</b> 收出下影（8/13、8/14），第7根实体仅 5 点——低位十字+下影组合站在 1864 上，这是支撑位的诞生：两天的卖压都被同一价位的买盘吸收。随后第10根起价格不再回到 1864 下方——<b>支撑被"离开后仍有效"二次验证</b>（价格从上方回踩不破，才是最强验证；这里通过快速脱离+不回踩的形态完成）。</p>
@@ -270,13 +270,13 @@ function qWickBody(kind){
   var L = R(70,80), ctx=[], p=L-R(26,32), i, o, c;
   for(i=0;i<3;i++){ o=p; c=p+R(4,7); ctx.push({o:o,h:Math.max(o,c)+R(0,2),l:Math.min(o,c)-R(0,2),c:c}); p=c; }
   var last;
-  if(kind==='wick'){ last={o:L-R(9,12),h:L+R(4,7),l:L-R(13,16),c:L-R(4,6)}; }
-  else if(kind==='body'){ last={o:L-R(7,9),h:L+R(6,9),l:L-R(8,11),c:L+R(3,6)}; }
-  else { last={o:L-R(16,19),h:L-R(4,6),l:L-R(20,23),c:L-R(9,12)}; }
-  var ansTxt = kind==='wick' ? '影线刺到 '+(last.h)+'，但实体收在 '+last.c+'（区域之内）——一次<b>测试</b>，不是突破。判定水平位得失守的口径：看实体收盘，不看影线。上方挂着止损单被猎杀，本身就是信息。'
-    : kind==='body' ? '实体收在 '+last.c+'，高于区域上沿 '+L+'——<b>收盘突破</b>，阻力失守。下一步等回抽：价格回到区域上沿被托住，才是教科书入场点。'
+  if(kind==='wick'){ last={o:L-R(9,12),h:L+R(4,7),c:L-R(4,6)}; last.l=Math.min(last.o,last.c)-R(1,3); }
+  else if(kind==='body'){ last={o:L-R(7,9),h:L+R(6,9),c:L+R(4,6)}; last.l=last.o-R(1,3); }
+  else { last={o:L-R(16,19),h:L-R(4,6),c:L-R(9,12)}; last.l=Math.min(last.o,last.c)-R(1,3); }
+  var ansTxt = kind==='wick' ? '影线刺到 '+(last.h)+'，越过区域上沿（'+(L+2)+'），但实体收在 '+last.c+'（区域之下）——一次<b>测试</b>，不是突破。判定水平位得失守的口径：看实体收盘，不看影线。上方挂着止损单被猎杀，本身就是信息。'
+    : kind==='body' ? '实体收在 '+last.c+'，高于区域上沿（'+(L+2)+'）——<b>收盘突破</b>，阻力失守。下一步等回抽：价格回到区域上沿被托住，才是教科书入场点。'
     : '最后一根的高点 '+last.h+' 距离区域下沿 '+L+' 还有距离——没有接触，谈不上测试或突破。别把"接近"读成"事件"。';
-  return { stage: Kbar.chart(ctx.concat([last]), {w:280,h:210,hl:3,zones:[{y1:L,y2:L+R(3,5),label:'阻力区'}]}),
+  return { stage: Kbar.chart(ctx.concat([last]), {w:280,h:210,hl:3,zones:[{y1:L,y2:L+2,label:'阻力区'}]}),
     q:'最后一根（下划线）对这条阻力区域做了什么？',
     options:['影线试破被拒','实体收破上位','根本没有接触'], answer: kind==='wick'?0:(kind==='body'?1:2),
     explain: ansTxt };
@@ -286,12 +286,12 @@ function qWickBody(kind){
 function qTrap(){
   var L=R(70,80), ctx=[], p=L-R(24,30), i, o, c;
   for(i=0;i<3;i++){ o=p; c=p+R(4,7); ctx.push({o:o,h:Math.max(o,c)+R(0,2),l:Math.min(o,c)-R(0,2),c:c}); p=c; }
-  var brk={o:L-R(5,7),h:L+R(9,12),l:L-R(6,8),c:L+R(4,6)};
+  var brk={o:L-R(5,7),h:L+R(9,12),c:L+R(4,6)}; brk.l=brk.o-R(1,3);
   var back={o:L+R(3,5),h:L+R(6,8),l:L-R(10,13),c:L-R(5,8)};
-  return { stage: Kbar.chart(ctx.concat([brk,back]), {w:300,h:220,hl:4,zones:[{y1:L,y2:L+R(3,5),label:'阻力区'}]}),
+  return { stage: Kbar.chart(ctx.concat([brk,back]), {w:300,h:220,hl:4,zones:[{y1:L,y2:L+2,label:'阻力区'}]}),
     q:'最后两根（下划线）构成什么？',
     options:['假突破陷阱','有效真突破','低位横盘带'], answer: 0,
-    explain:'倒数第二根实体收破区域上沿（多头欢呼），最后一根直接收回区域内——<b>牛市陷阱</b>闭合。追突破者被关在山顶。判定口径依旧是收盘价：收破≠站住，等"突破+回抽确认"两步走。' };
+    explain:'倒数第二根实体收破区域上沿（多头欢呼），最后一根收盘跌回区域之下——<b>牛市陷阱</b>闭合。追突破者被关在山顶。判定口径依旧是收盘价：收破≠站住，等"突破+回抽确认"两步走。' };
 }
 
 /* 画区域还是画线 */
@@ -341,7 +341,10 @@ function rvPin(){
 }
 function rvInside(){
   var mo=R(40,50), mc=mo+R(22,28), mh=mc+R(4,8), ml=mo-R(5,9);
-  var ch=mh-R(6,10), cl=ml+R(5,9), co=cl+R(4,9), cc=co+R(-5,5);
+  var ch=mh-R(6,10), cl=ml+R(5,9), co=cl+R(4,9), cc;
+  if(co>ch-2) co=ch-2;
+  cc=co+R(-5,5);
+  if(cc<cl+1) cc=cl+1; if(cc>ch-1) cc=ch-1;
   return { stage: Kbar.row([{o:mo,h:mh,l:ml,c:mc},{o:co,h:ch,l:cl,c:cc}],{w:200,h:190}),
     q:'这两根K线的关系是？', options:['内包日休战','吞没日反攻','突破日失守'], answer: 0,
     explain:'第二根高低点全部缩进第一根（母线）区间——内包日：波动率收缩，母线高低点是预写的触发线。' };

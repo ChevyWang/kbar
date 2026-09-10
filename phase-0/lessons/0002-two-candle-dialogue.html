@@ -318,11 +318,19 @@ function genInside(kind){
   var mo=R(40,50), mc=mo+R(22,30), mh=mc+R(4,9), ml=mo-R(5,10);
   mother={o:mo,h:mh,l:ml,c:mc};
   if(ok){
-    var ch=mh-R(6,10), cl=ml+R(5,9), co=cl+R(5,10), cc=co+(Math.random()<.5?1:-1)*R(4,8);
+    var ch=mh-R(6,10), cl=ml+R(5,9), co=cl+R(5,10), cc;
+    if(co>ch-2) co=ch-2;
+    if(co<cl+1) co=cl+1;
+    cc=co+(Math.random()<.5?1:-1)*R(4,8);
+    if(cc<cl+1) cc=cl+1; if(cc>ch-1) cc=ch-1;
     child={o:co,h:ch,l:cl,c:cc};
     st='第二根高点 '+ch+' 低于母线高点 '+mh+'，低点 '+cl+' 高于母线低点 '+ml+'——内包日成立。心理：战后休整、波动率收缩。母线高低点是市场预写的两条触发线。';
   } else {
-    var ch=mh-R(6,10), cl=ml-R(2,5), co=cl+R(5,10), cc=co+(Math.random()<.5?1:-1)*R(4,8);
+    var ch=mh-R(6,10), cl=ml-R(2,5), co=cl+R(5,10), cc;
+    if(co>ch-2) co=ch-2;
+    if(co<cl+1) co=cl+1;
+    cc=co+(Math.random()<.5?1:-1)*R(4,8);
+    if(cc<cl+1) cc=cl+1; if(cc>ch-1) cc=ch-1;
     child={o:co,h:ch,l:cl,c:cc};
     st='第二根低点 '+cl+' 刺破了母线低点 '+ml+'——内包不成立，只是一根普通小K线。内包要求高低点<b>全部</b>缩进母线区间。';
   }
@@ -390,7 +398,7 @@ function rvPos(band){
     explain:'收盘位置 '+Math.round(p*100)+'%——收盘价是唯一活到明天的数字。' };
 }
 function rvDecisive(){
-  var band = Math.random()<.5?0:2;
+  var band = Math.random()<.5?0:1;
   var o = R(42,58), body, wU, wD;
   if(band===0){ body=R(64,76); wU=R(2,7); wD=R(2,7); } else { body=R(2,6); wU=R(35,48); wD=R(35,48); }
   var bull=Math.random()<.5, c = bull? o+body : o-body;

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M0.1 · 单K双K辨认 — 里程碑验收 — K线训练营 Phase 0</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.pack-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0; font-family: var(--sans); }
+.pack-tab { border: 1.5px solid var(--line); border-radius: 10px; padding: .6rem 1rem; background: #fff; cursor: pointer; text-align: left; min-width: 200px; }
+.pack-tab.active { border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.pack-tab .pt-role { font-size: .74rem; color: var(--muted); display: block; }
+.pack-tab .pt-state { font-size: .74rem; font-weight: 700; display: block; margin-top: .2rem; }
+.q-card { border: 1.5px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1rem 0; background: #fff; font-family: var(--sans); }
+.q-card .q-no { font-size: .76rem; color: var(--muted); }
+.q-card .q-text { font-size: 1rem; font-weight: 600; margin: .3rem 0 .7rem; line-height: 1.6; }
+.q-opt { display: block; border: 1.5px solid var(--line); border-radius: 8px; padding: .5rem .9rem; margin: .45rem 0; cursor: pointer; background: var(--paper); font-size: .93rem; line-height: 1.5; }
+.q-opt:hover { border-color: var(--ink); }
+.q-opt.picked-right { border-color: #1a7f37; background: #eef7ee; }
+.q-opt.picked-wrong { border-color: #d33a2c; background: #fdeeec; }
+.q-opt.right-hint { border-color: #1a7f37; border-style: dashed; }
+.q-opt.dim { opacity: .55; cursor: default; }
+.q-explain { border-top: 1px dashed var(--line); margin-top: .7rem; padding-top: .6rem; font-size: .88rem; line-height: 1.7; color: var(--ink); }
+.key-badge { display: inline-block; font-size: .7rem; border: 1px solid #b3541e; color: #b3541e; border-radius: 99px; padding: 0 .5rem; margin-left: .4rem; vertical-align: middle; }
+.verdict { border: 2px solid var(--ink); border-radius: 12px; padding: 1rem 1.3rem; margin: 1.2rem 0; font-family: var(--sans); background: var(--note-bg); }
+.remedy-cat { border: 1px dashed var(--line); border-radius: 10px; padding: .8rem 1rem; margin: .7rem 0; font-family: var(--sans); font-size: .9rem; }
+.case-card { font-family: var(--sans); font-size: .85rem; color: var(--muted); margin: .4rem 0 1rem; line-height: 1.7; }
+.state-line { font-family: var(--sans); font-size: .85rem; margin: .5rem 0; }
+.msb { display: inline-block; font-size: .74rem; border-radius: 99px; padding: .05rem .6rem; border: 1px solid var(--line); margin-right: .4rem; }
+.msb.ok { border-color: #1a7f37; color: #1a7f37; font-weight: 700; }
+.msb.no { border-color: #d33a2c; color: #d33a2c; }
+button.mbtn { font-family: var(--sans); font-size: .9rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .45rem 1.05rem; cursor: pointer; background: #fff; margin: .3rem .5rem .3rem 0; }
+button.mbtn.dark { background: var(--ink); color: #fff; }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 0 读图 · 里程碑验收 M0.1（代表任务 1/6）</div>
+  <h1>单K双K辨认</h1>
+  <p class="sub">比例与方向、阳阴镜像、吞没/内包边界、合法 OHLC、路径不可知——五个核心检查点，12 道结构化题目（含 5 道关键项）。完全离线作答，档案本地保存可导出。<b>通过＝「M0.1 课程结构化任务通过」；不证明陌生行情实盘能力，也不是实盘授权。</b></p>
+</header>
+
+<details class="lesson-map">
+  <summary><b>教学卡（评分依据与流程）</b>——先读再答</summary>
+  <ol>
+    <li><b>目标行为</b>：任给一根/两根K线，10 秒内说出方向、收盘位置档、实体占比档；正确连读方向×收位（阳头/阴脚=守住，另一侧=被收复）；用严格口径判定内包/吞没边界（端点相等不算）；识别非法 OHLC 与几何硬约束（阳线收位≥实体占比、阴线≤1−实体占比）；承认盘中路径不可知。</li>
+    <li><b>先修诊断</b>：0001（三问与两个度量）＋0002（三母题与边界）。未学者先回课，本页不是教材。</li>
+    <li><b>任务与评分</b>：12 题单选，即时反馈；<b>通过线 ≥11/12 且 5 道关键项（★）全对</b>——关键错项（方向镜像、OHLC 合法、路径不可知、几何约束）不可被总分抵消。</li>
+    <li><b>补救路径</b>：未通过 → 按错因分类路由到对应课节微任务 → 每类完成 3 题边界变式补练（须做对，可重试）→ 用下一包（未曝光新窗）换题复测。</li>
+    <li><b>复测</b>：B 包=补救后换题；C 包=延迟复测（建议距首次 ≥24 小时，页面记录实际间隔）。同一包重复作答按练习记录，<b>首次成绩始终保留</b>。</li>
+    <li><b>成绩能证明的范围</b>：指定窗口上的结构化辨认任务达标；不外推为全部真实市场判断能力。</li>
+  </ol>
+</details>
+
+<div class="pack-tabs" id="packtabs"></div>
+
+<div id="workspace">
+  <div class="case-card" id="casecard"></div>
+  <div id="chart"></div>
+  <div id="quiz"></div>
+  <div id="verdict"></div>
+  <div id="remedy"></div>
+  <div class="state-line" id="statusline"></div>
+  <div style="margin:.6rem 0 1.4rem">
+    <button class="mbtn" id="export-btn" type="button">导出 M0.1 档案（JSON）</button>
+  </div>
+</div>
+
+<footer class="course">
+  <div class="nav">
+    <a href="../index.html">← Phase 0 主页</a>
+    <a href="../lessons/0001-anatomy-of-a-candle.html">回到 0001</a>
+    <a href="../lessons/0002-two-candle-dialogue.html">回到 0002</a>
+  </div>
+  <div class="citations">数据：instancelib 扫描库（yfinance 口径，与课程实例库同源）的未曝光日线窗口；案例契约（出处/抽取规则/日期）见源仓 private/m01-cases.json，抽取脚本 tools/pick_m01_windows.py 可复现。判定口径与 0001/0002 课程定义一致；本页无隐藏未来数据（整窗即任务）。</div>
+</footer>
+
+<script src="../assets/candles.js"></script>
+<script>
+var CASES = {
+  A: {sym:"招商银行",mkt:"A股",bars:[{d:"2023-01-06",o:31.4216,h:31.641,l:30.7958,c:31.194,v:59000699},{d:"2023-01-09",o:31.2184,h:31.7792,l:31.2184,c:31.5354,v:49914886},{d:"2023-01-10",o:31.5191,h:31.5354,l:31.0152,c:31.0884,v:54197159},{d:"2023-01-11",o:31.194,h:31.8442,l:30.9989,c:31.6329,v:54170698},{d:"2023-01-12",o:31.7873,h:31.8198,l:31.4785,c:31.7386,v:30434871},{d:"2023-01-13",o:31.7548,h:32.2344,l:31.6735,c:32.2344,v:46376708},{d:"2023-01-16",o:32.5107,h:33.4372,l:32.3481,c:32.8927,v:88046855},{d:"2023-01-17",o:32.8764,h:33.2747,l:32.7383,c:33.0634,v:43204705},{d:"2023-01-18",o:33.039,h:33.2828,l:32.6976,c:32.8195,v:29467472},{d:"2023-01-19",o:32.6732,h:33.1609,l:32.4457,c:33.039,v:47249021},{d:"2023-01-20",o:33.3072,h:33.4047,l:33.0634,c:33.3641,v:41340273},{d:"2023-01-30",o:34.5832,h:34.6483,l:34.0143,c:34.1606,v:100700740},{d:"2023-01-31",o:34.4207,h:34.4207,l:33.4941,c:33.4941,v:64231185},{d:"2023-02-01",o:33.8436,h:33.8843,l:32.4701,c:32.9496,v:91679130},{d:"2023-02-02",o:33.0796,h:33.1203,l:32.1449,c:32.5351,v:72723293},{d:"2023-02-03",o:32.34,h:32.34,l:31.7061,c:31.9418,v:63816364},{d:"2023-02-06",o:31.4704,h:31.4866,l:30.7876,c:31.1696,v:73100066},{d:"2023-02-07",o:31.2915,h:31.6492,l:31.0152,c:31.2184,v:42657086},{d:"2023-02-08",o:31.2915,h:31.6329,l:31.1778,c:31.2834,v:31706528},{d:"2023-02-09",o:31.2265,h:31.6085,l:31.1452,c:31.2834,v:49817481},{d:"2023-02-10",o:31.129,h:31.2021,l:30.8039,c:31.0152,v:41102639},{d:"2023-02-13",o:30.8039,h:30.8689,l:30.1293,c:30.6576,v:82518134},{d:"2023-02-14",o:30.7063,h:30.9339,l:30.4869,c:30.8852,v:48607663},{d:"2023-02-15",o:30.8852,h:30.9583,l:30.0724,c:30.2106,v:77104778},{d:"2023-02-16",o:30.2349,h:30.7632,l:30.0886,c:30.2918,v:65415231},{d:"2023-02-17",o:30.1943,h:30.3812,l:29.8123,c:29.8367,v:57581280},{d:"2023-02-20",o:29.9261,h:31.2997,l:29.9261,c:31.2834,v:108022830},{d:"2023-02-21",o:31.2346,h:31.5516,l:30.9908,c:31.446,v:53046540},{d:"2023-02-22",o:31.259,h:31.3728,l:30.9989,c:31.0152,v:38309139},{d:"2023-02-23",o:31.0152,h:31.511,l:31.0152,c:31.1046,v:37063824},{d:"2023-02-24",o:31.0233,h:31.0883,l:30.3975,c:30.4463,v:53369015},{d:"2023-02-27",o:30.2918,h:30.5438,l:30.1455,c:30.2024,v:44933367},{d:"2023-02-28",o:30.2106,h:30.4625,l:29.9505,c:30.3244,v:37822552},{d:"2023-03-01",o:30.2756,h:31.1615,l:30.2349,c:31.0884,v:57119401},{d:"2023-03-02",o:30.9177,h:31.2915,l:30.6982,c:31.0884,v:34907009},{d:"2023-03-03",o:31.2915,h:31.511,l:30.8039,c:31.0884,v:35711390}]},
+  B: {sym:"BTC/USDT",mkt:"加密",bars:[{d:"2022-02-17",o:43873.56,h:44164.71,l:40073.21,c:40515.7,v:47245.99494},{d:"2022-02-18",o:40515.71,h:40959.88,l:39450.0,c:39974.44,v:43845.92241},{d:"2022-02-19",o:39974.45,h:40444.32,l:39639.03,c:40079.17,v:18042.0551},{d:"2022-02-20",o:40079.17,h:40125.44,l:38000.0,c:38386.89,v:33439.29011},{d:"2022-02-21",o:38386.89,h:39494.35,l:36800.0,c:37008.16,v:62347.68496},{d:"2022-02-22",o:37008.16,h:38429.0,l:36350.0,c:38230.33,v:53785.94589},{d:"2022-02-23",o:38230.33,h:39249.93,l:37036.79,c:37250.01,v:43560.732},{d:"2022-02-24",o:37250.02,h:39843.0,l:34322.28,c:38327.21,v:120476.29458},{d:"2022-02-25",o:38328.68,h:39683.53,l:38014.37,c:39219.17,v:56574.57125},{d:"2022-02-26",o:39219.16,h:40348.45,l:38573.18,c:39116.72,v:29361.2568},{d:"2022-02-27",o:39116.73,h:39855.7,l:37000.0,c:37699.07,v:46229.44719},{d:"2022-02-28",o:37699.08,h:44225.84,l:37450.17,c:43160.0,v:73945.63858},{d:"2022-03-01",o:43160.0,h:44949.0,l:42809.98,c:44421.2,v:61743.09873},{d:"2022-03-02",o:44421.2,h:45400.0,l:43334.09,c:43892.98,v:57782.65081},{d:"2022-03-03",o:43892.99,h:44101.12,l:41832.28,c:42454.0,v:50940.61021},{d:"2022-03-04",o:42454.0,h:42527.3,l:38550.0,c:39148.66,v:61964.68498},{d:"2022-03-05",o:39148.65,h:39613.24,l:38407.59,c:39397.96,v:30363.13341},{d:"2022-03-06",o:39397.97,h:39693.87,l:38088.57,c:38420.81,v:39677.26158},{d:"2022-03-07",o:38420.8,h:39547.57,l:37155.0,c:37988.0,v:63994.11559},{d:"2022-03-08",o:37988.01,h:39362.08,l:37867.65,c:38730.63,v:55583.06638},{d:"2022-03-09",o:38730.63,h:42594.06,l:38656.45,c:41941.71,v:67392.58799},{d:"2022-03-10",o:41941.7,h:42039.63,l:38539.73,c:39422.0,v:71962.93154},{d:"2022-03-11",o:39422.01,h:40236.26,l:38223.6,c:38729.57,v:59018.7642},{d:"2022-03-12",o:38729.57,h:39486.71,l:38660.52,c:38807.36,v:24034.36432},{d:"2022-03-13",o:38807.35,h:39310.0,l:37578.51,c:37777.34,v:32791.82359},{d:"2022-03-14",o:37777.35,h:39947.12,l:37555.0,c:39671.37,v:46945.45375},{d:"2022-03-15",o:39671.37,h:39887.61,l:38098.33,c:39280.33,v:46015.54926},{d:"2022-03-16",o:39280.33,h:41718.0,l:38828.48,c:41114.0,v:88120.76167},{d:"2022-03-17",o:41114.01,h:41478.82,l:40500.0,c:40917.9,v:37189.38087},{d:"2022-03-18",o:40917.89,h:42325.02,l:40135.04,c:41757.51,v:45408.00969},{d:"2022-03-19",o:41757.51,h:42400.0,l:41499.29,c:42201.13,v:29067.18108},{d:"2022-03-20",o:42201.13,h:42296.26,l:40911.0,c:41262.11,v:30653.33468},{d:"2022-03-21",o:41262.11,h:41544.22,l:40467.94,c:41002.25,v:39426.24877},{d:"2022-03-22",o:41002.26,h:43361.0,l:40875.51,c:42364.13,v:59454.94294},{d:"2022-03-23",o:42364.13,h:43025.96,l:41751.47,c:42882.76,v:40828.87039},{d:"2022-03-24",o:42882.76,h:44220.89,l:42560.46,c:43991.46,v:56195.12374}]},
+  C: {sym:"谷歌",mkt:"美股",bars:[{d:"2022-09-12",o:109.9438,h:110.5679,l:108.8938,c:109.815,v:22966800},{d:"2022-09-13",o:106.7839,h:107.2792,l:103.1088,c:103.3367,v:38172900},{d:"2022-09-14",o:103.5843,h:104.2876,l:102.6829,c:104.0103,v:26395100},{d:"2022-09-15",o:103.0494,h:104.2777,l:101.3852,c:101.94,v:34188300},{d:"2022-09-16",o:101.1079,h:102.1579,l:99.9886,c:101.831,v:42797200},{d:"2022-09-19",o:100.7909,h:102.356,l:100.5928,c:102.0985,v:23036800},{d:"2022-09-20",o:101.1178,h:101.4051,l:99.5725,c:100.1867,v:26517100},{d:"2022-09-21",o:100.7117,h:101.9102,l:98.3343,c:98.3442,v:31487300},{d:"2022-09-22",o:97.8885,h:100.2857,l:97.8588,c:99.1961,v:34298600},{d:"2022-09-23",o:98.6909,h:98.7206,l:96.5512,c:97.8093,v:31625400},{d:"2022-09-26",o:97.1753,h:98.9385,l:96.8782,c:97.2447,v:27072700},{d:"2022-09-27",o:98.4928,h:99.0574,l:95.9569,c:96.581,v:30072800},{d:"2022-09-28",o:96.7296,h:99.7508,l:96.1946,c:99.1069,v:32466300},{d:"2022-09-29",o:97.7102,h:97.7102,l:95.0555,c:96.5017,v:31047200},{d:"2022-09-30",o:96.1352,h:97.9678,l:94.6592,c:94.7484,v:32941500},{d:"2022-10-03",o:95.8479,h:98.3541,l:95.6102,c:97.7102,v:27982000},{d:"2022-10-04",o:99.4933,h:100.8801,l:99.4338,c:100.682,v:28850800},{d:"2022-10-05",o:98.889,h:100.9692,l:97.8687,c:100.4739,v:22176900},{d:"2022-10-06",o:99.731,h:101.9598,l:99.6418,c:100.464,v:22324000},{d:"2022-10-07",o:98.9088,h:99.5824,l:97.3734,c:97.7498,v:27502800},{d:"2022-10-10",o:98.0668,h:98.1659,l:96.0956,c:96.9376,v:18225100},{d:"2022-10-11",o:96.5116,h:98.3145,l:95.4022,c:96.264,v:26507100},{d:"2022-10-12",o:96.3829,h:97.8192,l:95.8281,c:96.6404,v:21876400},{d:"2022-10-13",o:94.2531,h:98.8395,l:93.4904,c:98.1263,v:34574500},{d:"2022-10-14",o:99.0475,h:99.7409,l:95.4616,c:95.6498,v:25410700},{d:"2022-10-17",o:97.9281,h:99.9786,l:97.8984,c:99.0277,v:28419200},{d:"2022-10-18",o:102.1579,h:102.4947,l:99.0277,c:99.8201,v:24060700},{d:"2022-10-19",o:99.0673,h:100.0678,l:97.9876,c:98.6909,v:23811100},{d:"2022-10-20",o:99.0574,h:101.3555,l:98.4531,c:99.0277,v:25323200},{d:"2022-10-21",o:96.9277,h:100.355,l:96.7989,c:100.1767,v:32458700},{d:"2022-10-24",o:100.8404,h:101.7815,l:99.0376,c:101.5536,v:27176400},{d:"2022-10-25",o:101.9301,h:103.832,l:101.7518,c:103.4952,v:40611400},{d:"2022-10-26",o:95.521,h:97.3833,l:93.7975,c:94.0352,v:88114100},{d:"2022-10-27",o:93.6291,h:94.5305,l:90.9347,c:91.3507,v:60710900},{d:"2022-10-28",o:91.4003,h:95.6399,l:91.2616,c:95.3824,v:43697300},{d:"2022-10-31",o:94.5206,h:95.1248,l:93.0942,c:93.6192,v:31675000}]}
+};
+
+/* ---------- 工具 ---------- */
+function rot(a, k) { k = ((k % a.length) + a.length) % a.length; return a.slice(k).concat(a.slice(0, k)); }
+function idxOf(arr, v) { return arr.indexOf(v); }
+function bandClose(p) { return p >= 0.70 ? '头部' : (p >= 0.35 ? '腰部' : '脚下'); }
+function bandBody(b) { return b >= 0.65 ? '≥65' : (b >= 0.25 ? '25–65' : '≤25'); }
+function fmtN(x) { return Math.round(x * 100) / 100; }
+
+var PACKS = [
+  { id: 'A', role: '首次验收', note: '第一次独立作答——先修 0001/0002 后使用' },
+  { id: 'B', role: '补救换题', note: 'A 未通过并完成错因补练后，用这扇未曝光新窗复测' },
+  { id: 'C', role: '延迟复测', note: '建议距首次尝试 ≥24 小时；完成时显示实际间隔' }
+];
+
+/* ---------- 题目生成（确定性，无随机） ---------- */
+function buildQuestions(packId) {
+  var c = CASES[packId], bars = c.bars, L = bars[bars.length - 1], P = bars[bars.length - 2];
+  var pi = { A: 0, B: 1, C: 2 }[packId];
+  var rng = L.h - L.l, body = Math.abs(L.c - L.o), bodyR = body / rng, cpos = (L.c - L.l) / rng;
+  var bull = L.c > L.o, dirTxt = bull ? '阳线（收高于开）' : '阴线（收低于开）';
+  var bandC = bandClose(cpos), bandB = bandBody(bodyR);
+  var Q = [];
+
+  Q.push({ id: 'q1', key: false, cat: 'dir', q: '决策棒（下划线标出的最后一根，' + L.d + '）的方向是：',
+    options: ['阳线（收高于开）', '阴线（收低于开）'], answer: bull ? 0 : 1,
+    explain: '开 ' + L.o + '，收 ' + L.c + '——收' + (bull ? '高于' : '低于') + '开 ' + fmtN(body) + '（价格单位），' + dirTxt + '。先定方向，再谈一切。' });
+
+  Q.push({ id: 'q2', key: false, cat: 'geo', q: '决策棒的收盘位置落在哪一档？（收盘位置 =（收−低）÷（高−低））',
+    options: ['头部（≥70%）', '腰部（35–70%）', '脚下（≤35%）'], answer: idxOf(['头部', '腰部', '脚下'], bandC),
+    explain: '（' + L.c + '−' + L.l + '）÷（' + L.h + '−' + L.l + '）= ' + Math.round(cpos * 100) + '%——' + bandC + '。读法要结合方向（下一题连读）。' });
+
+  Q.push({ id: 'q3', key: false, cat: 'geo', q: '决策棒的实体占比大约在哪一档？（实体÷全长）',
+    options: ['≥65%（一边倒）', '25–65%（优势明确到拉锯取胜）', '≤25%（平局区）'], answer: idxOf(['≥65', '25–65', '≤25'], bandB),
+    explain: '实体 ' + fmtN(body) + ' ÷ 全长 ' + fmtN(rng) + ' ≈ ' + Math.round(bodyR * 100) + '%——' + (bandB === '≥65' ? '净结果一边倒' : bandB === '25–65' ? '优势明确但反抗真实存在' : '平局区') + '。' });
+
+  var comboOpt = ['买方把优势守到了终场', '卖方战果尾盘被明显收复', '买方战果尾盘大幅回吐', '卖方把优势守到了终场', '终场价靠近区间中点，终场位置本身不加分'];
+  var comboAns = bandC === '腰部' ? 4 : (bull ? (bandC === '头部' ? 0 : 2) : (bandC === '头部' ? 1 : 3));
+  Q.push({ id: 'q4', key: true, cat: 'dir', q: '把方向与收盘位置连读（★关键项）：这根' + (bull ? '阳' : '阴') + '线收在' + bandC + '，正确读法是：',
+    options: comboOpt, answer: comboAns,
+    explain: '收位先是无方向的几何位置，含义随实体方向镜像：阳线收头部=买方守住；阴线收脚下=卖方守住；收到另一侧=日内战果被收复；腰部=位置不加分（0001 §03 表）。' });
+
+  var relF = (L.h < P.h && L.l > P.l) ? '内包' : ((L.h > P.h && L.l < P.l) ? '吞没' : '都不是');
+  Q.push({ id: 'q5', key: false, cat: 'pattern', q: '决策棒与前一根的高点/低点关系（全范围口径，看影线）：',
+    options: ['内包——高点更低且低点更高', '吞没——高点更高且低点更低', '都不是'], answer: idxOf(['内包', '吞没', '都不是'], relF),
+    explain: '本棒 H ' + L.h + ' / L ' + L.l + '，前棒 H ' + P.h + ' / L ' + P.l + '——' + (relF === '都不是' ? '两端没有同时包住/缩进，按严格口径不构成内包或吞没' : relF + '（严格口径：内包要求高低点<b>全部</b>缩进；吞没要求两端全包）') + '。' });
+
+  var lo1 = Math.min(L.o, L.c), hi1 = Math.max(L.o, L.c), lo0 = Math.min(P.o, P.c), hi0 = Math.max(P.o, P.c);
+  var relB = (lo1 > lo0 && hi1 < hi0) ? '实体内包（Harami 家族）' : ((lo1 < lo0 && hi1 > hi0) ? '实体吞没' : '实体并列（都不构成）');
+  Q.push({ id: 'q6', key: false, cat: 'pattern', q: '只看实体（忽略影线），决策棒与前一根的实体关系是：',
+    options: ['实体吞没', '实体内包（Harami 家族）', '实体并列（都不构成）'], answer: idxOf(['实体吞没', '实体内包（Harami 家族）', '实体并列（都不构成）'], relB),
+    explain: '本棒实体 ' + fmtN(lo1) + '–' + fmtN(hi1) + '，前棒实体 ' + fmtN(lo0) + '–' + fmtN(hi0) + '——' + relB + '。注意实体口径与全幅口径是两个不同对象（0002 的 Harami/Inside 之辨）。' });
+
+  var badType = pi % 3;
+  var bad;
+  if (badType === 0) bad = { o: L.o, h: fmtN(Math.max(L.o, L.c) - 1), l: L.l, c: L.c };
+  else if (badType === 1) bad = { o: L.o, h: L.h, l: fmtN(Math.min(L.o, L.c) + 1), c: L.c };
+  else bad = { o: L.o, h: L.l, l: L.l, c: L.c };
+  Q.push({ id: 'q7', key: true, cat: 'ohlc', q: '（★关键项）有人把决策棒抄成了：开 ' + bad.o + '、高 ' + bad.h + '、低 ' + bad.l + '、收 ' + bad.c + '。这组数字：',
+    options: ['合法——四个数字自洽', '非法——最高价低于实体上沿', '非法——最低价高于实体下沿', '非法——最高价低于最低价'], answer: 1 + badType,
+    explain: '合法 OHLC 必须满足 L≤min(O,C)≤max(O,C)≤H。本组：max(开,收)=' + fmtN(Math.max(bad.o, bad.c)) + '，min(开,收)=' + fmtN(Math.min(bad.o, bad.c)) + '——' + ['高 ' + bad.h + ' 低于实体上沿', '低 ' + bad.l + ' 高于实体下沿', '高低于低，排序颠倒'][badType] + '。真实棒为 H ' + L.h + ' / L ' + L.l + '。' });
+
+  Q.push({ id: 'q8', key: true, cat: 'unknowable', q: '（★关键项）同一组开高低收（如本棒：' + L.o + ' / ' + L.h + ' / ' + L.l + ' / ' + L.c + '），盘中路径（先涨后跌还是先跌后涨等）：',
+    options: ['能唯一确定——大实体必是一路推进', '不能唯一确定——OHLC 不记录路径，多种路径都可能', '能唯一确定——影线揭示了先后顺序', '不能唯一确定——但看量能就能补出顺序'], answer: 1,
+    explain: '战报只记结果不记过程：同一组 OHLC 可以由多条盘中路径产生（0001 worked example 的边界）。量能也不揭示棒内顺序。这是"知道什么不可知"的第一课。' });
+
+  var mOpt = rot(['卖方守住优势到终场（收位 6%·脚下·阴线）', '买方守住优势到终场', '十字星，无方向', '无法判定'], pi);
+  Q.push({ id: 'q9', key: true, cat: 'dir', q: '（★关键项）镜像题：开 90、高 95、低 15、收 20。这根K线的正确读法是：',
+    options: mOpt, answer: idxOf(mOpt, '卖方守住优势到终场（收位 6%·脚下·阴线）'),
+    explain: '收 20 < 开 90：阴线；收位（20−15）÷（95−15）=6%——脚下。阴线收脚下=卖方把优势守到了终场。同一句话套在阳线头上就是错的（0001 §03：读法分阴阳）。' });
+
+  var incVar = [
+    { q: '母线 高 100 / 低 50；第二根 高 100 / 低 52。第二根是母线的内包日吗？', opts: ['是内包', '不是——高点与母线相等，未满足"低于"', '不是——问题在低点', '无法判断'], ans: 1 },
+    { q: '母线 高 100 / 低 50；第二根 高 101 / 低 52。第二根是母线的内包日吗？', opts: ['是内包', '不是——子线高点越出母线高点', '不是——问题在低点', '无法判断'], ans: 1 },
+    { q: '母线 高 100 / 低 50；第二根 高 99 / 低 50。第二根是母线的内包日吗？', opts: ['是内包', '不是——高点未缩进', '不是——低点与母线相等，未满足"高于"', '无法判断'], ans: 2 }
+  ][pi];
+  Q.push({ id: 'q10', key: false, cat: 'pattern', q: '边界题：' + incVar.q, options: incVar.opts, answer: incVar.ans,
+    explain: '课程严格口径（0002）：内包要求高点<b>低于</b>母高且低点<b>高于</b>母低——端点相等不算。判别边界比多看几张漂亮图更值钱。' });
+
+  var engVar = [
+    { q: '前棒实体 40–50；本棒实体 41–49.5。只看实体，本棒构成：', a: '实体内包（Harami 家族）' },
+    { q: '前棒实体 40–50；本棒实体 39–52。只看实体，本棒构成：', a: '实体吞没' },
+    { q: '前棒实体 40–50；本棒实体 40.5–50.5。只看实体，本棒构成：', a: '实体并列（都不构成）' }
+  ][pi];
+  Q.push({ id: 'q11', key: false, cat: 'pattern', q: '边界题：' + engVar.q,
+    options: ['实体吞没', '实体内包（Harami 家族）', '实体并列（都不构成）', '无法判断'], answer: idxOf(['实体吞没', '实体内包（Harami 家族）', '实体并列（都不构成）', '无法判断'], engVar.a),
+    explain: '吞没要求实体两端<b>全包</b>；内包要求两端<b>全缩</b>；只碰一端=都不构成。参数差一点，标签就换一个——这就是"口径必须预写死"。' });
+
+  var hardVar = [
+    { q: '（★关键项）"阳线实体占比 78%，收盘位置 50%（腰部）"——这根K线：', a: '不可能——违反阳线收位≥实体占比的硬约束', opts: ['可能——两个度量互相独立', '不可能——违反阳线收位≥实体占比的硬约束', '不可能——违反阴线收位≤1−实体占比的硬约束', '无法判断'], ans: 1 },
+    { q: '（★关键项）"阴线实体占比 80%，收盘位置 50%（腰部）"——这根K线：', a: '不可能——违反阴线收位≤1−实体占比的硬约束', opts: ['可能——两个度量互相独立', '不可能——违反阳线收位≥实体占比的硬约束', '不可能——违反阴线收位≤1−实体占比的硬约束', '无法判断'], ans: 2 },
+    { q: '（★关键项）"阳线实体占比 30%，收盘位置 91%（头部）"——这根K线：', a: '可能——低干净度也能高控场（长下影＋尾盘上推）', opts: ['可能——低干净度也能高控场（长下影＋尾盘上推）', '不可能——违反阳线收位≥实体占比的硬约束', '不可能——阳线头部必是光头光脚', '无法判断'], ans: 0 }
+  ][pi];
+  Q.push({ id: 'q12', key: true, cat: 'ohlc', q: hardVar.q, options: hardVar.opts, answer: hardVar.ans,
+    explain: '硬约束：阳线实体顶=收盘价，所以<b>阳线收位≥实体占比</b>；阴线镜像<b>收位≤1−实体占比</b>。78% 实体的阳线只能收头部；30% 实体的阳线可以收头部（平局里也有强弱）。' });
+
+  return Q;
+}
+
+/* ---------- 补练变式（确定性，按轮次参数化） ---------- */
+function practiceQuestion(cat, round, packId) {
+  var pi = { A: 0, B: 1, C: 2 }[packId];
+  var r = round % 3;
+  if (cat === 'dir') {
+    var o = 88 + r, c = 18 + r * 2, h = 95 + r, l = 12 + r;
+    var p = ((c - l) / (h - l)) * 100;
+    var opts = rot(['阴线收脚下——卖方守住优势到终场（收位 ' + Math.round(p) + '%）', '阳线收头部——买方守住优势', '阴线收头部——卖方守住优势', '无法判定'], r + pi);
+    var correct = '阴线收脚下——卖方守住优势到终场（收位 ' + Math.round(p) + '%）';
+    return { q: '镜像补练 ' + (round + 1) + '：开 ' + o + '、高 ' + h + '、低 ' + l + '、收 ' + c + '。正确读法：', options: opts, answer: opts.indexOf(correct), explain: '收<开=阴线；收位 ' + Math.round(p) + '% 脚下——阴线收脚下=卖方守住（镜像公式）。' };
+  }
+  if (cat === 'geo') {
+    var ks = [[50, 95, 45, 88], [40, 88, 38, 84], [60, 62, 40, 58]][r];
+    var rngG = ks[1] - ks[2], bG = Math.abs(ks[3] - ks[0]) / rngG, pG = (ks[3] - ks[2]) / rngG;
+    var band = bandClose(pG);
+    return { q: '计算补练 ' + (round + 1) + '：开 ' + ks[0] + '、高 ' + ks[1] + '、低 ' + ks[2] + '、收 ' + ks[3] + '。收盘位置档位：', options: ['头部（≥70%）', '腰部（35–70%）', '脚下（≤35%）'], answer: idxOf(['头部', '腰部', '脚下'], band), explain: '（收−低）÷（高−低）= ' + Math.round(pG * 100) + '%——' + band + '（实体占比约 ' + Math.round(bG * 100) + '%，供自查）。' };
+  }
+  if (cat === 'pattern') {
+    var vs = [
+      { q: '母 高 80 / 低 60；子 高 80 / 低 62——子是内包日吗？', a: '不是——高点相等，未满足"低于"', opts: ['是内包', '不是——高点相等，未满足"低于"', '不是——低点问题', '无法判断'] },
+      { q: '母 高 80 / 低 60；子 高 79 / 低 61——子是内包日吗？', a: '是内包', opts: ['是内包', '不是——高点问题', '不是——低点问题', '无法判断'] },
+      { q: '前棒实体 20–30；本棒实体 19.5–30.5——本棒构成：', a: '实体吞没', opts: ['实体吞没', '实体内包（Harami 家族）', '实体并列（都不构成）', '无法判断'] }
+    ][r];
+    return { q: '边界补练 ' + (round + 1) + '：' + vs.q, options: vs.opts, answer: idxOf(vs.opts, vs.a), explain: '严格口径：全缩=内包（端点相等不算）；全包=吞没；只碰一端=都不是。' };
+  }
+  if (cat === 'ohlc') {
+    var t = (r + pi) % 3;
+    var bad = [{ o: 50, h: 58, l: 45, c: 60, why: '非法——最高价低于实体上沿（收 60 > 高 58）' }, { o: 50, h: 62, l: 52, c: 48, why: '非法——最低价高于实体下沿（收 48 < 低 52）' }, { o: 50, h: 45, l: 45, c: 47, why: '非法——最高价低于最低价' }][t];
+    var opts = ['合法——四个数字自洽', '非法——最高价低于实体上沿', '非法——最低价高于实体下沿', '非法——最高价低于最低价'];
+    return { q: 'OHLC 补练 ' + (round + 1) + '：开 ' + bad.o + '、高 ' + bad.h + '、低 ' + bad.l + '、收 ' + bad.c + '——这组数字：', options: opts, answer: 1 + t, explain: bad.why + '。不变量：L≤min(O,C)≤max(O,C)≤H。' };
+  }
+  var uo = rot(['不能唯一确定——OHLC 不记录盘中顺序', '能唯一确定——实体大小说明一切', '不能唯一确定——但组合两根K线就能补出顺序', '能唯一确定——收盘位置揭示路径'], r);
+  return { q: '不可知补练 ' + (round + 1) + '：开 30、高 70、低 25、收 65 的盘中路径：', options: uo, answer: idxOf(uo, '不能唯一确定——OHLC 不记录盘中顺序'), explain: '先涨后跌、先跌后涨、反复震荡都可能是同一组 OHLC——战报只记结果。' };
+}
+
+/* ---------- 状态与持久化（与 answer.js 同键约定） ---------- */
+var LS_KEY = 'kbar-answer::M0.1::';
+var CAT_NAMES = { dir: '方向与阴阳镜像', geo: '收位/实体计算', pattern: '内包/吞没边界', ohlc: 'OHLC 合法与几何约束', unknowable: '路径不可知' };
+var CAT_LINKS = {
+  dir: '../lessons/0001-anatomy-of-a-candle.html#s02',
+  geo: '../lessons/0001-anatomy-of-a-candle.html#s03',
+  pattern: '../lessons/0002-two-candle-dialogue.html',
+  ohlc: '../lessons/0001-anatomy-of-a-candle.html#s03',
+  unknowable: '../lessons/0001-anatomy-of-a-candle.html#s01'
+};
+function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
+var LS = store();
+function loadPack(pid) {
+  if (!LS) return { attempts: [], remedied: {} };
+  try { return JSON.parse(LS.getItem(LS_KEY + pid) || '') || { attempts: [], remedied: {} }; } catch (e) { return { attempts: [], remedied: {} }; }
+}
+function savePack(pid, rec) { if (LS) { try { LS.setItem(LS_KEY + pid, JSON.stringify(rec)); } catch (e) {} } }
+
+/* ---------- 页面流程 ---------- */
+var cur = 'A', quiz = null, qi = 0, picks = null, startedAt = null;
+
+function packState(pid) {
+  var rec = loadPack(pid);
+  var first = rec.attempts[0], last = rec.attempts[rec.attempts.length - 1];
+  if (!last) return { label: '未开始', cls: '' };
+  return last.passed ? { label: '已通过', cls: 'ok' } : { label: '未通过（' + last.score + '/12）', cls: 'no' };
+}
+
+function renderTabs() {
+  var el = document.getElementById('packtabs');
+  el.innerHTML = PACKS.map(function (p) {
+    var st = packState(p.id);
+    return '<button type="button" class="pack-tab' + (p.id === cur ? ' active' : '') + '" data-pack="' + p.id + '">' +
+      '<b>' + p.id + ' 包 · ' + p.role + '</b>' +
+      '<span class="pt-role">' + p.note + '</span>' +
+      '<span class="pt-state" style="color:' + (st.cls === 'ok' ? '#1a7f37' : st.cls === 'no' ? '#d33a2c' : 'var(--muted)') + '">' + st.label + '</span></button>';
+  }).join('');
+  el.querySelectorAll('.pack-tab').forEach(function (b) { b.onclick = function () { cur = b.dataset.pack; startPack(); }; });
+}
+
+function caseMeta(pid) {
+  var c = CASES[pid], n = c.bars.length;
+  var L = c.bars[n - 1];
+  return { sym: c.sym, mkt: c.mkt, range: c.bars[0].d + ' → ' + L.d, n: n, d: L.d, vol: c.bars.map(function (k) { return k.v; }) };
+}
+
+function startPack() {
+  renderTabs();
+  var m = caseMeta(cur), c = CASES[cur];
+  document.getElementById('casecard').innerHTML = '<b>案例卡</b> · ' + m.mkt + ' · ' + m.sym + ' · 日线 ' + m.n + ' 根（' + m.range + '）· 决策棒 ' + m.d +
+    '（下划线）· 案例号 M0.1-' + cur + '-2026a · 出处：instancelib 未曝光窗口（yfinance 口径）· 整窗即任务，本页无隐藏未来数据。';
+  document.getElementById('chart').innerHTML = Kbar.chart(c.bars, { w: 760, h: 300, yLabels: true, vol: m.vol, hl: c.bars.length - 1 });
+  quiz = buildQuestions(cur); qi = 0; picks = []; startedAt = new Date();
+  renderStatusLine();
+  renderQuestion();
+  document.getElementById('verdict').innerHTML = '';
+  document.getElementById('remedy').innerHTML = '';
+}
+
+function renderStatusLine() {
+  var rec = loadPack(cur);
+  var parts = ['<span class="msb">包 ' + cur + '：' + packState(cur).label + '</span>'];
+  parts.push('<span class="msb">历史提交 ' + rec.attempts.length + ' 次（首次成绩永久保留）</span>');
+  if (cur === 'C') {
+    var ra = loadPack('A');
+    if (ra.attempts.length) parts.push('<span class="msb">距 A 包首次：' + Math.round((Date.now() - new Date(ra.attempts[0].ts || ra.attempts[0].submittedAt).getTime()) / 3600000) + ' 小时</span>');
+  }
+  if (!LS) parts.push('<span class="msb no">本地存储不可用——成绩不会保存，请截图或导出</span>');
+  document.getElementById('statusline').innerHTML = parts.join(' ');
+}
+
+function renderQuestion() {
+  var el = document.getElementById('quiz');
+  if (qi >= quiz.length) return finishQuiz();
+  var q = quiz[qi];
+  el.innerHTML = '<div class="q-card"><div class="q-no">第 ' + (qi + 1) + ' / ' + quiz.length + ' 题' + (q.key ? '<span class="key-badge">★ 关键项</span>' : '') + ' · 首次作答计入成绩</div>' +
+    '<div class="q-text">' + q.q + '</div>' +
+    q.options.map(function (o, i) { return '<div class="q-opt" data-i="' + i + '">' + o + '</div>'; }).join('') +
+    '<div class="q-explain" id="qx" style="display:none"></div></div>';
+  el.querySelectorAll('.q-opt').forEach(function (o) {
+    o.onclick = function () {
+      if (picks[qi] != null) return;
+      picks[qi] = parseInt(o.dataset.i, 10);
+      var right = picks[qi] === q.answer;
+      el.querySelectorAll('.q-opt').forEach(function (o2, j) {
+        o2.classList.add('dim');
+        if (j === q.answer) o2.classList.add('right-hint');
+      });
+      o.classList.remove('dim');
+      o.classList.add(right ? 'picked-right' : 'picked-wrong');
+      var x = document.getElementById('qx');
+      x.style.display = 'block';
+      x.innerHTML = (right ? '<b style="color:#1a7f37">✓ 正确</b> · ' : '<b style="color:#d33a2c">✗ 错误</b>（错因类别：' + CAT_NAMES[q.cat] + '）· ') + q.explain +
+        '<div style="margin-top:.5rem"><button class="mbtn dark" id="qnext" type="button">' + (qi === quiz.length - 1 ? '交卷 →' : '下一题 →') + '</button></div>';
+      document.getElementById('qnext').onclick = function () { qi++; renderQuestion(); };
+    };
+  });
+}
+
+function finishQuiz() {
+  var correct = quiz.map(function (q, i) { return picks[i] === q.answer; });
+  var score = correct.filter(Boolean).length;
+  var keyIds = quiz.filter(function (q) { return q.key; }).map(function (q) { return q.id; });
+  var keysPassed = quiz.every(function (q, i) { return !q.key || correct[i]; });
+  var passed = score >= 11 && keysPassed;
+  var rec = loadPack(cur);
+  rec.attempts.push({
+    attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), submittedAt: new Date().toLocaleString(),
+    pack: cur, caseId: 'M0.1-' + cur + '-2026a',
+    answers: {}, picks: picks, correct: correct, score: score, keysPassed: keysPassed, passed: passed
+  });
+  savePack(cur, rec);
+  var v = document.getElementById('verdict');
+  v.innerHTML = '<div class="verdict"><b>' + (passed ? '✓ M0.1 结构化核心任务通过（' + cur + ' 包）' : '✗ 未通过（' + cur + ' 包）') + '</b><br>' +
+    '得分 ' + score + '/12（通过线 ≥11）；关键项 ' + (keysPassed ? '全部通过' : '<b style="color:#d33a2c">有未通过</b>（关键错项不可被总分抵消）') + '。' +
+    (passed
+      ? (cur === 'A' ? 'M0.1 首次验收完成——本里程碑通过；延迟复测建议 ≥24 小时后用 C 包。' : cur === 'B' ? '补救后换题复测通过。' : '延迟复测通过——间隔见上方状态栏。')
+      : '完成下方错因补练（每类 3 题做对），再用' + (cur === 'A' ? ' B 包' : cur === 'B' ? ' C 包' : ' 下一包') + '换题复测。首次成绩已保留。') +
+    '<div style="margin-top:.5rem"><button class="mbtn" type="button" id="retry-btn">重做本包（记为练习，不改首次成绩）</button></div></div>';
+  document.getElementById('retry-btn').onclick = startPack;
+  if (!passed) renderRemedy(correct);
+  renderStatusLine(); renderTabs();
+  v.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function renderRemedy(correct) {
+  var failedCats = {};
+  quiz.forEach(function (q, i) { if (!correct[i]) failedCats[q.cat] = true; });
+  var rec = loadPack(cur);
+  var el = document.getElementById('remedy');
+  el.innerHTML = '<h3 style="font-family:var(--sans);font-size:1rem;margin:1rem 0 .4rem">错因补练（完成全部失败类别后解锁换题复测建议）</h3>' +
+    Object.keys(failedCats).map(function (cat) {
+      var done = rec.remedied && rec.remedied[cat];
+      return '<div class="remedy-cat" data-cat="' + cat + '"><b>' + CAT_NAMES[cat] + '</b>' + (done ? ' <span class="msb ok">补练完成</span>' : '') +
+        '<br>微任务：<span class="cat-link"></span> 复习后，做 3 题边界变式（须做对，可重试）。' +
+        (done ? '' : '<div style="margin-top:.4rem"><button class="mbtn dark" type="button" data-practice="' + cat + '">开始补练</button></div><div class="practice-slot"></div>') + '</div>';
+    }).join('');
+  // 链接用 DOM 建（静态校验器会把字符串拼接的字面链接当死链）
+  el.querySelectorAll('.remedy-cat').forEach(function (d) {
+    var a = document.createElement('a');
+    a.href = CAT_LINKS[d.dataset.cat];
+    a.textContent = '回到对应课节';
+    d.querySelector('.cat-link').appendChild(a);
+  });
+  el.querySelectorAll('[data-practice]').forEach(function (b) {
+    b.onclick = function () { runPractice(b.dataset.practice, b.closest('.remedy-cat')); };
+  });
+}
+
+function runPractice(cat, slotEl) {
+  var rec = loadPack(cur);
+  rec.practiceRound = rec.practiceRound || {};
+  var round = rec.practiceRound[cat] || 0;
+  var pq = practiceQuestion(cat, round, cur);
+  var slot = slotEl.querySelector('.practice-slot');
+  slot.innerHTML = '<div class="q-card" style="margin:.5rem 0"><div class="q-no">补练 ' + CAT_NAMES[cat] + ' · 第 ' + (round + 1) + '/3 题</div>' +
+    '<div class="q-text">' + pq.q + '</div>' +
+    pq.options.map(function (o, i) { return '<div class="q-opt" data-i="' + i + '">' + o + '</div>'; }).join('') +
+    '<div class="q-explain" id="px" style="display:none"></div></div>';
+  slot.querySelectorAll('.q-opt').forEach(function (o) {
+    o.onclick = function () {
+      var pick = parseInt(o.dataset.i, 10);
+      var right = pick === pq.answer;
+      slot.querySelectorAll('.q-opt').forEach(function (o2, j) { o2.classList.add('dim'); if (j === pq.answer) o2.classList.add('right-hint'); });
+      o.classList.remove('dim'); o.classList.add(right ? 'picked-right' : 'picked-wrong');
+      var x = document.getElementById('px');
+      x.style.display = 'block';
+      if (!right) {
+        x.innerHTML = '<b style="color:#d33a2c">✗ 再想一下</b>——' + pq.explain + '<div style="margin-top:.4rem"><button class="mbtn" id="pretry" type="button">重做本题</button></div>';
+        document.getElementById('pretry').onclick = function () { runPractice(cat, slotEl); };
+        return;
+      }
+      var newRound = round + 1;
+      rec.practiceRound[cat] = newRound; savePack(cur, rec);
+      if (newRound >= 3) {
+        rec.remedied = rec.remedied || {}; rec.remedied[cat] = true; savePack(cur, rec);
+        x.innerHTML = '<b style="color:#1a7f37">✓ 正确</b>——' + pq.explain + '<br><b>' + CAT_NAMES[cat] + ' 补练完成。</b>';
+        renderRemedy(quiz.map(function (q, i) { return picks[i] === q.answer; }));
+        renderStatusLine();
+      } else {
+        x.innerHTML = '<b style="color:#1a7f37">✓ 正确</b>——' + pq.explain;
+        setTimeout(function () { runPractice(cat, slotEl); }, 600);
+      }
+    };
+  });
+}
+
+/* ---------- 导出 ---------- */
+document.getElementById('export-btn').onclick = function () {
+  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M0.1', courseVersion: 'rev-2026-09-10',
+    exportedAt: new Date().toISOString(),
+    packs: PACKS.map(function (p) { return { pack: p.id, role: p.role, caseId: 'M0.1-' + p.id + '-2026a', case: caseMeta(p.id), record: loadPack(p.id) }; }) };
+  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'm0-1-progress.json'; a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+};
+
+startPack();
+</script>
+</body>
+</html>
