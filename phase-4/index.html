@@ -7,11 +7,12 @@
 <link rel="stylesheet" href="assets/course.css">
 </head>
 <body>
+<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段能力验收与学习档案</a></p>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · Grimes / Brooks / Harris / Kelly</div>
   <h1>系统：组装交易系统</h1>
-  <p class="sub">十天 · 十课 · 内容时长 65–80 min/课 + 毕业考 · 全真实数据（示范系统“训练者一号”跑 33 品种×5 年：现行 v2 协议 732 笔/期望 +0.047R，v1 审计样本 87 笔/+0.204R 的版本故事本身就是选择偏差的活教材；限价/跟踪/混合三种执行变体对照实验；四市场微观结构活例）· 可离线可打印。前置：Phase 0–3。<b>里程碑：本阶段末开模拟盘。</b></p>
+  <p class="sub">十天 · 十课 · 内容时长 65–80 min/课 + 毕业考 · 全真实数据（示范系统“训练者一号”跑 33 品种×5 年：修正研究 v2.1 日线594笔/毛均值 +0.0908R，v1 审计样本 87 笔/+0.204R 的版本故事本身就是选择偏差的活教材；限价/跟踪/混合三种执行变体对照实验；四市场微观结构活例）· 可离线可打印。前置：Phase 0–3。<b>本阶段以冻结规则、执行情景和可追溯验证包为课程产物。</b></p>
 </header>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
@@ -21,7 +22,7 @@
 <p><b>不教：</b>自动致富（期望是数学函数不是愿望函数）；参数优化玄学（回测协议先防自欺）；编程回测（手工回测是统计训练，MISSION 边界不变）；经典指标（MACD/均线/布林仍 out of scope——止损距离就是波动度量，不需要指标）。</p>
 
 <div class="note">
-<b>教材依据（grounding）：</b>①经典原著——Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链、Ch.8 Trade Management 的止损与目标、Ch.10 六类 setup）+ Part IV（自我导向交易者的计划与风控）；Al Brooks 三部曲（H2/出场/通道线实务）；②微观结构——Larry Harris《Trading and Exchanges》(2003)（订单与流动性）+ Osler (2000/2003)（限价/止损单聚集）；③数学——Kelly (1956)（信息速率与最优赌注）+ Thorp（分数凯利实务）；④真实数据——训练者一号 v2（732 笔，scan_p4_v2.py）与 v1 审计样本 BT30（seed=44）、相关性矩阵（33 品种日收益，日期对齐口径）、涨跌停/暴跌事件，全部脚本可复算。
+<b>教材依据（grounding）：</b>①经典原著——Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链、Ch.8 Trade Management 的止损与目标、Ch.10 六类 setup）+ Part IV（自我导向交易者的计划与风控）；Al Brooks 三部曲（H2/出场/通道线实务）；②微观结构——Larry Harris《Trading and Exchanges》(2003)（订单与流动性）+ Osler (2000/2003)（限价/止损单聚集）；③数学——Kelly (1956)（信息速率与最优赌注）+ Thorp（分数凯利实务）；④真实数据——训练者一号 v2.1（594笔，scan_p4_v2.py；研究毛R）与 v1 审计样本 BT30（seed=44）、相关性矩阵（33 品种日收益，日期对齐口径）、涨跌停/暴跌事件，当前v2.1脚本与输入可复算；历史v1/v2.0保留审计，复权/PIT与真实成交并未认证。
 </div>
 
 <h2><span class="no">01</span>十课地图</h2>
@@ -29,7 +30,7 @@
 <a class="lesson-card" href="lessons/4001-setup-definition.html">
   <div class="day">DAY 1 · 第 4001 课</div>
   <div class="t">Setup 的正式定义：从“看到”到“等到”</div>
-  <div class="d">五步决策链、三条标准（客观/预先写死/会被打脸）、训练者一号 v2 全规则（732 笔·44.4%·+0.047R；v1 +0.204R 的隐藏过滤故事）、诱惑检查表——东方财富 2024-09-24 死于风险过滤的教训：过滤器用错过换生存。</div>
+  <div class="d">五步决策链、三条标准（客观/预先写死/会被打脸）、训练者一号 v2.1 全规则（594笔·46.1%正R·毛均值+0.0908R；v1 +0.204R 的隐藏过滤故事）、诱惑检查表——东方财富 2024-09-24 死于风险过滤的教训：过滤器用错过换生存。</div>
   <div class="meta">73 min · 12 题 · Grimes Part III + Brooks TR Ch.25/26 + 训练者一号 v2 协议</div>
 </a>
 
@@ -72,7 +73,7 @@
   <div class="day">DAY 7 · 第 4007 课</div>
   <div class="t">仓位与风险模型：单笔 %、相关性与总预算</div>
   <div class="d">仓位=账户×风险%÷止损距离（交互计算器）；风险以止损为界不以市值为界；真实相关性——加密内部 0.68/BTC×ETH 0.84 vs SPY×BTC −0.03（数量≠分散）；相关组=一组风险、总预算 3R；升仓的唯一路径。</div>
-  <div class="meta">68 min · 12 题 + 计算器 · 33 品种相关性 + Tharp Ch.14</div>
+  <div class="meta">59 min · 12 题 + 计算器 · 33 品种相关性 + Tharp Ch.14</div>
 </a>
 
 <a class="lesson-card" href="lessons/4008-microstructure.html">
@@ -107,7 +108,7 @@
     <a href="https://chevywang.github.io/kbar/phase-3/">Phase 3 主页</a>
     <a href="reference/one-page-plan.html">计划模板</a>
   </div>
-  <div class="citations">主资源：Grimes (2012) Part III–IV · Brooks 三部曲 · Harris (2003) · Osler (2000/2003) · Kelly (1956)。数据：33 品种×5 年（yfinance + Binance + 通达信核对）；训练者一号 v2 732 笔（scan_p4_v2.py）与 v1 审计 87 笔/BT30（seed=44）、执行/出场变体、相关性矩阵（日期对齐）、事件窗口，全部脚本可复算。</div>
+  <div class="citations">主资源：Grimes (2012) Part III–IV · Brooks 三部曲 · Harris (2003) · Osler (2000/2003) · Kelly (1956)。数据：33 品种×5 年（yfinance + Binance + 通达信核对）；训练者一号 v2.1 594笔（scan_p4_v2.py）与 v1 审计 87 笔/BT30（seed=44）、执行/出场变体、相关性矩阵（日期对齐）、事件窗口，当前v2.1脚本与输入可复算；历史v1/v2.0保留审计，复权/PIT与真实成交并未认证。</div>
 </footer>
 
 </body>
