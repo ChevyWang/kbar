@@ -30,7 +30,7 @@
 
 <h2 id="s01"><span class="no">01</span>从线到地形：为什么需要合流 <span class="time-chip">≈6 min</span></h2>
 
-<p>单层地图都会骗人：只看水平位——1.32 的支撑破了你不知道上方 1.42 还有 VPOC 磁铁；只看剖面——P 形告诉你底部换手充分，却不告诉你趋势线已经破位；只看结构——知道处于阶段 D，却不知道头顶 0.16 外就是供应墙。<b>合流（confluence）不是把信号堆在一起数票数，而是让每层回答它最擅长的问题</b>（W2 §7.1 的 context analysis）：</p>
+<p>单层地图都会骗人：只看水平位——1.32 的支撑破了你不知道上方 1.42 还有 VPOC 磁铁；只看剖面——b 形告诉你底部换手充分，却不告诉你趋势线已经破位；只看结构——知道处于阶段 D，却不知道头顶 0.16 外就是供应墙。<b>合流（confluence）不是把信号堆在一起数票数，而是让每层回答它最擅长的问题</b>（W2 §7.1 的 context analysis）：</p>
 <table>
 <tr><th>图层</th><th>回答的问题</th><th>来源</th></tr>
 <tr><td><b>结构层</b>（Wyckoff 阶段/事件）</td><td>这场战役演到第几幕？</td><td>2002/2003</td></tr>
@@ -66,7 +66,7 @@
 <h2 id="s05"><span class="no">05</span>案例深读：XRP 完整地形图与三问 <span class="time-chip">≈20 min</span></h2>
 
 <figure><div id="map"></div>
-<figcaption><b>XRP 地形图（134 根全周期 + 三层标注）。</b>金色区=供应墙 1.31–1.48（剖面A的 b 形 VA，VPOC 1.42）；蓝色区=吸筹价值区 1.036–1.156（剖面B的 P 形 VA，VPOC 1.14）；绿色区=震仓带 0.99–1.05（两次 Spring 极值的坟场）；两点划线=两个 VPOC 磁铁。</figcaption></figure>
+<figcaption><b>XRP 地形图（134 根全周期 + 三层标注）。</b>金色区=供应墙 1.31–1.48（剖面A的 P 形 VA，VPOC 1.42）；蓝色区=吸筹价值区 1.036–1.156（剖面B的 b 形 VA，VPOC 1.14）；绿色区=震仓带 0.99–1.05（两次 Spring 极值的坟场）；两点划线=两个 VPOC 磁铁。</figcaption></figure>
 
 <h3>带读一 · 地图的读法：三问</h3>
 <p>对着地图问三个问题（按顺序）：<b>①现在价格在哪一层？</b>8 月末的收盘 1.35–1.45——在供应墙内部，紧贴 VPOC 1.42。<b>②这一层的性质是什么？</b>墙=充分换手的平衡区：既是最强支撑（当初的买家在守）也是最强供给（解套盘在卖）——W2 的表述：未来到访必须评估其意图（继续交易 or 掉头）。<b>③结构层演到第几幕？</b>拉升后的第一次回踩墙内——按 2003 的语言是"新顶部的阶段 A 候选"（BC 8/22 已现），按 2002 的语言也可能只是"上涨中继的再吸筹"。<b>两个剧本都合法，等结构揭晓</b>——这就是 2003 带读三的 60/40 从"感觉"变成"地图上的坐标"。揭晓的坐标：有效破 1.3352（8/31 低点）→ 派发剧本；放量接受在 1.46（墙顶/VAH）之上 → 再吸筹剧本。</p>
@@ -254,8 +254,8 @@ var A134 = [
 document.getElementById('map').innerHTML = Kbar.chart(A134, {
   w: 920, h: 380, vol: A134.map(function(k){return k.v;}), yLabels: true,
   zones: [
-    {y1: 1.31, y2: 1.48, label: '供应墙（b形 VA 1.32–1.46）', color: '#8a6d1f'},
-    {y1: 1.036, y2: 1.156, label: '吸筹价值区（P形 VA）', color: '#4a6fa5'},
+    {y1: 1.31, y2: 1.48, label: '供应墙（P形 VA 1.31–1.48）', color: '#8a6d1f'},
+    {y1: 1.036, y2: 1.156, label: '吸筹价值区（b形 VA）', color: '#4a6fa5'},
     {y1: 0.99, y2: 1.05, label: '震仓带', color: '#1a7f37'}
   ],
   levels: [
@@ -316,7 +316,7 @@ document.getElementById('schem-map3').innerHTML = Kbar.schematic({
     {t: 'phase', i1: 0, i2: 2, text: '结构层：下跌', color: '#1a7f37'},
     {t: 'phase', i1: 3, i2: 8, text: '结构层：区间（筑因）', color: '#4a6fa5'},
     {t: 'phase', i1: 9, i2: 11, text: '接受→迁移', color: '#d33a2c'},
-    {t: 'band', i1: 3, i2: 8, y1: 87.5, y2: 90.8, text: '剖面层：低位换手=P形', color: '#4a6fa5'},
+    {t: 'band', i1: 3, i2: 8, y1: 87.5, y2: 90.8, text: '剖面层：低位换手=b形', color: '#4a6fa5'},
     {t: 'hline', y: 90.8, text: '水平位层：VAH=接受裁决线', color: '#8a6d1f'},
     {t: 'label', i: 8, text: '出区', pos: 'below', color: '#d33a2c'},
     {t: 'label', i: 9, text: '证据①回踩不回区', pos: 'below', color: '#d33a2c'},
