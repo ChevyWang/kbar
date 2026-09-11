@@ -210,18 +210,21 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
 .lesson-toc { display: none; }
 @media (min-width: 1240px) {
   .lesson-toc {
-    display: block; position: fixed; top: 2.2rem;
-    left: calc(50% - 23rem - 13rem - 1rem);      /* 版心左缘再向左 16px */
-    width: 13rem; max-height: calc(100vh - 4.4rem); overflow-y: auto;
-    font-family: var(--sans); font-size: .78rem; line-height: 1.45;
-    border-left: 2px solid var(--line); padding: .1rem 0 .4rem .9rem;
+    display: block; position: fixed; top: 2.4rem;
+    left: calc(50% - 23rem - 12.5rem - 1.25rem);   /* 版心左缘再向左 20px */
+    width: 12rem; max-height: calc(100vh - 4.8rem); overflow-y: auto;
+    font-family: var(--sans); font-size: .76rem; line-height: 1.5;
+    border-left: 1px solid var(--line);            /* 整体一根细轨线 */
+    padding: .2rem 0 .6rem;
     scrollbar-width: thin;
   }
 }
-.lesson-toc .lt-title { font-weight: 700; font-size: .72rem; letter-spacing: .14em; color: var(--faint); margin-bottom: .55rem; }
-.lesson-toc a { display: block; color: var(--muted); text-decoration: none; padding: .28rem 0 .28rem .6rem; margin-left: calc(-.9rem - 2px); border-left: 2px solid transparent; }
-.lesson-toc a.on { color: var(--ink); font-weight: 600; border-left-color: var(--ink); }
-.lesson-toc .lt-no { color: var(--faint); font-weight: 700; margin-right: .35rem; }
+.lesson-toc .lt-title { font-size: .68rem; font-weight: 600; color: var(--faint); margin-bottom: .45rem; }
+/* 站内 a 的红下划线不进目录：border-bottom:none 钉死；活动项=轨线对应段变墨色 */
+.lesson-toc a { display: block; color: var(--faint); border-bottom: none; padding: .3rem 1rem .3rem calc(1rem - 1px); margin-left: -1px; border-left: 1px solid transparent; transition: color .15s, border-color .15s; }
+.lesson-toc a:hover { color: var(--ink); border-bottom: none; }
+.lesson-toc a.on { color: var(--ink); border-left-color: var(--ink); }
+.lesson-toc .lt-no { display: inline-block; min-width: 2.1rem; color: var(--faint); font-weight: 600; font-size: .7rem; }
 .lesson-toc a.on .lt-no { color: var(--ink); }
 
 @media print {
