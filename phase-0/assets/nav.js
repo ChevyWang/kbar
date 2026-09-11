@@ -41,13 +41,14 @@
     return s;
   }
 
-  var flat = [];                       // {el, label, full, lv}  文档顺序
+  var flat = [];                       // {el, label, full, lv, no}  文档顺序
   tree.forEach(function (node) {
+    var noEl = node.h2.querySelector('.no');
     var full2 = titleOf(node.h2), lab2 = shortLabel(full2);
-    flat.push({ el: node.h2, label: lab2, full: full2, lv: 2 });
+    flat.push({ el: node.h2, label: lab2, full: full2, lv: 2, no: noEl ? noEl.textContent.trim() : '' });
     node.subs.forEach(function (h3) {
       var full3 = titleOf(h3), lab3 = shortLabel(full3);
-      flat.push({ el: h3, label: lab3, full: full3, lv: 3 });
+      flat.push({ el: h3, label: lab3, full: full3, lv: 3, no: '' });
     });
   });
   /* 同级撞名 → 回退全称 */
@@ -60,7 +61,9 @@
 
   var html = [];
   flat.forEach(function (f) {
-    html.push('<a class="lv' + f.lv + '" href="#' + f.el.id + '" title="' + f.full + '">' + f.label + '</a>');
+    html.push('<a class="lv' + f.lv + '" href="#' + f.el.id + '" title="' + f.full + '">'
+      + (f.lv === 2 && f.no ? '<span class="lt-no">' + f.no + '</span>' : '')
+      + f.label + '</a>');
   });
   var nav = document.createElement('nav');
   nav.className = 'lesson-toc';
