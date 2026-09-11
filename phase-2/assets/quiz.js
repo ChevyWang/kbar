@@ -7,6 +7,8 @@
  *   verdicts: [[9,'全对'], [7,'不错'], [0,'再练']]  // [最低分, 判词] 降序
  * })
  * 规则: 选项顺序打乱；点击立即判分并给解析；结束给总分与判词、可重练（重开时再洗牌）。
+ * 无障碍（批次 D）：解析区 aria-live=polite；答完焦点交"下一题"、换题后焦点落新题第一项、
+ *   交卷页焦点落首要动作；按钮触控目标 ≥44px（样式注入）。
  * 学习记录（批次 C）：每次作答写入本地 kbar-quizlog::（课号+题号+对错+时间戳）；
  *   交卷页显示「错题重练」——按 1/3/7/21 天间隔只重练到期错题（答对升档、再错归零）。
  *   记录仅存本浏览器，可随时清空；不含任何个人信息。
@@ -93,8 +95,16 @@
     var root = document.querySelector(sel);
     if (!root) return;
     root.classList.add('quiz');
+    /* 触控目标 ≥44×44px（WCAG 2.5.5）：quiz.js 可独立于 candles.js 加载，样式自带注入 */
+    if (document.head && !document.getElementById('kbar-quiz-style')) {
+      var st = document.createElement('style');
+      st.id = 'kbar-quiz-style';
+      st.textContent = '.quiz button{min-height:44px;min-width:44px}';
+      document.head.appendChild(st);
+    }
     var order = shuffle(cfg.questions.map(function (_, i) { return i; }));
     var idx = 0, correct = 0, reviewing = !!cfg.review;
+    var advanced = false; // 本次重渲染是否由交互触发（首渲染/重挂载不抢页面焦点）
 
     function render() {
       if (idx >= order.length) return finish();
@@ -107,7 +117,7 @@
         '<div class="opts">' + opts.map(function (o, i) {
           return '<button class="opt" data-i="' + i + '">' + o.label + '</button>';
         }).join('') + '</div>' +
-        '<div class="explain"></div>' +
+        '<div class="explain" aria-live="polite"></div>' +
         '<div class="quiz-foot"><span class="score">已答对 ' + correct + ' / ' + order.length + '</span><button class="next" hidden>下一题 →</button></div>';
 
       var explain = root.querySelector('.explain');
@@ -128,9 +138,11 @@
           root.querySelector('.score').textContent = '已答对 ' + correct + ' / ' + order.length;
           next.hidden = false;
           next.textContent = idx === order.length - 1 ? '看成绩 →' : '下一题 →';
+          next.focus(); // 答完即把焦点交给"下一题"：键盘流不必在页面里重新 Tab
         });
       });
-      next.addEventListener('click', function () { idx++; render(); });
+      next.addEventListener('click', function () { idx++; advanced = true; render(); });
+      if (advanced) { advanced = false; var fo = root.querySelector('.opt'); if (fo) fo.focus(); } // 重渲染后焦点落到新题第一项
     }
 
     function finish() {
@@ -156,6 +168,7 @@
       root.querySelector('.next:not(.review-start)').addEventListener('click', function () {
         mount(sel, { title: cfg.title, questions: cfg.questions, verdicts: cfg.verdicts });
       });
+      if (advanced) { advanced = false; var fb = root.querySelector('.review-start') || root.querySelector('.next'); if (fb) fb.focus(); } // 交卷页焦点落在首要动作
     }
 
     render();

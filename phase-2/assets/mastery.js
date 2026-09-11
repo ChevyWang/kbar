@@ -149,6 +149,12 @@
     root = typeof root === 'string' ? document.querySelector(root) : root;
     const KEY = 'kbar-mastery::v1', memory = emptyArchive(courseVersion);
     let baselineDrafts = {}, archive = memory, storage = null, storageOk = false, dirty = false, lastSave = '', message = '', milestone, task, ready = false;
+    let pendingFocus = null; // 批次 D：全量 innerHTML 交换后把焦点还给触发动作对应的按钮（键盘流不回文档头）
+    function applyPendingFocus() {
+      if (!pendingFocus) return;
+      const sel = pendingFocus; pendingFocus = null;
+      try { const el = root.querySelector(sel); if (el && !el.disabled && typeof el.focus === 'function') el.focus(); } catch (e) {}
+    }
     try { storage = global.localStorage; storage.setItem('__mastery_probe__','1'); storage.removeItem('__mastery_probe__'); storageOk = true;
       const raw = storage.getItem(KEY); if (raw) { const parsed = JSON.parse(raw); validateArchive(parsed); archive = mergeArchive(memory,parsed); }
     } catch(e) { message = '存储不可用或已有档案损坏：'+e.message+'。当前记录保留在本页内存，请导出。'; storageOk = false; }
@@ -179,8 +185,8 @@
     function renderHome() {
       ready=false;
       root.innerHTML='<p id="mastery-status" role="status" aria-live="polite"></p><div class="mastery-toolbar">'+toolbar()+'</div><div class="mastery-grid">'+catalog.map(m=>{const e=evidence(m,archive);return '<article><h2>'+esc(m.id+' '+m.title)+'</h2><p>'+esc(m.objective)+'</p><p>'+(e.core?'核心初次通过':'核心待验证')+' · '+(e.retest?'独立换题通过':'独立换题待验证')+' · '+(e.delayed?'跨日记录已有':'跨日记录待补')+' · 开放报告'+(e.selfAssessed?'已自评':'未自评')+(e.needsRecheck?' · '+e.needsRecheck+'份旧版待补证':'')+'</p>'+(e.weakness.length?'<p>待补练集中：'+e.weakness.slice(0,3).map(w=>esc(w.category)+' ×'+w.count).join(' · ')+'</p>':'')+'<button data-mid="'+esc(m.id)+'">进入任务</button></article>';}).join('')+'</div><p>本页验证指定结构化检查；连续推理、作图研究及执行档案还须在专门实作中完成，并保留其证据。结构化证据、独立复测、开放自评与AI反馈分别记录；当前不自动授予完整里程碑或阶段结业。以上状态不证明实际盈利能力；跨日间隔是设计参数，尚待试学校准。</p>';
-      root.querySelectorAll('[data-mid]').forEach(b=>b.onclick=()=>{milestone=catalog.find(m=>m.id===b.dataset.mid);task=milestone.tasks.find(t=>!archive.exposure[t.source.overlapGroup])||milestone.tasks[0];renderTask();});
-      bindToolbar();status();
+      root.querySelectorAll('[data-mid]').forEach(b=>b.onclick=()=>{milestone=catalog.find(m=>m.id===b.dataset.mid);task=milestone.tasks.find(t=>!archive.exposure[t.source.overlapGroup])||milestone.tasks[0];pendingFocus='#mastery-start';renderTask();});
+      bindToolbar();status();applyPendingFocus();
     }
     function toolbar() {return '<button id="mastery-export">导出全部学习档案</button><label class="mastery-file">导入学习档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新静态任务包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button>';}
     function bindToolbar() {
@@ -194,14 +200,14 @@
       const m=milestone,t=task,d=currentDraft(), attempts=archive.attempts.filter(a=>a.task===t.id), exposed=!!archive.exposure[t.source.overlapGroup];
       const exhausted=m.tasks.every(t=>archive.exposure[t.source.overlapGroup]);
       root.innerHTML='<p><button id="mastery-home">← 能力档案</button></p><h1>'+esc(m.id+' '+m.title)+'</h1><p>'+esc(m.objective)+'</p><details><summary>教学卡：先修、示范、反例与量规（使用后本任务计提示练习）</summary><p>'+esc(m.prerequisites)+'</p>'+Object.entries(m.example).map(([k,v])=>'<p><b>'+esc({prompt:'示例',answer:'解释',counterexample:'近似反例',failure:'满足定义但失败',unknown:'信息不足'}[k])+':</b> '+esc(v)+'</p>').join('')+'<p>首次独立作答→反馈与补练→未曝光换题→跨日复测；每项核心均需通过。原答永久保留，复习不重新计为陌生证据。</p></details><nav class="mastery-toolbar">'+m.tasks.map(t=>'<button data-task="'+esc(t.id)+'" '+(t.id===task.id?'aria-current="true"':'')+'>'+esc(t.id)+' · '+esc({initial:'首次',remedy:'补救',delayed:'延迟',reserve1:'备用一',reserve2:'备用二'}[t.role]||t.role)+(archive.exposure[t.source.overlapGroup]?' · 已曝光':' · 未曝光')+'</button>').join('')+'</nav>'+(exhausted?'<p class="mastery-warning">当前离线包没有未曝光案例。可以复习并保留记录；导入新的静态任务包后增加独立证据。</p>':'')+'<p id="mastery-status" role="status" aria-live="polite"></p><div class="mastery-toolbar">'+toolbar()+'</div><section><h2>'+esc(t.id)+'</h2><p class="mastery-scenario">'+esc(t.scenario)+'</p><details><summary>数据与截至时点</summary><p>'+Object.entries(t.source).map(([k,v])=>esc(k)+': '+esc(v)).join('<br>')+'</p></details><div id="mastery-chart"></div>'+(attempts.length?'<p>本任务已有提交；再次作答属于修订/复习，不会改写首次证据。</p>':'')+'<button id="mastery-start">'+(exposed?'继续草稿或复习':'开始本任务（记录曝光）')+'</button><div id="mastery-form" hidden>'+t.fields.map(f=>'<label class="mastery-field">'+esc(f.label)+(f.type==='select'?'<select data-field="'+esc(f.id)+'"><option value="">请选择</option>'+f.options.map(o=>'<option '+(d.answers[f.id]===o?'selected':'')+'>'+esc(o)+'</option>').join('')+'</select>':'<input data-field="'+esc(f.id)+'" type="'+(f.type==='number'?'number':'text')+'" step="any" value="'+esc(d.answers[f.id] == null ? '' : d.answers[f.id])+'">')+'</label>').join('')+'<label class="mastery-field">开放分析（与自动评分分开）：'+esc(t.reflection)+'<textarea id="mastery-report" rows="7">'+esc(d.report)+'</textarea></label>'+m.rubric.map((r,i)=>'<label class="mastery-field">自评：'+esc(r)+'<select data-rubric="'+i+'">'+['未成立','待补证','已自评'].map(v=>'<option '+((d.selfAssessment||[])[i]===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label>').join('')+'<div class="mastery-toolbar"><button id="mastery-submit">提交并揭晓（保留原答）</button><button id="mastery-unknown">我的解释超出选项：转替代任务</button><button id="mastery-coach-json">导出AI教练包 JSON（计辅助）</button><button id="mastery-coach-md">导出AI教练包 Markdown（计辅助）</button></div></div></section><div id="mastery-result" role="status"></div><section><h2>提交与补练记录</h2>'+history()+'</section><details><summary>保存可选AI反馈（不影响核心成绩）</summary><label>来源<input id="mastery-ai-source" placeholder="模型/工具与版本"></label><label>反馈<textarea id="mastery-ai-feedback" rows="4"></textarea></label><button id="mastery-ai-save">保存反馈</button></details>';
-      root.querySelector('#mastery-home').onclick=()=>{if(ready)collect();save();renderHome();};
-      root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>{if(ready)collect();save();task=m.tasks.find(t=>t.id===b.dataset.task);renderTask();});
+      root.querySelector('#mastery-home').onclick=()=>{if(ready)collect();save();pendingFocus='[data-mid="'+milestone.id+'"]';renderHome();};
+      root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>{if(ready)collect();save();task=m.tasks.find(t=>t.id===b.dataset.task);pendingFocus='[data-task="'+task.id+'"]';renderTask();});
       const teaching=root.querySelector('details');teaching.addEventListener('toggle',()=>{if(teaching.open){d.hinted=true;archive.drafts[t.id]=d;save();}});
       root.querySelector('#mastery-start').onclick=()=>{
         ready=true;root.querySelector('#mastery-form').hidden=false;root.querySelector('#mastery-start').hidden=true;
         if(!archive.exposure[t.source.overlapGroup]) archive.exposure[t.source.overlapGroup]={firstSeen:now(),task:t.id};
         archive.drafts[t.id]=d;save();
-        if(t.bars && t.bars.length && global.Kbar) root.querySelector('#mastery-chart').innerHTML=global.Kbar.chart(t.bars,{w:780,h:300,yLabels:true,asOf:t.bars.length-1,span:t.bars.length,vol:t.bars.map(b=>b.v||0)});
+        if(t.bars && t.bars.length && global.Kbar) root.querySelector('#mastery-chart').innerHTML=global.Kbar.chart(t.bars,{w:780,h:300,yLabels:true,asOf:t.bars.length-1,span:t.bars.length,vol:t.bars.map(b=>b.v||0),title:t.source.instrument});
       };
       root.querySelectorAll('[data-field],#mastery-report,[data-rubric]').forEach(el=>el.addEventListener('input',()=>{collect();save();}));
       function submit(unknown){
@@ -210,7 +216,7 @@
         if(!unknown && t.fields.some(f=>draft.answers[f.id]===undefined||String(draft.answers[f.id]).trim()==='')){message='请完成每个核心字段后提交。';status();return;}
         const prev=archive.attempts.some(a=>a.task===t.id), result=grade(t,draft.answers,unknown);
         const a={id:uid(),milestone:m.id,task:t.id,taskFingerprint:fingerprint(t),submittedAt:now(),answers:clone(draft.answers),independent:!prev&&!draft.hinted,hinted:!!draft.hinted,unknown:!!unknown,revealed:true,report:draft.report,selfAssessment:clone(draft.selfAssessment||[])};
-        archive.attempts.push(a);delete archive.drafts[t.id];ready=false;save();renderTask();
+        archive.attempts.push(a);delete archive.drafts[t.id];ready=false;save();pendingFocus='#mastery-start';renderTask();
         root.querySelector('#mastery-result').textContent=unknown?'当前自动规则无法判断此解释；原答已保留，请选未曝光的同能力任务。':result.passed?(a.independent?'本次全部核心检查通过。开放报告和实际迁移另行记录。':'本次练习通过，不能替代新任务的独立证据。'):'尚有核心项未通过，请按记录中的微任务补练后换题。';
       }
       root.querySelector('#mastery-submit').onclick=()=>submit(false);
@@ -218,7 +224,7 @@
       function coach(md){const draft=collect();draft.hinted=true;save();const pack=coachPack(m,t,draft,null);download('coach-'+t.id+(md?'.md':'.json'),md?'# AI教练材料\n\n'+pack.instruction+'\n\n```json\n'+JSON.stringify(pack,null,2)+'\n```':JSON.stringify(pack,null,2),md?'text/markdown':'application/json');}
       root.querySelector('#mastery-coach-json').onclick=()=>coach(false);root.querySelector('#mastery-coach-md').onclick=()=>coach(true);
       root.querySelector('#mastery-ai-save').onclick=()=>{const text=root.querySelector('#mastery-ai-feedback').value.trim();if(!text)return;d.hinted=true;const active=currentDraft();active.hinted=true;archive.drafts[t.id]=active;archive.feedback.push({milestone:m.id,source:root.querySelector('#mastery-ai-source').value||'学习者导入，未验证',text,at:now()});save();message='AI建议已单独保存；原答与核心判定未改变。';status();};
-      bindToolbar();status();
+      bindToolbar();status();applyPendingFocus();
     }
     // Replay imported static data after reopening; imported JS is never executed.
     try{catalog=replayPacks(catalog,archive.legacy);}catch(e){message='已保存任务包需复核：'+e.message;}
