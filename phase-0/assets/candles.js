@@ -342,17 +342,20 @@
 
   /* ---------- v2：交互式逐根揭示训练器 ----------
    * opts 增补（v6）：notes:[每根解说（HTML），索引=已揭示根数-1]，prompt:[无解说根的默认提示]
-   *                 hl 未显式给出时，当前根自动带"下划线+三角"标记（随回放移动） */
+   *                 hl 未显式给出时，当前根自动带"下划线+三角"标记（随回放移动）
+   * opts 增补（v7）：base:根号偏移——传切片（如 ETH.slice(11)）时给全集起始根号（11），
+   *                 计数器显示全局根号"已揭示 12 / 30 根"，与解说"第12根"对齐 */
   function playback(sel, candles, opts) {
     opts = opts || {};
     var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
     if (!root) return;
     var k = Math.max(1, Math.min(candles.length, opts.start == null ? 1 : opts.start));
     var live = !!opts.live; // 时点模式：每步按已揭示前缀重算纵轴/量能比例尺（默认 false=固定全集刻度，示范用）
+    var base = opts.base || 0; // 切片回放的全局根号偏移（默认 0=整图回放）
 
     function draw() {
       var o = {};
-      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'asOf' && key !== 'reveal' && key !== 'notes' && key !== 'prompt') o[key] = opts[key];
+      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'base' && key !== 'asOf' && key !== 'reveal' && key !== 'notes' && key !== 'prompt') o[key] = opts[key];
       if (live) o.asOf = k - 1; else o.reveal = k;
       if (opts.hl == null) o.hl = k - 1;                 // 当前根=标记根（全站统一"下划线+三角"）
       var note = '';
@@ -362,7 +365,7 @@
       }
       root.innerHTML =
         '<div class="pb-chart">' + chart(candles, o) + '</div>' + note +
-        '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + k + ' / ' + candles.length + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
+        '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + (base + k) + ' / ' + (base + candles.length) + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
         '<button type="button" class="pb-btn" data-a="prev">← 退一根</button>' +
         '<button type="button" class="pb-btn pb-next" data-a="next">下一根 →</button>' +
         '<button type="button" class="pb-btn" data-a="reset">⟲ 重播</button></div>';
