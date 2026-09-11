@@ -23,7 +23,7 @@ course/
 
 ## 教材依据（grounding 到章）
 
-Douglas《交易心理分析》（中英对照）· 行为金融第三柱：Kahneman-Tversky (1979)、Shefrin-Statman (1985)、Odean (1998)· Duke《Thinking in Bets》。实证数据：`private/`（aftermath_p5 18 笔止损研究、windows_p5），面向读者的数字由脚本计算并过 `tools/verify_data.py`。
+Douglas《交易心理分析》（中英对照）· 行为金融第三柱：Kahneman-Tversky (1979)、Shefrin-Statman (1985)、Odean (1998)· Duke《Thinking in Bets》。实证数据（aftermath_p5 18 笔止损研究、windows_p5）随课件源仓维护，面向读者的数字由脚本计算并过 `tools/verify_data.py`。
 
 ## 机制说明（2026-09-09 起）
 

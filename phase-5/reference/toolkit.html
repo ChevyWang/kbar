@@ -42,7 +42,7 @@ table.plan td.k { width: 6.5em; font-weight: 700; background: #f4f1ea; white-spa
     <label><input type="checkbox"/> 1 · Setup 四绿：检查表逐项打勾（含否定条件），编号在案</label>
     <label><input type="checkbox"/> 2 · 一页纸在侧：当前版本号正确（不是脑内草稿）</label>
     <label><input type="checkbox"/> 3 · 三数已写：入场价 ＿＿＿＿ / 止损价 ＿＿＿＿ / 仓位 ＿＿＿＿（下单前）</label>
-    <label><input type="checkbox"/> 4 · 预算未超：逐项满足自己在本任务事前冻结的现金、数量、费用与组合风险边界</label>
+    <label><input type="checkbox"/> 4 · 预算未超：本组敞口 ≤2R、总敞口 ≤3R、当日无连亏 2 笔冻结；现金、数量、费用按事前冻结的自己边界 ＿＿＿＿ 执行</label>
     <label><input type="checkbox"/> 5 · 状态自检：情绪标记一个词 ＿＿＿＿（已影响风险判断或纠偏失败则停止新增风险）</label>
     <label><input type="checkbox"/> 6 · 杀死论点的三个条件：①＿＿＿ ②＿＿＿ ③＿＿＿</label>
     <label><input type="checkbox"/> 7 · 60 秒冷静：全绿到下单键 ≥60 秒，重读一遍第 3 项的三个数</label>
@@ -53,7 +53,7 @@ table.plan td.k { width: 6.5em; font-weight: 700; background: #f4f1ea; white-spa
 <div class="tool">
   <div class="tool-head">③ 回撤期协议<span class="en">触发后按条执行，无需现场判断</span></div>
   <table class="plan">
-    <tr><td class="k">触发</td><td>按事前定义的峰值、风险单位和阈值触发；题设5R只是训练参数，不是个人建议</td></tr>
+    <tr><td class="k">触发</td><td>按事前定义的峰值与风险单位触发；我的阈值：从峰值回撤 ＿＿＿＿ R（题设 5R 只是训练参数，不是个人建议）</td></tr>
     <tr><td class="k">归因</td><td>四条线并行查（可并存）：执行偏差（逐项证据与关键违规，高总分不排除执行错误）/ 数据与成本 / 市场与模型 / 未知</td></tr>
     <tr><td class="k">冻结</td><td>参数修改权冻结，所有改动想法记 v2 提案栏</td></tr>
     <tr><td class="k">降档</td><td>出现异常先停止新增风险；处理已有仓位仍服从预定退出与可卖约束。执行问题修流程，数据/市场问题查版本，未知保持未知并列下一证据</td></tr>
