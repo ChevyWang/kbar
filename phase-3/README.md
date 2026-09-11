@@ -23,7 +23,7 @@ course/
 
 ## 教材依据（grounding 到章）
 
-Bulkowski《Encyclopedia of Chart Patterns》第3版（表结构/口径/形态章）+《Encyclopedia of Candlestick Charts》· Morris《蜡烛图精解》第3版（Ch.7–9 过滤工程）· 学术柱：Lo-Mamaysky-Wang (2000)、Marshall-Young-Rose (2006)、AMH。统计管线：`private/scan`（33 品种×5 年）与 `stats_p3.js`，面向读者的数字由脚本计算并过 `tools/verify_data.py`。
+Bulkowski《Encyclopedia of Chart Patterns》第3版（表结构/口径/形态章）+《Encyclopedia of Candlestick Charts》· Morris《蜡烛图精解》第3版（Ch.7–9 过滤工程）· 学术柱：Lo-Mamaysky-Wang (2000)、Marshall-Young-Rose (2006)、AMH。统计管线（33 品种×5 年）随课件源仓维护，面向读者的数字由脚本计算并过 `tools/verify_data.py`。
 
 ## 机制说明（2026-09-09 起）
 
