@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M6.3 · 原创研究双闸 — 里程碑验收 — K线训练营 Phase 6</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .gate { border: 1.5px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1.2rem 0; background: #fff; }
+  .gate h2 { margin-top: .2rem; }
+  .gfield { display: block; margin: .7rem 0; font-size: .9rem; }
+  .gfield input, .gfield textarea { display: block; width: 100%; box-sizing: border-box; padding: .5rem .6rem; font: inherit; border: 1px solid var(--line); border-radius: 8px; margin-top: .3rem; }
+  .gfield textarea { min-height: 72px; }
+  .gcheck { display: flex; align-items: baseline; gap: .5rem; padding: .3rem 0; font-size: .92rem; }
+  .gcheck input { width: 1.05rem; height: 1.05rem; }
+  .grubric { border: 1px dashed var(--line); border-radius: 8px; padding: .5rem .9rem .6rem; margin: .7rem 0; }
+  .grubric legend { font-size: .8rem; color: var(--faint); padding: 0 .4rem; }
+  .gitem { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .28rem 0; font-size: .9rem; border-bottom: 1px dotted var(--line); }
+  .gitem:last-child { border-bottom: none; }
+  .gitem select { flex: 0 0 6.5rem; padding: .3rem; font: inherit; font-size: .85rem; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  button.gbtn { font: inherit; font-size: .9rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .45rem 1.05rem; cursor: pointer; background: #fff; margin: .35rem .5rem .35rem 0; }
+  button.gbtn.dark { background: var(--ink); color: #fff; }
+  .gstatus { font-size: .85rem; color: var(--muted); min-height: 1.5em; margin: .4rem 0; }
+  .gstate { display: inline-block; font-size: .74rem; border-radius: 99px; padding: .05rem .6rem; border: 1px solid var(--line); margin-right: .4rem; }
+  .gstate.ok { border-color: #1a7f37; color: #1a7f37; font-weight: 700; }
+  .verdict { border: 2px solid var(--ink); border-radius: 12px; padding: 1rem 1.3rem; margin: 1.2rem 0; font-family: var(--sans); background: var(--note-bg); }
+  details.grec { border: 1px solid var(--line); border-radius: 8px; padding: .4rem .8rem; margin: .4rem 0; font-size: .88rem; }
+  details.grec summary { cursor: pointer; }
+  input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid #2255bb; outline-offset: 2px; }
+  @media print { button, .gbtn { display: none; } .gate { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 6 输出 · 里程碑验收 M6.3（结业件）</div>
+  <h1>原创研究双闸：大纲预审与终稿验收</h1>
+  <p class="sub">M6.3 是全站唯一 15–30h 级产物，验收走 IFTA MFTA 式两道闸：<b>大纲预审</b>（开工前一页纸过审，防沉没成本）与<b>可退回重写</b>（交付后不达标打回，退回是流程不是失败）。本页把 6003 的口头作业变成站内动作：填表、自查、冻结、留痕——全部记录保存在本浏览器，可导出。发表版登记在<a href="../mastery.html">产物档案 M6.3 槽</a>，与本页分别记录。<b>双闸通过＝「M6.3 流程任务通过」；结业以公开发表为准，课程不认证研究结论。</b></p>
+</header>
+<p style="margin:1rem"><a href="../mastery.html">统一能力档案与四槽产物登记（与本页流程验收分别记录）</a></p>
+
+<details class="lesson-map">
+  <summary><b>教学卡</b></summary>
+  <ol>
+    <li><b>先修</b>：6003（六步流水线、预审清单）、3001（口径纪律）、3006/4010（两次小研究实践）。</li>
+    <li><b>闸一规格</b>：一页纸大纲四项——研究问题一句话 / 数据源与口径 / 方法 / 预期产物与工作量；自查四问全过才冻结。</li>
+    <li><b>闸二规格</b>：3000–5000 字成文、口径独立成节、局限段、数据截止日与复算路径、公开发表；每版登记「改了什么」。</li>
+    <li><b>通过范围</b>：流程任务通过≠研究结论被认证；后者属于公开读者与后续样本（诚实条款）。</li>
+  </ol>
+</details>
+
+<div class="state-line" id="statusline"></div>
+
+<section class="gate">
+  <h2 id="gate1"><span class="no">01</span>闸一大纲预审</h2>
+  <p>按 6003 §02 的规格填一页纸；四问自查对照 6003 §06 预审清单。冻结即留痕，过审才开工——沉没成本从大纲层拦截。</p>
+  <label class="gfield">研究问题（一句话，可检验）<textarea id="g1-q" placeholder="对 X 形态，受训肉眼判定的准确率/偏差方向如何（N=…，双市场）？"></textarea></label>
+  <label class="gfield">数据源与口径（品种/周期/时间窗/检测规则，写成可复算的文字）<textarea id="g1-data" placeholder="数据：…（伸手可及：课程扫描管线 / instancelib / 我的交易日志）；口径：…"></textarea></label>
+  <label class="gfield">方法（样本量、独立判定、重判间隔等）<textarea id="g1-method" placeholder="样本扩到 100+；两人独立判定；间隔两周重判…"></textarea></label>
+  <label class="gfield">预期产物与工作量估算（3000–5000 字 + 估时）<textarea id="g1-out" placeholder="预期产物：…；工作量：扩样 6–10h + 写作 8–12h + 修改 4–8h…"></textarea></label>
+  <fieldset class="grubric"><legend>预审自查四问（6003 §06 原文）</legend>
+    <label class="gcheck"><input type="checkbox" data-g1check="0"><span>问题可检验吗？</span></label>
+    <label class="gcheck"><input type="checkbox" data-g1check="1"><span>数据可及吗？</span></label>
+    <label class="gcheck"><input type="checkbox" data-g1check="2"><span>口径可复算吗？</span></label>
+    <label class="gcheck"><input type="checkbox" data-g1check="3"><span>局限能预画吗？</span></label>
+  </fieldset>
+  <button class="gbtn dark" id="g1-freeze" type="button">提交预审（冻结本版大纲）</button>
+  <div class="gstatus" id="g1-status" role="status" aria-live="polite"></div>
+  <div id="g1-versions"></div>
+</section>
+
+<section class="gate">
+  <h2 id="gate2"><span class="no">02</span>闸二终稿验收</h2>
+  <p>终稿四查来自 6003 §02⑥ 与 §04 升级路线图；每版登记改动说明——退回重写是质量机制，不是失败判定。</p>
+  <fieldset class="grubric"><legend>完成标志</legend>
+    <label class="gcheck"><input type="checkbox" data-g2done="0"><span>3000–5000 字成文（MFTA 规格）</span></label>
+    <label class="gcheck"><input type="checkbox" data-g2done="1"><span>与预审版一致，或变更已在下方版本说明记录</span></label>
+    <label class="gcheck"><input type="checkbox" data-g2done="2"><span>已公开发表（渠道与日期已填）</span></label>
+    <label class="gcheck"><input type="checkbox" data-g2done="3"><span>数据截止日与复算路径已写明</span></label>
+  </fieldset>
+  <fieldset class="grubric"><legend>自评量规（条目取自 6003 终稿规格）</legend>
+    <div class="gitem"><span>口径独立成节，全文可复算</span><select data-g2rubric="0"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="gitem"><span>局限段在：样本期、品种偏集、检测器假设</span><select data-g2rubric="1"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="gitem"><span>结论住在假设里，无保证口吻</span><select data-g2rubric="2"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="gitem"><span>两人独立判定与间隔两周重判已执行（升级路线图项）</span><select data-g2rubric="3"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+  </fieldset>
+  <label class="gfield">终稿链接与发表日期<input id="g2-link" type="text" placeholder="链接：… · 发表日期：…"></label>
+  <label class="gfield">版本说明（本版改了什么；首版写「首版：按预审 v… 成文」）<input id="g2-note" type="text" placeholder="第 n 版：…"></label>
+  <button class="gbtn dark" id="g2-submit" type="button">登记终稿（第 1 版）</button>
+  <button class="gbtn" id="g2-rewrite" type="button">记录一次退回重写</button>
+  <div class="gstatus" id="g2-status" role="status" aria-live="polite"></div>
+  <div id="g2-runs"></div>
+</section>
+
+<section class="gate">
+  <h2 id="gate3"><span class="no">03</span>提交与重写记录</h2>
+  <p>全部版本与退回事件按时间排列；首次记录永久保留，重做不覆盖。</p>
+  <div id="g-history"></div>
+  <button class="gbtn" id="export-btn" type="button">导出 M6.3 双闸档案（JSON）</button>
+</section>
+
+<footer class="course">
+  <div class="nav"><a href="../index.html">← Phase 6 主页</a><a href="../lessons/6003-original-research.html">回到 6003</a><a href="../mastery.html">产物档案 →</a></div>
+  <div class="citations">规格逐条取自 6003 课文（六步流水线②大纲预审⑤可退回重写、§04 升级路线图、§06 预审清单与工作量构成 15–30h）；MFTA 制度（3000–5000 字原创研究、大纲预审、可退回重写）。记录仅存本浏览器；导出 JSON 由学习者自行保管。流程通过不认证研究结论，是否合格以公开读者与后续样本为准。</div>
+</footer>
+
+<script src="../assets/learning-store.js"></script>
+<script>
+/* M6.3 双闸：纯静态自查流（表单 + checkbox + localStorage 留痕），无评分引擎。
+ * 草稿自动保存；冻结/登记/退回事件追加为版本记录，首记不覆盖。 */
+(function () {
+  'use strict';
+  var LS = window.KbarLearningStore.storage, KEY = 'kbar-answer::M6.3::gate';
+  var OPTS = ['未成立', '待补证', '已自评'];
+  var G1Q = ['问题可检验吗？', '数据可及吗？', '口径可复算吗？', '局限能预画吗？'];
+  var G2R = ['口径独立成节，全文可复算', '局限段在：样本期、品种偏集、检测器假设', '结论住在假设里，无保证口吻', '两人独立判定与间隔两周重判已执行'];
+
+  function blank() {
+    return {
+      draft: { q: '', data: '', method: '', out: '', g1checks: [false, false, false, false], g2done: [false, false, false, false], g2rubric: ['未成立', '未成立', '未成立', '未成立'], link: '', note: '' },
+      versions: [], runs: [], rewrites: []
+    };
+  }
+  function loadRec() {
+    if (!LS) return blank();
+    try { var r = JSON.parse(LS.getItem(KEY) || 'null'); return r && r.draft ? { draft: r.draft, versions: r.versions || [], runs: r.runs || [], rewrites: r.rewrites || [] } : blank(); }
+    catch (e) { return blank(); }
+  }
+  function saveRec(r) { if (LS) { try { LS.setItem(KEY, JSON.stringify(r)); } catch (e) {} } }
+  var rec = loadRec();
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  function g1checks() { return [].map.call(document.querySelectorAll('[data-g1check]'), function (c) { return c.checked; }); }
+  function g2done() { return [].map.call(document.querySelectorAll('[data-g2done]'), function (c) { return c.checked; }); }
+  function g2rubric() { return [].map.call(document.querySelectorAll('[data-g2rubric]'), function (s) { return OPTS.indexOf(s.value) >= 0 ? s.value : '未成立'; }); }
+  function collectDraft() {
+    rec.draft.q = document.getElementById('g1-q').value;
+    rec.draft.data = document.getElementById('g1-data').value;
+    rec.draft.method = document.getElementById('g1-method').value;
+    rec.draft.out = document.getElementById('g1-out').value;
+    rec.draft.g1checks = g1checks();
+    rec.draft.g2done = g2done();
+    rec.draft.g2rubric = g2rubric();
+    rec.draft.link = document.getElementById('g2-link').value;
+    rec.draft.note = document.getElementById('g2-note').value;
+  }
+  var saveTimer = null;
+  function queueSave() { if (saveTimer) clearTimeout(saveTimer); saveTimer = setTimeout(function () { collectDraft(); saveRec(rec); }, 250); }
+
+  function applyDraft() {
+    var d = rec.draft;
+    document.getElementById('g1-q').value = d.q; document.getElementById('g1-data').value = d.data;
+    document.getElementById('g1-method').value = d.method; document.getElementById('g1-out').value = d.out;
+    document.getElementById('g2-link').value = d.link; document.getElementById('g2-note').value = d.note;
+    [].forEach.call(document.querySelectorAll('[data-g1check]'), function (c, i) { c.checked = !!d.g1checks[i]; });
+    [].forEach.call(document.querySelectorAll('[data-g2done]'), function (c, i) { c.checked = !!d.g2done[i]; });
+    [].forEach.call(document.querySelectorAll('[data-g2rubric]'), function (s, i) { s.value = OPTS.indexOf(d.g2rubric[i]) >= 0 ? d.g2rubric[i] : '未成立'; });
+  }
+
+  function renderState() {
+    var vOk = rec.versions.some(function (v) { return v.checks.every(Boolean); });
+    var last = rec.runs[rec.runs.length - 1];
+    var rOk = last && last.done.every(Boolean) && last.rubric.every(function (v) { return v === '已自评'; });
+    var sl = document.getElementById('statusline');
+    sl.innerHTML =
+      '<span class="gstate' + (vOk ? ' ok' : '') + '">闸一 ' + (vOk ? '预审通过（已冻结 v' + rec.versions.length + '）' : '未预审') + '</span>' +
+      '<span class="gstate' + (rOk ? ' ok' : '') + '">闸二 ' + (rec.runs.length ? '已登记 ' + rec.runs.length + ' 版' + (rOk ? '（全项过）' : '（最新版未全过）') : '未提交') + '</span>' +
+      '<span class="gstate' + (rec.rewrites.length ? '' : '') + '">退回重写 ' + rec.rewrites.length + ' 次</span>';
+    var b = document.getElementById('g2-submit');
+    b.textContent = '登记终稿（第 ' + (rec.runs.length + 1) + ' 版）';
+    document.getElementById('g1-status').textContent = rec.versions.length ? '已冻结 ' + rec.versions.length + ' 版；最新版自查 ' + rec.versions[rec.versions.length - 1].checks.filter(Boolean).length + '/4。' : '尚无冻结版本。';
+    document.getElementById('g2-status').textContent = rec.runs.length ? '已登记 ' + rec.runs.length + ' 版；最新版完成标志 ' + last.done.filter(Boolean).length + '/4、自评 ' + last.rubric.filter(function (v) { return v === '已自评'; }).length + '/4。' : '尚无终稿记录。';
+  }
+  function renderHistory() {
+    var rows = [];
+    rec.versions.forEach(function (v) {
+      rows.push('<details class="grec"><summary>预审 v' + v.v + ' · ' + esc(v.ts) + ' · 自查 ' + v.checks.filter(Boolean).length + '/4' + (v.checks.every(Boolean) ? '（通过）' : '（未全过）') + '</summary><pre style="white-space:pre-wrap">问题：' + esc(v.form.q) + '\n数据与口径：' + esc(v.form.data) + '\n方法：' + esc(v.form.method) + '\n预期产物与工作量：' + esc(v.form.out) + '</pre><p>自查：' + v.checks.map(function (c, i) { return (c ? '✓ ' : '✗ ') + G1Q[i]; }).join(' · ') + '</p></details>');
+    });
+    rec.runs.forEach(function (r) {
+      rows.push('<details class="grec"><summary>终稿第 ' + r.v + ' 版 · ' + esc(r.ts) + ' · 完成 ' + r.done.filter(Boolean).length + '/4 · 自评 ' + r.rubric.filter(function (v) { return v === '已自评'; }).length + '/4' + '</summary><p>链接：' + esc(r.link || '未填') + '<br>版本说明：' + esc(r.note || '未填') + '</p><p>完成标志：' + r.done.map(function (c, i) { return (c ? '✓ ' : '✗ ') + ['3000–5000 字成文', '与预审版一致或变更已记录', '已公开发表', '截止日与复算路径已写明'][i]; }).join(' · ') + '</p><p>自评：' + r.rubric.map(function (v, i) { return G2R[i] + '（' + v + '）'; }).join(' · ') + '</p></details>');
+    });
+    rec.rewrites.forEach(function (w) {
+      rows.push('<details class="grec"><summary>退回重写 · ' + esc(w.ts) + '</summary><p>' + esc(w.reason || '未填原因') + '</p></details>');
+    });
+    document.getElementById('g-history').innerHTML = rows.join('') || '<p class="gstatus">尚无记录。</p>';
+    document.getElementById('g1-versions').innerHTML = rec.versions.length ? '<p class="gstatus">预审版本 ' + rec.versions.length + ' 个，全部保留在「提交与重写记录」。</p>' : '';
+    document.getElementById('g2-runs').innerHTML = rec.runs.length ? '<p class="gstatus">终稿 ' + rec.runs.length + ' 版；每版保留原始登记，重做不覆盖。</p>' : '';
+  }
+
+  document.getElementById('g1-freeze').onclick = function () {
+    collectDraft();
+    if (!rec.draft.q.trim()) { document.getElementById('g1-status').textContent = '先写研究问题（一句话），再提交预审。'; return; }
+    rec.versions.push({ v: rec.versions.length + 1, ts: new Date().toISOString(), form: { q: rec.draft.q, data: rec.draft.data, method: rec.draft.method, out: rec.draft.out }, checks: rec.draft.g1checks.slice() });
+    saveRec(rec); renderState(); renderHistory();
+    var ok = rec.draft.g1checks.every(Boolean);
+    document.getElementById('g1-status').textContent = ok ? '预审 v' + rec.versions.length + ' 已冻结（自查 4/4）。过审才开工——下一步进入数据与口径。' : '预审 v' + rec.versions.length + ' 已冻结，但自查未全过：对照 6003 预审清单补齐后再冻结新版本。';
+  };
+  document.getElementById('g2-submit').onclick = function () {
+    collectDraft();
+    var all = rec.draft.g2done.every(Boolean);
+    rec.runs.push({ v: rec.runs.length + 1, ts: new Date().toISOString(), link: rec.draft.link, note: rec.draft.note, done: rec.draft.g2done.slice(), rubric: rec.draft.g2rubric.slice() });
+    saveRec(rec); renderState(); renderHistory();
+    document.getElementById('g2-status').textContent = all && rec.draft.g2rubric.every(function (v) { return v === '已自评'; })
+      ? '第 ' + rec.runs.length + ' 版全项过：M6.3 流程任务通过。发表版登记到产物档案 M6.3 槽即完成闭环。'
+      : '第 ' + rec.runs.length + ' 版已登记（完成标志 ' + rec.draft.g2done.filter(Boolean).length + '/4）。未全过不是失败——退回重写是流程的一部分，改完登记下一版。';
+  };
+  document.getElementById('g2-rewrite').onclick = function () {
+    collectDraft();
+    rec.rewrites.push({ ts: new Date().toISOString(), reason: rec.draft.note.trim() || '（未填改动说明）' });
+    saveRec(rec); renderState(); renderHistory();
+    document.getElementById('g2-status').textContent = '退回已记录（第 ' + rec.rewrites.length + ' 次，原因取自版本说明框）。改完在上方登记第 ' + (rec.runs.length + 1) + ' 版。';
+  };
+  document.getElementById('export-btn').onclick = function () {
+    collectDraft();
+    var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M6.3-gate', exportedAt: new Date().toISOString(), record: rec };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'm6-3-research-gate.json'; a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  };
+
+  ['g1-q', 'g1-data', 'g1-method', 'g1-out', 'g2-link', 'g2-note'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', queueSave);
+  });
+  [].forEach.call(document.querySelectorAll('[data-g1check],[data-g2done]'), function (c) { c.addEventListener('change', queueSave); });
+  [].forEach.call(document.querySelectorAll('[data-g2rubric]'), function (s) { s.addEventListener('change', queueSave); });
+
+  applyDraft(); renderState(); renderHistory();
+})();
+</script>
+<script src="../assets/nav.js" defer></script>
+</body>
+</html>

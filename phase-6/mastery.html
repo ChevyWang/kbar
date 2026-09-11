@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 6 产物档案与体系总目录 — K线训练营</title>
+<link rel="stylesheet" href="assets/course.css">
+<style>
+  .pf-slot { border: 1.5px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin: 1.2rem 0; background: #fff; }
+  .pf-slot h3 { margin: .2rem 0 .6rem; font-size: 1.02rem; }
+  .pf-chip { display: inline-block; font-size: .74rem; font-weight: 400; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: .05rem .6rem; margin-left: .5rem; vertical-align: middle; }
+  .pf-field { display: block; margin: .8rem 0; font-size: .9rem; }
+  .pf-field textarea { display: block; width: 100%; box-sizing: border-box; min-height: 150px; padding: .6rem; font: inherit; border: 1px solid var(--line); border-radius: 8px; margin-top: .35rem; }
+  .pf-rubric { border: 1px dashed var(--line); border-radius: 8px; padding: .6rem .9rem; margin-top: .6rem; }
+  .pf-rubric legend { font-size: .8rem; color: var(--faint); padding: 0 .4rem; }
+  .pf-item { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .3rem 0; font-size: .9rem; border-bottom: 1px dotted var(--line); }
+  .pf-item:last-child { border-bottom: none; }
+  .pf-item select { flex: 0 0 6.5rem; padding: .3rem; font: inherit; font-size: .85rem; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  .pf-toolbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: 1rem 0; }
+  .pf-btn { font: inherit; font-size: .88rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .4rem .95rem; cursor: pointer; background: #fff; }
+  .pf-btn.dark { background: var(--ink); color: #fff; }
+  .pf-file input { font-size: .8rem; max-width: 230px; }
+  #pf-status { min-height: 1.6em; font-size: .85rem; color: var(--muted); }
+  .pf-inv { width: 100%; border-collapse: collapse; font-size: .87rem; background: #fff; }
+  .pf-inv th, .pf-inv td { border: 1px solid var(--line); padding: .4rem .6rem; text-align: left; vertical-align: top; }
+  .pf-inv th { font-size: .74rem; color: var(--faint); background: #f6f5f2; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #2255bb; outline-offset: 2px; }
+  @media print { .pf-toolbar, .pf-file { display: none; } .pf-slot { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 6 输出 · 能力档案（产物制）</div>
+  <h1>产物档案：四件输出与体系总目录</h1>
+  <p class="sub">Phase 0–5 的能力档案验收「读盘与执行」；Phase 6 是<b>产物制验收</b>（portfolio）——分析文、复盘文、原创研究、教学文四件输出，没有标准答案，只有各课量规。本页是四件产物的登记槽：每槽一个文本框（草稿自动保存在本浏览器）+ 对应课的自评量规三档（未成立 / 待补证 / 已自评）。全部档案可导出 JSON 备份、导入恢复。结业件 M6.3 的流程验收在<a href="milestones/m6-3-research-gate.html">双闸页</a>，与本页分别记录。</p>
+</header>
+
+<p style="margin:1rem"><a href="index.html">← Phase 6 课程</a></p>
+
+<h2 id="s01"><span class="no">01</span>体系档案总目录</h2>
+
+<p>学完全站，你手里应有五样东西：<b>判读证据</b>（P0–P3 各能力档案）＋<b>统计口径</b>（P3 的引用纪律）＋<b>系统文档</b>（P4 一页纸系统 v1）＋<b>执行档案</b>（P5 工具包与自报记录）＋<b>输出产物</b>（本页四槽）——合起来是一份个人交易体系档案（portfolio）v1，此后按 5006 季度协议修订 v1→v2→v3。</p>
+
+<table class="pf-inv">
+  <tr><th style="width:14%">阶段</th><th style="width:24%">能力档案</th><th>档案里登记什么</th></tr>
+  <tr><td>P0 辨认</td><td><a href="https://chevywang.github.io/kbar/phase-0/mastery.html">读图 · 能力档案</a></td><td>单根与多根判读的结构化证据</td></tr>
+  <tr><td>P1 复述推理</td><td><a href="https://chevywang.github.io/kbar/phase-1/mastery.html">逐根推理 · 能力档案</a></td><td>包间换题的独立通过与跨日复测</td></tr>
+  <tr><td>P2 作图应用</td><td><a href="https://chevywang.github.io/kbar/phase-2/mastery.html">地形 · 能力档案</a></td><td>地形图与盲图报告（六维量规）证据</td></tr>
+  <tr><td>P3 概率引用</td><td><a href="https://chevywang.github.io/kbar/phase-3/mastery.html">概率 · 能力档案</a></td><td>形态统计口径与引用纪律</td></tr>
+  <tr><td>P4 组装综合</td><td><a href="https://chevywang.github.io/kbar/phase-4/mastery.html">系统 · 能力档案</a></td><td>一页纸系统 v1 与 30 笔验证包</td></tr>
+  <tr><td>P5 执行自律</td><td><a href="https://chevywang.github.io/kbar/phase-5/mastery.html">执行 · 能力档案</a></td><td>执行协议通过记录与自报实践（不构成授权）</td></tr>
+  <tr><td>P6 贡献输出</td><td>本页</td><td>四件输出产物（下方四槽）＋<a href="milestones/m6-3-research-gate.html">M6.3 双闸</a>流程记录</td></tr>
+</table>
+
+<p class="note"><b>口径说明：</b>本页是自报档案——文本与自评由学习者本人登记，课程不核对内容、不认证能力、不授予任何实盘或从业资格；产物是否合格，以各课量规与公开读者的检验为准（与全站口径一致）。</p>
+
+<h2 id="s02"><span class="no">02</span>四槽产物档案</h2>
+
+<p>每槽对应一件结业产物：先在文本框里登记（发布链接、日期、摘录或全文草稿），再按对应课的量规逐条自评。草稿与自评自动存入本浏览器；跨设备迁移用下方导出 / 导入。</p>
+
+<div class="pf-toolbar">
+  <button type="button" class="pf-btn dark" id="pf-export">导出全部产物档案（JSON）</button>
+  <label class="pf-file pf-btn">导入产物档案<input type="file" id="pf-import" accept="application/json"></label>
+  <span id="pf-status" role="status" aria-live="polite"></span>
+</div>
+
+<section class="pf-slot" data-slot="m61">
+  <h3>M6.1 市场分析写作样本 <span class="pf-chip" data-chip>未开始</span></h3>
+  <div class="callout"><b>产出要求（6001 作业）：</b>把你 Phase 2 毕业考那张地形图（或任一你复盘过的品种）写成 1500–2500 字公开分析文，发布到任一渠道（博客/公众号/论坛）；外行读者能核对你的证据指认，就算过关。登记内容：发布链接、发布日期、图表数据截止日（正文或摘录可直接贴入）。</div>
+  <label class="pf-field">文本框（草稿与登记，自动保存）<textarea data-fld="text" placeholder="发布链接：…&#10;发布日期：…&#10;图表数据截止日：…&#10;正文（1500–2500 字）或摘录：…"></textarea></label>
+  <fieldset class="pf-rubric"><legend>自评量规（条目取自 6001 五段式与选图纪律）</legend>
+    <div class="pf-item"><span>标题是可证伪的判断，不是悬念</span><select data-rubric="0"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>证据段 ≥3 处具体指认：哪根K线、哪段量价、哪个水平位</span><select data-rubric="1"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>图上标注与正文证据一一对应（编号指认）</span><select data-rubric="2"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>结论为条件句：基准情形＋改变判断的条件</span><select data-rubric="3"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>发布日与图表数据截止日已写明</span><select data-rubric="4"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+  </fieldset>
+</section>
+
+<section class="pf-slot" data-slot="m62">
+  <h3>M6.2 案例复盘 <span class="pf-chip" data-chip>未开始</span></h3>
+  <div class="callout"><b>产出要求（6002 作业）：</b>从你的 30 笔（M5.2）或模拟盘中挑一笔「决策与结果背离」的交易，写成完整复盘文（六段：候场/入场/执行/评分/教训/归档）并发布。登记内容：发布链接、发布日期、正文的评分段摘录。</div>
+  <label class="pf-field">文本框（草稿与登记，自动保存）<textarea data-fld="text" placeholder="发布链接：…&#10;发布日期：…&#10;第④段（结果与决策评分）摘录：…"></textarea></label>
+  <fieldset class="pf-rubric"><legend>自评量规（条目取自 6002 六段模板与脱敏规则）</legend>
+    <div class="pf-item"><span>盈亏 R 数与决策评分分开报告，互不解释</span><select data-rubric="0"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>公开脱敏完成：删仓位金额与账户信息，保留 R 数与百分比</span><select data-rubric="1"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>含「做对了什么」（证据化）与一条可执行改动</span><select data-rubric="2"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>情绪标记保留（它是数据），情绪宣泄删去</span><select data-rubric="3"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+  </fieldset>
+</section>
+
+<section class="pf-slot" data-slot="m63">
+  <h3>M6.3 原创研究 <span class="pf-chip" data-chip>未开始</span></h3>
+  <div class="callout"><b>产出要求（6003 结业件）：</b>3000–5000 字原创统计分析，走过 MFTA 式流程：大纲预审→数据与口径→写作→可退回重写→发表。流程双闸（大纲预审 / 终稿验收）在<a href="milestones/m6-3-research-gate.html">双闸页</a>留痕；本槽登记发表版：发表链接、发表日期、数据截止日、复算路径。</div>
+  <label class="pf-field">文本框（草稿与登记，自动保存）<textarea data-fld="text" placeholder="发表链接：…&#10;发表日期：…&#10;数据截止日：…&#10;复算路径（数据源与口径节摘录）：…"></textarea></label>
+  <fieldset class="pf-rubric"><legend>自评量规（条目取自 6003 六步流水线与升级路线图）</legend>
+    <div class="pf-item"><span>问题一句话、可检验</span><select data-rubric="0"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>口径独立成节，全文可复算（检测器参数/判定规则/去重规则）</span><select data-rubric="1"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>局限段在：样本期、品种偏集、检测器假设</span><select data-rubric="2"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>已公开发表（抽屉研究不算结业）</span><select data-rubric="3"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+  </fieldset>
+</section>
+
+<section class="pf-slot" data-slot="m64">
+  <h3>M6.4 费曼讲解稿 <span class="pf-chip" data-chip>未开始</span></h3>
+  <div class="callout"><b>产出要求（6004 作业）：</b>两件——①从 52 课里挑一个你最熟的概念，写成外行能懂的教学文（比喻+真实例子+反例）并发布；②把 6003 的大纲或 6001 的分析文发到任一专业社区，完成一次「发帖-被检验-复盘」闭环。登记内容：教学文链接与日期、社区发帖链接、被反驳摘录、你的回应、是否改判。</div>
+  <label class="pf-field">文本框（草稿与登记，自动保存）<textarea data-fld="text" placeholder="教学文链接与发布日期：…&#10;社区发帖链接：…&#10;被反驳摘录：…&#10;我的回应（是否改判，依据是…）：…"></textarea></label>
+  <fieldset class="pf-rubric"><legend>自评量规（条目取自 6004 三件套与社区协议）</legend>
+    <div class="pf-item"><span>三件套齐：一个比喻＋一个带日期的真实例子＋一个反例</span><select data-rubric="0"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>过外行测试：复述卡壳的句子已重写</span><select data-rubric="1"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>新术语 ≤3 个，首现即用日常语言定义</span><select data-rubric="2"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+    <div class="pf-item"><span>社区闭环三步在档：发帖链接 / 被反驳摘录 / 自己的回应（含是否改判）</span><select data-rubric="3"><option>未成立</option><option>待补证</option><option>已自评</option></select></div>
+  </fieldset>
+</section>
+
+<p>四槽全绿（自评全档「已自评」）只代表你完成了登记与自检，不构成课程认证；产物真正的验收在公开读者手里（6001 证据指认、6004 社区检验）。</p>
+
+<footer class="course">
+  <div class="nav"><a href="index.html">← Phase 6 主页</a><a href="milestones/m6-3-research-gate.html">M6.3 原创研究双闸 →</a><a href="lessons/6004-feynman-community.html">回到 6004</a></div>
+  <div class="citations">量规条目逐条取自 6001（五段式/选图三问/标注=证据指认）、6002（六段模板/脱敏规则/正面镜子）、6003（六步流水线/预审清单/口径独立成节）、6004（三件套/外行测试/术语预算/社区协议）课文原文；产物制验收口径与 index「四件全产物制验收（M6.1–M6.4）」一致。本页记录仅存于本地浏览器，导出文件由学习者自行保管。</div>
+</footer>
+
+<script>
+/* Phase 6 产物档案：四槽草稿 + 自评三档，localStorage 持久化 + JSON 导出/导入。
+ * 纯静态、无后端、不发请求；不发明评分——量规只做自评登记。 */
+(function (global) {
+  'use strict';
+  var KEY = 'kbar-p6-portfolio::v1';
+  var OPTS = ['未成立', '待补证', '已自评'];
+  var secs = [].slice.call(document.querySelectorAll('.pf-slot'));
+  var statusEl = document.getElementById('pf-status');
+  var message = '';
+
+  function storage() {
+    try { var s = global.localStorage; s.setItem('__pf_probe__', '1'); s.removeItem('__pf_probe__'); return s; } catch (e) { return null; }
+  }
+  var store = storage();
+
+  function blankSlot(n) { var r = []; for (var i = 0; i < n; i++) r.push('未成立'); return { text: '', rubric: r, updatedAt: null }; }
+  function blank() {
+    var slots = {};
+    secs.forEach(function (sec) { slots[sec.getAttribute('data-slot')] = blankSlot(sec.querySelectorAll('select[data-rubric]').length); });
+    return { kind: 'kbar-p6-portfolio', version: 1, updatedAt: null, slots: slots };
+  }
+  function safeTree(v, depth) {
+    depth = depth || 0;
+    if (depth > 40) throw new Error('档案嵌套过深');
+    if (v && typeof v === 'object') {
+      Object.keys(v).forEach(function (k) {
+        if (['__proto__', 'constructor', 'prototype'].indexOf(k) >= 0) throw new Error('不支持的档案字段');
+        safeTree(v[k], depth + 1);
+      });
+    }
+  }
+  function validate(data) {
+    safeTree(data);
+    if (!data || data.kind !== 'kbar-p6-portfolio' || data.version !== 1 || !data.slots || typeof data.slots !== 'object') throw new Error('不支持的档案结构或版本');
+    Object.keys(data.slots).forEach(function (id) {
+      var s = data.slots[id];
+      if (!s || typeof s !== 'object' || typeof s.text !== 'string' || !Array.isArray(s.rubric) || s.rubric.some(function (v) { return OPTS.indexOf(v) < 0; })) throw new Error('槽位记录损坏：' + id);
+    });
+    return true;
+  }
+
+  var archive = blank();
+  function load() {
+    if (!store) { message = '本地存储不可用：本页可继续登记，但内容仅在本页内存，关闭前请导出。'; return; }
+    try {
+      var raw = store.getItem(KEY);
+      if (!raw) return;
+      var parsed = JSON.parse(raw);
+      validate(parsed);
+      archive = parsed;
+    } catch (e) { message = '已存档案损坏（' + e.message + '）：以本页当前内容为准，原文件不再读取。'; }
+  }
+
+  function applyToDom() {
+    secs.forEach(function (sec) {
+      var id = sec.getAttribute('data-slot');
+      var slot = archive.slots[id] || blankSlot(sec.querySelectorAll('select[data-rubric]').length);
+      var ta = sec.querySelector('textarea[data-fld]');
+      if (ta) ta.value = slot.text || '';
+      [].slice.call(sec.querySelectorAll('select[data-rubric]')).forEach(function (sel) {
+        var i = parseInt(sel.getAttribute('data-rubric'), 10);
+        sel.value = (slot.rubric && OPTS.indexOf(slot.rubric[i]) >= 0) ? slot.rubric[i] : '未成立';
+      });
+      chip(sec, slot);
+    });
+  }
+  function chip(sec, slot) {
+    var el = sec.querySelector('[data-chip]');
+    if (!el) return;
+    var n = (slot.rubric || []).filter(function (v) { return v === '已自评'; }).length;
+    var total = sec.querySelectorAll('select[data-rubric]').length;
+    var len = (slot.text || '').trim().length;
+    el.textContent = len || n ? '已自评 ' + n + '/' + total + ' · 草稿 ' + len + ' 字' : '未开始';
+  }
+  function collect() {
+    secs.forEach(function (sec) {
+      var id = sec.getAttribute('data-slot');
+      var slot = archive.slots[id] = archive.slots[id] || blankSlot(sec.querySelectorAll('select[data-rubric]').length);
+      var ta = sec.querySelector('textarea[data-fld]');
+      if (ta) slot.text = ta.value;
+      slot.rubric = [].slice.call(sec.querySelectorAll('select[data-rubric]')).map(function (sel) { return OPTS.indexOf(sel.value) >= 0 ? sel.value : '未成立'; });
+      slot.updatedAt = new Date().toISOString();
+      chip(sec, slot);
+    });
+    archive.updatedAt = new Date().toISOString();
+  }
+  function save() {
+    collect();
+    if (store) {
+      try { store.setItem(KEY, JSON.stringify(archive)); lastSave = new Date().toISOString(); }
+      catch (e) { message = '自动保存失败（空间不足或权限限制）：请立即导出；内容仍在本页。'; }
+    }
+    status();
+  }
+  var saveTimer = null, lastSave = '';
+  function queueSave() { message = ''; if (saveTimer) clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
+  function status() {
+    if (!statusEl) return;
+    statusEl.textContent = message || (store ? '上次自动保存：' + (lastSave || '尚无修改') : '本地存储不可用：关闭前请导出。');
+  }
+
+  function snapshot() {
+    collect();
+    var out = JSON.parse(JSON.stringify(archive));
+    out.exportedAt = new Date().toISOString();
+    return out;
+  }
+  /* 非破坏性导入：本页已非空的字段保留原值，冲突记数不覆盖。 */
+  function importJSON(data) {
+    validate(data);
+    collect();
+    var conflicts = 0, taken = 0;
+    Object.keys(data.slots).forEach(function (id) {
+      if (!archive.slots[id]) return;
+      var mine = archive.slots[id], inc = data.slots[id];
+      if (!mine.text.trim() && inc.text) { mine.text = inc.text; taken++; }
+      else if (mine.text && inc.text && mine.text !== inc.text) conflicts++;
+      mine.rubric = mine.rubric.map(function (v, i) {
+        if (v === '未成立' && inc.rubric[i] && inc.rubric[i] !== '未成立') { taken++; return inc.rubric[i]; }
+        if (v !== '未成立' && inc.rubric[i] && inc.rubric[i] !== v) conflicts++;
+        return v;
+      });
+    });
+    if (store) { try { store.setItem(KEY, JSON.stringify(archive)); } catch (e) {} }
+    applyToDom(); status();
+    return { taken: taken, conflicts: conflicts };
+  }
+
+  load();
+  applyToDom();
+  status();
+
+  secs.forEach(function (sec) {
+    var ta = sec.querySelector('textarea[data-fld]');
+    if (ta) ta.addEventListener('input', queueSave);
+    [].slice.call(sec.querySelectorAll('select[data-rubric]')).forEach(function (sel) { sel.addEventListener('change', save); });
+  });
+
+  var exportBtn = document.getElementById('pf-export');
+  if (exportBtn) exportBtn.onclick = function () {
+    var payload = snapshot();
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'kbar-p6-portfolio.json'; a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    message = '导出文件已生成下载，请确认已保存。'; status();
+  };
+  var importBtn = document.getElementById('pf-import');
+  if (importBtn) importBtn.onchange = function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var r = importJSON(JSON.parse(String(reader.result)));
+        message = '导入完成：补入空位 ' + r.taken + ' 项；内容不同的字段保留本页原值 ' + r.conflicts + ' 项（不覆盖）。';
+      } catch (err) { message = '导入失败：' + err.message + '；原记录未改动。'; }
+      status();
+    };
+    reader.readAsText(file);
+  };
+
+  global.KbarP6Portfolio = { snapshot: snapshot, importJSON: importJSON, KEY: KEY };
+})(window);
+</script>
+<script src="assets/nav.js" defer></script>
+</body>
+</html>
