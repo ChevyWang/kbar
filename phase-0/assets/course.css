@@ -56,8 +56,16 @@ blockquote .who { display: block; font-size: .85rem; margin-top: .3rem; font-fam
 /* ---------- 图 ---------- */
 figure { margin: 2rem 0; text-align: center; }
 figure svg { max-width: 100%; height: auto; }
-figcaption { font-size: .88rem; color: var(--muted); margin-top: .6rem; font-family: var(--sans); line-height: 1.6; }
+/* v1.2（D7 对齐）：图表居中，图注文字一律左对齐；图注内多对象并列用列表 */
+figcaption { font-size: .88rem; color: var(--muted); margin-top: .6rem; font-family: var(--sans); line-height: 1.6; text-align: left; }
 figcaption b { color: var(--ink); }
+figcaption ul { margin: .35rem 0 0; padding-left: 1.25rem; }
+figcaption li { margin: .15rem 0; }
+
+/* v1.2（D7 说明框）：元说明（读法/纪律/口径）用带底色说明框，与回放解说条同一视觉族 */
+.callout { background: var(--note-bg, #f7f3e3); border-left: 3px solid var(--note, #8a6d1f); padding: .8rem 1rem; margin: 1.2rem 0; font-family: var(--sans); font-size: .95rem; line-height: 1.75; text-align: left; }
+.callout b { color: var(--ink, #1c1c1a); }
+.callout ul { margin: .4rem 0 0; padding-left: 1.3rem; }
 
 .candle-strip { display: flex; justify-content: center; gap: 1.1rem; flex-wrap: wrap; margin: 1.6rem 0; }
 .candle-cell { text-align: center; }
@@ -69,6 +77,8 @@ table { border-collapse: collapse; width: 100%; margin: 1.4rem 0; font-size: .92
 th, td { border-bottom: 1px solid var(--line); text-align: left; padding: .5rem .6rem; vertical-align: top; }
 th { font-family: var(--sans); font-size: .8rem; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--ink); }
 td:first-child { white-space: nowrap; font-weight: 600; }
+/* v1.2（D7 对齐）：表格纯数字列右对齐 + 等宽数字（价位列可比大小） */
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* ---------- 术语表 ---------- */
 .gloss-dl dt { font-weight: 700; margin-top: 1.1rem; }
@@ -212,4 +222,4 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
 .cmp-verdict { border: 1.5px dashed var(--faint); border-radius: 10px; padding: .7rem 1rem; font-size: .9rem; line-height: 1.7; background: var(--note-bg); margin: .6rem 0 1.8rem; }
 /* 示意图容器 */
 .schem { margin: 1.6rem 0; }
-.schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: center; }
+.schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: left; }
