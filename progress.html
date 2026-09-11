@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学习进度 · K线训练营</title>
+<style>
+  /* 自包含样式（与 course.css 同源令牌，零外部依赖，可离线可打印） */
+  :root {
+    --paper: #fcfcfb; --ink: #1c1c1a; --muted: #6e6c64; --faint: #767468;
+    --line: #e4e2d9; --up: #d33a2c; --down: #1a7f37;
+    --note: #8a6d1f; --note-bg: #f7f3e3;
+    --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Noto Serif SC", Georgia, serif;
+    --sans: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body { margin: 0 auto; max-width: 46rem; padding: 2.5rem 1.4rem 5rem; color: var(--ink);
+    font-family: var(--serif); font-size: 17px; line-height: 1.85; text-rendering: optimizeLegibility; }
+  header.course { border-bottom: 2px solid var(--ink); padding-bottom: 1rem; margin-bottom: 2rem; }
+  header.course .kicker { font-family: var(--sans); font-size: .78rem; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; }
+  header.course h1 { font-size: 1.9rem; line-height: 1.35; margin: .35rem 0 .3rem; font-weight: 700; }
+  header.course .sub { color: var(--muted); font-size: .95rem; margin: 0; }
+  h2 { font-size: 1.25rem; margin: 3rem 0 .8rem; font-weight: 700; }
+  h3 { font-size: 1.05rem; margin: 1.8rem 0 .5rem; }
+  p { margin: .8rem 0; }
+  a { color: var(--up); text-decoration: none; border-bottom: 1px solid rgba(211,58,44,.35); }
+  a:hover { border-bottom-color: var(--up); }
+  /* 顶部三个总进度格（同根页 .honest 视觉族） */
+  .honest { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.2rem 0; }
+  .honest .cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+  .honest .n { font-size: 1.3rem; font-weight: 700; color: #0f4c81; }
+  .honest .n.alert { color: var(--up); }
+  .honest .n.calm { color: var(--faint); }
+  .honest .l { font-size: .78rem; color: var(--faint); line-height: 1.6; }
+  .honest .note { grid-column: 1/-1; font-size: .78rem; color: var(--faint); padding: .4rem .2rem 0; }
+  .ph-sub { font-family: var(--sans); font-size: .8rem; color: var(--faint); margin: .2rem 0 .6rem; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0 1.6rem; font-size: .92rem; }
+  th, td { border-bottom: 1px solid var(--line); text-align: left; padding: .5rem .6rem; vertical-align: top; }
+  th { font-family: var(--sans); font-size: .8rem; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--ink); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td .lt { font-family: var(--sans); font-size: .78rem; color: var(--faint); display: block; line-height: 1.5; }
+  td.due { color: var(--up); font-weight: 700; }
+  td.dim { color: var(--faint); }
+  .note { background: var(--note-bg); border-left: 3px solid var(--note); padding: .8rem 1.1rem; margin: 1.4rem 0; font-size: .95rem; }
+  .note.tip { background: #fff; border-left-color: var(--down); }
+  .note.tip > b:first-child { color: var(--down); }
+  .note ul { margin: .4rem 0 0; padding-left: 1.3rem; }
+  .note li { margin: .3rem 0; }
+  footer.course { border-top: 2px solid var(--ink); margin-top: 3rem; padding-top: 1rem; font-size: .85rem; color: var(--muted); }
+  footer.course .nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .6rem; font-family: var(--sans); font-size: .85rem; margin-bottom: 1.2rem; }
+  footer.course .citations { font-size: .78rem; color: #8a8578; line-height: 1.7; }
+  footer.course .citations b { color: var(--muted); }
+  .hidden { display: none; }
+  @media print { .honest .cell, table { border-color: #999; } a { border-bottom: none; } }
+</style>
+</head>
+<body>
+
+<header class="course">
+  <div class="kicker">Kbar Bootcamp · 学习记录</div>
+  <h1>学习进度总览</h1>
+  <p class="sub">把散在本浏览器的训练场、里程碑与专门练习记录汇成一页。<b>只统计「做到过」的痕迹，不上完课不算进度</b>——记录由你在课页里的作答实时产生，本页随时刷新可见。</p>
+</header>
+
+<div class="honest" id="stats">
+  <div class="cell"><div class="n" id="stat-practiced">0 / 56</div><div class="l">有练习记录的课（训练场交卷口径，未交卷不计）</div></div>
+  <div class="cell"><div class="n" id="stat-attempts">0 次</div><div class="l">里程碑任务提交（含复习与提示后提交）</div></div>
+  <div class="cell"><div class="n calm" id="stat-due">0 题</div><div class="l">到期错题（答对升档 1→3→7→21 天）</div></div>
+  <div class="note">口径：以上读取本浏览器 localStorage——训练场交卷汇总（kbar-quizsum）、能力档案（kbar-mastery）、旧版专门练习（kbar-answer）。换浏览器或清数据后从零开始；跨设备先在各阶段能力档案页导出。「到期错题」为跨课聚合：进入对应课的训练场，交卷后即出现「错题重练」入口。</div>
+</div>
+
+<div class="note tip hidden" id="empty">
+  <b>还没有任何学习记录。</b>
+  <ul>
+    <li>从 <a href="phase-0/lessons/0001-anatomy-of-a-candle.html">phase-0 第 0001 课</a>开始：读完一课，交一次训练场，本页就会出现第一行数据。</li>
+    <li>记录<b>仅存本浏览器</b>：不同浏览器、不同设备互不相通；清除浏览器数据会一并清掉。</li>
+    <li>需要留档或换设备：各阶段能力档案页（如 <a href="phase-0/mastery.html">phase-0 能力档案</a>）有「导出全部学习档案」按钮，旧版专门练习在其原页面底部导出。</li>
+  </ul>
+</div>
+
+<h2>里程碑任务</h2>
+<p class="ph-sub" id="ms-sub">按能力档案的提交记录分组；「提交」不等于「通过」，独立换题与跨日复测的判定在各阶段能力档案页内进行。</p>
+<table class="hidden" id="ms-table">
+  <thead><tr><th>里程碑</th><th class="num">提交次数</th><th class="num">最近提交</th><th>入口</th></tr></thead>
+  <tbody id="ms-body"></tbody>
+</table>
+<p class="ph-sub hidden" id="ms-none">尚无里程碑提交记录。进入任一 <a href="phase-0/mastery.html">阶段能力档案</a> 开始第一个任务。</p>
+<p class="ph-sub hidden" id="p6-line"></p>
+<p class="ph-sub" id="legacy-line"></p>
+
+<h2>分课进度</h2>
+<p class="ph-sub">每课一行：训练场练习次数、最佳成绩、最近练习日期与到期错题数。空行表示尚未练过，点击课号直接进入该课。</p>
+<div id="phases"></div>
+
+<footer class="course">
+  <div class="nav"><a href="index.html">← 全站路线图</a><span>学习进度 · 记录仅存本浏览器</span><a href="glossary.html">术语手册 →</a></div>
+  <div class="citations">本站为技术分析投资者教育内容，仅记录历史行情与统计口径，<b>不构成投资建议</b>，不提供投资咨询服务；所涉品种与数据仅作教学示例，不代表任何未来表现。本页所有数字来自你本人在本浏览器的练习记录，无任何上传，<b>「完成度」只证明练过，不证明盈利能力</b>。</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  /* ---- 数据源（与 lib/quiz.js、lib/mastery.js、lib/learning-store.js 的键约定一致） ---- */
+  var LADDER = [1, 3, 7, 21]; // 错题升档间隔（天）
+  /* 课号 → 文件名映射：从各 phase 工作区 course/lessons/ 目录名硬编码 */
+  var PHASES = [
+    { p: 'P0', name: '读图 · 辨认', dir: 'phase-0', lessons: [['drill0', 'drill', '易混形态混练（4 组 24 例）'],
+      ['0001', 'anatomy-of-a-candle', '一根K线的解剖学'],
+      ['0002', 'two-candle-dialogue', '双K线的对话：吞没、Pin Bar 与内包日'],
+      ['0003', 'position-beats-pattern', '位置 &gt; 形态：支撑、阻力与「同一形态两种含义」'],
+      ['0004', 'market-structure', '市场结构：高低点序列与趋势的严格定义'],
+      ['0005', 'volume-confirms', '量能配合：K线的音量旋钮'],
+      ['0006', 'multiple-timeframes', '多周期：一根日K里的二十四场战斗'],
+      ['0007', 'chart-reading-training', '盘感训练法：复盘、盲测与毕业考']
+    ] },
+    { p: 'P1', name: '流利 · 复述推理', dir: 'phase-1', lessons: [['drill1', 'drill', '易混形态混练（3 组 15 例）'],
+      ['1001', 'always-in', 'Always-In：市场此刻站在哪边'],
+      ['1002', 'micro-channel-spike', '微通道与尖峰和通道：趋势的两种紧度'],
+      ['1003', 'pullback-anatomy', '回踩的解剖：数腿、H2 与突破回踩'],
+      ['1004', 'second-entries', '二次入场：第二次机会为何比第一次值钱'],
+      ['1005', 'wedge-three-pushes', '楔形与三推：动能衰竭的几何学'],
+      ['1006', 'measured-move', '量度目标：市场自己报出的里程'],
+      ['1007', 'gap-taxonomy', '缺口分类学：跳空市场与连续市场'],
+      ['1008', 'ttr-magnets', '紧交易区间与磁吸：价格被吸向哪里'],
+      ['1009', 'failed-breakouts', '失败突破完整目录：假动作的真价值'],
+      ['1010', 'bar-by-bar', '逐根带读与毕业考'],
+      ['1011', 'drawing-toolbox', '画线工具箱：趋势线、通道线与比例尺']
+    ] },
+    { p: 'P2', name: '地形 · 作图应用', dir: 'phase-2', lessons: [['drill2', 'drill', '易混形态混练（4 组 16 例）'],
+      ['2001', 'composite-operator', '复合操盘手：Wyckoff 的市场观'],
+      ['2002', 'accumulation-ae', '吸筹结构：阶段 A–E 全解剖'],
+      ['2003', 'distribution-ae', '派发结构：镜像的世界'],
+      ['2004', 'spring-upthrust', 'Spring 与 Upthrust：陷阱的高级形态'],
+      ['2005', 'effort-result', '努力与结果：量价关系系统化'],
+      ['2006', 'volume-profile', 'Volume Profile：把量能画成地形'],
+      ['2007', 'terrain-map', '区域地图：Profile × 水平位 × 结构合流'],
+      ['2008', 'graduation-terrain', '综合作业与毕业考：画一张完整地形图'],
+      ['2009', 'wave-chart', '波图：逐波读价（Weis Wave）'],
+      ['2010', 'day-type', '日型战术：今天会是哪种天']
+    ] },
+    { p: 'P3', name: '概率 · 概率引用', dir: 'phase-3', lessons: [
+      ['3001', 'reading-stats', '怎么读胜率表：Bulkowski 统计方法论'],
+      ['3002', 'top-patterns', '高价值形态精读：统计身份证与三张面孔'],
+      ['3003', 'neutral-junk', '中性与垃圾形态：频率与期望的错位'],
+      ['3004', 'failure-study', '失败形态学：什么让形态死掉'],
+      ['3005', 'morris-filter', 'Morris 蜡烛过滤的完整实现'],
+      ['3006', 'hands-on', '手工统计一个形态'],
+      ['3007', 'graduation', '反迷信结业与体系解剖学']
+    ] },
+    { p: 'P4', name: '系统 · 组装综合', dir: 'phase-4', lessons: [
+      ['4001', 'setup-definition', 'Setup 的正式定义：从「看到」到「等到」'],
+      ['4002', 'entries', '入场技术：限价单 vs 停损单及其心理学'],
+      ['4003', 'initial-stop', '初始止损：结构止损的艺术'],
+      ['4004', 'exits', '移动止损与出场机制：分布整形器'],
+      ['4005', 'targets', '目标位体系：量度目标 × 高度投影 × Profile 边缘'],
+      ['4006', 'expectancy-kelly', 'R 倍数、期望值与凯利公式'],
+      ['4007', 'position-sizing', '仓位与风险模型：单笔 %、相关性与总预算'],
+      ['4008', 'microstructure', '四市场适配与市场微观结构'],
+      ['4009', 'one-page-plan', '一页纸交易计划：把零件装成机器'],
+      ['4010', 'backtest-graduation', '手工回测：验证自己的规则，然后毕业']
+    ] },
+    { p: 'P5', name: '执行 · 执行自律', dir: 'phase-5', lessons: [
+      ['5001', 'probability-mindset', '概率思维：「任何一笔都可能亏」'],
+      ['5002', 'decision-quality', '决策质量 vs 结果质量'],
+      ['5003', 'bias-catalog', '认知偏差目录与个人弱点画像'],
+      ['5004', 'drawdown-protocol', 'Drawdown 管理：回撤期协议'],
+      ['5005', 'execution-checklist', '执行检查单：信号→下单的 60 秒'],
+      ['5006', 'scaling-graduation', '课程结业：证据、补救与真实风险边界'],
+      ['5007', 'tilt-repair', 'tilt 的诊断与修复']
+    ] },
+    { p: 'P6', name: '输出 · 贡献输出', dir: 'phase-6', lessons: [
+      ['6001', 'analysis-writing', '分析写作工坊'],
+      ['6002', 'review-writing', '案例复盘写作'],
+      ['6003', 'original-research', '原创研究方法：从假设到发表'],
+      ['6004', 'feynman-community', '费曼教学与社区检验']
+    ] }
+  ];
+
+  function jget(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function fmtDate(ts) {
+    if (!ts || !isFinite(ts)) return null;
+    var d = new Date(ts); function p(n) { return (n < 10 ? '0' : '') + n; }
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+  /* 与 quiz.js dueQuestions 同口径：lastOk===false 且距 lastTs ≥ LADDER[box] 天 */
+  function dueCount(log) {
+    if (!log || !log.boxes) return 0;
+    var n = 0, now = Date.now();
+    for (var qi in log.boxes) {
+      var b = log.boxes[qi];
+      if (!b || b.lastOk !== false) continue;
+      var days = (now - b.lastTs) / 86400000;
+      if (days >= LADDER[Math.min(b.box || 0, LADDER.length - 1)]) n++;
+    }
+    return n;
+  }
+  function msDirOf(mid) { return mid && mid.length > 1 ? 'phase-' + mid.charAt(1) : null; }
+
+  var storageOk = true, keyCount = 0, legacyCount = 0;
+  try { keyCount = localStorage.length; } catch (e) { storageOk = false; }
+  if (storageOk) {
+    for (var i = 0; i < keyCount; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('kbar-answer::') === 0) legacyCount++;
+    }
+  }
+
+  /* ---- 逐课聚合 ---- */
+  var total = 0, practiced = 0, dueTotal = 0;
+  var rowByPhase = [];
+  PHASES.forEach(function (ph) {
+    var rows = [], phDue = 0, phDone = 0;
+    ph.lessons.forEach(function (L) {
+      if (L[0].indexOf('drill') !== 0) total++;
+      var sum = storageOk ? jget('kbar-quizsum::' + L[0]) : null;
+      var log = storageOk ? jget('kbar-quizlog::' + L[0]) : null;
+      var due = dueCount(log);
+      if (sum && sum.runs > 0 && L[0].indexOf('drill') !== 0) { practiced++; phDone++; }
+      dueTotal += due; phDue += due;
+      rows.push({
+        id: L[0], href: L[0].indexOf('drill') === 0 ? ph.dir + '/drill.html' : ph.dir + '/lessons/' + L[0] + '-' + L[1] + '.html', title: L[2],
+        runs: sum && sum.runs > 0 ? sum.runs : null,
+        best: sum && sum.runs > 0 ? (sum.best + ' / ' + (sum.lastTotal || sum.best)) : null,
+        last: sum && sum.lastTs ? fmtDate(sum.lastTs) : null,
+        due: due
+      });
+    });
+    rowByPhase.push({ ph: ph, rows: rows, due: phDue, done: phDone });
+  });
+
+  /* ---- 里程碑档案 ---- */
+  var archive = storageOk ? jget('kbar-mastery::v1') : null;
+  var msMap = {};
+  if (archive && Array.isArray(archive.attempts)) {
+    archive.attempts.forEach(function (a) {
+      if (!a || typeof a.milestone !== 'string') return;
+      var m = msMap[a.milestone] = msMap[a.milestone] || { count: 0, last: '' };
+      m.count++;
+      if (a.submittedAt && a.submittedAt > m.last) m.last = a.submittedAt;
+    });
+  }
+  var msTotal = 0;
+  for (var mid in msMap) msTotal += msMap[mid].count;
+
+  /* ---- 渲染 ---- */
+  document.getElementById('stat-practiced').textContent = practiced + ' / ' + total;
+  document.getElementById('stat-attempts').textContent = msTotal + ' 次';
+  var dueEl = document.getElementById('stat-due');
+  dueEl.textContent = dueTotal + ' 题';
+  dueEl.className = 'n' + (dueTotal > 0 ? ' alert' : ' calm');
+
+  var msKeys = Object.keys(msMap).sort();
+  if (msKeys.length) {
+    document.getElementById('ms-table').classList.remove('hidden');
+    var tbody = document.getElementById('ms-body'), html = [];
+    msKeys.forEach(function (mid) {
+      var d = msDirOf(mid), last = fmtDate(Date.parse(msMap[mid].last)) || '—';
+      html.push('<tr><td>' + mid + '</td><td class="num">' + msMap[mid].count + '</td><td class="num">' + last +
+        '</td><td>' + (d ? '<a href="' + d + '/mastery.html">阶段能力档案 →</a>' : '—') + '</td></tr>');
+    });
+    tbody.innerHTML = html.join('');
+  } else {
+    document.getElementById('ms-none').classList.remove('hidden');
+  }
+  if (legacyCount > 0) {
+    document.getElementById('legacy-line').textContent =
+      '另有旧版专门练习记录 ' + legacyCount + ' 项（kbar-answer，含草稿），导出入口在其原练习页底部。';
+  }
+  /* Phase 6 产物档案（kbar-p6-portfolio::v1，槽位制，与里程碑档案分别记录） */
+  var p6 = storageOk ? jget('kbar-p6-portfolio::v1') : null;
+  if (p6 && p6.slots) {
+    var used = 0, total6 = 0;
+    for (var sid in p6.slots) {
+      total6++;
+      var sl = p6.slots[sid];
+      if (sl && ((sl.text && String(sl.text).trim()) || (Array.isArray(sl.rubric) && sl.rubric.some(function (v) { return v && v !== '未成立'; })))) used++;
+    }
+    if (used > 0) {
+      var p6el = document.getElementById('p6-line');
+      p6el.innerHTML = 'Phase 6 产物档案：' + used + ' / ' + total6 + ' 槽有登记（草稿或自评），见<a href="phase-6/mastery.html">phase-6 产物档案</a>。';
+      p6el.classList.remove('hidden');
+    }
+  }
+
+  var phHtml = [];
+  rowByPhase.forEach(function (blk) {
+    phHtml.push('<h3>' + blk.ph.p + ' ' + blk.ph.name + '</h3>');
+    phHtml.push('<p class="ph-sub">' + blk.done + ' / ' + blk.rows.length + ' 课有练习记录' +
+      (blk.due > 0 ? ' · <span style="color:var(--up);font-weight:700">到期错题 ' + blk.due + ' 题</span>' : '') +
+      (blk.ph.p === 'P6' ? ' · Phase 6 以写作为主，训练场记录仅覆盖课内练习' : '') + '</p>');
+    phHtml.push('<table><thead><tr><th>课号</th><th class="num">练习次数</th><th class="num">最佳成绩</th><th class="num">最近练习</th><th class="num">到期错题</th></tr></thead><tbody>');
+    blk.rows.forEach(function (r) {
+      phHtml.push('<tr><td><a href="' + r.href + '">' + r.id + '</a><span class="lt">' + r.title + '</span></td>' +
+        '<td class="num' + (r.runs ? '' : ' dim') + '">' + (r.runs || '—') + '</td>' +
+        '<td class="num' + (r.best ? '' : ' dim') + '">' + (r.best || '—') + '</td>' +
+        '<td class="num' + (r.last ? '' : ' dim') + '">' + (r.last || '—') + '</td>' +
+        '<td class="num' + (r.due > 0 ? ' due' : ' dim') + '">' + (r.due > 0 ? r.due : '—') + '</td></tr>');
+    });
+    phHtml.push('</tbody></table>');
+  });
+  document.getElementById('phases').innerHTML = phHtml.join('');
+
+  if (practiced === 0 && msTotal === 0 && legacyCount === 0 && !(used > 0)) {
+    document.getElementById('empty').classList.remove('hidden');
+  }
+  if (!storageOk) {
+    document.getElementById('empty').classList.remove('hidden');
+    document.getElementById('empty').querySelector('b').textContent = '本浏览器禁止或无法读取本地存储。';
+  }
+})();
+</script>
+
+</body>
+</html>
