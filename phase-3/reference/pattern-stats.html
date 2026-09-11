@@ -17,7 +17,7 @@ td.dim { color: var(--faint); }
 <header class="course">
   <div class="kicker">K线训练营 · 参考卡 · 形态统计</div>
   <h1>形态统计总表（三市场 × 十形态）</h1>
-  <p class="sub">33 品种（A股 17 + 美股 11 + 加密 5）× 5 年日线，pivot 几何检测器，去重后 3594 例。<b>口径</b>（3001§05）：突破=收盘越界；失败=突破后 5 根内收盘收回；达标=20 根内走满形态高度投影；顺幅=突破后 20 根内最大顺向幅度（平均，会被极端值拉高——配中位数心读）。<b>失败与达标是独立时窗事件、不互补</b>——全样本四格：失败未达标 1308 / 失败且达标 427 / 未失败达标 1055 / 两者皆无 804；两列百分比各量各的事，不能拼成胜率。<span class="pst-tag pst-a">A股</span><span class="pst-tag pst-u">美股</span><span class="pst-tag pst-c">加密</span>样本构成约 55%/30%/15%。脚本与原始数据在私有库，可复算。</p>
+  <p class="sub">33 品种（A股 17 + 美股 11 + 加密 5）× 5 年日线，pivot 几何检测器，去重后 3594 例。<b>口径</b>（3001§05）：突破=收盘越界；失败=突破后 5 根内收盘收回；达标=20 根内走满形态高度投影；顺幅=突破后 20 根内最大顺向幅度（平均，会被极端值拉高，配中位数心读）。<b>失败与达标是独立时窗事件、不互补</b>——全样本四格：失败未达标 1308 / 失败且达标 427 / 未失败达标 1055 / 两者皆无 804；两列百分比各量各的事，不能拼成胜率。<span class="pst-tag pst-a">A股</span><span class="pst-tag pst-u">美股</span><span class="pst-tag pst-c">加密</span>样本构成约 55%/30%/15%。脚本与原始数据在私有库，可复算。</p>
 </header>
 
 <h2><span class="no">00</span>总表</h2>
@@ -26,7 +26,7 @@ td.dim { color: var(--faint); }
 </table>
 
 <h2><span class="no">01</span>第二梯队形态 · Bulkowski 参照表（美股口径）</h2>
-<p style="font-size:.84rem;color:var(--faint)">Top-10 之外的高频二线形态——本站扫描器未覆盖，引 Bulkowski v3 原书统计作参照（美股、牛市/熊市两列）。<b>口径不同不可与本站总表直接比</b>：其「达标」=到达测算目标、「回抽/抛回」=突破后返回突破点。原文数字，章节可查。</p>
+<p style="font-size:.84rem;color:var(--faint)">Top-10 之外的高频二线形态，本站扫描器未覆盖，引 Bulkowski v3 原书统计作参照（美股、牛市/熊市两列）。<b>口径不同不可与本站总表直接比</b>：其「达标」=到达测算目标、「回抽/抛回」=突破后返回突破点。原文数字，章节可查。</p>
 <table class="pst" style="width:100%;border-collapse:collapse;font-size:.84rem;background:#fff">
 <tr><th style="border:1px solid var(--line);padding:.4rem .55rem">形态（章）</th><th style="border:1px solid var(--line);padding:.4rem .55rem">突破方向</th><th style="border:1px solid var(--line);padding:.4rem .55rem">平均行程（牛/熊）</th><th style="border:1px solid var(--line);padding:.4rem .55rem">回抽·抛回</th><th style="border:1px solid var(--line);padding:.4rem .55rem">达标率（牛/熊）</th></tr>
 <tr><td style="border:1px solid var(--line);padding:.4rem .55em">杯柄（Ch.21）</td><td style="border:1px solid var(--line);padding:.4rem .55rem">向上（收盘破右缘/柄高）</td><td style="border:1px solid var(--line);padding:.4rem .55rem">平均涨 54%</td><td style="border:1px solid var(--line);padding:.4rem .55rem">抛回 62%</td><td style="border:1px solid var(--line);padding:.4rem .55rem">61%</td></tr>
@@ -36,7 +36,13 @@ td.dim { color: var(--faint); }
 <tr><td style="border:1px solid var(--line);padding:.4rem .55rem">V 底（Ch.69）</td><td style="border:1px solid var(--line);padding:.4rem .55rem">向上</td><td style="border:1px solid var(--line);padding:.4rem .55rem">平均涨 40% / 32%</td><td style="border:1px solid var(--line);padding:.4rem .55rem">抛回 55% / 58%</td><td style="border:1px solid var(--line);padding:.4rem .55rem">52% / 42%</td></tr>
 </table>
 
-<div class="note"><b>读表纪律（3001 四列陷阱的应用）</b>：①先看 N——小于 30 的行（头肩家族、旗形）只当参考；②失败率相对 50% 硬币的位置——大样本行几乎都在 ±2pt 内（中性家族）；③顺幅跨市场不可直接比（加密列按波动率约为 A股两倍量级）；④此表是<b>描述统计</b>不是策略回测（无成本/滑点/执行假设）——期望值核算见 Phase 4。</div>
+<div class="note"><b>读表纪律（3001 四列陷阱的应用）</b>：
+<ul>
+  <li>先看 N——小于 30 的行（头肩家族、旗形）只当参考。</li>
+  <li>失败率相对 50% 硬币的位置，大样本行几乎都在 ±2pt 内（中性家族）。</li>
+  <li>顺幅跨市场不可直接比（加密列按波动率约为 A股两倍量级）。</li>
+  <li>此表是<b>描述统计</b>不是策略回测（无成本/滑点/执行假设），期望值核算见 Phase 4。</li>
+</ul></div>
 
 <footer class="course">
   <div class="nav">

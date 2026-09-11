@@ -31,7 +31,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
 <header class="course">
   <div class="kicker">K线训练营 · Phase 3 概率 · 里程碑验收 M3.3（代表任务 3/6）</div>
   <h1>自建统计：亲手做一个形态研究</h1>
-  <p class="sub">三个任务一气呵成：<b>①20 例规则复核</b>（全窗可见，你判 F5/H20，脚本按冻结口径从棒重算——不信任何旧标志）；<b>②候选全量扫</b>（200 根连续日线＋冻结双底规则，列出全部候选完成棒，与同规则参考集精确比对）；<b>③冻结后预测</b>（10 例只到突破棒的决策视图，先押 F5/H20 倾向再揭晓，记校准不设猜对门槛）。<b>通过＝「M3.3 统计过程任务完成」——证明定义、收样、计数、口径纪律；不证明任何交易优势。</b></p>
+  <p class="sub">三个任务一气呵成：<b>20 例规则复核</b>（全窗可见，你判 F5/H20，脚本按冻结口径从棒重算，不信任何旧标志）、<b>候选全量扫</b>（200 根连续日线＋冻结双底规则，列出全部候选完成棒，与同规则参考集精确比对）、<b>冻结后预测</b>（10 例只到突破棒的决策视图，先押 F5/H20 倾向再揭晓，记校准不设猜对门槛）。<b>通过＝「M3.3 统计过程任务完成」，证明定义、收样、计数、口径纪律；不证明任何交易优势。</b></p>
 </header>
 <p style="margin:1rem"><a href="../mastery.html">统一能力验收与学习档案（与本页专门实作分别记录）</a></p>
 
@@ -40,7 +40,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <ol>
     <li><b>冻结口径</b>（全任务适用）：t0=突破棒（收盘越过 level）；<b>F5</b>=t0 后 1–5 根内首次收盘收回形态内侧（向上突破看 C&lt;level，向下看 C&gt;level）；<b>H20</b>=t0 后 1–20 根内高/低触及目标 level+dir×height。两事件独立标注、可同时发生（四格，不是互斥三类）。</li>
     <li><b>任务A</b>（20 例）：每例输入 F5/H20 各（是/否＋发生棒）。核心门禁：每例F5/H20和首次事件棒均须正确，20/20逐项一致；不能以总分抵消错误。首答保留，错后改用未曝光套。</li>
-    <li><b>任务B</b>（候选全量扫）：规则卡=页面顶部冻结规则（N=3 严格摆动；两确认低 5≤间隔≤40、|L2−L1|/L1≤1%、中间有确认摆动高≥L1×1.02；候选完成=L2所在棒+3（即确认棒，不再额外加3））。输入全部完成棒号（逗号分隔），须与参考集<b>精确一致</b>——漏标与多标都算错；并填写分母/排除说明。</li>
+    <li><b>任务B</b>（候选全量扫）：规则卡=页面顶部冻结规则（N=3 严格摆动；两确认（confirmation）低 5≤间隔≤40、|L2−L1|/L1≤1%、中间有确认摆动高（swing high）≥L1×1.02；候选完成=L2所在棒+3（即确认棒，不再额外加3））。输入全部完成棒号（逗号分隔），须与参考集<b>精确一致</b>——漏标与多标都算错；并填写分母/排除说明。</li>
     <li><b>任务C</b>（预测）：10 例决策时点视图（asOf=t0），押 F5/H20 倾向（高/中/低）＋一句条件；揭晓后记校准。<b>不以猜对数设门槛</b>（少量样本只能作校准描述，精度有限）。</li>
     <li><b>成绩范围</b>：完成＝统计过程任务达标（定义→收样→计数→不确定性说明）；任何比例不得外推为交易优势。</li>
   </ol>
@@ -252,7 +252,7 @@ function renderB() {
   document.getElementById('casecard').innerHTML = '<b>任务B · 候选全量扫</b>' + setBadge + ' · ' + BW.mkt + ' · ' + BW.sym + ' · 200 根日线（' + BW.range[0] + ' → ' + BW.range[1] + '）——<b>不是挑出的成功样本，是连续窗口</b>。按冻结规则列出全部双底候选完成棒（1-based）。';
   document.getElementById('chart').innerHTML = Kbar.chart(k, { w: 820, h: 340, yLabels: true, vol: vols(BW.bars) });
   document.getElementById('work').innerHTML = '<div class="panel"><b>冻结规则卡（先读——判定只认这套参数）</b><br>' +
-    '① 摆动低/高 = N=3 严格左右极值（相等不算），确认滞后 3 根；② 双底 = 两个<b>已确认</b>摆动低 L1、L2：5 ≤ 间隔 ≤ 40 根，|L2−L1|/L1 ≤ 1%，中间存在已确认摆动高 ≥ L1×1.02；③ 候选完成棒 = L2 的确认棒（L2 之后第 3 根）。' +
+    '① 摆动低（swing low）/高 = N=3 严格左右极值（相等不算），确认滞后 3 根；② 双底 = 两个<b>已确认</b>摆动低 L1、L2：5 ≤ 间隔 ≤ 40 根，|L2−L1|/L1 ≤ 1%，中间存在已确认摆动高 ≥ L1×1.02；③ 候选完成棒 = L2 的确认棒（L2 之后第 3 根）。' +
     '<div class="f-row" style="margin-top:.6rem">全部候选完成棒（1-based，逗号分隔）：<input type="text" id="b-list" style="flex:1;min-width:280px" placeholder="例：44, 55, 130"' + (tb ? ' value="' + esc(tb.pick) + '"' : '') + '></div>' +
     '<div class="f-row">分母/排除说明（哪些棒看似像但被哪条规则排除，一两句）：<input type="text" id="b-note" style="flex:1;min-width:280px"' + (tb ? ' value="' + esc(tb.note) + '"' : '') + '></div>' +
     '<button class="mbtn dark" id="b-sub" type="button">提交比对</button><div class="gate-msg" id="b-msg"></div></div>';
