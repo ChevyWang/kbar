@@ -36,6 +36,10 @@
   details.books p { font-size: .82rem; margin: .3rem 0; color: var(--faint); }
   details.books b { color: var(--ink); }
   .progress-strip { background: #fff; border: 1px dashed var(--line); border-radius: 12px; padding: .8rem 1.25rem; margin: .9rem 0; }
+  /* v1.7（批次 D 移动端）：<560px 三格堆叠单列（course.css 的 <768px 版心/图表/表格规则经链接同样生效） */
+  @media (max-width: 560px) {
+    .honest { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>

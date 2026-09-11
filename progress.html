@@ -52,6 +52,16 @@
   footer.course .citations { font-size: .78rem; color: #8a8578; line-height: 1.7; }
   footer.course .citations b { color: var(--muted); }
   .hidden { display: none; }
+  /* v1.7（批次 D 移动端）：<768px 版心 fluid + 宽表横滚（与 course.css 移动端块同口径；本页自包含样式）；
+   * <560px 顶部三格堆叠单列 */
+  @media (max-width: 767.98px) {
+    body { max-width: 100%; padding: 1.2rem 1rem 3rem; }
+    p, ul, ol, .note { max-width: 46rem; }
+    table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+  @media (max-width: 560px) {
+    .honest { grid-template-columns: 1fr; }
+  }
   @media print { .honest .cell, table { border-color: #999; } a { border-bottom: none; } }
 </style>
 </head>
