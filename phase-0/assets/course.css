@@ -50,6 +50,17 @@ a:hover { border-bottom-color: var(--up); }
 }
 .note b { color: var(--note); }
 
+/* v1.4（D10 提示区块）：类型修饰符——标签粗体词与色条双编码（色觉安全同 §9 豁免逻辑：永不只靠颜色）。
+ * 注=默认金底 / 冷水=金底(.stat，品牌栏目) / 提示=白底绿条 / 警告=白底红条 / 红线=白底4px红条 */
+.note.tip, .note.warn, .note.stop, .note.info { background: #fff; }
+.note.tip b, .note.warn b, .note.stop b, .note.info b { color: inherit; }
+.note.info { border-left-color: var(--muted); }
+.note.tip { border-left-color: var(--down); }
+.note.warn { border-left-color: var(--up); }
+.note.stop { border-left: 4px solid var(--up); padding-left: 1rem; }
+.note.tip > b:first-child { color: var(--down); }
+.note.warn > b:first-child, .note.stop > b:first-child { color: var(--up); }
+
 blockquote { margin: 1.4rem 0; padding-left: 1.1rem; border-left: 3px solid var(--line); color: var(--muted); }
 blockquote .who { display: block; font-size: .85rem; margin-top: .3rem; font-family: var(--sans); }
 
