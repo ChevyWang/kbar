@@ -37,6 +37,7 @@ table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-spa
     <div class="meta">制定日期 ____ ｜ 市场与周期 ____ ｜ 复盘周期 ____ ｜ 外行测试：□ 已通过</div>
   </div>
   <table class="plan">
+    <tr><td class="k">第零栏 目标</td><td><span class="hint">目标年化（用 4006 期望算术验算够不够得着——Tharp：多数人写的是愿望不是目标）？最大回撤容忍（装得下 30 笔内的连亏吗）？每周可投入小时（决策周期＋复盘节奏）？——三个数字写不出来，后面九栏都是别人的系统（4009）</span><br><br></td></tr>
     <tr><td class="k">① 市场与周期</td><td><span class="hint">哪块土壤（A股/美股/加密）、哪个决策周期？单市场起步（4008 路径）</span><br><br></td></tr>
     <tr><td class="k">② 标的池</td><td><span class="hint">交易什么（可量化的筛选）、永不碰什么（ST/次新/看不懂）？</span><br><br></td></tr>
     <tr><td class="k">③ Setup 清单</td><td><span class="hint">S1 名称+编号条件（全部可打勾）+否定条件+过滤器（量能/位置）。一页最多 2–3 个；初学 1 个</span><br><br><br></td></tr>
@@ -53,16 +54,26 @@ table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-spa
 <h2><span class="no">附</span>与范例的对照检查</h2>
 <div class="two">
 <div class="plan-sheet">
-  <div class="plan-head"><div class="ttl" style="font-size:.92rem">训练者一号·A股版（4009 范例精简）</div></div>
+  <div class="plan-head"><div class="ttl" style="font-size:.92rem">训练者一号·A股版（4009 v2 范例精简）</div></div>
   <table class="plan">
-    <tr><td class="k">①②</td><td>A股日线；主板/创业板趋势股，排除 ST/次新/画不出结构</td></tr>
-    <tr><td class="k">③</td><td>S1 回调恢复：20根内60根收盘新高 + 3–12根确认摆动低点 + 收盘创10根新高；否定：一字板、风险∉(1%,12%]；过滤：量能>20日均量1/3</td></tr>
-    <tr><td class="k">④</td><td>次日 9:25 后按开盘±0.5% 限价；当日未成交撤单不追</td></tr>
-    <tr><td class="k">⑤</td><td>收盘破 L 次日开盘离场；封死跌停→次日竞价挂跌停价（立讯条款）</td></tr>
-    <tr><td class="k">⑥</td><td>+2R 当日收盘全平；20根时间出场；混合政策待 v2</td></tr>
-    <tr><td class="k">⑦</td><td>单笔1%；A股组≤2R；总3R；单票跳两板组合回撤≤5%；30笔期望>0才升0.5%</td></tr>
-    <tr><td class="k">⑧⑨</td><td>九字段+10/30笔复盘；修改走复盘→回测→版本</td></tr>
+    <tr><td class="k">第零栏</td><td>目标年化 / 最大回撤容忍 / 每周可投入小时——先写三个数，再验算九栏算术够不够得着（Tharp Ch.3；4009）</td></tr>
+    <tr><td class="k">①②</td><td>A股，日线决策＋收盘后复核，单市场起步；沪深主板/创业板日均额前 200 趋势股，排除 ST/*ST、上市&lt;120 日、画不出结构的票；加密不在本版</td></tr>
+    <tr><td class="k">③</td><td>S1 回调恢复（与 v2 协议逐字一致）：①信号棒含自身前 20 根内出现过严格 60 根收盘新高；②3–12 根内已确认摆动低点 L（k=2、取最近）；③收盘严格创 10 根收盘新高；④风险/入场 ∈ (1%, 12%]；持仓期忽略新信号——<b>无任何附加过滤</b></td></tr>
+    <tr><td class="k">④</td><td><b>基线（v2 协议）</b>：信号次日开盘价成交</td></tr>
+    <tr><td class="k">⑤</td><td><b>基线（v2 协议）</b>：价格=L 低点，<b>盘中触价即离场</b>；跳空穿越按开盘价记账；跌停无法成交→次日竞价挂跌停价（执行预案，非口径变更）</td></tr>
+    <tr><td class="k">⑥</td><td><b>基线（v2 协议）</b>：目标=入场+2×风险，盘中触价成交；20 根未触两界→第 20 根收盘离场；开盘已越界先处理；日内双触按毛 −1R</td></tr>
+    <tr><td class="k">⑦</td><td>教学算例 1%（账户 10 万、单笔 1000 元）；受 100 股单位、可用现金、并行预算、压力损失共同约束取最小数量；<b>无自动升仓路径</b>——30 笔不授予升仓或实盘资格</td></tr>
+    <tr><td class="k">⑧⑨</td><td>九字段＋10/30 笔复盘；修改走复盘→回测→版本</td></tr>
   </table>
+  <p class="hint" style="padding:.5rem .85rem;border-top:1px solid #e8e5dc"><b>待回测清单</b>（未回测变体——采用须单独回测并独立命名，不得引用 v2 统计）：</p>
+  <ul class="hint" style="padding:.0rem .85rem .5rem 2rem;border-top:none;margin-top:0">
+    <li>量能 &gt;20 日均量 1/3 过滤</li>
+    <li>同日涨停否定</li>
+    <li>9:25 后按开盘 ±0.5% 限价、当日未成交撤单</li>
+    <li>收盘确认型止损（收盘破 L 次日开盘离场）</li>
+    <li>+2R 触及当日收盘全平</li>
+    <li>混合政策（半仓 2R＋半仓跟踪）</li>
+  </ul>
 </div>
 <div>
   <p><b>逐栏自检五问</b>（填完对照）：</p>

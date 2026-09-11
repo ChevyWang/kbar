@@ -23,7 +23,7 @@ course/
 
 ## 教材依据（grounding 到章）
 
-Grimes《The Art and Science of Technical Analysis》Part III（setup/入场/止损/出场）· Brooks《Reversals》· Harris《交易与交易所》（微观结构）· Kelly (1956)；学术柱 Osler（止损聚集）。回测与实验数据：`private/`（PROTOCOL-trader1-v2 / backtest_p4 / variants / windows；v1 审计 87 笔 + v2.1 修正研究594笔 + 三执行变体 + 相关性矩阵），面向读者的数字由脚本计算并过 `tools/verify_data.py`。
+Grimes《The Art and Science of Technical Analysis》Part III（setup/入场/止损/出场）· Brooks《Reversals》· Harris《交易与交易所》（微观结构）· Kelly (1956)；学术柱 Osler（止损聚集）。回测与实验数据（PROTOCOL-trader1-v2 / backtest_p4 / variants / windows；v1 审计 87 笔 + v2.1 修正研究594笔 + 三执行变体 + 相关性矩阵）随课件源仓维护，面向读者的数字由脚本计算并过 `tools/verify_data.py`。
 
 ## 机制说明（2026-09-09 起）
 
