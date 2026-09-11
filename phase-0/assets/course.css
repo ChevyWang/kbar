@@ -256,3 +256,55 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
 /* 示意图容器 */
 .schem { margin: 1.6rem 0; }
 .schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: left; }
+
+/* ---------- v1.7（批次 D 移动端，2026-09-11）：<768px 响应式（纯 CSS，无 JS） ----------
+ * 分层裁决：本块随 phase-0 先行落地；phase1–6 的 course.css 待推广批次同步，期间两版有意分叉。
+ * 版心：46rem 收 fluid（padding 1rem / max-width 100%），正文行宽仍以 46rem 封顶；
+ * 图表：candles.js 的 SVG（[data-kbar-chart]）不再整体缩到不可读，改为容器横向滚动
+ *       + 纯 CSS「← 滑动查看完整图表 →」提示（scroll() 时间线：仅真的可滚时出现，滚到底收起；
+ *       旧浏览器不支持时间线时提示不显示，滚动功能不受影响）；
+ * 表格：<768px 宽表收为横滚容器（不卡片化），td.num 右对齐与等宽数字不变；
+ * 控件：页脚导航补折行；.pb-ctrl 基线已带 flex-wrap。lesson-toc 维持 <1240px 隐藏，移动端不出现。 */
+@media (max-width: 767.98px) {
+  /* 版心 fluid，正文行宽仍受控（左对齐排版下右侧自然留白） */
+  body { max-width: 100%; padding: 1.2rem 1rem 3rem; }
+  p, ul, ol, blockquote, dl, figcaption, .callout { max-width: 46rem; }
+
+  /* 图表横滚：SVG 保持原始宽度（覆盖 chart()/schematic() 的内联 max-width:100%），
+   * display:block + margin auto：图窄于容器时仍居中，溢出时从左缘起可完整滚动（居中溢出左半不可达是老坑） */
+  svg[data-kbar-chart] { max-width: none !important; display: block; margin-inline: auto; }
+  figure:has(> svg[data-kbar-chart]),
+  div:has(> svg[data-kbar-chart]) { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .quiz .q-stage { justify-content: safe center; }   /* flex 居中溢出的同款保护 */
+
+  /* 滑动提示：基线折叠（height 0）；时间线激活（=容器可滚）才展开，滚到底自动收起 */
+  .pb-chart::after,
+  .term-schem::after,
+  figure:has(> svg[data-kbar-chart])::before {
+    content: "← 滑动查看完整图表 →";
+    display: block; position: sticky; left: 0; width: 100%;
+    height: 0; opacity: 0; overflow: hidden; white-space: nowrap;
+    font-family: var(--sans); font-size: .72rem; line-height: 1.6;
+    color: var(--faint); text-align: center; pointer-events: none;
+  }
+
+  /* 宽表横滚：display:block 让 table 自身成为滚动容器（表头表体渲染不变） */
+  table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* 控件与页脚折行 */
+  footer.course .nav { flex-wrap: wrap; }
+}
+@supports (animation-timeline: scroll()) {
+  @media (max-width: 767.98px) {
+    .pb-chart::after,
+    .term-schem::after,
+    figure:has(> svg[data-kbar-chart])::before {
+      animation: kbar-hint linear both;
+      animation-timeline: scroll(nearest inline);
+    }
+  }
+}
+@keyframes kbar-hint {
+  0%, 86% { opacity: 1; height: 1.3rem; }
+  100% { opacity: 0; height: 0; }
+}
