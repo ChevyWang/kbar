@@ -436,7 +436,9 @@
     var hasVol = !!(spec.vol && spec.vol.length === n);
     var volH = hasVol ? Math.round(h * 0.16) : 0;
     var hasPhase = (spec.ann || []).some(function (a) { return a.t === 'phase'; });
-    var padT = (spec.padT != null) ? spec.padT : (hasPhase ? 34 : 14), padL = 8, padR = 52;
+    var hasAbove = (spec.ann || []).some(function (a) { return (a.t === 'label' || a.t === 'brace') && a.pos !== 'below'; });
+    // 上方标注（label/brace 的文字在图顶上方 ~18px）需要 34px 顶边距，否则被画布裁掉
+    var padT = (spec.padT != null) ? spec.padT : ((hasPhase || hasAbove) ? 34 : 14), padL = 8, padR = 52;
     var capH = 10;
     var plotW = w - padL - padR, plotH = h - padT - volH - capH;
 
@@ -495,7 +497,7 @@
       var c = a.color || INK;
       if (a.t === 'label') {
         var k = bars[Math.max(0, Math.min(n - 1, a.i))];
-        var yy = a.pos === 'below' ? y(k.l) + 15 : y(k.h) - 8;
+        var yy = a.pos === 'below' ? Math.min(y(k.l) + 15, h - volH - 4) : Math.max(y(k.h) - 8, 12);
         s += '<text x="' + x(a.i) + '" y="' + yy + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" font-weight="700" fill="' + c + '">' + a.text + '</text>';
       } else if (a.t === 'arrow') {
         var x1 = x(a.i1), y1 = y(a.p1), x2 = x(a.i2), y2 = y(a.p2);

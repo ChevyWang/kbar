@@ -206,11 +206,30 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
 .steps > li:last-child { margin-bottom: 0; }
 
 /* ---------- 打印 ---------- */
+/* v1.3（D8 导航）：宽屏左侧小节导航（nav.js 自动生成），利用左留白；<1240px 完全隐藏，窄屏体验不变 */
+.lesson-toc { display: none; }
+@media (min-width: 1240px) {
+  .lesson-toc {
+    display: block; position: fixed; top: 2.2rem;
+    left: calc(50% - 23rem - 13rem - 1rem);      /* 版心左缘再向左 16px */
+    width: 13rem; max-height: calc(100vh - 4.4rem); overflow-y: auto;
+    font-family: var(--sans); font-size: .78rem; line-height: 1.45;
+    border-left: 2px solid var(--line); padding: .1rem 0 .4rem .9rem;
+    scrollbar-width: thin;
+  }
+}
+.lesson-toc .lt-title { font-weight: 700; font-size: .72rem; letter-spacing: .14em; color: var(--faint); margin-bottom: .55rem; }
+.lesson-toc a { display: block; color: var(--muted); text-decoration: none; padding: .28rem 0 .28rem .6rem; margin-left: calc(-.9rem - 2px); border-left: 2px solid transparent; }
+.lesson-toc a.on { color: var(--ink); font-weight: 600; border-left-color: var(--ink); }
+.lesson-toc .lt-no { color: var(--faint); font-weight: 700; margin-right: .35rem; }
+.lesson-toc a.on .lt-no { color: var(--ink); }
+
 @media print {
   body { font-size: 11.5pt; max-width: none; padding: 0; }
   .quiz, .ask-teacher, footer.course .nav, .pb-ctrl { display: none; }
   h2 { break-after: avoid; }
   figure, .note, details.answer { break-inside: avoid; }
+  .lesson-toc { display: none !important; }
   a { border-bottom: none; color: var(--ink); }
 }
 
