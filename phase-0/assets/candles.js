@@ -358,7 +358,7 @@
       var note = '';
       if (opts.notes) {
         var txt = opts.notes[k - 1] || opts.prompt || '';
-        if (txt) note = '<div class="pb-note" style="max-width:' + ((o.w || 640) - 20) + 'px;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + txt + '</div>';
+        if (txt) note = '<div class="pb-note" style="box-sizing:border-box;max-width:' + ((o.w || 640) - 20) + 'px;height:6em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + txt + '</div>';
       }
       root.innerHTML =
         '<div class="pb-chart">' + chart(candles, o) + '</div>' + note +
@@ -392,9 +392,9 @@
       var html = '<div class="gal-title" style="font-family:var(--sans);font-weight:700;font-size:.95rem;margin:.4rem 0 .2rem;text-align:center">' + sl.title + '</div>' +
         '<div class="pb-chart">' + chart(sl.data, o) + '</div>';
       if (revealed && sl.note) {
-        html += '<div style="max-width:' + (w - 20) + 'px;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + sl.note + '</div>';
+        html += '<div style="box-sizing:border-box;max-width:' + (w - 20) + 'px;height:7.2em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + sl.note + '</div>';
       } else if (!revealed) {
-        html += '<div style="text-align:center;margin-top:.6rem"><button type="button" class="pb-btn" data-a="reveal">先自己读图 · 再点这里揭晓判词</button></div>';
+        html += '<div style="height:7.2em;display:flex;align-items:center;justify-content:center"><button type="button" class="pb-btn" data-a="reveal">先自己读图 · 再点这里揭晓判词</button></div>';
       }
       html += '<div class="pb-ctrl"><button type="button" class="pb-btn" data-a="prev">← 上一例</button>' +
         '<span class="pb-count">' + (i + 1) + ' / ' + slides.length + '</span>' +

@@ -182,6 +182,19 @@ details.answer .ans-body p { margin: .5rem 0; }
 .lesson-card .d { font-size: .88rem; color: var(--muted); font-family: var(--sans); line-height: 1.6; }
 .lesson-card .meta { font-family: var(--sans); font-size: .78rem; color: var(--faint); margin-top: .4rem; }
 
+/* ---------- v1.1 UX 标准（STANDARDS-course-UX §3.5）：列表基线 + 步骤组件 ---------- */
+ol:not(.checklist) > li, ul:not(.checklist) > li { margin-bottom: .3em; }
+ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
+.steps { counter-reset: step; list-style: none; padding-left: 0; margin: 1rem 0 .6rem; }
+.steps > li { counter-increment: step; position: relative; padding-left: 2.3rem; margin-bottom: .65rem; }
+.steps > li::before {
+  content: counter(step); position: absolute; left: 0; top: .22rem;
+  width: 1.6rem; height: 1.6rem; border: 1.5px solid var(--ink); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font: 700 .78rem/1 var(--sans); background: #fff;
+}
+.steps > li:last-child { margin-bottom: 0; }
+
 /* ---------- 打印 ---------- */
 @media print {
   body { font-size: 11.5pt; max-width: none; padding: 0; }
