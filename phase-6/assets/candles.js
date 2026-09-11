@@ -26,6 +26,11 @@
  *         profile 在 asOf 模式必须带 at（其数据窗收棒时点）；否则视为未来信息，整块不画。
  *   Kbar.playback(selector, candles, opts) -> 交互式逐根揭示训练器（基于 chart 的 reveal）
  *       opts.live:true  // 时点模式：每步按已揭示前缀重算纵轴/量能比例尺（默认 false=固定全集刻度，示范用）
+ *   v8 无障碍增补（playback/gallery）：重渲染后焦点还给触发按钮；解说条/判词区 aria-live=polite；
+ *       组件内 ←/→ 键步进；playback 自动播放（▶/⏸ + 0.5×/1×/2× 倍速，1×=1.2s/根，到末根自动停，
+ *       对齐 TradingView Bar Replay；手动步进/翻帧行为不变，手动操作先停自动播放）；
+ *       gallery 自测模式默认开（STANDARDS §8；显式传 selfTest:false 才关闭）；
+ *       chart 增 opts.title（品种名，进 aria 摘要）；组件按钮触控目标 ≥44×44px（样式由组件注入）。
  * 约定: 红涨绿跌（A股惯例）。方向的双重无障碍编码，勿删：
  *   ① 阳线实体空心（描边不填充），阴线实体实心——红绿色盲与黑白打印下"空心=涨、实心=跌"仍可辨；
  *   ② 单根图开=左侧刻度、收=右侧刻度。
@@ -34,6 +39,18 @@
   'use strict';
   var UP = '#d33a2c', DOWN = '#1a7f37', INK = '#1c1c1a', MUTED = '#6e6c64', FAINT = '#a3a198';
   var SANS = '-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  /* 触控目标 ≥44×44px（WCAG 2.5.5/AAA 2.5.8 建议）：由组件注入样式，免去同步 7 份 course.css */
+  function ensureBtnStyle() {
+    if (typeof document === 'undefined' || !document.head || document.getElementById('kbar-a11y-style')) return;
+    var st = document.createElement('style');
+    st.id = 'kbar-a11y-style';
+    st.textContent = '.pb-btn{min-height:44px;min-width:44px}';
+    document.head.appendChild(st);
+  }
 
   function candle(k, opts) {
     opts = opts || {};
@@ -211,7 +228,18 @@
     var y = function (p) { return padT + (1 - (p - lo) / range) * plotH; };
     var step = plotW / layoutN, bw = Math.min(step * 0.6, 26);
 
-    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" style="max-width:100%">';
+    // 文字替代（v8）：role="img" 无名 SVG 对读屏器完全沉默。摘要句=品种(可选 opts.title)/根数/区间/最新收盘。
+    // asOf 模式不提总根数——裁切身份（asof_gate T6）要求前缀与全窗裁切输出逐字节一致，总长属未来信息。
+    var aLo = Infinity, aHi = -Infinity;
+    for (var ai = 0; ai < reveal; ai++) { var ak = candles[ai]; if (ak.l < aLo) aLo = ak.l; if (ak.h > aHi) aHi = ak.h; }
+    var aRg = (aHi - aLo) || 1;
+    var aria = (opts.title ? esc(opts.title) + '：' : '') + 'K线图' +
+      (asOf != null ? '，已揭示 ' + reveal + ' 根'
+        : (reveal < n ? '，共 ' + n + ' 根，已揭示前 ' + reveal + ' 根' : '，共 ' + n + ' 根')) +
+      '，价格区间 ' + fmtPrice(aLo, aRg) + '–' + fmtPrice(aHi, aRg) +
+      '，最新收盘 ' + fmtPrice(candles[reveal - 1].c, aRg) + '。';
+
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + aria + '" style="max-width:100%">';
 
     // 顶部阶段带（Wyckoff A–E）：{i1,i2,label,color}，i 为 0-based 棒索引
     phases.forEach(function (P, idx) {
@@ -344,16 +372,41 @@
    * opts 增补（v6）：notes:[每根解说（HTML），索引=已揭示根数-1]，prompt:[无解说根的默认提示]
    *                 hl 未显式给出时，当前根自动带"下划线+三角"标记（随回放移动）
    * opts 增补（v7）：base:根号偏移——传切片（如 ETH.slice(11)）时给全集起始根号（11），
-   *                 计数器显示全局根号"已揭示 12 / 30 根"，与解说"第12根"对齐 */
+   *                 计数器显示全局根号"已揭示 12 / 30 根"，与解说"第12根"对齐
+   * v8 无障碍：draw 重建 innerHTML 后把焦点还给触发按钮（键盘流不从文档头重来）；解说条 aria-live=polite；
+   *           组件内 ←/→ 步进；自动播放 ▶/⏸ + 0.5×/1×/2×（1×=1.2s/根，setTimeout 链，到末根自动停；
+   *           手动步进行为不变——任何手动操作先停自动播放；末根再按播放=从头重放）。 */
   function playback(sel, candles, opts) {
     opts = opts || {};
     var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
     if (!root) return;
+    ensureBtnStyle();
     var k = Math.max(1, Math.min(candles.length, opts.start == null ? 1 : opts.start));
     var live = !!opts.live; // 时点模式：每步按已揭示前缀重算纵轴/量能比例尺（默认 false=固定全集刻度，示范用）
     var base = opts.base || 0; // 切片回放的全局根号偏移（默认 0=整图回放）
+    var playing = false, timer = null, speed = 1;
+    var CAN_TIMER = typeof setTimeout === 'function' && typeof clearTimeout === 'function';
 
-    function draw() {
+    function stopAuto() { playing = false; if (timer) { clearTimeout(timer); timer = null; } }
+    function schedule() { timer = setTimeout(function () { step(true); }, 1200 / speed); }
+    function step(auto) {
+      if (k >= candles.length) { stopAuto(); draw('[data-a="play"]'); return; }
+      k = Math.min(candles.length, k + 1);
+      if (auto && k >= candles.length) stopAuto();         // 到末根自动停
+      draw(auto ? '[data-a="play"]' : '[data-a="next"]');
+      if (auto && playing) schedule();
+    }
+    /* 重渲染后焦点还给触发按钮；目标缺失/禁用时退到控制条任一可用键。DOM 替身环境（asof_gate T7d）无焦点语义，静默跳过 */
+    function refocus(focusSel) {
+      var el = root.querySelector(focusSel);
+      if (el && typeof el.focus !== 'function') return;
+      if (el && !el.disabled) return el.focus();
+      var fb = null;
+      try { fb = root.querySelector('.pb-ctrl button:not(:disabled)'); } catch (e) { fb = null; }
+      if (fb && typeof fb.focus === 'function') fb.focus();
+    }
+
+    function draw(focusSel) {
       var o = {};
       for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'base' && key !== 'asOf' && key !== 'reveal' && key !== 'notes' && key !== 'prompt') o[key] = opts[key];
       if (live) o.asOf = k - 1; else o.reveal = k;
@@ -361,55 +414,114 @@
       var note = '';
       if (opts.notes) {
         var txt = opts.notes[k - 1] || opts.prompt || '';
-        if (txt) note = '<div class="pb-note" style="box-sizing:border-box;max-width:' + ((o.w || 640) - 20) + 'px;height:6em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + txt + '</div>';
+        if (txt) note = '<div class="pb-note" aria-live="polite" style="box-sizing:border-box;max-width:' + ((o.w || 640) - 20) + 'px;height:6em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + txt + '</div>';
       }
       root.innerHTML =
         '<div class="pb-chart">' + chart(candles, o) + '</div>' + note +
         '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + (base + k) + ' / ' + (base + candles.length) + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
         '<button type="button" class="pb-btn" data-a="prev">← 退一根</button>' +
         '<button type="button" class="pb-btn pb-next" data-a="next">下一根 →</button>' +
+        '<button type="button" class="pb-btn" data-a="play" aria-pressed="' + (playing ? 'true' : 'false') + '"' + (CAN_TIMER ? '' : ' disabled') + '>' + (playing ? '⏸ 暂停' : '▶ 自动播放') + '</button>' +
+        '<span class="pb-speed" role="group" aria-label="回放速度" style="display:inline-flex;gap:.3rem;align-items:center">' +
+        '<button type="button" class="pb-btn" data-a="speed" data-s="0.5" aria-pressed="' + (speed === 0.5 ? 'true' : 'false') + '">0.5×</button>' +
+        '<button type="button" class="pb-btn" data-a="speed" data-s="1" aria-pressed="' + (speed === 1 ? 'true' : 'false') + '">1×</button>' +
+        '<button type="button" class="pb-btn" data-a="speed" data-s="2" aria-pressed="' + (speed === 2 ? 'true' : 'false') + '">2×</button>' +
+        '</span>' +
         '<button type="button" class="pb-btn" data-a="reset">⟲ 重播</button></div>';
-      root.querySelector('[data-a="next"]').disabled = k >= candles.length;
-      root.querySelector('[data-a="prev"]').disabled = k <= 1;
-      root.querySelector('[data-a="next"]').onclick = function () { k = Math.min(candles.length, k + 1); draw(); };
-      root.querySelector('[data-a="prev"]').onclick = function () { k = Math.max(1, k - 1); draw(); };
-      root.querySelector('[data-a="reset"]').onclick = function () { k = 1; draw(); };
+      var next = root.querySelector('[data-a="next"]'), prev = root.querySelector('[data-a="prev"]');
+      next.disabled = k >= candles.length;
+      prev.disabled = k <= 1;
+      next.onclick = function () { stopAuto(); step(false); };
+      prev.onclick = function () { stopAuto(); k = Math.max(1, k - 1); draw('[data-a="prev"]'); };
+      root.querySelector('[data-a="reset"]').onclick = function () { stopAuto(); k = 1; draw('[data-a="reset"]'); };
+      root.querySelector('[data-a="play"]').onclick = function () {
+        if (playing) { stopAuto(); draw('[data-a="play"]'); return; }
+        if (k >= candles.length) k = 0;                   // 末根再按播放=从头重放
+        playing = true;
+        step(true);                                       // 立即前进一根，再按当前倍速计时
+      };
+      var spBtns = typeof root.querySelectorAll === 'function' ? root.querySelectorAll('[data-a="speed"]') : [];
+      for (var si = 0; si < spBtns.length; si++) (function (b) {
+        b.onclick = function () {
+          speed = parseFloat(b.getAttribute('data-s')) || 1;
+          if (playing) { if (timer) { clearTimeout(timer); timer = null; } schedule(); } // 立即按新速度续播
+          draw('[data-a="speed"][data-s="' + speed + '"]');
+        };
+      })(spBtns[si]);
+      if (focusSel) refocus(focusSel);
+    }
+
+    /* 组件内 ←/→ 步进（焦点在组件内任意位置时生效；不拦截输入框） */
+    if (typeof root.addEventListener === 'function' && !root._kbarArrows) {
+      root._kbarArrows = true;
+      root.addEventListener('keydown', function (e) {
+        if (e.defaultPrevented || e.altKey || e.metaKey || e.ctrlKey) return;
+        var t = e.target;
+        if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || '')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); stopAuto(); step(false); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); stopAuto(); if (k > 1) { k--; draw('[data-a="prev"]'); } }
+      });
     }
     draw();
   }
 
   /* ---------- v6：实例库幻灯片（真实K线图逐张切换）----------
    * slides: [{title, data, opts(chart 其余选项), note}]   note 支持简单 HTML
-   * opts: {w,h, selfTest:true → 判词先遮住，读图后点"揭晓"}
-   * 复用 course.css 的 pb-btn/pb-count 按钮样式。 */
+   * opts: {w,h, selfTest:false → 关自测直接出判词}（v8：自测模式默认开，对齐 STANDARDS §8）
+   * 复用 course.css 的 pb-btn/pb-count 按钮样式。
+   * v8 无障碍：判词区 aria-live=polite；翻帧后焦点还给触发按钮（揭晓后给"下一例"）；组件内 ←/→ 翻帧。 */
   function gallery(sel, slides, opts) {
     opts = opts || {};
     var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
     if (!root || !slides || !slides.length) return;
-    var i = 0, revealed = !opts.selfTest;
+    ensureBtnStyle();
+    var i = 0;
+    var selfTest = opts.selfTest !== false; // 自测默认开：判词先遮住，读图后点"揭晓"；显式传 selfTest:false 才直接出判词
+    var revealed = !selfTest;
     var w = opts.w || 640, h = opts.h || 300;
-    function draw() {
+    function refocus(focusSel) {
+      var el = root.querySelector(focusSel);
+      if (el && typeof el.focus !== 'function') return;
+      if (el && !el.disabled) return el.focus();
+      var fb = null;
+      try { fb = root.querySelector('.pb-ctrl button:not(:disabled)'); } catch (e) { fb = null; }
+      if (fb && typeof fb.focus === 'function') fb.focus();
+    }
+    function draw(focusSel) {
       var sl = slides[i];
       var o = { w: w, h: h, yLabels: true };
       for (var key in (sl.opts || {})) o[key] = sl.opts[key];
+      o.title = o.title || sl.title;                     // 实例标题进图表 aria 摘要
       var html = '<div class="gal-title" style="font-family:var(--sans);font-weight:700;font-size:.95rem;margin:.4rem 0 .2rem;text-align:center">' + sl.title + '</div>' +
-        '<div class="pb-chart">' + chart(sl.data, o) + '</div>';
+        '<div class="pb-chart">' + chart(sl.data, o) + '</div>' +
+        '<div class="gal-note" aria-live="polite">';
       if (revealed && sl.note) {
         html += '<div style="box-sizing:border-box;max-width:' + (w - 20) + 'px;height:7.2em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + sl.note + '</div>';
       } else if (!revealed) {
         html += '<div style="height:7.2em;display:flex;align-items:center;justify-content:center"><button type="button" class="pb-btn" data-a="reveal">先自己读图 · 再点这里揭晓判词</button></div>';
       }
-      html += '<div class="pb-ctrl"><button type="button" class="pb-btn" data-a="prev">← 上一例</button>' +
+      html += '</div><div class="pb-ctrl"><button type="button" class="pb-btn" data-a="prev">← 上一例</button>' +
         '<span class="pb-count">' + (i + 1) + ' / ' + slides.length + '</span>' +
         '<button type="button" class="pb-btn" data-a="next">下一例 →</button></div>';
       root.innerHTML = html;
       var prev = root.querySelector('[data-a="prev"]'), next = root.querySelector('[data-a="next"]');
       prev.disabled = i <= 0;
       next.disabled = i >= slides.length - 1;
-      prev.onclick = function () { i--; revealed = !opts.selfTest; draw(); };
-      next.onclick = function () { i++; revealed = !opts.selfTest; draw(); };
+      prev.onclick = function () { i--; revealed = !selfTest; draw('[data-a="prev"]'); };
+      next.onclick = function () { i++; revealed = !selfTest; draw('[data-a="next"]'); };
       var rv = root.querySelector('[data-a="reveal"]');
-      if (rv) rv.onclick = function () { revealed = true; draw(); };
+      if (rv) rv.onclick = function () { revealed = true; draw('[data-a="next"]'); }; // 揭晓按钮已随重绘消失，焦点交给"下一例"
+      if (focusSel) refocus(focusSel);
+    }
+    if (typeof root.addEventListener === 'function' && !root._kbarArrows) {
+      root._kbarArrows = true;
+      root.addEventListener('keydown', function (e) {
+        if (e.defaultPrevented || e.altKey || e.metaKey || e.ctrlKey) return;
+        var t = e.target;
+        if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || '')) return;
+        if (e.key === 'ArrowRight' && i < slides.length - 1) { e.preventDefault(); i++; revealed = !selfTest; draw('[data-a="next"]'); }
+        else if (e.key === 'ArrowLeft' && i > 0) { e.preventDefault(); i--; revealed = !selfTest; draw('[data-a="prev"]'); }
+      });
     }
     draw();
   }
@@ -568,7 +680,7 @@
     /* 配色切换：右上角固定小圆钮，图标=双色迷你K线（空心阳线+实心阴线，即图例本身） */
     var b=document.createElement('button');
     b.id='kbar-palette-toggle';b.type='button';
-    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:34px;height:34px;padding:0;border:1px solid rgba(28,28,26,.16);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(28,28,26,.16);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
     var icon=function(){b.innerHTML='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">'
       +'<line x1="6.6" y1="2.5" x2="6.6" y2="17.5" stroke="'+UP+'" stroke-width="1.4"/>'
       +'<rect x="3.8" y="6.5" width="5.6" height="7.5" rx="1" fill="none" stroke="'+UP+'" stroke-width="1.4"/>'
