@@ -143,7 +143,11 @@
       s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="2"/>';
       s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="2" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 8) + '" text-anchor="middle" font-family="' + SANS + '" font-size="11" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
-      if (opts.hl === i) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 15) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 15) + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      if (opts.hl === i) {
+      var uy2 = h - capH + 15;
+      s += '<line x1="' + (cx - bw / 2) + '" y1="' + uy2 + '" x2="' + (cx + bw / 2) + '" y2="' + uy2 + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      s += '<polygon points="' + cx + ',' + (uy2 - 4.5) + ' ' + (cx - 4.5) + ',' + (uy2 + 0.5) + ' ' + (cx + 4.5) + ',' + (uy2 + 0.5) + '" fill="' + INK + '"/>';
+    }
     });
     s += '</svg>';
     return s;
@@ -266,13 +270,15 @@
       if (L.label) s += '<text x="' + (w - 4) + '" y="' + (y(L.y) + 3.5) + '" text-anchor="end" font-family="' + SANS + '" font-size="10.5" fill="' + lc + '">' + L.label + '</text>';
     });
 
-    // 右侧价格刻度
+    // 右侧价格刻度：整数步进网格（1/2/2.5/5×10^k），供读价位使用
     if (opts.yLabels) {
-      [0, 1, 2, 3].forEach(function (i) {
-        var p = lo + range * i / 3;
+      var raw = range / 5, mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10)), nm = raw / mag;
+      var ystep = (nm <= 1 ? 1 : nm <= 2 ? 2 : nm <= 2.5 ? 2.5 : nm <= 5 ? 5 : 10) * mag;
+      for (var tk = Math.ceil(lo / ystep - 1e-9); tk * ystep <= hi + 1e-9; tk++) {
+        var p = tk * ystep;
         s += '<line x1="' + padL + '" y1="' + y(p) + '" x2="' + (padL + plotW) + '" y2="' + y(p) + '" stroke="#e4e2d9" stroke-width="1"/>';
         s += '<text x="' + (padL + plotW + 5) + '" y="' + (y(p) + 3.5) + '" font-family="' + SANS + '" font-size="10" fill="' + FAINT + '">' + fmtPrice(p, range) + '</text>';
-      });
+      }
     }
 
     // 斜线（趋势线/通道线）：{i1,p1,i2,p2,color,dash,label}，i 为 0-based 棒索引
@@ -295,7 +301,11 @@
       s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + y(k.l) + '" stroke="' + col + '" stroke-width="1.7"/>';
       s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH + '" rx="1.5" fill="' + (bull ? 'none' : col) + '" stroke="' + col + '" stroke-width="' + (bull ? 1.4 : 0) + '"/>';
       if (hasCaps && opts.caps[i]) s += '<text x="' + cx + '" y="' + (h - 7) + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" fill="' + MUTED + '">' + opts.caps[i] + '</text>';
-      if (opts.hl === i && (reveal === n || asOf != null)) s += '<line x1="' + (cx - bw / 2) + '" y1="' + (h - capH + 14) + '" x2="' + (cx + bw / 2) + '" y2="' + (h - capH + 14) + '" stroke="' + INK + '" stroke-width="2.5"/>';
+      if (opts.hl === i && i < reveal) {
+        var uy = h - capH + 14;
+        s += '<line x1="' + (cx - bw / 2) + '" y1="' + uy + '" x2="' + (cx + bw / 2) + '" y2="' + uy + '" stroke="' + INK + '" stroke-width="2.5"/>';
+        s += '<polygon points="' + cx + ',' + (uy - 4.5) + ' ' + (cx - 4.5) + ',' + (uy + 0.5) + ' ' + (cx + 4.5) + ',' + (uy + 0.5) + '" fill="' + INK + '"/>';
+      }
     });
 
     // 结构标注（摆动点等）
@@ -330,21 +340,32 @@
     return s;
   }
 
-  /* ---------- v2：交互式逐根揭示训练器 ---------- */
+  /* ---------- v2：交互式逐根揭示训练器 ----------
+   * opts 增补（v6）：notes:[每根解说（HTML），索引=已揭示根数-1]，prompt:[无解说根的默认提示]
+   *                 hl 未显式给出时，当前根自动带"下划线+三角"标记（随回放移动）
+   * opts 增补（v7）：base:根号偏移——传切片（如 ETH.slice(11)）时给全集起始根号（11），
+   *                 计数器显示全局根号"已揭示 12 / 30 根"，与解说"第12根"对齐 */
   function playback(sel, candles, opts) {
     opts = opts || {};
     var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
     if (!root) return;
     var k = Math.max(1, Math.min(candles.length, opts.start == null ? 1 : opts.start));
     var live = !!opts.live; // 时点模式：每步按已揭示前缀重算纵轴/量能比例尺（默认 false=固定全集刻度，示范用）
+    var base = opts.base || 0; // 切片回放的全局根号偏移（默认 0=整图回放）
 
     function draw() {
       var o = {};
-      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'asOf' && key !== 'reveal') o[key] = opts[key];
+      for (var key in opts) if (key !== 'start' && key !== 'live' && key !== 'base' && key !== 'asOf' && key !== 'reveal' && key !== 'notes' && key !== 'prompt') o[key] = opts[key];
       if (live) o.asOf = k - 1; else o.reveal = k;
+      if (opts.hl == null) o.hl = k - 1;                 // 当前根=标记根（全站统一"下划线+三角"）
+      var note = '';
+      if (opts.notes) {
+        var txt = opts.notes[k - 1] || opts.prompt || '';
+        if (txt) note = '<div class="pb-note" style="box-sizing:border-box;max-width:' + ((o.w || 640) - 20) + 'px;height:6em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + txt + '</div>';
+      }
       root.innerHTML =
-        '<div class="pb-chart">' + chart(candles, o) + '</div>' +
-        '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + k + ' / ' + candles.length + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
+        '<div class="pb-chart">' + chart(candles, o) + '</div>' + note +
+        '<div class="pb-ctrl"><span class="pb-count">已揭示 ' + (base + k) + ' / ' + (base + candles.length) + ' 根' + (live ? '（时点模式）' : '') + '</span>' +
         '<button type="button" class="pb-btn" data-a="prev">← 退一根</button>' +
         '<button type="button" class="pb-btn pb-next" data-a="next">下一根 →</button>' +
         '<button type="button" class="pb-btn" data-a="reset">⟲ 重播</button></div>';
@@ -353,6 +374,42 @@
       root.querySelector('[data-a="next"]').onclick = function () { k = Math.min(candles.length, k + 1); draw(); };
       root.querySelector('[data-a="prev"]').onclick = function () { k = Math.max(1, k - 1); draw(); };
       root.querySelector('[data-a="reset"]').onclick = function () { k = 1; draw(); };
+    }
+    draw();
+  }
+
+  /* ---------- v6：实例库幻灯片（真实K线图逐张切换）----------
+   * slides: [{title, data, opts(chart 其余选项), note}]   note 支持简单 HTML
+   * opts: {w,h, selfTest:true → 判词先遮住，读图后点"揭晓"}
+   * 复用 course.css 的 pb-btn/pb-count 按钮样式。 */
+  function gallery(sel, slides, opts) {
+    opts = opts || {};
+    var root = typeof sel === 'string' ? document.querySelector(sel) : sel;
+    if (!root || !slides || !slides.length) return;
+    var i = 0, revealed = !opts.selfTest;
+    var w = opts.w || 640, h = opts.h || 300;
+    function draw() {
+      var sl = slides[i];
+      var o = { w: w, h: h, yLabels: true };
+      for (var key in (sl.opts || {})) o[key] = sl.opts[key];
+      var html = '<div class="gal-title" style="font-family:var(--sans);font-weight:700;font-size:.95rem;margin:.4rem 0 .2rem;text-align:center">' + sl.title + '</div>' +
+        '<div class="pb-chart">' + chart(sl.data, o) + '</div>';
+      if (revealed && sl.note) {
+        html += '<div style="box-sizing:border-box;max-width:' + (w - 20) + 'px;height:7.2em;overflow-y:auto;margin:.6rem auto 0;text-align:left;font-family:var(--sans);font-size:.92rem;line-height:1.75;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.7rem 1rem;color:var(--ink,#1c1c1a)">' + sl.note + '</div>';
+      } else if (!revealed) {
+        html += '<div style="height:7.2em;display:flex;align-items:center;justify-content:center"><button type="button" class="pb-btn" data-a="reveal">先自己读图 · 再点这里揭晓判词</button></div>';
+      }
+      html += '<div class="pb-ctrl"><button type="button" class="pb-btn" data-a="prev">← 上一例</button>' +
+        '<span class="pb-count">' + (i + 1) + ' / ' + slides.length + '</span>' +
+        '<button type="button" class="pb-btn" data-a="next">下一例 →</button></div>';
+      root.innerHTML = html;
+      var prev = root.querySelector('[data-a="prev"]'), next = root.querySelector('[data-a="next"]');
+      prev.disabled = i <= 0;
+      next.disabled = i >= slides.length - 1;
+      prev.onclick = function () { i--; revealed = !opts.selfTest; draw(); };
+      next.onclick = function () { i++; revealed = !opts.selfTest; draw(); };
+      var rv = root.querySelector('[data-a="reveal"]');
+      if (rv) rv.onclick = function () { revealed = true; draw(); };
     }
     draw();
   }
@@ -379,7 +436,9 @@
     var hasVol = !!(spec.vol && spec.vol.length === n);
     var volH = hasVol ? Math.round(h * 0.16) : 0;
     var hasPhase = (spec.ann || []).some(function (a) { return a.t === 'phase'; });
-    var padT = (spec.padT != null) ? spec.padT : (hasPhase ? 34 : 14), padL = 8, padR = 52;
+    var hasAbove = (spec.ann || []).some(function (a) { return (a.t === 'label' || a.t === 'brace') && a.pos !== 'below'; });
+    // 上方标注（label/brace 的文字在图顶上方 ~18px）需要 34px 顶边距，否则被画布裁掉
+    var padT = (spec.padT != null) ? spec.padT : ((hasPhase || hasAbove) ? 34 : 14), padL = 8, padR = 52;
     var capH = 10;
     var plotW = w - padL - padR, plotH = h - padT - volH - capH;
 
@@ -438,7 +497,7 @@
       var c = a.color || INK;
       if (a.t === 'label') {
         var k = bars[Math.max(0, Math.min(n - 1, a.i))];
-        var yy = a.pos === 'below' ? y(k.l) + 15 : y(k.h) - 8;
+        var yy = a.pos === 'below' ? Math.min(y(k.l) + 15, h - volH - 4) : Math.max(y(k.h) - 8, 12);
         s += '<text x="' + x(a.i) + '" y="' + yy + '" text-anchor="middle" font-family="' + SANS + '" font-size="10.5" font-weight="700" fill="' + c + '">' + a.text + '</text>';
       } else if (a.t === 'arrow') {
         var x1 = x(a.i1), y1 = y(a.p1), x2 = x(a.i2), y2 = y(a.p2);
@@ -503,14 +562,24 @@
     return international?'international':'cn';
   }
   try { if(window.localStorage.getItem('kbar-palette')==='international'){UP='#1a7f37';DOWN='#d33a2c';} } catch(e){}
-  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, setPalette:setPalette, UP: UP, DOWN: DOWN };
+  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, gallery: gallery, setPalette:setPalette, UP: UP, DOWN: DOWN };
   if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('DOMContentLoaded',function(){
     if(document.getElementById('kbar-palette-toggle'))return;
-    var bar=document.createElement('div'),button=document.createElement('button');
-    button.id='kbar-palette-toggle';button.type='button';button.style.cssText='font:inherit;padding:.4rem .7rem;cursor:pointer';
-    var update=function(){button.textContent=UP==='#d33a2c'?'当前红涨绿跌 · 切换绿涨红跌':'当前绿涨红跌 · 切换红涨绿跌';};
-    button.onclick=function(){setPalette(UP==='#d33a2c'?'international':'cn');update();};update();bar.appendChild(button);
-    var note=document.createElement('span');note.textContent=' 阳线空心、阴线实心；配色不改变方向与评分。';bar.appendChild(note);bar.style.cssText='font:13px/1.7 sans-serif;margin:1rem 0';document.body.insertBefore(bar,document.body.firstChild);
+    /* 配色切换：右上角固定小圆钮，图标=双色迷你K线（空心阳线+实心阴线，即图例本身） */
+    var b=document.createElement('button');
+    b.id='kbar-palette-toggle';b.type='button';
+    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:34px;height:34px;padding:0;border:1px solid rgba(28,28,26,.16);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+    var icon=function(){b.innerHTML='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">'
+      +'<line x1="6.6" y1="2.5" x2="6.6" y2="17.5" stroke="'+UP+'" stroke-width="1.4"/>'
+      +'<rect x="3.8" y="6.5" width="5.6" height="7.5" rx="1" fill="none" stroke="'+UP+'" stroke-width="1.4"/>'
+      +'<line x1="13.4" y1="2.5" x2="13.4" y2="17.5" stroke="'+DOWN+'" stroke-width="1.4"/>'
+      +'<rect x="10.6" y="5.5" width="5.6" height="8.5" rx="1" fill="'+DOWN+'"/>'
+      +'</svg>';};
+    var title=function(){var t=(UP==='#d33a2c'?'配色：红涨绿跌（A股惯例），点击切换绿涨红跌':'配色：绿涨红跌（国际惯例），点击切换红涨绿跌')+'；阳线空心、阴线实心不变，配色不影响评分。';b.title=t;b.setAttribute('aria-label',t);};
+    b.onclick=function(){setPalette(UP==='#d33a2c'?'international':'cn');icon();title();};
+    icon();title();
+    document.body.appendChild(b);
+    var st=document.createElement('style');st.textContent='@media print{#kbar-palette-toggle{display:none!important}}';document.head.appendChild(st);
   });
 })();
 
