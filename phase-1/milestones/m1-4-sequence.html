@@ -38,7 +38,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
 <header class="course">
   <div class="kicker">K线训练营 · Phase 1 逐根推理 · 里程碑验收 M1.4（代表任务 2/6）</div>
   <h1>连续推理：60 根逐根档案</h1>
-  <p class="sub">每个决策时点只见截至当根的图（纵轴随已揭示前缀重算——无未来信息）。逐根提交 always-in 判断（维持也要明确确认），在 6 个检查点提交完整结构（状态/证据/价区/触发/失效/替代剧本）并通过事实门禁。<b>确认即存档、不可回改（禁止回写原判断）</b>；草稿自动保存，刷新续作。<b>通过＝「M1.4 结构化过程任务通过（自动可判部分）」——时点纪律与证据合法性；不证明行情预测能力。</b></p>
+  <p class="sub">每个决策时点只见截至当根的图（纵轴随已揭示前缀重算，无未来信息）。逐根提交 always-in 判断（维持也要明确确认（confirmation）），在 6 个检查点提交完整结构（状态/证据/价区/触发/失效/替代剧本）并通过事实门禁。<b>确认即存档、不可回改（禁止回写原判断）</b>；草稿自动保存，刷新续作。<b>通过＝「M1.4 结构化过程任务通过（自动可判部分）」，时点纪律与证据合法性；不证明行情预测能力。</b></p>
 </header>
 <p style="margin:1rem"><a href="../mastery.html">统一能力验收与学习档案（与本页专门实作分别记录）</a></p>
 
@@ -47,8 +47,8 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <ol>
     <li><b>目标行为</b>：在只见前缀的图上逐根记录 always-in（多/空/中性存疑）与依据；新信息到来时及时更新并引用证据棒；每 10 根提交一次完整结构（关键价区、触发/失效、替代剧本）。接受"无新信息，维持"——不要求每根编故事。</li>
     <li><b>先修诊断</b>：1001（always-in 与两票制）、1003（H/L 与候选/确认）、1004/1005（腿与目标）、1009（失败突破）。</li>
-    <li><b>评分（自动可判部分）</b>：60/60 根逐根提交（时点纪律）；6/6 检查点事实门禁通过——证据棒已可见、价位在可见前缀范围内、方向与触发/失效相对位置一致（多：失效&lt;触发；空：触发&lt;失效；中性：观望带上下沿不等）、替代剧本非空。</li>
-    <li><b>不自动判的部分</b>：分支质量（所选状态是否与证据相容、更新是否及时）——完成后与"生成稿参考"对照并做开放自评（三档量规＋一句修订），另记状态、不并入核心通过。人工锚定的评分键属后续工作（台账 B16）。</li>
+    <li><b>评分（自动可判部分）</b>：60/60 根逐根提交（时点纪律）；6/6 检查点事实门禁通过，证据棒已可见、价位在可见前缀范围内、方向与触发/失效相对位置一致（多：失效&lt;触发；空：触发&lt;失效；中性：观望带上下沿不等）、替代剧本非空。</li>
+    <li><b>不自动判的部分</b>：分支质量（所选状态是否与证据相容、更新是否及时），完成后与"生成稿参考"对照并做开放自评（三档量规＋一句修订），另记状态、不并入核心通过。人工锚定的评分键属后续工作（台账 B16）。</li>
     <li><b>包角色</b>：A=首次档案；B=延迟复测（建议距 A ≥24h，记录实际间隔）；C=备用（补测池，A/B 答案曝光耗尽时用）。</li>
     <li><b>成绩能证明的范围</b>：指定窗口上的过程纪律与证据引用任务达标。</li>
   </ol>
@@ -73,7 +73,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
     <a href="../index.html">← Phase 1 主页</a>
     <a href="../lessons/1010-bar-by-bar.html">回到 1010</a>
   </div>
-  <div class="citations">数据：instancelib 扫描库（yfinance 口径）未曝光日线窗口，20 根暖身＋60 根任务段；案例契约见源仓 private/m14-cases.json，抽取脚本 tools/pick_m14_windows.py 可复现。图由共享 candles.js 的截至时点视图渲染（asOf：纵轴/量能比例尺只由已揭示前缀决定）。本页无账号、无网络、无 AI 依赖。</div>
+  <div class="citations">数据：instancelib 扫描库（yfinance 口径）未曝光日线窗口，20 根暖身＋60 根任务段；案例契约见源仓 private/m14-cases.json，抽取脚本 tools/pick_m14_windows.py 可复现。图由共享 candles.js 的截至时点视图渲染（asOf：纵轴/量能（volume）比例尺只由已揭示前缀决定）。本页无账号、无网络、无 AI 依赖。</div>
 </footer>
 
 <script src="../assets/candles.js"></script>
@@ -88,7 +88,7 @@ var CASES = {
 
 /* ---------- 常量与工具 ---------- */
 var WARM = 20, TASK = 60, TOTAL = 80, CPS = [10, 20, 30, 40, 50, 60];
-var BASIS = ['无新信息——维持', '创新高/新低', '摆动结构确认变化（HH/HL/LH/LL）', '吞没或大阳/大阴线', '关键价区被拒/被承接', '其他（见备注）'];
+var BASIS = ['无新信息——维持', '创新高/新低', '摆动结构确认变化（HH/HL/LH/LL）', '吞没（Engulfing）或大阳/大阴线（bearish）', '关键价区被拒/被承接', '其他（见备注）'];
 function store() { try { var t = window.localStorage; t.setItem('__x', '1'); t.removeItem('__x'); return t; } catch (e) { return null; } }
 var LS = window.KbarLearningStore.storage;
 var LS_KEY = 'kbar-answer::M1.4::';
@@ -123,7 +123,7 @@ function refAt(bars, k) { // k=任务根数；绝对可见= bars[0..WARM+k-1]
   sw.forEach(function (s) { if (s.type === 'H') lastH = s; else lastL = s; });
   var c = bars[lastIdx].c;
   var sug = '中性存疑';
-  if (lastH && c > lastH.p) sug = '偏多（收盘越过最近已确认摆动高）';
+  if (lastH && c > lastH.p) sug = '偏多（收盘越过最近已确认摆动高（swing high））';
   else if (lastL && c < lastL.p) sug = '偏空（收盘跌破最近已确认摆动低）';
   var swTxt = sw.slice(-4).map(function (s) { return (s.i + 1) + '#' + s.type + ' ' + s.p; }).join(' · ') || '（尚无已确认摆动）';
   return { abs: lastIdx + 1, swTxt: swTxt, sug: sug, close: c };
@@ -246,7 +246,7 @@ function renderCp(k) {
     cpField('证据棒号（绝对 1–' + (WARM + k) + '，须已可见）', 'cp-ebar', d.ebar, '例：23') +
     cpField('所引证据棒收盘价（客观核验）','cp-ec',d.ec,'数字') +
     cpField('最近已确认N=3摆动高棒号（没有填0）','cp-sh',d.sh,'绝对棒号') +
-    cpField('最近已确认N=3摆动低棒号（没有填0）','cp-sl',d.sl,'绝对棒号') +
+    cpField('最近已确认N=3摆动低（swing low）棒号（没有填0）','cp-sl',d.sl,'绝对棒号') +
     '<div class="cp-field"><label>当前收盘相对最近已确认摆动（客观事实，不强制等于持仓方向）</label><select id="cp-relation"><option value="">请选择</option><option>上破最近高</option><option>下破最近低</option><option>两者都未破或缺锚</option></select></div>' +
     cpField('证据描述（看到了什么）', 'cp-desc', d.desc, '例：第23根收盘越过第19根摆动高') +
     '<div style="display:flex;gap:.6rem;flex-wrap:wrap">' +
