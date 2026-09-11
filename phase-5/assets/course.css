@@ -50,14 +50,33 @@ a:hover { border-bottom-color: var(--up); }
 }
 .note b { color: var(--note); }
 
+/* v1.4（D10 提示区块）：类型修饰符——标签粗体词与色条双编码（色觉安全同 §9 豁免逻辑：永不只靠颜色）。
+ * 注=默认金底 / 冷水=金底(.stat，品牌栏目) / 提示=白底绿条 / 警告=白底红条 / 红线=白底4px红条 */
+.note.tip, .note.warn, .note.stop, .note.info { background: #fff; }
+.note.tip b, .note.warn b, .note.stop b, .note.info b { color: inherit; }
+.note.info { border-left-color: var(--muted); }
+.note.tip { border-left-color: var(--down); }
+.note.warn { border-left-color: var(--up); }
+.note.stop { border-left: 4px solid var(--up); padding-left: 1rem; }
+.note.tip > b:first-child { color: var(--down); }
+.note.warn > b:first-child, .note.stop > b:first-child { color: var(--up); }
+
 blockquote { margin: 1.4rem 0; padding-left: 1.1rem; border-left: 3px solid var(--line); color: var(--muted); }
 blockquote .who { display: block; font-size: .85rem; margin-top: .3rem; font-family: var(--sans); }
 
 /* ---------- 图 ---------- */
 figure { margin: 2rem 0; text-align: center; }
 figure svg { max-width: 100%; height: auto; }
-figcaption { font-size: .88rem; color: var(--muted); margin-top: .6rem; font-family: var(--sans); line-height: 1.6; }
+/* v1.2（D7 对齐）：图表居中，图注文字一律左对齐；图注内多对象并列用列表 */
+figcaption { font-size: .88rem; color: var(--muted); margin-top: .6rem; font-family: var(--sans); line-height: 1.6; text-align: left; }
 figcaption b { color: var(--ink); }
+figcaption ul { margin: .35rem 0 0; padding-left: 1.25rem; }
+figcaption li { margin: .15rem 0; }
+
+/* v1.2（D7 说明框）：元说明（读法/纪律/口径）用带底色说明框，与回放解说条同一视觉族 */
+.callout { background: var(--note-bg, #f7f3e3); border-left: 3px solid var(--note, #8a6d1f); padding: .8rem 1rem; margin: 1.2rem 0; font-family: var(--sans); font-size: .95rem; line-height: 1.75; text-align: left; }
+.callout b { color: var(--ink, #1c1c1a); }
+.callout ul { margin: .4rem 0 0; padding-left: 1.3rem; }
 
 .candle-strip { display: flex; justify-content: center; gap: 1.1rem; flex-wrap: wrap; margin: 1.6rem 0; }
 .candle-cell { text-align: center; }
@@ -69,6 +88,8 @@ table { border-collapse: collapse; width: 100%; margin: 1.4rem 0; font-size: .92
 th, td { border-bottom: 1px solid var(--line); text-align: left; padding: .5rem .6rem; vertical-align: top; }
 th { font-family: var(--sans); font-size: .8rem; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--ink); }
 td:first-child { white-space: nowrap; font-weight: 600; }
+/* v1.2（D7 对齐）：表格纯数字列右对齐 + 等宽数字（价位列可比大小） */
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
 /* ---------- 术语表 ---------- */
 .gloss-dl dt { font-weight: 700; margin-top: 1.1rem; }
@@ -182,12 +203,47 @@ details.answer .ans-body p { margin: .5rem 0; }
 .lesson-card .d { font-size: .88rem; color: var(--muted); font-family: var(--sans); line-height: 1.6; }
 .lesson-card .meta { font-family: var(--sans); font-size: .78rem; color: var(--faint); margin-top: .4rem; }
 
+/* ---------- v1.1 UX 标准（STANDARDS-course-UX §3.5）：列表基线 + 步骤组件 ---------- */
+ol:not(.checklist) > li, ul:not(.checklist) > li { margin-bottom: .3em; }
+ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
+.steps { counter-reset: step; list-style: none; padding-left: 0; margin: 1rem 0 .6rem; }
+.steps > li { counter-increment: step; position: relative; padding-left: 2.3rem; margin-bottom: .65rem; }
+.steps > li::before {
+  content: counter(step); position: absolute; left: 0; top: .22rem;
+  width: 1.6rem; height: 1.6rem; border: 1.5px solid var(--ink); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font: 700 .78rem/1 var(--sans); background: #fff;
+}
+.steps > li:last-child { margin-bottom: 0; }
+
 /* ---------- 打印 ---------- */
+/* v1.3（D8 导航）：宽屏左侧两级小节导航（nav.js 自动生成短标签），<1240px 隐藏，打印隐藏 */
+.lesson-toc { display: none; }
+@media (min-width: 1240px) {
+  .lesson-toc {
+    display: block; position: fixed; top: 2.8rem;
+    left: calc(50% - 23rem - 10.5rem - 1.5rem);    /* 版心左缘再向左 24px */
+    width: 10rem; max-height: calc(100vh - 5.6rem); overflow-y: auto;
+    font-family: var(--sans); font-size: .78rem; line-height: 1.4;
+    scrollbar-width: thin;
+  }
+}
+/* 站内 a 的红下划线不进目录；H2=左侧一段 2px 墨色短线；H3=缩进浅字 */
+.lesson-toc a { display: block; border-bottom: none; transition: color .15s, border-color .15s; }
+.lesson-toc a.lv2 { color: var(--muted); border-left: 2px solid transparent; padding: .34rem 0 .34rem .85rem; }
+.lesson-toc a.lv3 { color: var(--faint); font-size: .72rem; padding: .2rem 0 .2rem 1.9rem; }
+.lesson-toc a:hover { color: var(--ink); border-bottom: none; }
+.lesson-toc a.lv2.on { color: var(--ink); font-weight: 600; border-left-color: var(--ink); }
+.lesson-toc a.lv3.on { color: var(--ink); font-weight: 600; }
+.lesson-toc .lt-no { display: inline-block; min-width: 1.9rem; color: var(--faint); font-weight: 600; font-size: .7rem; }
+.lesson-toc a.on .lt-no { color: var(--ink); }
+
 @media print {
   body { font-size: 11.5pt; max-width: none; padding: 0; }
   .quiz, .ask-teacher, footer.course .nav, .pb-ctrl { display: none; }
   h2 { break-after: avoid; }
   figure, .note, details.answer { break-inside: avoid; }
+  .lesson-toc { display: none !important; }
   a { border-bottom: none; color: var(--ink); }
 }
 
@@ -199,4 +255,4 @@ details.answer .ans-body p { margin: .5rem 0; }
 .cmp-verdict { border: 1.5px dashed var(--faint); border-radius: 10px; padding: .7rem 1rem; font-size: .9rem; line-height: 1.7; background: var(--note-bg); margin: .6rem 0 1.8rem; }
 /* 示意图容器 */
 .schem { margin: 1.6rem 0; }
-.schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: center; }
+.schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: left; }
