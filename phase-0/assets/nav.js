@@ -1,22 +1,66 @@
-/* nav.js — 课程页左侧小节导航（kbar 共享层）
- * 自动从 h2[id] 生成本课目录，固定在左留白处（≥1240px 显示，窄屏隐藏，css 在 course.css）。
- * 滚动时高亮当前小节；点击平滑滚动。无 h2[id] 的页面静默退出；零依赖。 */
+/* nav.js — 课程页左侧两级小节导航（kbar 共享层）
+ * 自动从 h2[id] + 其下属 h3 生成本课目录（≥1240px 显示，css 在 course.css）。
+ * 滚动时高亮当前小节/小小节；点击平滑滚动。目录标签用短标签（去编号、去括注、取"："前段，
+ * 撞名回退全称）；无 h2[id] 的页面静默退出；零依赖。 */
 (function () {
   if (typeof document === 'undefined') return;
+  var h2s = [], seen = {};
   var all = document.querySelectorAll('h2[id]');
-  var secs = [], seen = {};
   for (var i = 0; i < all.length; i++) {
-    if (!seen[all[i].id]) { seen[all[i].id] = 1; secs.push(all[i]); }
+    if (!seen[all[i].id]) { seen[all[i].id] = 1; h2s.push(all[i]); }
   }
-  if (secs.length < 2) return;
+  if (h2s.length < 2) return;
 
-  var html = ['<div class="lt-title">本课导航</div>'];
-  secs.forEach(function (h) {
+  /* 收集每个 h2 到下一个 h2 之间的 h3（无 id 的自动补 id） */
+  var tree = [];                       // {h2, subs:[h3]}
+  h2s.forEach(function (h) { tree.push({ h2: h, subs: [] }); });
+  var cur = -1, subSeq = 0;
+  var walk = document.body.querySelectorAll('h2[id], h3');
+  for (var j = 0; j < walk.length; j++) {
+    var el = walk[j];
+    if (el.tagName === 'H2') {
+      for (var k = 0; k < h2s.length; k++) if (h2s[k] === el) { cur = k; break; }
+    } else if (cur >= 0) {
+      if (!el.id) { el.id = 'toc-' + (cur + 1) + '-' + (++subSeq); }
+      tree[cur].subs.push(el);
+    }
+  }
+
+  function titleOf(h) {
     var no = h.querySelector('.no');
-    var title = h.textContent;
-    if (no) title = title.replace(no.textContent, '');
-    title = title.replace(/≈\s*\d+\s*min/, '').trim();
-    html.push('<a href="#' + h.id + '"><span class="lt-no">' + (no ? no.textContent.trim() : '·') + '</span>' + title + '</a>');
+    var t = h.textContent;
+    if (no) t = t.replace(no.textContent, '');
+    return t.replace(/≈\s*\d+\s*min/, '').trim();
+  }
+  /* 短标签：去（…）注、取"："前段；超 10 字截断 */
+  function shortLabel(t) {
+    var s = t.replace(/（[^）]*）/g, '').trim();
+    var c = s.indexOf('：');
+    if (c > 1) s = s.slice(0, c);
+    if (s.length > 10) s = s.slice(0, 10);
+    return s;
+  }
+
+  var flat = [];                       // {el, label, full, lv}  文档顺序
+  tree.forEach(function (node) {
+    var full2 = titleOf(node.h2), lab2 = shortLabel(full2);
+    flat.push({ el: node.h2, label: lab2, full: full2, lv: 2 });
+    node.subs.forEach(function (h3) {
+      var full3 = titleOf(h3), lab3 = shortLabel(full3);
+      flat.push({ el: h3, label: lab3, full: full3, lv: 3 });
+    });
+  });
+  /* 同级撞名 → 回退全称 */
+  ['2', '3'].forEach(function (lv) {
+    var same = flat.filter(function (f) { return String(f.lv) === lv; });
+    var cnt = {};
+    same.forEach(function (f) { cnt[f.label] = (cnt[f.label] || 0) + 1; });
+    same.forEach(function (f) { if (cnt[f.label] > 1) f.label = f.full; });
+  });
+
+  var html = [];
+  flat.forEach(function (f) {
+    html.push('<a class="lv' + f.lv + '" href="#' + f.el.id + '" title="' + f.full + '">' + f.label + '</a>');
   });
   var nav = document.createElement('nav');
   nav.className = 'lesson-toc';
@@ -28,14 +72,18 @@
   var ticking = false;
   function setActive() {
     ticking = false;
-    var cur = -1;
-    for (var i = 0; i < secs.length; i++) {
-      if (secs[i].getBoundingClientRect().top <= 100) cur = i;
+    var curIdx = -1;
+    for (var i = 0; i < flat.length; i++) {
+      if (flat[i].el.getBoundingClientRect().top <= 100) curIdx = i;
     }
-    for (var j = 0; j < links.length; j++) {
-      links[j].classList.toggle('on', j === cur);
+    for (var j2 = 0; j2 < links.length; j2++) links[j2].classList.remove('on');
+    if (curIdx >= 0) {
+      links[curIdx].classList.add('on');
+      /* 高亮小节时，其父节同步点亮（弱高亮用 CSS 相邻选择器难表达，这里直接加类） */
+      for (var m = curIdx; m >= 0; m--) {
+        if (flat[m].lv === 2) { links[m].classList.add('on'); break; }
+      }
     }
-    // 当前项滚进可视区（目录自身可滚动时）
     var on = nav.querySelector('a.on');
     if (on && nav.scrollHeight > nav.clientHeight) {
       var top = on.offsetTop, bottom = top + on.offsetHeight;

@@ -565,11 +565,21 @@
   window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, gallery: gallery, setPalette:setPalette, UP: UP, DOWN: DOWN };
   if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('DOMContentLoaded',function(){
     if(document.getElementById('kbar-palette-toggle'))return;
-    var bar=document.createElement('div'),button=document.createElement('button');
-    button.id='kbar-palette-toggle';button.type='button';button.style.cssText='font:inherit;padding:.4rem .7rem;cursor:pointer';
-    var update=function(){button.textContent=UP==='#d33a2c'?'当前红涨绿跌 · 切换绿涨红跌':'当前绿涨红跌 · 切换红涨绿跌';};
-    button.onclick=function(){setPalette(UP==='#d33a2c'?'international':'cn');update();};update();bar.appendChild(button);
-    var note=document.createElement('span');note.textContent=' 阳线空心、阴线实心；配色不改变方向与评分。';bar.appendChild(note);bar.style.cssText='font:13px/1.7 sans-serif;margin:1rem 0';document.body.insertBefore(bar,document.body.firstChild);
+    /* 配色切换：右上角固定小圆钮，图标=双色迷你K线（空心阳线+实心阴线，即图例本身） */
+    var b=document.createElement('button');
+    b.id='kbar-palette-toggle';b.type='button';
+    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:34px;height:34px;padding:0;border:1px solid rgba(28,28,26,.16);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+    var icon=function(){b.innerHTML='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">'
+      +'<line x1="6.6" y1="2.5" x2="6.6" y2="17.5" stroke="'+UP+'" stroke-width="1.4"/>'
+      +'<rect x="3.8" y="6.5" width="5.6" height="7.5" rx="1" fill="none" stroke="'+UP+'" stroke-width="1.4"/>'
+      +'<line x1="13.4" y1="2.5" x2="13.4" y2="17.5" stroke="'+DOWN+'" stroke-width="1.4"/>'
+      +'<rect x="10.6" y="5.5" width="5.6" height="8.5" rx="1" fill="'+DOWN+'"/>'
+      +'</svg>';};
+    var title=function(){var t=(UP==='#d33a2c'?'配色：红涨绿跌（A股惯例），点击切换绿涨红跌':'配色：绿涨红跌（国际惯例），点击切换红涨绿跌')+'；阳线空心、阴线实心不变，配色不影响评分。';b.title=t;b.setAttribute('aria-label',t);};
+    b.onclick=function(){setPalette(UP==='#d33a2c'?'international':'cn');icon();title();};
+    icon();title();
+    document.body.appendChild(b);
+    var st=document.createElement('style');st.textContent='@media print{#kbar-palette-toggle{display:none!important}}';document.head.appendChild(st);
   });
 })();
 
