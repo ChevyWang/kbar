@@ -144,7 +144,8 @@
 </ul>
 
 <h2 id="s06a"><span class="no">附A</span>实例库 <span class="time-chip">≈3 min</span></h2>
-<p>同一行情的两种显微镜：日线（左）与周线（右，由日线重采样）。<b>读法</b>：先在周线上定"这是趋势段还是区间段"，再回日线找位置：自上而下。</p>
+<p>同一行情的两种显微镜做成<b>可切换的幻灯片</b>：每个品种先翻到日线帧自测——这是什么段？再翻周线帧核对：大周期怎么说？←→ 翻页。读法永远是自上而下：先周线定段、再日线找位置。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>窗口</th><th>日线读到的</th><th>周线读到的</th><th>双镜头结论</th></tr>
 <tr><td>A股</td><td>中信证券</td><td>2024-09 → 11（52 日 / 12 周）</td><td>涨停一字、10.6 倍高潮量、宽幅震荡</td><td>一根数年一遇的巨量周阳 + 随后的上影周</td><td>日线是战场，周线是战役：日线的一字板只是周线巨阳里的一格</td></tr>
@@ -487,6 +488,23 @@ document.getElementById('schem-nest2').innerHTML = Kbar.schematic({
     {t: 'label', i: 5, text: '日线回调=周线阳线的内部', pos: 'below', color: '#6e6c64'}
   ]
 }) + '<div class="schem-cap"><b>三镜头嵌套（示意）。</b>月/周定方向（结构线完好）、日找位置（回调到结构线）、小时找时机——大周期许可方向，小周期提供入场，<b>顺序不可逆</b>。';
+
+/* 附A 实例库幻灯片：面板数据与 §03 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 中信证券 · 日线（2024-09 → 11）', data: P0_MTF_A_D,
+   opts: {vol: P0_MTF_A_D.map(function(k){return k.v;}), yLabels: true},
+   note: '日线看到的是：9 月末的连续大阳、<b>10-08 涨停一字</b>、10-09 的 10.6 倍高潮、随后两个月的宽幅震荡与缩量——信息密集到爆炸。'},
+  {title: 'A股 · 中信证券 · 周线（同段 12 周）', data: P0_MTF_A_W,
+   opts: {vol: P0_MTF_A_W.map(function(k){return k.v;}), yLabels: true},
+   note: '周线只有 12 根：一根<b>数年一遇的巨量周阳</b>+ 一根上影周 + 十根回落整理——日线的一切喧嚣，在周线里就是这两根的内部结构。'},
+  {title: '美股 · 英伟达 · 日线（2026-06 → 09）', data: P0_MTF_U_D,
+   opts: {vol: P0_MTF_U_D.map(function(k){return k.v;}), yLabels: true, hl: 19},
+   note: '日线：6/29 长下影（0002 课图例）之后一路新高，穿插数次 2–3 天的回调——每次回调都像"要完了"。'},
+  {title: '美股 · 英伟达 · 周线（同段 15 周）', data: P0_MTF_U_W,
+   opts: {vol: P0_MTF_U_W.map(function(k){return k.v;}), yLabels: true},
+   note: '周线：低点连续抬高的阳线阶梯，<b>没有任何一周跌破前周低点</b>——日线的"要完了"在周线里连结构破坏都算不上。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>

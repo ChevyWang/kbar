@@ -148,7 +148,8 @@
 </ul>
 
 <h2 id="s06a"><span class="no">附A</span>实例库 <span class="time-chip">≈3 min</span></h2>
-<p>两个真实市场的完整翻转窗（各 69 根，3 根分形摆动点），上图与下表一一对应。</p>
+<p>两个真实市场的完整翻转窗做成<b>可切换的幻灯片</b>（各 69 根，3 根分形摆动点）：先读图自测：上升段序列怎么读？翻转点在第几根？再点"揭晓判词"核对；←→ 翻页。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>窗口</th><th>上升段序列</th><th>翻转点</th><th>随后序列</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>东方财富</td><td>2023-03 → 06</td><td>L→H→HL→HH</td><td>第20根 LH（18.17 &lt; 19.57）</td><td>LL（15.18）→ 反抽 LH → 再 LL</td><td>顶部反转的完整三拍：破位、反抽不过、续跌</td></tr>
@@ -502,6 +503,25 @@ document.getElementById('schem-struct').innerHTML = Kbar.schematic({
     {t: 'line', i1: 2, p1: 99, i2: 6, p2: 99, text: '破 HL = 停止做多开关', color: '#8a6d1f'}
   ]
 }) + '<div class="schem-cap"><b>四结构全景。</b>趋势的严格定义=成对序列（HH+HL 或 LH+LL）；BOS=收盘跌破最近 HL——它只是"停止顺势"的开关，反手要等第二对完成。';
+
+/* 附A 实例库幻灯片：面板数据与 §03 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 东方财富 2023 春 · 上升结构翻转',
+   data: P0_FLIP_A,
+   opts: {vol: P0_FLIP_A.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 11, text: 'HH', pos: 'above'}, {i: 8, text: 'HL', pos: 'below'},
+                  {i: 20, text: 'LH', pos: 'above'}, {i: 27, text: 'LL', pos: 'below'}]},
+   note: '上升段 L→H→<b>HL</b>→<b>HH</b>（19.57 顶）→ 第20根 <b>LH</b>（18.17，更高的高点失败）→ 第27根 <b>LL</b>（15.18，跌破上一个 HL=BOS）——教科书三拍：破位、反抽不过、续跌。'},
+  {title: '美股 · 特斯拉 2021 冬 · 更凶的翻转',
+   data: P0_FLIP_U,
+   opts: {vol: P0_FLIP_U.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 19, text: 'HH', pos: 'above'}, {i: 16, text: 'HL', pos: 'below'},
+                  {i: 26, text: 'LH', pos: 'above'}, {i: 36, text: 'LL', pos: 'below'}]},
+   note: '顶部 402.67（HH）之后<b>直接 LL</b>（326.67，跳过反抽），随后 LH→LL（264）→ LH 的下行阶梯——顶部不给反抽机会的凶版本。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: ETH, opts: {},
+   note: '本课 §06 案例深读的锚定图。幻灯片里先自己读一遍，再回 §06 核对逐段拆解。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>

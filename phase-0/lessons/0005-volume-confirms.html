@@ -42,7 +42,7 @@
   <li>有些市场没有可靠的量（外汇现货、部分指数）：那就不硬读量，只做价格。</li>
   <li>跨市场、跨品种的绝对量毫无意义（BTC 一天 200 亿美元的量和一只小盘股 2 亿的量没法比），<b>永远只和自己的历史比</b>。</li>
 </ul>
-"相对量"＝当根量 ÷ 前20个已完成、同会话同口径bar的均量（不含当根；不足20根则标资料不足）。1.5–2 倍以上叫显著放量，不足 0.7 倍叫显著缩量（口径因品种而异，先建立量级感）。
+"相对量（relative volume）"＝当根量 ÷ 前20个已完成、同会话同口径bar的均量（不含当根；不足20根则标资料不足）。行情软件的「量比」是同族指标（常用前 5 日均量、盘中实时口径），精神相同：只和自己比。1.5–2 倍以上叫显著放量，不足 0.7 倍叫显著缩量（口径因品种而异，先建立量级感）。
 </div>
 
 <h2 id="s02"><span class="no">02</span>量价四象限 <span class="time-chip">≈12 min</span></h2>
@@ -154,7 +154,9 @@
 </ul>
 
 <h2 id="s06a"><span class="no">附A</span>实例库 <span class="time-chip">≈3 min</span></h2>
-<p>量能课的实盘实例总览（量能倍数=当日量÷20日均量；A股单位股、美股单位股，均复权口径）。<b>先看"倍数"，再看"价格方向"</b>——两个数字合起来才是象限。</p>
+<p>量能课的实盘实例做成<b>可切换的幻灯片</b>（量能倍数=当日量÷20日均量；A股单位股、美股单位股，均复权口径）。读法：<b>先遮判词自测</b>——这是放量还是缩量？第几象限？再点"揭晓判词"核对；←→ 翻页。前四帧是放量与缩量的对照，后两帧是高潮量。下表为全量索引。</p>
+<div id="gal-a"></div>
+<div id="gal-b"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>日期</th><th>事件</th><th>量能倍数</th><th>价格行为</th><th>象限判词</th></tr>
 <tr><td>A股</td><td>中信建投</td><td>2026-06-02</td><td>放量背书</td><td>3.6×</td><td>+6.2%，实体 83% 收位 90%</td><td>量价齐升：和谐，突破有真金白银投票</td></tr>
@@ -519,6 +521,34 @@ document.getElementById('schem-quad2').innerHTML = Kbar.schematic({
     {t: 'phase', i1: 6, i2: 7, text: '枯竭：变盘前夜', color: '#6e6c64'}
   ]
 }) + '<div class="schem-cap"><b>四象限图解（带方向）。</b>同是"大量"，收头部=背书、收脚下=砸盘（红格）；同是"小结果"，大努力=吸收、小努力=枯竭。<b>量能从不单独给出方向——它给的是价格行为的可信度</b>。';
+
+/* 附A 实例库幻灯片：面板数据与 §03/§04 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 中信建投 2026-06-02 · 放量背书', data: P0_VOL_A,
+   opts: {vol: P0_VOL_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '<b>3.6 倍量</b> + 6.2% 大阳（实体 83%、收位 90%）——突破日有真金白银投票。'},
+  {title: '美股 · 微软 2026-06-26 · 放量背书', data: P0_VOL_U,
+   opts: {vol: P0_VOL_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '<b>4.3 倍量</b> + 5.7% 大阳（收位 83%）——跨市场同款：和谐象限不分国界。'},
+  {title: '美股 · 摩根大通 2026-08-12 · 缩量新高', data: P0_QUIET_U,
+   opts: {vol: P0_QUIET_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '<b>0.58 倍量</b>创 20 日新高——上方挂单稀薄的<b>真空</b>：走得快不代表走得稳。'},
+  {title: 'A股 · 贵州茅台 2026-08-03 · 缩量新高', data: P0_QUIET_A,
+   opts: {vol: P0_QUIET_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '<b>0.70 倍量</b>新高（+0.6%，高 1363.35 微破前 20 日高 1362.0）——A股版真空：大盘股安静的新高同样是"没人卖"而非"很多人买"。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
+var GALLERY_B = [
+  {title: 'A股 · 中信证券 2024-10-09 · 高潮量（一字板次日）', data: P0_CLI_A,
+   opts: {vol: P0_CLI_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '<b>10.6 倍量</b>：排队买单一字板的人终于成交——上影 46%、收位 38%，大努力换小结果。'},
+  {title: '美股 · 苹果 2024-09-20 · 高潮量', data: P0_CLI_U,
+   opts: {vol: P0_CLI_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '<b>6.8 倍量</b>、上影 57%、收位 11%——狂欢日的收盘位置宣判了次日命运。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: ETH, opts: {},
+   note: '本课 §06 案例深读的锚定图。量能声纹的五段对话，幻灯片里先自己读一遍，再回 §06 核对。'}
+];
+Kbar.gallery('#gal-b', GALLERY_B, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>
