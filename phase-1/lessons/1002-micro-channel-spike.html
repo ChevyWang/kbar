@@ -96,6 +96,8 @@
 <div id="pb1"></div>
 
 <h2 id="s06a"><span class="no">附A</span>实例库：微通道与尖峰 <span class="time-chip">≈3 min</span></h2>
+<p>微通道与尖峰的真实实例做成<b>可切换的幻灯片</b>：先读图自测：这是哪种通道形态？判据全过了吗？再点"揭晓判词"核对；←→ 翻页。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>日期</th><th>事件</th><th>关键读数</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>上证指数</td><td>2026-08-10</td><td>5棒多头微通道</td><td>累计 +4.4%</td><td>指数级微通道：涨得越"齐"，回撤单位越小</td></tr>
@@ -284,6 +286,27 @@ document.getElementById('schem-tight').innerHTML = Kbar.schematic({
     {t: 'line', i1: 0, p1: 94.3, i2: 5, p2: 98.2, text: '微通道趋势线', color: '#d33a2c'}
   ]
 }) + '<div class="schem-cap"><b>紧度光谱。</b>同是上升趋势：微通道里止损跟在前棒低点、通道里放在回调段下方、宽通道里要容忍 38–50% 回撤——<b>紧度决定回撤的计量单位，进而决定止损单位</b>（§04 换算表的图形版）。';
+
+/* 附A 实例库幻灯片：面板数据与 §03 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 上证指数 2026-08 · 5棒微通道', data: P1_MIC_A,
+   opts: {vol: P1_MIC_A.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 20, text: '通道起点', pos: 'below'}, {i: 24, text: '第5棒', pos: 'above'}]},
+   note: '五根K线每根低点都高于前根低点，累计 +4.4%——<b>指数</b>走出微通道：回撤将以"棒"计。'},
+  {title: '美股 · 英伟达 2026-08 · 5棒微通道', data: P1_MIC_U,
+   opts: {vol: P1_MIC_U.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 20, text: '通道起点', pos: 'below'}, {i: 24, text: '第5棒', pos: 'above'}]},
+   note: '个股猛版：五棒累计 <b>+16.0%</b>——紧度相同、幅度不同，止损单位规则相同。'},
+  {title: 'A股 · 中信证券 2026-06-22 · Spike', data: P1_SPIKE_A,
+   opts: {vol: P1_SPIKE_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '+7.8% 单棒、实体 94%、2.8×量——spike 之后回撤不破 spike 中点：趋势健康的标准。'},
+  {title: '美股 · 特斯拉 2025-09-12 · Spike', data: P1_SPIKE_U,
+   opts: {vol: P1_SPIKE_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '+7.4%、实体 95%、2.2×量——一根表态，随后沿通道阶梯推进。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: A, opts: {},
+   note: '本课 §05 案例深读的锚定图。幻灯片里先自己读一遍，再回 §05 核对逐段拆解。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>

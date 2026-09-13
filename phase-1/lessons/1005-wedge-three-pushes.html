@@ -90,6 +90,8 @@
 <div id="pb1"></div>
 
 <h2 id="s06a"><span class="no">附A</span>实例库：两个市场的楔形 <span class="time-chip">≈3 min</span></h2>
+<p>两个市场的楔形做成<b>可切换的幻灯片</b>：先读图自测：三推齐了吗？中间的反向回调可识别吗？再点"揭晓判词"核对；←→ 翻页。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>日期</th><th>事件</th><th>关键读数</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>中国平安</td><td>2022-03-16</td><td>底楔形（三推衰竭）</td><td>推幅 3.7 → 2.5，第三推收弱</td><td>第三推力度只剩2/3，随后 V 型收回</td></tr>
@@ -324,6 +326,21 @@ document.getElementById('schem-wedge').innerHTML = Kbar.schematic({
     {t: 'label', i: 5, text: '触发：收回楔形上半', pos: 'above', color: '#d33a2c'}
   ]
 }) + '<div class="schem-cap"><b>三推全景。</b>第三推力度最小、收盘最弱时，反向一触即发——这是可观察的信号读法；「对手盘被耗尽」只是叙事化解释，OHLC 断言不了它（§01）。触发=第三推极值被反向收盘越过；目标=楔形起点（量度投影）。';
+
+/* 附A 实例库幻灯片：面板数据与 §03 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 中国平安 2022-03 · 底楔形', data: P1_WEDGE_A,
+   opts: {vol: P1_WEDGE_A.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 3, text: '一推', pos: 'below'}, {i: 10, text: '二推', pos: 'below'}, {i: 15, text: '三推', pos: 'below'}]},
+   note: '下推幅度 3.7 → 2.5：第三推力度只剩约 2/3，且收弱——随后一根阳线收回楔形上半部（V 型启动）。'},
+  {title: '美股 · Meta 2023-07 · 顶楔形', data: P1_WEDGE_U,
+   opts: {vol: P1_WEDGE_U.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 3, text: '一推', pos: 'above'}, {i: 15, text: '二推', pos: 'above'}, {i: 19, text: '三推', pos: 'above'}]},
+   note: '上推幅度 26.2 → <b>2.4</b>：第三推只剩零头——三推完成即崩，两周内跌回楔形起点。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: A, opts: {},
+   note: '本课 §05 案例深读的锚定图。幻灯片里先自己读一遍，再回 §05 核对逐段拆解。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>

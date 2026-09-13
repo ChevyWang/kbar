@@ -81,7 +81,8 @@
 <div id="pb1"></div>
 
 <h2 id="s06a"><span class="no">附A</span>实例库：收破又收回的两天 <span class="time-chip">≈3 min</span></h2>
-<p>注意与本课 §02 目录的对应：下面两例都是<b>"收盘越过 20 日高后、3 日内收盘收回"</b>的失败突破（第五类：突破后失败）。</p>
+<p>失败突破的真实实例做成<b>可切换的幻灯片</b>：先读图自测：五类里的哪一类？时间窗怎么算？再点"揭晓判词"核对；←→ 翻页。两例都是<b>"收盘越过 20 日高后、3 日内收盘收回"</b>的失败突破（第五类：突破后失败，对应 §02 目录）。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>日期</th><th>事件</th><th>关键读数</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>紫金矿业</td><td>2026-08-06</td><td>失败突破（收破0.8%收回）</td><td>收盘破 20 日高 0.8%，3 日内收回</td><td>注意：这是 0003 课假突破样本的升级版，那课看"影线刺穿"，这课看"收盘越过后的收回"</td></tr>
@@ -255,6 +256,19 @@ document.getElementById('schem-fail').innerHTML = Kbar.schematic({
     {t: 'label', i: 5, text: 'trapped：追突破者被锁', pos: 'below', color: '#1a7f37'}
   ]
 }) + '<div class="schem-cap"><b>失败目录五类。</b>影线刺穿 / 收盘破后收回 / 二次尝试即败 / 突破棒反转（高潮） / 突破后区间化——本图是第二类。<b>强失败=强反向预期</b>（§04 失败链）。';
+
+/* 附A 实例库幻灯片：面板数据与 §03 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 紫金矿业 2026-08-06 · 收破后收回', data: P1_FAIL_A,
+   opts: {vol: P1_FAIL_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '收盘越过 20 日高 <b>0.8%</b>——不是影线刺穿（那是 0003 的假突破），是<b>收盘真的破位了</b>，然后 3 日内收回：站不稳的新高。'},
+  {title: '美股 · 埃克森美孚 2026-08-10 · 收破后收回', data: P1_FAIL_U,
+   opts: {vol: P1_FAIL_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '收盘破 <b>0.5%</b> 后收回——跨市场同款：失败突破不是噪音，是反向的第一份证据。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: A, opts: {},
+   note: '本课 §05 案例深读的锚定图。幻灯片里先自己读一遍，再回 §05 核对逐段拆解。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>

@@ -88,6 +88,8 @@
 <div id="pb1"></div>
 
 <h2 id="s06a"><span class="no">附A</span>实例库：三条会等长的腿 <span class="time-chip">≈3 min</span></h2>
+<p>三条会等长的腿做成<b>可切换的幻灯片</b>：先读图自测：腿一从哪到哪？量度目标算出来在哪？再点"揭晓判词"核对；←→ 翻页。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>日期</th><th>事件</th><th>关键读数</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>中国中免</td><td>2026-07-30</td><td>多头量度兑现</td><td>腿1 6.1 · 腿2 6.5 · 比 1.06</td><td>第二条腿精确走完第一条的长度</td></tr>
@@ -262,6 +264,25 @@ document.getElementById('schem-mm').innerHTML = Kbar.schematic({
     {t: 'hline', y: 106.5, text: '量度目标=回调低点+腿1', color: '#8a6d1f'}
   ]
 }) + '<div class="schem-cap"><b>量度全景。</b>腿1 的长度投影到回调低点之上=最小目标；区间高度投影=突破后的最小目标。两种量法（§02）一张图记全。';
+
+/* 附A 实例库幻灯片：面板数据与 §03 对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 中国中免 2026-07 · 多头量度', data: P1_MM_A,
+   opts: {vol: P1_MM_A.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 11, text: 'H1', pos: 'above'}, {i: 13, text: 'L2', pos: 'below'}, {i: 17, text: 'H2', pos: 'above'}]},
+   note: '腿2（L2→H2）= <b>6.5</b> vs 腿1 = <b>6.1</b>，比 1.06——第二腿把第一腿的长度精确走完。'},
+  {title: '美股 · 谷歌 2025-04 · 多头量度', data: P1_MM_U,
+   opts: {vol: P1_MM_U.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 7, text: 'H1', pos: 'above'}, {i: 11, text: 'L2', pos: 'below'}, {i: 15, text: 'H2', pos: 'above'}]},
+   note: '腿2 = <b>19.9</b> vs 腿1 = <b>21.1</b>，比 0.94——误差 6%，同一算术跨市场成立。'},
+  {title: '美股 · 埃克森 2026-06 · 空头量度', data: P1_MM_U2,
+   opts: {vol: P1_MM_U2.map(function(k){return k.v;}), yLabels: true,
+          marks: [{i: 11, text: 'H2', pos: 'above'}, {i: 26, text: 'L2', pos: 'below'}]},
+   note: '镜像：下跌的腿也会等长（比 1.05）——量度目标是<b>方向无关</b>的几何。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: A, opts: {},
+   note: '本课 §05 案例深读的锚定图。幻灯片里先自己读一遍，再回 §05 核对逐段拆解。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>
