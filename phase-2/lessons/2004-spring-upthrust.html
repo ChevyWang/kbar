@@ -94,6 +94,8 @@
 <div id="cmp-ut"></div>
 
 <h2 id="s09a"><span class="no">附A</span>实例库：三型 Spring 与双例 UT <span class="time-chip">≈4 min</span></h2>
+<p>三型 Spring 与双例 UT 做成<b>可切换的幻灯片</b>：先读图自测：刺穿多深？量能多重？三型里归哪型？再点"揭晓判词"核对；←→ 翻页。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>日期/窗口</th><th>概念</th><th>关键读数</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>宁德时代</td><td>2022-05-05</td><td>Spring #1（终极震仓型）</td><td>穿 3.7% · 量 3.4×</td><td>深穿+巨量：卖方仍汹涌，等反击证据再动</td></tr>
@@ -271,6 +273,26 @@ document.getElementById('schem-spr').innerHTML = Kbar.schematic({
     {t: 'arrow', i1: 4, p1: 86.8, i2: 5, p2: 96, text: 'washout→反转', color: '#d33a2c'}
   ]
 }) + '<div class="schem-cap"><b>Spring 解剖。</b>三要素：刺穿（打进止损单聚集的流动性井）→ 收回（当日收盘回到支撑上方）→ 跟进（次日不创新低）。Weis 警告：刺穿本身不等于 Spring——<b>不能站在火车前面捡硬币</b>。';
+
+/* 附A 实例库幻灯片：面板数据与正文对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 宁德 2022-05-05 · Spring #1', data: P2_SPR1,
+   opts: {vol: P2_SPR1.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '穿 3.7%、量 3.4×——供应汹涌的终极震仓型：<b>不可接飞刀</b>，等需求反击证据。'},
+  {title: '美股 · 特斯拉 2026-07-28 · Spring #2', data: P2_SPR2,
+   opts: {vol: P2_SPR2.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '穿 1.2%、量 0.9×——中量中幅的标准型：预期对 Spring 区<b>多次回测</b>。'},
+  {title: '美股 · 埃克森 2026-06-25 · Spring #3', data: P2_SPR3,
+   opts: {vol: P2_SPR3.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '穿 0.5%、量 0.7×——浅穿+缩量的<b>供应真空</b>：三型中最强签名。'},
+  {title: 'A股 · 比亚迪 2026-08-03 · UT 行为', data: P2_UT_A,
+   opts: {vol: P2_UT_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '向上刺穿 20 日高 0.2% 后收回——温和的镜像陷阱。'},
+  {title: '美股 · 谷歌 2026-08-03 · UT 行为', data: P2_UT_U,
+   opts: {vol: P2_UT_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
+   note: '穿 0.4%、量 1.3×——与比亚迪<b>同一天</b>：陷阱语言跨市场通用。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>

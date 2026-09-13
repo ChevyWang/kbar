@@ -98,6 +98,8 @@
 <div id="cmp-acc"></div>
 
 <h2 id="s09a"><span class="no">附A</span>实例库：A股与美股的吸筹区间 <span class="time-chip">≈3 min</span></h2>
+<p>A股与美股的吸筹区间做成<b>可切换的幻灯片</b>：先读图自测：五幕走到哪一幕？量能签名对得上吗？再点"揭晓判词"核对；←→ 翻页。下表为全量索引。</p>
+<div id="gal-a"></div>
 <table>
 <tr><th>市场</th><th>品种</th><th>窗口</th><th>概念</th><th>关键读数</th><th>一句话点评</th></tr>
 <tr><td>A股</td><td>立讯精密</td><td>2025-11 → 12</td><td>吸筹区间候选</td><td>前段 −17%，区间宽 12%，后段量缩至 0.67×</td><td>下跌→窄幅→量缩：车间开工的三件套</td></tr>
@@ -307,6 +309,21 @@ document.getElementById('schem-ae').innerHTML = Kbar.schematic({
     {t: 'hline', y: 79.5, text: 'SC支撑', color: '#1a7f37'}
   ]
 }) + '<div class="schem-cap"><b>A–E 五幕全景。</b>A=停止下跌（SC/AR/ST）→ B=反复测试筑因（通常最长）→ C=Spring 终极测试 → D=域内趋势（SOS+LPS）→ E=出域。<b>量能曲线是第二剧本</b>：从 B 的递减到 D 的再放量——安静与喧哗的交替就是吸筹的呼吸。';
+
+/* 附A 实例库幻灯片：面板数据与正文对照组同源，换自测模式重放 */
+var GALLERY_A = [
+  {title: 'A股 · 立讯精密 2025 冬 · 吸筹区间候选', data: P2_ACC_A,
+   opts: {vol: P2_ACC_A.map(function(k){return k.v;}), yLabels: true, hl: 41,
+          zones: [{y1: 54.61, y2: 61.17, label: '区间 54.6–61.2', color: '#4a6fa5'}]},
+   note: '前段 −17% 下跌 → 两个月窄区间（宽 12%）→ 后段量能缩到前段 0.67×——区间里"越来越安静"= 可卖筹码被锁定。'},
+  {title: '美股 · 亚马逊 2026 初春 · 吸筹区间候选', data: P2_ACC_U,
+   opts: {vol: P2_ACC_U.map(function(k){return k.v;}), yLabels: true, hl: 41,
+          zones: [{y1: 196, y2: 220.47, label: '区间 196–220', color: '#4a6fa5'}]},
+   note: '同款三件套：−15% → 窄区间 → 量缩 0.68×——跨市场的吸筹签名一致。'},
+  {title: '加密 · ETHUSDT · 案例锚定图', data: S_ACC, opts: {},
+   note: '本课吸筹锚定图。幻灯片里先自己读一遍，再回正文案例深读核对五幕划分。'}
+];
+Kbar.gallery('#gal-a', GALLERY_A, {w:640, h:300, selfTest:true});
 </script>
 </body>
 </html>
