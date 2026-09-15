@@ -318,18 +318,12 @@
         return { stage: 'COURSE', title: '核对已有学习记录', lede: '发现已曝光案例，但当前记录没有保存所属阶段；先核对学习进度，不猜测阶段。', state: '待核对：已有曝光记录', label: '打开学习进度', href: 'progress.html', note: '曝光不等于完成或独立证据；确认阶段后再继续。' };
       }
       var hasPractice = false;
-      var legacyStage = null;
       try {
         for (var i = 0; i < localStorage.length; i += 1) {
           var name = localStorage.key(i) || '';
-          var legacy = /^kbar-answer::M([0-6])\./.exec(name);
-          if (legacy) { legacyStage = 'P' + legacy[1]; break; }
-          if (/^kbar-(quizsum|quizlog)::|^kbar-answer::/.test(name)) { hasPractice = true; }
+          if (/^kbar-(quizsum|quizlog)::/.test(name)) { hasPractice = true; }
         }
       } catch (e) {}
-      if (legacyStage) {
-        return { stage: legacyStage, title: '继续 ' + legacyStage + ' 的专门练习', lede: '已发现该阶段的专门练习记录；先回到阶段档案确认下一步。', state: '已有专门练习记录', label: '继续阶段档案', href: stages[legacyStage].mastery, note: '专门练习与新版能力档案分别记录，不把旧记录改写成核心通过。' };
-      }
       return hasPractice ? { stage: 'P0', title: '把课内练习收束为可核查证据', lede: '已发现课内练习记录；下一步进入 P0 能力验收，区分看过示范与独立检验。', state: '下一步做能力验收', label: '进入 P0 能力验收', href: stages.P0.mastery, note: '课内练习分数不自动替代能力档案中的独立证据。' } : first;
     }
     function statusForStage(key) {
