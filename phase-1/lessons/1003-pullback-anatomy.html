@@ -56,6 +56,9 @@
 </ul>
 <p>回踩的变体叫<b>突破测试（breakout test）</b>：回踩<b>略穿透</b>突破位（常为影线（shadow））再收回，它测的是突破位上还挂着多少逆势单：测试成功（收回+延续）反而让趋势更干净。两条纪律：回踩不破=最强入场点之一；<b>收盘跌回突破位之下且不收回=突破存疑</b>（1009 课的失败突破）。</p>
 
+<h3>推进与回撤</h3>
+<p>沿用<a href="https://chevywang.github.io/kbar/phase-0/lessons/0005-volume-confirms.html#speed-rhythm">0005 的收盘口径</a>，分别标记已知推进段和回撤段的起止、净位移与间隔数，再比较速度绝对值。缓慢浅回撤与快速深回吐提供不同背景，但都不能替代 H/L 尝试计数或结构失效条件。尚未结束的回撤只能记到当前根，不能用未来低点回填。</p>
+
 <h2 id="s04"><span class="no">04</span>数腿的纪律与失效 <span class="time-chip">≈8 min</span></h2>
 
 <p>三个失效信号：</p>
@@ -159,7 +162,12 @@ document.getElementById('full').innerHTML = Kbar.chart(A, {w:760,h:360,caps:caps
 document.getElementById('fig-h2').innerHTML = Kbar.row([
   {o:40,h:47,l:39,c:46},{o:44,h:48,l:38,c:40},{o:40,h:44,l:36,c:37},{o:37,h:42,l:36,c:41},{o:40,h:41,l:34,c:36},{o:36,h:49,l:35,c:48}
 ], {w:360,h:220,caps:['趋势棒','腿1','','反弹','腿2','H2棒']});
-Kbar.playback('#pb1', A.slice(35,52), {w:720,h:300,start:1,vol:vols(A.slice(35,52)),yLabels:true});
+Kbar.playback('#pb1', A.slice(35,52), {w:720,h:300,start:1,base:35,live:true,vol:vols(A.slice(35,52)),yLabels:true,
+  notes:A.slice(35,52).map(function(bar,i){
+    var n=35+i;
+    return '第'+(n+1)+'根收'+bar.c+'；'+(i<2?'两个收盘间隔尚未齐备。':'近两个间隔净推进 '+((bar.c-A[n-2].c)/2).toFixed(1)+' 点/根。')+'分别记录推进与回撤；此数值不替代尝试计数或结构失效。';
+  })
+});
 
 var questions = [
 { stage: crop(36,45),

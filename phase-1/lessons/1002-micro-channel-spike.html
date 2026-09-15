@@ -51,7 +51,7 @@
 <p>微通道的常见结局是演化成 Brooks 最著名的形态（第 21 章）：<b>尖峰和通道</b>——一根（或一组）爆发棒（spike）打开新领地，随后价格沿一条<b>斜率放缓的通道</b>阶梯推进。三个可验证的规律：</p>
 <ul>
   <li>spike 的起点是趋势的"生命线"——通道期的回撤通常止于 spike 顶部或中部，收盘跌回 spike 起点之下=形态作废。</li>
-  <li>通道斜率几乎总是<b>慢于</b> spike——动能从爆发转为消耗。</li>
+  <li>通道阶段常比尖峰推进慢；须用同口径位移与耗时核对。小棒、浅回撤也可形成强趋势，减速不等于转势。</li>
   <li>通道上破失败（高点无法离开通道线）常回看通道起点，为 1006 课的量度目标埋下伏笔。</li>
 </ul></p>
 
@@ -60,6 +60,9 @@
 
 <div id="cmp-micro"></div>
 <div id="cmp-spike"></div>
+
+<h3>速度与紧度</h3>
+<p>先复习<a href="https://chevywang.github.io/kbar/phase-0/lessons/0005-volume-confirms.html#speed-rhythm">0005 的速度与节奏</a>。速度记录单位时间的净推进；紧度记录回撤与相邻棒的关系。比较时写出固定窗口、收盘位移、经过间隔，以及回撤深度。小棒慢推与大棒往返可能给出相反的紧度判断。</p>
 
 <h2 id="s04"><span class="no">04</span>紧度决定回撤的"计量单位" <span class="time-chip">≈8 min</span></h2>
 
@@ -129,7 +132,7 @@
     <a href="1003-pullback-anatomy.html">第 1003 课：回踩的解剖 →</a>
   </div>
   <p><b>主资源（本课 grounded on）：</b>Al Brooks《Trading Price Action: Trends》第 16 章（Micro Channels）· 第 21 章（Spike and Channel Trend）· 第 26 章（Stairs: Broad Channel Trend）· 第 22 章（Trending Trading Range Days）。</p>
-  <div class="citations"><b>引用：</b>Brooks (2011) Trends · <a href="https://www.sciencedirect.com/science/article/pii/S0304405X11002613">Moskowitz, Ooi &amp; Pedersen (2012, JFE) 时间序列动量</a>（58 品种），紧度光谱是趋势惯性的裸K显微镜 · 案例数据：Binance 公开日线（ETHUSDT，2026-06-01 → 07-30）。</div>
+  <div class="citations"><b>引用：</b>Brooks (2011) Trends · <a href="https://www.sciencedirect.com/science/article/pii/S0304405X11002613">Moskowitz, Ooi &amp; Pedersen (2012, JFE) 时间序列动量</a>（58 品种），该论文研究的月度动量不直接验证本课几根K线的紧度规则 · 案例数据：Binance 公开日线（ETHUSDT，2026-06-01 → 07-30）。</div>
 </footer>
 
 <script src="../assets/candles.js"></script>
@@ -169,7 +172,12 @@ document.getElementById('full').innerHTML = Kbar.chart(A, {w:760,h:360,caps:caps
 document.getElementById('fig-sc').innerHTML = Kbar.row([
   {o:50,h:58,l:49,c:57},{o:55,h:63,l:54,c:62},{o:58,h:72,l:57,c:70},{o:66,h:73,l:63,c:64},{o:63,h:70,l:61,c:68},{o:65,h:71,l:63,c:69},{o:67,h:75,l:66,c:73}
 ], {w:380,h:220,caps:['蓄力','蓄力','spike','','通道回撤','','通道新高']});
-Kbar.playback('#pb1', A.slice(25,45), {w:720,h:300,start:1,vol:vols(A.slice(25,45)),yLabels:true});
+Kbar.playback('#pb1', A.slice(25,45), {w:720,h:300,start:1,base:25,live:true,vol:vols(A.slice(25,45)),yLabels:true,
+  notes:A.slice(25,45).map(function(bar,i){
+    var n=25+i;
+    return '第'+(n+1)+'根收'+bar.c+'；'+(i<2?'两个收盘间隔尚未齐备。':'近两个间隔净推进 '+((bar.c-A[n-2].c)/2).toFixed(1)+' 点/根。')+'速度之外，检查低点序列和回撤深度；慢不等于弱。';
+  })
+});
 
 var questions = [
 { stage: crop(30,37),
@@ -190,7 +198,7 @@ var questions = [
 { stage: crop(44,53),
   q:'spike 之后第45–52根高点 1947→1929→1918→1953→1956 的推进方式叫什么？',
   options:['通道阶梯（斜率放缓于spike）','第二个微通道（与spike同样陡）','随机漫步，没有结构规律'], answer:0,
-  explain:'S&C 第二规律：通道斜率几乎总是慢于spike——动能从爆发转为消耗。若通道像spike一样陡，那叫另一个微通道，不是S&C（第03节）。' },
+  explain:'本例呈通道阶梯。推进速度与严格微通道的逐根高低点条件不同；不能只凭斜率快慢分类，慢而浅回撤也可有强趋势。' },
 
 { stage: crop(13,27),
   q:'第14–22根：推进(14-15)→回退(16-18)→推进(19-22)→回退(23-26)。这种紧度下止损应该放哪？',

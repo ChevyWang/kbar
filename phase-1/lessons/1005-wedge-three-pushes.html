@@ -50,13 +50,16 @@
 <table>
 <tr><th>参数</th><th>回调楔形（以涨势中的下调楔为例）</th><th>反转楔形（以顶部为例）</th></tr>
 <tr><td>推数</td><td>逆势方向恰好三推（a-b-c）</td><td>顺势方向三推创新高</td></tr>
-<tr><td>动能</td><td>第三推幅度 ≤ 前推（常伴随缩量）</td><td>第三推幅度递减，或放量长上影</td></tr>
+<tr><td>推程</td><td>第三推幅度 ≤ 前推（常伴随缩量）</td><td>第三推幅度递减，或放量长上影</td></tr>
 <tr><td>信号</td><td>第三推后顺趋势棒收复</td><td><b>第三推收在其区间弱端</b>（收盘位置（close location）低）</td></tr>
 <tr><td>入场</td><td>第三推衰竭处顺势</td><td>跌破第三推起点的棒</td></tr>
 <tr><td>止损</td><td>第三推极值外</td><td>楔形顶外</td></tr>
 </table>
 
 <div id="cmp-wedge"></div>
+
+<h3>推程与速度</h3>
+<p>推程缩短只描述位移变小。若耗时缩得更多，平均推进反而可能更快；比较速度须另外除以经过的时间间隔。先固定每推起止口径，再记录回撤与收位。幅度、速度、量能可能相关，不能累加成独立票；第三推减速仍不能确认反转。</p>
 
 <h2 id="s04"><span class="no">04</span>楔形的失效与对偶线 <span class="time-chip">≈8 min</span></h2>
 
@@ -164,7 +167,12 @@ function crop(from, to){
 }
 document.getElementById('full').innerHTML = Kbar.chart(A, {w:760,h:360,caps:caps5(A,0),vol:vols(A),yLabels:true,
   zones:[{y1:1505,y2:1540,label:'底部候选 1505–1540',color:'#1a7f37'},{y1:1946,y2:1981,label:'三推顶 1946–1981'}]});
-Kbar.playback('#pb1', A.slice(19,32), {w:720,h:300,start:1,vol:vols(A.slice(19,32)),yLabels:true});
+Kbar.playback('#pb1', A.slice(19,32), {w:720,h:300,start:1,base:19,live:true,vol:vols(A.slice(19,32)),yLabels:true,
+  notes:A.slice(19,32).map(function(bar,i){
+    var n=19+i;
+    return '第'+(n+1)+'根收'+bar.c+'；'+(i<2?'两个收盘间隔尚未齐备。':'近两个间隔净推进 '+((bar.c-A[n-2].c)/2).toFixed(1)+' 点/根。')+'固定窗口速度与每推总长度不同；推程缩短不自动等于减速。';
+  })
+});
 
 var questions = [
   {
