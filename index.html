@@ -6,24 +6,131 @@
 <title>K线训练营 — 技术分析大师之路 · 完整路线图</title>
 <link rel="stylesheet" href="phase-0/assets/course.css">
 <style>
-  /* 路线图页专用（不动共享 course.css） */
+  /* 站点根入口的正式布局；共享课页仍由各 phase 的 course.css 负责。 */
+  :root {
+    --home-accent: #2d566b;
+    --home-accent-soft: #eef4f5;
+    --home-focus: #0b5c7d;
+    --accent: var(--home-accent);
+  }
+  body {
+    max-width: 46rem;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 2.5rem) 5rem;
+  }
+  body > header.course { max-width: 46rem; margin-bottom: 2rem; }
+  header.course h1 { font-size: clamp(2rem, 4vw, 2.7rem); letter-spacing: -.02em; }
+  header.course .sub { max-width: 52rem; }
+  body a { color: var(--home-accent); border-bottom-color: rgba(45, 86, 107, .35); }
+  body a:hover { border-bottom-color: var(--home-accent); }
+  body a:focus-visible,
+  body button:focus-visible { outline: 3px solid var(--home-focus); outline-offset: 3px; }
+  .current-task {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 17rem);
+    gap: clamp(1.2rem, 4vw, 3rem);
+    align-items: stretch;
+    margin: 2rem 0 3.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--ink);
+    border-top: 5px solid var(--home-accent);
+    background: #fff;
+  }
+  .task-main { min-width: 0; }
+  .task-kicker,
+  .task-side-label,
+  .task-meta th,
+  .task-phase,
+  .task-state {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: .72rem;
+    letter-spacing: .12em;
+    color: var(--muted);
+  }
+  .task-kicker { color: var(--home-accent); font-weight: 700; }
+  .task-title { margin: .4rem 0 .55rem; font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.35; }
+  .task-lede { max-width: 46rem; margin: 0; font-size: 1.02rem; }
+  .task-status-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: baseline; margin-top: .85rem; }
+  .task-phase { color: var(--ink); font-weight: 700; }
+  .task-state { color: var(--home-accent); letter-spacing: .04em; }
+  .task-meta {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 1.35rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .task-meta th,
+  .task-meta td { border-bottom: 1px solid var(--line); padding: .6rem 0; text-align: left; vertical-align: top; }
+  .task-meta th { width: 6.5rem; padding-right: 1rem; letter-spacing: .04em; }
+  .task-meta td { font-size: .9rem; line-height: 1.55; }
+  .task-meta tr:last-child th,
+  .task-meta tr:last-child td { border-bottom: 0; }
+  .task-boundary {
+    margin: 1.15rem 0 0;
+    padding: .7rem .85rem;
+    border-left: 3px solid var(--home-accent);
+    background: var(--home-accent-soft);
+    font-family: var(--sans);
+    font-size: .82rem;
+    line-height: 1.65;
+  }
+  .task-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: clamp(1rem, 3vw, 2rem);
+    border-left: 1px solid var(--line);
+  }
+  .task-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: .75rem;
+    padding: .85rem 1rem;
+    color: #fff !important;
+    background: var(--home-accent);
+    border: 1px solid var(--home-accent);
+    font-family: var(--sans);
+    font-size: .95rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .task-action:hover { background: #234656; border-color: #234656; }
+  .task-note { margin: .8rem 0 0; color: var(--muted); font-family: var(--sans); font-size: .78rem; line-height: 1.65; }
+  .ability-route { margin: 1.2rem 0 2.8rem; }
+  .route-intro { max-width: 42rem; margin-bottom: 1rem; }
+  .route-intro h3 { margin: 0 0 .35rem; font-size: 1.1rem; }
+  .route-intro p,
+  .route-hint { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.7; }
+  .route-hint { padding: .7rem .85rem; border-left: 3px solid var(--home-accent); background: var(--home-accent-soft); }
+  .route-list { display: grid; gap: .55rem; margin-top: 1rem; }
+  .route-item { position: relative; }
+  .route-item:not(:last-child)::after { content: ''; position: absolute; left: 1.15rem; top: 3.1rem; bottom: -.55rem; border-left: 1px solid var(--line); }
+  .route-node { position: relative; z-index: 1; display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto 1.25rem; gap: .8rem; align-items: center; width: 100%; padding: .8rem 1rem; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; text-align: left; font: inherit; cursor: pointer; }
+  .route-node:hover { border-color: var(--home-accent); background: var(--home-accent-soft); }
+  .route-node[aria-pressed="true"] { border-color: var(--home-accent); box-shadow: inset 4px 0 0 var(--home-accent); background: var(--home-accent-soft); }
+  .route-node:focus-visible { outline: 3px solid var(--home-focus); outline-offset: 3px; }
+  .route-node-id { font-family: var(--sans); font-size: .78rem; font-weight: 700; color: var(--home-accent); }
+  .route-node-copy { min-width: 0; }
+  .route-node-verb { display: block; font-family: var(--sans); font-size: .72rem; letter-spacing: .08em; color: var(--muted); }
+  .route-node-name { display: block; margin-top: .1rem; font-size: .98rem; font-weight: 700; }
+  .route-node-artifact { display: block; margin-top: .18rem; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+  .route-node-status { white-space: nowrap; color: var(--home-accent); font-family: var(--sans); font-size: .75rem; }
+  .route-node-arrow { color: var(--home-accent); font-size: 1.1rem; }
+  /* 路线图页专用 */
   .honest { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.2rem 0; }
-  .honest .cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
-  .honest .n { font-size: 1.3rem; font-weight: 700; color: var(--accent, #0f4c81); }
+  .honest .cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+  .honest .n { font-size: 1.3rem; font-weight: 700; color: var(--home-accent); }
   .honest .l { font-size: .78rem; color: var(--faint); }
   .honest .note { grid-column: 1/-1; font-size: .78rem; color: var(--faint); padding: .4rem .2rem 0; }
   .verbs { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0 0; }
   .verbs span { font-size: .78rem; border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: .15rem .7rem; }
   .verbs span b { color: var(--accent, #0f4c81); }
   .verbs .arr { align-self: center; color: var(--faint); font-size: .7rem; padding: 0; border: 0; background: none; }
-  .phase { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1.05rem 1.25rem; margin: .9rem 0; }
-  .phase .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; }
-  .phase .badge { font-size: .72rem; color: #fff; background: var(--accent, #0f4c81); border-radius: 99px; padding: .1rem .7rem; }
-  .phase .name { font-weight: 700; font-size: 1.06rem; }
-  .phase .anchor { font-size: .8rem; color: var(--faint); margin: .35rem 0 .1rem; }
-  .phase .anchor b { color: var(--ink); }
-  .phase .meta { font-size: .76rem; color: var(--faint); margin-top: .5rem; }
-  .phase a.go { font-size: .8rem; color: var(--accent, #0f4c81); text-decoration: none; border-bottom: 1px solid var(--accent, #0f4c81); }
   .ms { display: flex; gap: .65rem; align-items: baseline; padding: .4rem 0; border-top: 1px dashed var(--line); font-size: .86rem; }
   .ms .id { font-size: .7rem; color: var(--accent, #0f4c81); white-space: nowrap; font-weight: 600; }
   .ms .hrs { margin-left: auto; white-space: nowrap; font-size: .75rem; color: var(--faint); }
@@ -39,9 +146,22 @@
   .route-chain { font-size: .86rem; }
   .route-chain td:first-child { white-space: nowrap; }
   .route-chain .state { font-family: var(--sans); font-size: .76rem; white-space: nowrap; }
+  @media (max-width: 767.98px) {
+    .current-task { grid-template-columns: 1fr; gap: 1.2rem; margin: 1.35rem 0 2.5rem; }
+    .task-side { padding: 1.1rem 0 0; border-top: 1px solid var(--line); border-left: 0; }
+  }
   /* v1.7（批次 D 移动端）：<560px 三格堆叠单列（course.css 的 <768px 版心/图表/表格规则经链接同样生效） */
   @media (max-width: 560px) {
+    body { padding: 1.25rem 1rem 3rem; }
     .honest { grid-template-columns: 1fr; }
+    .route-node { grid-template-columns: 2.6rem minmax(0, 1fr) 1rem; gap: .6rem; padding: .75rem .8rem; }
+    .route-node-status { grid-column: 2; grid-row: 2; }
+    .route-node-arrow { grid-column: 3; grid-row: 1 / span 2; }
+  }
+  @media print {
+    body { max-width: none; padding: 0; }
+    .current-task { break-inside: avoid; border-color: #000; }
+    .task-action { color: #000 !important; background: #fff; border-color: #000; }
   }
 </style>
 </head>
@@ -50,9 +170,34 @@
 <header class="course">
   <div class="kicker">Kbar Bootcamp · K线训练营</div>
   <h1>技术分析大师之路</h1>
-  <p class="sub">一条能力链，每一段都为下一段供弹药：读图 → 流利 → 地形 → 概率 → 系统 → 执行 → 大师。全真实数据 · 可离线可打印 · 免费公开 · <b>不以「上完课」结业，以「能否做到」结业</b>——每个阶段以能力里程碑验收。</p>
+  <p class="sub">一条能力链，每一段都为下一段供弹药：读图 → 流利 → 地形 → 概率 → 系统 → 执行 → 大师。真实案例＋合成边界练习 · 可离线可打印 · 免费公开 · <b>不以「上完课」结业，以「能否做到」结业</b>——每个阶段以能力里程碑验收。</p>
   <p style="margin:.8rem 0 0"><a href="progress.html">学习进度 →</a>（各课练习记录、到期错题与里程碑提交，仅存本浏览器）</p>
 </header>
+
+<section class="current-task" data-current-task aria-labelledby="current-task-title">
+  <div class="task-main">
+    <p class="task-kicker">现在开始 · 当前任务</p>
+    <div class="task-status-row" aria-live="polite">
+      <p class="task-phase" data-current-phase>P0 · 辨认</p>
+      <p class="task-state" data-current-state>未开始</p>
+    </div>
+    <p class="task-title" id="current-task-title" role="heading" aria-level="2" aria-live="polite" data-current-title>先完成第一项读图任务</p>
+    <p class="task-lede" data-current-lede>从第 0001 课开始，把一根 K 线读成一张可核查的事实卡。</p>
+    <table class="task-meta">
+      <tbody>
+        <tr><th scope="row">核心动作</th><td data-current-action-copy>写出开高低收（OHLC）事实、位置、未知和下一验证条件。</td></tr>
+        <tr><th scope="row">阶段产物</th><td data-current-artifact>事实卡</td></tr>
+        <tr><th scope="row">预计投入</th><td data-current-effort>先完成一个可停下的单次动作；内容分钟只是标称预算，练习与复测另计。</td></tr>
+      </tbody>
+    </table>
+    <p class="callout task-boundary" data-current-boundary><b>证据边界：</b>先学习示范，再做独立检验；辅助学习会被单独记录，不替代独立证据。</p>
+  </div>
+  <aside class="task-side">
+    <p class="task-side-label">唯一主行动</p>
+    <a class="task-action" data-current-action href="phase-0/lessons/0001-anatomy-of-a-candle.html"><span data-current-action-label>开始第一项任务</span> <span aria-hidden="true">→</span></a>
+    <p class="task-note" data-current-note>首次进入：先完成第 0001 课，再进入训练场和能力验收。</p>
+  </aside>
+</section>
 
 <h2><span class="no">01</span>诚实估时</h2>
 <div class="honest">
@@ -74,75 +219,25 @@
 </div>
 <p style="font-size:.78rem;color:var(--faint);margin:.8rem 0 0">验收形式随动词升级：辨认/口述（P0–1）→ 盲图报告「如写给基金经理」（P2–3）→ 真实产物：交易计划/回测报告/模拟与自报执行记录（P4–5）→ 原创研究（P6）。螺旋配额：毕业考 ≥4/12 跨阶段题，低阶能力是高阶验收的必要构件。</p>
 
-<h2><span class="no">03</span>阶段路线 · 每阶段的里程碑</h2>
+<h2><span class="no">03</span>能力路线</h2>
+<section class="ability-route" aria-labelledby="ability-route-title">
+  <div class="route-intro">
+    <h3 id="ability-route-title">从辨认到贡献输出</h3>
+    <p>每个节点只回答三件事：要形成什么能力、留下什么产物、下一步从哪里进入。详细课程、训练场和里程碑进入阶段页后查看。</p>
+  </div>
+  <p class="route-hint" id="ability-route-hint">选择节点只会更新上方当前任务预览，不会写入学习记录、产生曝光或消耗复测机会。</p>
+  <div class="route-list" role="list">
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P0" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P0</span><span class="route-node-copy"><span class="route-node-verb">辨认</span><span class="route-node-name">读图</span><span class="route-node-artifact">产物：事实卡</span></span><span class="route-node-status" data-route-status="P0">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P1" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P1</span><span class="route-node-copy"><span class="route-node-verb">复述推理</span><span class="route-node-name">流利</span><span class="route-node-artifact">产物：逐根状态</span></span><span class="route-node-status" data-route-status="P1">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P2" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P2</span><span class="route-node-copy"><span class="route-node-verb">作图应用</span><span class="route-node-name">地形</span><span class="route-node-artifact">产物：区域图</span></span><span class="route-node-status" data-route-status="P2">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P3" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P3</span><span class="route-node-copy"><span class="route-node-verb">概率引用</span><span class="route-node-name">概率</span><span class="route-node-artifact">产物：统计身份证</span></span><span class="route-node-status" data-route-status="P3">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P4" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P4</span><span class="route-node-copy"><span class="route-node-verb">组装综合</span><span class="route-node-name">系统</span><span class="route-node-artifact">产物：冻结计划</span></span><span class="route-node-status" data-route-status="P4">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P5" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P5</span><span class="route-node-copy"><span class="route-node-verb">执行自律</span><span class="route-node-name">执行</span><span class="route-node-artifact">产物：订单事故记录</span></span><span class="route-node-status" data-route-status="P5">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P6" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P6</span><span class="route-node-copy"><span class="route-node-verb">贡献输出</span><span class="route-node-name">大师</span><span class="route-node-artifact">产物：复盘文与研究表达</span></span><span class="route-node-status" data-route-status="P6">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+  </div>
+</section>
 
-<div class="phase">
-  <div class="head"><span class="badge">P0 · 辨认</span><span class="name">读图：从读一根K线，到读一张图</span><a class="go" href="phase-0/">进入子站 →</a> <a href="phase-0/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>任给一根K线 10 秒说出胜负/战场/干净度</b>；训练系统运转中</p>
-  <div class="ms done"><span class="id">M0.1 ✓</span>单K与双K辨认<span class="hrs"><b>4–6h</b><span class="dot test"></span>实测·已达成</span></div>
-  <div class="ms"><span class="id">M0.2</span>位置与结构辨认<span class="hrs"><b>4–6h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M0.3</span>量价与多周期辨认<span class="hrs"><b>4–6h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M0.4</span>训练系统运转（结业）<span class="hrs"><b>2–4h</b>＋日课 <span class="dot ana"></span></span></div>
-  <p class="meta">7 课 · 内容时长 71–81 min/课 · 3 盲图考场 · 毕业考 · Nison 形态族谱 · A股/美股/加密 27 例 · 心理表征与一万小时批判（Ericsson）</p>
-</div>
-
-<div class="phase">
-  <div class="head"><span class="badge">P1 · 复述推理</span><span class="name">流利：逐根推理（Brooks 体系）</span><a class="go" href="phase-1/">进入子站 →</a> <a href="phase-1/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>任给 60 根行情，连续说出 always-in 每次翻转及依据</b></p>
-  <div class="ms"><span class="id">M1.1</span>紧度与回踩<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M1.2</span>入场几何<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M1.3</span>区间与失败<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M1.4</span>60 根盲图连续推理（结业）<span class="hrs"><b>10–16h</b><span class="dot ana"></span></span></div>
-  <p class="meta">10 课 + 画线工具附录 · ETH 锚定 60 根 · SOL 盲图毕业考 · grounded on Brooks 三部曲逐章</p>
-</div>
-
-<div class="phase">
-  <div class="head"><span class="badge">P2 · 作图应用</span><span class="name">地形：供需区域地图（Wyckoff + Profile）</span><a class="go" href="phase-2/">进入子站 →</a> <a href="phase-2/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>任一品种完整地形图 + 价值区内/外操作含义</b>（报告写作考场五维量规·现阶段复盘版；M2.5 另用陌生窗验收迁移）</p>
-  <div class="ms"><span class="id">M2.1</span>周期与结构作图<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M2.2</span>陷阱与量价作图（含波图课 2009）<span class="hrs"><b>4–7h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M2.3</span>完整地形图（结业·并列）<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M2.4</span>日型战术辨认（结业·并列）<span class="hrs"><b>8–12h</b><span class="dot guess"></span></span></div>
-  <p class="meta">8+2 课（波图 2009 · 日型 2010）· XRP 完整周期锚定 · LINK 案例（练习用）+ 报告写作考场（现阶段复盘版） · 复盘 3.0 模板</p>
-</div>
-
-<div class="phase">
-  <div class="head"><span class="badge">P3 · 概率引用</span><span class="name">概率：形态统计全景（Bulkowski / Morris）</span><a class="go" href="phase-3/">进入子站 →</a> <a href="phase-3/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>任给形态 30 秒说出统计预期+过滤+失效</b>（统计备忘录写作+统计引用，六维量规·现阶段复盘版）</p>
-  <div class="ms"><span class="id">M3.1</span>形态统计引用<span class="hrs"><b>4–7h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M3.2</span>失败与过滤引用<span class="hrs"><b>5–8h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M3.3</span>自建统计（结业）<span class="hrs"><b>8–14h</b><span class="dot ana"></span></span></div>
-  <p class="meta">7 课 · 33 品种×5 年 3594 例 · 20 样本人工统计实验 · 体系解剖学（两轴矩阵）· 盲图报告考场</p>
-</div>
-
-<div class="phase">
-  <div class="head"><span class="badge">P4 · 组装综合</span><span class="name">系统：组装交易系统（Grimes / Brooks / Harris）</span><a class="go" href="phase-4/">进入子站 →</a> <a href="phase-4/mastery.html">能力档案 →</a></div>
-  <p class="anchor">目标产物：<b>版本化规则、执行模型与可复算验证包</b>；固定笔数不证明优势</p>
-  <div class="ms"><span class="id">M4.1</span>规则组装<span class="hrs"><b>8–14h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M4.2</span>资金与市场组装<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M4.3</span>一页纸系统+30 笔验证（结业）<span class="hrs"><b>10–18h</b><span class="dot ana"></span></span></div>
-  <p class="meta">10 课 · 示范系统「训练者一号」87 笔真实交易 · 交互蒙特卡洛/仓位计算器 · 学术柱 Harris/Osler/Kelly</p>
-</div>
-
-<div class="phase">
-  <div class="head"><span class="badge">P5 · 执行自律</span><span class="name">执行：心理与实盘（Douglas + 行为金融 + Tendler）</span><a class="go" href="phase-5/">进入子站 →</a> <a href="phase-5/mastery.html">能力档案 →</a></div>
-  <p class="anchor">目标产物：<b>执行情景、按因修复与独立换题证据</b>（决策质量与盈亏脱钩；小仓/实盘为可选自报实践，不构成授权）</p>
-  <div class="ms"><span class="id">M5.1</span>决策质量自律（含 tilt 修复课 5007）<span class="hrs"><b>5–9h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M5.2</span>执行协议（结业）<span class="hrs"><b>6–10h</b>＋可选并行实践 <span class="dot guess"></span></span></div>
-  <p class="meta">6+1 课（tilt 诊断与修复）· 18 笔止损研究 · 四件执行工具 · 前景理论/处置效应学术柱</p>
-</div>
-
-<div class="phase upcoming">
-  <div class="head"><span class="badge">P6 · 贡献输出</span><span class="name">大师：输出与体系化</span><span style="font-size:.72rem;color:var(--faint);border:1px dashed var(--line);border-radius:99px;padding:.05rem .6rem">4 课已上线 + 生涯协议</span><a class="go" href="phase-6/">进入子站 →</a> <a href="phase-6/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>一份通过双闸的可复算原创研究表达</b>（3000–5000 字是计划区间；公开发表、评审与社区回应另记）</p>
-  <div class="ms"><span class="id">M6.1</span>分析写作工坊<span class="hrs"><b>8–15h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M6.2</span>案例复盘写作<span class="hrs"><b>6–12h</b><span class="dot ana"></span></span></div>
-  <div class="ms"><span class="id">M6.3</span>原创研究（结业）<span class="hrs"><b>15–30h</b><span class="dot guess"></span></span></div>
-  <div class="ms"><span class="id">M6.4</span>费曼教学与社区检验<span class="hrs"><b>6–12h</b><span class="dot ana"></span></span></div>
-  <p class="meta">周复盘写作 · 季度手册修订 v1→v2→v3 · Brooks 论坛 / r/Daytrading 社区检验 · 升仓阶梯持续运转</p>
-</div>
-
-<h2><span class="no">04</span>一条练习链，七种产物</h2>
+<h2><span class="no">04</span>产物与验证</h2>
 <p>主线按同一条练习链逐阶段增加一种产物；每一步都保留原答、时间点和局限。右侧状态是<b>学习档案的含义</b>：路线图只指路，不替本地档案授予通过。</p>
 <table class="route-chain">
   <tr><th>产物</th><th>入口</th><th>独立验证</th><th>状态含义</th></tr>
@@ -171,13 +266,127 @@
 
 <div class="progress-strip">
   <b>掌握状态说明</b><br>
-  <span style="font-size:.8rem;color:var(--faint)">路线图不读取或猜测你的本地掌握状态。请在各阶段能力档案与里程碑页查看“未选择 / 未验证 / 已完成”，再用隔离新窗口和跨日记录补证；估时置信度也要等真人记录后再校准。</span>
+  <span style="font-size:.8rem;color:var(--faint)">路线图不会替本地档案授予通过；上方当前任务只读取已有记录来提供下一步。请在各阶段能力档案与里程碑页确认“未选择 / 未验证 / 已完成”，再用隔离新窗口和跨日记录补证；估时置信度也要等真人记录后再校准。</span>
 </div>
 
 <footer class="course">
   <p class="citations"><b>关于本站</b> · 全部课件自包含 HTML，无外部依赖、可离线、可打印。站点与课件源码见 <a href="https://github.com/ChevyWang/kbar">GitHub</a>。教学立场取自经典原著与统计检验（Nison、Grimes、Brooks、Wyckoff、Bulkowski、Morris、Douglas、Tendler 及学术研究）。行情数据来自交易所公开 API，仅供教学演示，不构成投资建议。</p>
 </footer>
 
+<script>
+  (function () {
+    'use strict';
+    var stages = {
+      P0: { verb: '辨认', name: '读图', artifact: '事实卡', action: '写出开高低收（OHLC）事实、位置、未知和下一验证条件。', effort: '先完成一个可停下的单次动作；内容分钟只是标称预算，练习与复测另计。', mastery: 'phase-0/mastery.html', entry: 'phase-0/', previewTitle: '把一根 K 线读成事实卡', previewLede: '先辨认可观察事实，再把位置、未知和下一验证条件写下来。' },
+      P1: { verb: '复述推理', name: '流利', artifact: '逐根状态', action: '逐根记录状态变化，并在新证据出现时改判。', effort: '先完成一次逐根练习；连续推理、复测和开放记录另计。', mastery: 'phase-1/mastery.html', entry: 'phase-1/', previewTitle: '让逐根推理连续起来', previewLede: '从单根判断推进到连续复述，保留每次状态变化与改判依据。' },
+      P2: { verb: '作图应用', name: '地形', artifact: '区域图', action: '画出区域，保留替代解释与失效条件。', effort: '先完成一张可复核的区域图；陌生窗口迁移另计。', mastery: 'phase-2/mastery.html', entry: 'phase-2/', previewTitle: '画出可复核的地形图', previewLede: '把结构、区域、价值位置和失效条件放进同一张可复核地图。' },
+      P3: { verb: '概率引用', name: '概率', artifact: '统计身份证', action: '匹配统计口径，写出预期、过滤和失效。', effort: '先完成一次冻结规则后的引用；复核与研究产物另计。', mastery: 'phase-3/mastery.html', entry: 'phase-3/', previewTitle: '用正确口径引用概率', previewLede: '先冻结形态和样本口径，再写出预期、过滤条件与失效边界。' },
+      P4: { verb: '组装综合', name: '系统', artifact: '冻结计划', action: '冻结规则、成本、未知与验证方式。', effort: '先完成一份版本化计划；验证包和复测另计。', mastery: 'phase-4/mastery.html', entry: 'phase-4/', previewTitle: '组装一份可验证的计划', previewLede: '把规则、成本、未知和验证方式组装成一份可复算的版本化计划。' },
+      P5: { verb: '执行自律', name: '执行', artifact: '订单事故记录', action: '记录事故、退出条件与按因修复动作。', effort: '先完成一个情景记录；模拟或自报实践另计。', mastery: 'phase-5/mastery.html', entry: 'phase-5/', previewTitle: '把执行事故变成修复记录', previewLede: '区分决策质量与盈亏，记录事故、退出条件和下一次按因修复动作。' },
+      P6: { verb: '贡献输出', name: '大师', artifact: '复盘文与研究表达', action: '提交可复算的复盘文，并标明证据边界。', effort: '先完成一份可复核草稿；双闸与延迟再测另计。', mastery: 'phase-6/mastery.html', entry: 'phase-6/', previewTitle: '留下可复算的研究表达', previewLede: '把复盘和研究写成可复核、可修订、边界清楚的公开产物。' },
+      COURSE: { verb: '待核对', artifact: '学习记录', action: '打开学习进度，确认已有记录所属阶段和下一步。', effort: '先核对一条记录；练习与复测另计。', mastery: 'progress.html' }
+    };
+    var first = {
+      stage: 'P0', title: '先完成第一项读图任务', lede: '从第 0001 课开始，把一根 K 线读成一张可核查的事实卡。', state: '未开始', label: '开始第一项任务', href: 'phase-0/lessons/0001-anatomy-of-a-candle.html', note: '首次进入：先完成第 0001 课，再进入训练场和能力验收。'
+    };
+    function readJson(key) {
+      try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
+    }
+    function stageFromKeys(collection) {
+      var keys = collection && typeof collection === 'object' ? Object.keys(collection) : [];
+      for (var i = 0; i < keys.length; i += 1) {
+        var match = /^M([0-6])\./.exec(keys[i]);
+        if (match) return 'P' + match[1];
+      }
+      return null;
+    }
+    function currentRecommendation() {
+      var archive = readJson('kbar-mastery::v1');
+      var attempts = archive && Array.isArray(archive.attempts) ? archive.attempts.slice() : [];
+      attempts.sort(function (a, b) { return String(b.submittedAt || '').localeCompare(String(a.submittedAt || '')); });
+      var latest = attempts[0];
+      if (latest && /^M[0-6]\./.test(latest.milestone || '')) {
+        var key = 'P' + latest.milestone.slice(1, 2), stage = stages[key];
+        var status = latest.unknown ? '待换题：自动规则无法判断' : latest.hinted ? '待独立检验：本次包含辅助' : latest.independent ? '已提交独立答卷，待核对' : '已有记录，待补证';
+        return { stage: key, title: '继续 ' + key + ' 的能力验收', lede: '沿用已有记录，从当前阶段继续形成可核查的学习证据。', state: status, label: '继续能力验收', href: stage.mastery, note: '页面只读取本地记录；查看首页不会新增曝光、答题或完成证据。' };
+      }
+      var pendingStage = stageFromKeys(archive && archive.drafts);
+      if (pendingStage) {
+        return { stage: pendingStage, title: '继续 ' + pendingStage + ' 的学习任务', lede: '发现尚未收口的草稿或已曝光案例；继续当前阶段，不把它当作新的独立任务。', state: '待继续：草稿或已曝光案例', label: '继续能力验收', href: stages[pendingStage].mastery, note: '原草稿与曝光记录会保留；查看首页不会新增学习证据。' };
+      }
+      if (archive && archive.exposure && Object.keys(archive.exposure).length) {
+        return { stage: 'COURSE', title: '核对已有学习记录', lede: '发现已曝光案例，但当前记录没有保存所属阶段；先核对学习进度，不猜测阶段。', state: '待核对：已有曝光记录', label: '打开学习进度', href: 'progress.html', note: '曝光不等于完成或独立证据；确认阶段后再继续。' };
+      }
+      var hasPractice = false;
+      var legacyStage = null;
+      try {
+        for (var i = 0; i < localStorage.length; i += 1) {
+          var name = localStorage.key(i) || '';
+          var legacy = /^kbar-answer::M([0-6])\./.exec(name);
+          if (legacy) { legacyStage = 'P' + legacy[1]; break; }
+          if (/^kbar-(quizsum|quizlog)::|^kbar-answer::/.test(name)) { hasPractice = true; }
+        }
+      } catch (e) {}
+      if (legacyStage) {
+        return { stage: legacyStage, title: '继续 ' + legacyStage + ' 的专门练习', lede: '已发现该阶段的专门练习记录；先回到阶段档案确认下一步。', state: '已有专门练习记录', label: '继续阶段档案', href: stages[legacyStage].mastery, note: '专门练习与新版能力档案分别记录，不把旧记录改写成核心通过。' };
+      }
+      return hasPractice ? { stage: 'P0', title: '把课内练习收束为可核查证据', lede: '已发现课内练习记录；下一步进入 P0 能力验收，区分看过示范与独立检验。', state: '下一步做能力验收', label: '进入 P0 能力验收', href: stages.P0.mastery, note: '课内练习分数不自动替代能力档案中的独立证据。' } : first;
+    }
+    function statusForStage(key) {
+      var archive = readJson('kbar-mastery::v1');
+      var prefix = 'M' + key.slice(1) + '.';
+      var attempts = archive && Array.isArray(archive.attempts) ? archive.attempts.filter(function (item) { return String(item.milestone || '').indexOf(prefix) === 0; }) : [];
+      attempts.sort(function (a, b) { return String(b.submittedAt || '').localeCompare(String(a.submittedAt || '')); });
+      var latest = attempts[0];
+      if (latest) return latest.unknown ? '待换题' : latest.hinted ? '待独立检验' : latest.independent ? '待核对' : '已有记录';
+      var drafts = archive && archive.drafts && typeof archive.drafts === 'object' ? Object.keys(archive.drafts) : [];
+      for (var i = 0; i < drafts.length; i += 1) if (drafts[i].indexOf(prefix) === 0) return '草稿待继续';
+      return '未开始';
+    }
+    var current = currentRecommendation();
+    var selectedStage = current.stage;
+    var text = function (selector, value) { var node = document.querySelector(selector); if (node) node.textContent = value; };
+    function previewFor(key) {
+      var stage = stages[key];
+      if (key === current.stage) return current;
+      return { stage: key, title: stage.previewTitle, lede: stage.previewLede, state: statusForStage(key), label: '进入 ' + key + ' 阶段', href: stage.entry, note: '选择路线只改变当前任务预览；进入阶段后再查看详细课程、训练场和能力验收。' };
+    }
+    function render(preview, activeStage) {
+      var stage = stages[preview.stage] || stages.P0;
+      text('[data-current-phase]', (preview.stage === 'COURSE' ? '课程' : preview.stage) + ' · ' + stage.verb);
+      text('[data-current-state]', preview.state);
+      text('[data-current-title]', preview.title);
+      text('[data-current-lede]', preview.lede);
+      text('[data-current-action-copy]', stage.action);
+      text('[data-current-artifact]', stage.artifact);
+      text('[data-current-effort]', stage.effort);
+      text('[data-current-note]', preview.note);
+      var action = document.querySelector('[data-current-action]');
+      if (action) {
+        var label = action.querySelector('[data-current-action-label]');
+        if (label) label.textContent = preview.label;
+        action.setAttribute('aria-label', preview.label);
+        action.href = preview.href;
+      }
+      var nodes = document.querySelectorAll('[data-route-stage]');
+      for (var i = 0; i < nodes.length; i += 1) {
+        var node = nodes[i], key = node.getAttribute('data-route-stage');
+        var status = key === activeStage ? preview.state : key === current.stage ? current.state : statusForStage(key);
+        var statusNode = node.querySelector('[data-route-status]');
+        if (statusNode) statusNode.textContent = status;
+        node.setAttribute('aria-pressed', key === activeStage ? 'true' : 'false');
+      }
+    }
+    render(current, selectedStage);
+    var routeNodes = document.querySelectorAll('[data-route-stage]');
+    for (var r = 0; r < routeNodes.length; r += 1) {
+      routeNodes[r].addEventListener('click', function () {
+        selectedStage = this.getAttribute('data-route-stage');
+        render(previewFor(selectedStage), selectedStage);
+      });
+    }
+  }());
+</script>
 <script src="phase-0/assets/nav.js" defer></script>
 </body>
 </html>
