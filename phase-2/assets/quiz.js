@@ -159,7 +159,7 @@
     if (!root) return;
     var section = document.createElement('details');
     section.className = 'quiz-backup';
-    section.innerHTML = '<summary>备份训练场记录</summary><p>包含此来源的 quiz 单题、复习与历史记录，不含能力档案、旧实作或 P6。file:// 页面若存储隔离，请在每个原课页分别导出，在目标课页恢复。localhost、线上域名、端口及不同浏览器不自动同步。</p><button id="quiz-export" type="button">导出训练场记录</button><label>恢复训练场记录 <input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
+    section.innerHTML = '<summary>备份训练场记录</summary><p>包含此来源的 quiz 单题、复习与历史记录，不含能力档案、专题任务或 P6。file:// 页面若存储隔离，请在每个原课页分别导出，在目标课页恢复。localhost、线上域名、端口及不同浏览器不自动同步。</p><button id="quiz-export" type="button">导出训练场记录</button><label>恢复训练场记录 <input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
     root.appendChild(section);
     section.querySelectorAll('button,input,summary').forEach(function (el) { el.style.minHeight='44px'; });
     section.querySelector('summary').style.cursor='pointer';
@@ -233,7 +233,7 @@
       }
       var opts = shuffle(q.options.map(function (label, i) { return { label: label, ok: i === q.answer }; }));
       root.innerHTML =
-        ((getState().archives || []).length ? '<p class="quiz-archive">旧记录已保留为历史档案，题库版本或题号无法可靠映射；请重新作答补证。</p>' : '') +
+        ((getState().archives || []).length ? '<p class="quiz-archive">历史归档已保留；题库版本或题号无法可靠映射，请重新作答补证。</p>' : '') +
         (!reviewing && idx === 0 && dueQuestions(cfg.questions).length ? '<button class="review-due">到期复习（含已纠正题）</button>' : '') +
         '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (reviewing ? '（错题重练）' : '') + '</div>' +
         '<div class="q-text">' + q.q + '</div>' +
