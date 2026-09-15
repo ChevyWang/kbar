@@ -208,7 +208,9 @@ function renderA() {
     }
     saveRec(rr);
     document.getElementById('a-msg').innerHTML = (exact ? '<b style="color:#1a7f37">✓ 本例与重算一致</b>' : '<b style="color:#d33a2c">✗ ' + errs.join('；') + '</b>') +
-      '（真值四格：F5=' + (ev.f5 ? '是' : '否') + (ev.f5 ? '（t0 后第 ' + (ev.f5bar - s.brk - 1) + ' 根）' : '') + '，H20=' + (ev.h20 ? '是' : '否') + (ev.h20 ? '（t0 后第 ' + (ev.h20bar - s.brk - 1) + ' 根）' : '') + '）<div style="margin-top:.4rem"><button class="mbtn" id="a-next" type="button">下一例 →</button></div>';
+      '（真值四格：F5=' + (ev.f5 ? '是' : '否') + (ev.f5 ? '（t0 后第 ' + (ev.f5bar - s.brk - 1) + ' 根）' : '') + '，H20=' + (ev.h20 ? '是' : '否') + (ev.h20 ? '（t0 后第 ' + (ev.h20bar - s.brk - 1) + ' 根）' : '') + '）' +
+      (exact ? '' : '<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem">先回读 3001 的事件定义与本课协议，再用未曝光样本复测；错误不由后续总分抵消。</div>') +
+      '<div style="margin-top:.4rem"><button class="mbtn" id="a-next" type="button">下一例 →</button></div>';
     document.getElementById('a-next').onclick = function () { render(); };
   };
 }
@@ -279,6 +281,7 @@ function renderB() {
         : '<b style="color:#d33a2c">✗ 未通过</b>：' + (misses.length ? '漏标 ' + misses.join(', ') + '；' : '') + (extras.length ? '多标 ' + extras.join(', ') + '；' : '') + (!note ? '分母说明未填写；' : '') + (invalid?'非法棒号；':'') + (duplicate?'重复候选；':'') + (!sameAsRef?'参考数据自检失败；':'')) +
       '<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem">漏掉的候选详情：' + BREF.filter(function (c) { return misses.indexOf(c.complete) >= 0; }).map(function (c) { return '完成棒 ' + c.complete + '（L1=' + c.l1 + '@' + c.p1 + '，L2=' + c.l2 + '@' + c.p2 + '）'; }).join('；') + '</div>' +
       '<div style="font-size:.78rem;color:var(--muted)">引擎自检：页面检测器与嵌入参考集' + (sameAsRef ? '一致 ✓' : '不一致 ✗（数据异常，请反馈）') + '</div>' +
+      (!pass ? '<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem">未通过先回读 3001 的分母与时间边界、3006 的候选全集协议，再换未曝光窗口；不把补考改写成首答。</div>' : '') +
       (!pass && canNewB ? '<div style="margin-top:.5rem"><button class="mbtn dark" id="b-next" type="button">换未曝光新窗口重做（样本集 v' + (bSet + 2) + '）</button><div style="font-size:.78rem;color:var(--muted);margin-top:.3rem">本窗答案已揭示——补考请换未曝光窗。</div></div>' : '');
     var bn = document.getElementById('b-next');
     if (bn) bn.onclick = function () {
@@ -298,6 +301,11 @@ function renderB() {
 }
 
 /* ---------- 任务C ---------- */
+function calibrationTable(results, pickKey, evKey, title) {
+  var g = { '高': { n: 0, y: 0 }, '中': { n: 0, y: 0 }, '低': { n: 0, y: 0 } };
+  results.forEach(function (x) { var p = x.pick[pickKey]; if (!g[p]) return; g[p].n++; if (x.ev[evKey]) g[p].y++; });
+  return '<table class="ref" style="margin-top:.5rem"><caption style="text-align:left;font-weight:600;padding:.25rem 0">' + title + '</caption><tr><th>预先档位</th><th>记录数</th><th>实际发生</th><th>本窗频率（仅描述）</th></tr>' + ['高','中','低'].map(function (p) { var x = g[p]; return '<tr><td>' + p + '</td><td class="num">' + x.n + '</td><td class="num">' + x.y + '</td><td class="num">' + (x.n ? Math.round(x.y / x.n * 100) + '%' : '—') + '</td></tr>'; }).join('') + '</table>';
+}
 function renderC() {
   var r = loadRec();
   if (!r.taskC) { r.taskC = { set: 0, results: [], done: false }; saveRec(r); }
@@ -343,7 +351,9 @@ function finishC() {
   var canNewC = cSet + 1 < N_SETS;
   document.getElementById('work').innerHTML = '<div class="panel"><b>任务C 完成（样本集 v' + (cSet + 1) + '）——校准账（' + nC + ' 例仍只是示意量，看倾向与结果的相对方向）</b>' +
     '<table class="ref" style="margin-top:.5rem"><tr><th>例</th><th>押 F5</th><th>实际 F5</th><th>押 H20</th><th>实际 H20</th><th>条件</th></tr>' + rows + '</table>' +
-    '<div style="font-size:.8rem;color:var(--muted);margin-top:.4rem">这就是"预先提交→如实记录"的完整循环（3007 统计身份证的雏形）。猜对几题不重要——重要的是你的倾向有没有系统性偏移。</div>' +
+    '<p style="font-size:.8rem;color:var(--muted);margin-top:.6rem">档位含义在揭晓前已固定：高=更可能发生；中=暂无方向偏置；低=更可能不发生。下表只把各档位的实际频率如实列出，不把少量事件转换成稳定预测能力。</p>' +
+    calibrationTable(tc.results, 'f5', 'f5', 'F5 档位频率') + calibrationTable(tc.results, 'h20', 'h20', 'H20 档位频率') +
+    '<div style="font-size:.8rem;color:var(--muted);margin-top:.4rem">这就是"预先提交→如实记录"的完整循环（3007 统计身份证的雏形）。若档位与频率明显错位，先记录校准问题，再用未曝光样本或新时段复测；不把猜对数当晋级门槛。</div>' +
     (canNewC ? '<div style="margin-top:.5rem"><button class="mbtn dark" id="c-next" type="button">用未曝光新样本再练一轮（样本集 v' + (cSet + 2) + '）</button></div>' : '') +
     '</div>';
   var cn = document.getElementById('c-next');
