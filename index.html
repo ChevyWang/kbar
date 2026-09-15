@@ -36,6 +36,9 @@
   details.books p { font-size: .82rem; margin: .3rem 0; color: var(--faint); }
   details.books b { color: var(--ink); }
   .progress-strip { background: #fff; border: 1px dashed var(--line); border-radius: 12px; padding: .8rem 1.25rem; margin: .9rem 0; }
+  .route-chain { font-size: .86rem; }
+  .route-chain td:first-child { white-space: nowrap; }
+  .route-chain .state { font-family: var(--sans); font-size: .76rem; white-space: nowrap; }
   /* v1.7（批次 D 移动端）：<560px 三格堆叠单列（course.css 的 <768px 版心/图表/表格规则经链接同样生效） */
   @media (max-width: 560px) {
     .honest { grid-template-columns: 1fr; }
@@ -95,7 +98,7 @@
 
 <div class="phase">
   <div class="head"><span class="badge">P2 · 作图应用</span><span class="name">地形：供需区域地图（Wyckoff + Profile）</span><a class="go" href="phase-2/">进入子站 →</a> <a href="phase-2/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>任一品种完整地形图 + 价值区内/外操作含义</b>（报告写作考场五维量规·现阶段复盘版）</p>
+  <p class="anchor">结业锚点：<b>任一品种完整地形图 + 价值区内/外操作含义</b>（报告写作考场五维量规·现阶段复盘版；M2.5 另用陌生窗验收迁移）</p>
   <div class="ms"><span class="id">M2.1</span>周期与结构作图<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
   <div class="ms"><span class="id">M2.2</span>陷阱与量价作图（含波图课 2009）<span class="hrs"><b>4–7h</b><span class="dot ana"></span></span></div>
   <div class="ms"><span class="id">M2.3</span>完整地形图（结业·并列）<span class="hrs"><b>6–10h</b><span class="dot ana"></span></span></div>
@@ -131,7 +134,7 @@
 
 <div class="phase upcoming">
   <div class="head"><span class="badge">P6 · 贡献输出</span><span class="name">大师：输出与体系化</span><span style="font-size:.72rem;color:var(--faint);border:1px dashed var(--line);border-radius:99px;padding:.05rem .6rem">4 课已上线 + 生涯协议</span><a class="go" href="phase-6/">进入子站 →</a> <a href="phase-6/mastery.html">能力档案 →</a></div>
-  <p class="anchor">结业锚点：<b>一篇预审通过的原创研究</b>（3000–5000 字，大纲预审+可退回重写）</p>
+  <p class="anchor">结业锚点：<b>一份通过双闸的可复算原创研究表达</b>（3000–5000 字是计划区间；公开发表、评审与社区回应另记）</p>
   <div class="ms"><span class="id">M6.1</span>分析写作工坊<span class="hrs"><b>8–15h</b><span class="dot ana"></span></span></div>
   <div class="ms"><span class="id">M6.2</span>案例复盘写作<span class="hrs"><b>6–12h</b><span class="dot ana"></span></span></div>
   <div class="ms"><span class="id">M6.3</span>原创研究（结业）<span class="hrs"><b>15–30h</b><span class="dot guess"></span></span></div>
@@ -139,7 +142,21 @@
   <p class="meta">周复盘写作 · 季度手册修订 v1→v2→v3 · Brooks 论坛 / r/Daytrading 社区检验 · 升仓阶梯持续运转</p>
 </div>
 
-<h2><span class="no">04</span>教学的证据基础</h2>
+<h2><span class="no">04</span>一条练习链，七种产物</h2>
+<p>主线按同一条练习链逐阶段增加一种产物；每一步都保留原答、时间点和局限。右侧状态是<b>学习档案的含义</b>：路线图只指路，不替本地档案授予通过。</p>
+<table class="route-chain">
+  <tr><th>产物</th><th>入口</th><th>独立验证</th><th>状态含义</th></tr>
+  <tr><td>事实卡</td><td><a href="phase-0/mastery.html">P0 能力档案</a></td><td>未曝光单根/多根题</td><td class="state">未验证 → 结构化证据</td></tr>
+  <tr><td>逐根状态</td><td><a href="phase-1/milestones/m1-4-sequence.html">M1.4 连续推理</a></td><td>隔离新窗口逐根提交</td><td class="state">未验证 → 已完成流程</td></tr>
+  <tr><td>区域图</td><td><a href="phase-2/milestones/m2-5-terrain-transfer.html">M2.5 陌生窗迁移</a></td><td>换未曝光窗口取舍区域</td><td class="state">未验证 → 已完成流程</td></tr>
+  <tr><td>统计身份证</td><td><a href="phase-3/milestones/m3-3-research.html">M3.3 研究实验室</a></td><td>冻结规则后再揭晓</td><td class="state">未验证 → 已留痕</td></tr>
+  <tr><td>冻结计划</td><td><a href="phase-4/milestones/validation-packet.html">P4 验证包</a></td><td>新窗口、候选/成本/未知分轨</td><td class="state">未验证 → 证据包</td></tr>
+  <tr><td>订单事故记录</td><td><a href="phase-5/milestones/m5-3-incident-exit.html">M5.3 事故退出</a></td><td>网络、撤单未知、tilt 失败三场</td><td class="state">未验证 → 退出档案</td></tr>
+  <tr><td>复盘文与研究表达</td><td><a href="phase-6/mastery.html">P6 产物档案</a> · <a href="phase-6/milestones/m6-3-research-gate.html">M6.3 双闸</a></td><td>原答/修订、双闸、延迟再测</td><td class="state">未选择 / 未验证 / 已完成</td></tr>
+</table>
+<p class="note"><b>分支边界：</b>P2 的 2010 日型、P4 的执行练习与 P6 的公开评审是进阶或外部证据；未选择不阻断主线，已完成也不等于盈利、实盘授权或可持续优势。所有状态保存在学习者浏览器，导出文件由学习者自行保管。</p>
+
+<h2><span class="no">05</span>教学的证据基础</h2>
 <details class="books">
   <summary>22 本经典（按阶段分组，主书加粗）</summary>
   <p><b>P0：</b><b>Nison《日本蜡烛图技术》第2版</b>（丁圣元 译，形态命名标准源）· Marshall-Young-Rose (2006, JBF)</p>
@@ -153,8 +170,8 @@
 <p style="font-size:.78rem;color:var(--faint)">全部词条见 <a href="glossary.html">全站术语手册</a>（154+ 词条，P0–P5）。引用政策：方法与统计数据注明出处引用、按原书逻辑用自有数据重绘，不整章复刻。</p>
 
 <div class="progress-strip">
-  <b>第一位学员（站主）· 1/24 里程碑</b><br>
-  <span style="font-size:.8rem;color:var(--faint)">M0.1 已实测达成；全部估时置信度随其学习记录逐档升级，本站估时会随真实学习数据变准。</span>
+  <b>掌握状态说明</b><br>
+  <span style="font-size:.8rem;color:var(--faint)">路线图不读取或猜测你的本地掌握状态。请在各阶段能力档案与里程碑页查看“未选择 / 未验证 / 已完成”，再用隔离新窗口和跨日记录补证；估时置信度也要等真人记录后再校准。</span>
 </div>
 
 <footer class="course">
