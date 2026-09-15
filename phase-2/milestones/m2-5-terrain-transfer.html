@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M2.5 · 陌生窗迁移验收 — K线训练营 Phase 2</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.panel{border:1.5px solid var(--line);border-radius:12px;padding:1rem 1.2rem;margin:1rem 0;background:#fff;font-family:var(--sans);font-size:.93rem;line-height:1.75}
+.case-state{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.08rem .55rem;font-size:.78rem;margin:.2rem .3rem .2rem 0}.case-state.done{border-color:#1a7f37;color:#1a7f37;font-weight:700}
+.rule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}.rule-grid>div{border:1px solid var(--line);border-radius:8px;padding:.65rem;background:#faf9f6}
+button.mbtn{font:inherit;border:1.5px solid var(--ink);border-radius:8px;padding:.45rem 1rem;background:#fff;cursor:pointer;margin:.25rem .5rem .25rem 0}button.mbtn.dark{background:var(--ink);color:#fff}
+.feedback{border-left:4px solid #4a6fa5;padding:.65rem .8rem;background:#f4f7fb}
+@media(max-width:650px){.rule-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 2 地形 · 陌生窗迁移验收 M2.5</div>
+  <h1>区域取舍与可否定预案</h1>
+  <p class="sub">2007–2008 的报告练习用了已曝光材料；本页只在未曝光窗口验收迁移。每个窗口先写图面事实，再只留下会改变行动的区域，最后写出触发、失效与下一步。页面不按“合流”数量加分，也不把自评信心当成优势证据。</p>
+</header>
+
+<div class="panel">
+  <b>使用协议</b>
+  <ol>
+    <li>先看当前窗口和题设信息，禁止回看其他窗口的提交。</li>
+    <li>事实栏只写可复核信息；区域栏最多保留真正会改变行动的区域，也可以写“无”。</li>
+    <li>预案必须同时写触发、失效和下一步。没有触发或失效，就没有可执行的地图。</li>
+    <li>提交后原答锁定。解释弱时先回 2005/2006/2007 对应章节补练，再用下一未见窗口复测。</li>
+  </ol>
+  <div class="rule-grid">
+    <div><b>通过信号</b><br>事实与推断分开，区域少而有用。</div>
+    <div><b>补练信号</b><br>用身份故事代替图面证据，或把每个重叠都算成支持。</div>
+    <div><b>明确不判定</b><br>合流票数、主观信心、最后涨跌都不替代预案质量。</div>
+  </div>
+</div>
+
+<div class="panel"><b>窗口进度</b><div id="progress" style="margin-top:.35rem"></div></div>
+<div id="case-panel"></div>
+<footer class="course">
+  <div class="nav"><a href="../index.html">← Phase 2 主页</a><a href="../lessons/2008-graduation-terrain.html">回到 2008</a><a href="../lessons/2010-day-type.html">进入 2010 日内分支 →</a></div>
+  <div class="citations">本页是离线学习记录，不发送数据、不判定盈利或真实资金资格。图形为练习窗口示意；需要真实数据和常规会话训练时，进入 2010 的 M2.4。</div>
+</footer>
+<script src="../assets/candles.js"></script>
+<script src="../assets/answer.js"></script>
+<script src="../assets/nav.js" defer></script>
+<script>
+(function(){
+  'use strict';
+  var CASES = [
+    {id:'A', title:'窗口 A · 先有边缘，后有回收', hint:'只显示当前窗口；没有后续揭晓。', bars:[{o:100,h:104,l:99,c:103},{o:103,h:105,l:101,c:102},{o:102,h:103,l:98,c:99},{o:99,h:101,l:98,c:100},{o:100,h:106,l:99,c:105},{o:105,h:107,l:103,c:104},{o:104,h:105,l:100,c:101}], note:'比较区间两侧的拒绝与回收，写出“若接受／若失效”各自会改变什么。'},
+    {id:'B', title:'窗口 B · 同一位置的竞争解释', hint:'换窗后再答；不要复制 A 的故事。', bars:[{o:100,h:103,l:97,c:98},{o:98,h:101,l:96,c:100},{o:100,h:104,l:99,c:102},{o:102,h:103,l:98,c:99},{o:99,h:101,l:95,c:96},{o:96,h:99,l:94,c:98},{o:98,h:102,l:96,c:101}], note:'同一类形状可能对应继续下行或重新平衡；把竞争假设写进条件，不要替图表指定参与者身份。'},
+    {id:'C', title:'窗口 C · 合流很多，行动仍未定', hint:'最后一个备用窗口；只保留能改变行动的区域。', bars:[{o:100,h:102,l:98,c:101},{o:101,h:103,l:99,c:100},{o:100,h:104,l:99,c:103},{o:103,h:105,l:101,c:102},{o:102,h:104,l:100,c:101},{o:101,h:103,l:98,c:99},{o:99,h:102,l:97,c:100}], note:'区域再多也可能没有新信息；若当前没有可执行边界，写“等待”比堆叠标签更完整。'}
+  ];
+  var current=0;
+  var fields=[
+    {id:'facts',type:'longtext',label:'图面事实（只写可复核信息）',required:true,rows:4,placeholder:'例：高低点重叠；收盘仍在区间内；不要写“主力在吸筹”。'},
+    {id:'regions',type:'longtext',label:'会改变行动的区域',required:true,rows:3,placeholder:'最多写必要区域；没有就写“无”。'},
+    {id:'decision',type:'select',label:'当前动作',required:true,options:['等待更多信息','只考虑做多','只考虑做空','不交易']},
+    {id:'plan',type:'longtext',label:'触发、失效与下一步',required:true,rows:4,placeholder:'触发：什么出现才行动；失效：什么出现就撤销；下一步：如何复核。'},
+    {id:'confidence',type:'select',label:'自评状态（不是优势概率）',required:true,options:['未知（证据不足）','低：需补练','中：可换窗复测','高：仍需新窗验证']}
+  ];
+  function key(id){return 'kbar-answer::M2.5::'+id+'::';}
+  function attempts(id){try{return JSON.parse(localStorage.getItem(key(id)+'attempts')||'[]');}catch(e){return [];}}
+  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function renderProgress(){document.getElementById('progress').innerHTML=CASES.map(function(c){var n=attempts(c.id).length;return '<span class="case-state '+(n?'done':'')+'">'+c.id+'：'+(n?'已提交（可修订）':'未见')+'</span>';}).join('');}
+  function showFeedback(c,state){
+    var root=document.getElementById('case-feedback'); if(!root)return;
+    if(!state.attempts.length){root.innerHTML='';return;}
+    root.innerHTML='<div class="feedback"><b>提交后的独立复核：</b>'+esc(c.note)+'<br>若事实与推断没有分开、区域仍在堆叠，回到 2005/2006/2007 做对应补练，再点击“换下一未见窗口”复测。此处不根据字段数量或自评状态授予优势结论。</div><button class="mbtn dark" id="next-case" type="button">'+(current<CASES.length-1?'换下一未见窗口 →':'回看三窗并导出档案')+'</button>';
+    document.getElementById('next-case').onclick=function(){if(current<CASES.length-1){current++;mount();}else{root.innerHTML='<div class="feedback"><b>三窗已提交。</b>请导出各窗档案，隔天再用新的真实窗口复测；课程不会把本页状态转成实盘资格。</div>';}};
+  }
+  function mount(){
+    var c=CASES[current]; renderProgress();
+    document.getElementById('case-panel').innerHTML='<div class="panel"><b>'+c.title+'</b><span style="color:var(--muted);margin-left:.5rem">'+c.hint+'</span><div style="margin:.7rem 0">'+Kbar.chart(c.bars,{w:760,h:260,yLabels:true,hl:c.bars.length-1})+'</div><p style="font-size:.86rem;color:var(--muted)">提示：'+c.note+'</p><div id="answer-box"></div><div id="case-feedback"></div></div>';
+    KbarAnswer.mount('#answer-box',{taskId:'M2.5',caseId:c.id,packId:'terrain-transfer-v1',courseVersion:'2026-09-15',title:'冻结 '+c.id+' 窗判断',fields:fields,onState:function(s){showFeedback(c,s);renderProgress();}});
+  }
+  mount();
+})();
+</script>
+</body>
+</html>
