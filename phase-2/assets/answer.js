@@ -59,7 +59,8 @@
     }
 
     function fieldHtml(f) {
-      var v = val(state.draft[f.id]);
+      var draft = Object.keys(state.draft).length ? state.draft : state.attempts.length ? state.attempts[state.attempts.length - 1].answers : {};
+      var v = val(draft[f.id]);
       if (f.type === 'radio') {
         return (f.options || []).map(function (o, i) {
           return '<label class="kba-opt"><input type="radio" name="' + esc(f.id) + '" value="' + esc(o) + '"' + (v === o ? ' checked' : '') + '> ' + esc(o) + '</label>';
@@ -142,6 +143,7 @@
       html += '<div class="kba-note" style="font-size:.76rem;color:#6e6c64">提交后原答保留；修订另存新记录。导出文件是可迁移的学习档案；课程不发送任何数据。</div>';
       html += '</div>';
       root.innerHTML = html;
+      fields.forEach(function(f){var input=root.querySelector('[data-kba="'+f.id+'"]');if(input)input.setAttribute('aria-label',f.label);});
 
       // 样式（只注入一次）
       if (!document.getElementById('kba-style')) {
@@ -156,35 +158,31 @@
       root.querySelectorAll('input[type=radio]').forEach(function (el) { el.addEventListener('change', scheduleDraftSave); });
 
       var submitBtn = root.querySelector('.kba-submit');
-      if (submitBtn) submitBtn.onclick = function () {
+      function submitAttempt() {
         var ans = collect();
-        var missing = fields.filter(function (f) { return f.required && !ans[f.id]; });
+        var missing = fields.filter(function (f) { return f.required && !String(ans[f.id] == null ? '' : ans[f.id]).trim(); });
         if (missing.length) { renderStatus('还有必填项未完成：' + missing.map(function (f) { return f.label; }).join('、'), true); return; }
         state.attempts.push({ attemptId: uid(), submittedAt: new Date().toLocaleString(), answers: ans });
         state.draft = {}; state.draftSaved = false; persist();
         if (ls) { try { ls.removeItem(keyOf(cfg, 'draft')); } catch (e) {} }
         render(); emit();
+        if (document.activeElement === document.body) root.querySelector(".kba-revise").focus();
       };
+      if(submitBtn)submitBtn.onclick=submitAttempt;
       var reviseBtn = root.querySelector('.kba-revise');
       if (reviseBtn) reviseBtn.onclick = function () {
         var el = root.querySelector('.kba-form fieldset');
         if (el) { el.disabled = false; el.style.opacity = '1'; var leg = el.querySelector('legend'); if (leg) leg.textContent = '修订作答区（新的一次提交）'; }
         reviseBtn.textContent = '提交修订（锁定）';
         reviseBtn.className = 'kba-submit2';
-        reviseBtn.onclick = function () {
-          var ans = collect();
-          state.attempts.push({ attemptId: uid(), submittedAt: new Date().toLocaleString(), answers: ans });
-          state.draft = {}; state.draftSaved = false; persist();
-          if (ls) { try { ls.removeItem(keyOf(cfg, 'draft')); } catch (e) {} }
-          render(); emit();
-        };
+        reviseBtn.onclick = submitAttempt;
       };
       var exportBtn = root.querySelector('.kba-export');
       if (exportBtn) exportBtn.onclick = function () {
         var payload = {
           kind: 'kbar-answer-export', version: 1,
           taskId: cfg.taskId, caseId: cfg.caseId, packId: cfg.packId || '', courseVersion: cfg.courseVersion || '',
-          exportedAt: new Date().toISOString(), attempts: state.attempts, draft: collect()
+          exportedAt: new Date().toISOString(), attempts: state.attempts, draft: state.draft
         };
         var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
         var a = document.createElement('a');

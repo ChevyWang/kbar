@@ -6,6 +6,7 @@
 <title>一页纸交易计划模板 — K线训练营 Phase 4</title>
 <link rel="stylesheet" href="../assets/course.css">
 <style>
+button,summary,input,select{min-height:44px}.kba-row{flex-wrap:wrap}
 .plan-sheet { border: 2px solid var(--ink); border-radius: 12px; overflow: hidden; margin: 1.2rem 0; background: #fff; }
 .plan-head { background: var(--ink); color: #fff; padding: .55rem .95rem; }
 .plan-head .ttl { font-weight: 700; font-size: 1.02rem; }
@@ -29,7 +30,20 @@ table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-spa
   <div class="kicker">K线训练营 · Phase 4 · 参考卡（可打印）</div>
   <h1>一页纸交易计划模板</h1>
   <p class="sub">4009 课的交付物。打印 → 手填 → 贴屏幕边；4010 课的手工回测将逐字执行这张纸。填写提示的灰色斜体是问题不是答案——每个格子填<b>可执行的规则</b>，不填形容词。<a class="noprint" href="../lessons/4009-one-page-plan.html">← 回到 4009 课（带填范例与逐栏讲解）</a></p>
-</header>
+</header><h2>教学起步草稿 <span class="time-chip">分课完善</span></h2><p>版本cash-draft-v0：普通主板现金、日线收盘观察、单一币种；排除特殊板块与衍生品。Setup先记可验证条件与否定条件，订单、退出和预算尚未补齐则标“未完成，不发模拟委托”。4007的合成5000元预算只用于练习，不复制成个人额度。每课补齐一栏后保存，最后冻结可执行版本交4010验证。</p><section id="working-plan"><h2>从第一课续填 <span class="time-chip">分课完成</span></h2>
+<p>4001开始同一份计划：先定普通主板现金教学轨、主周期与Setup；先学4007预算，再进入4002委托。每课只补新增栏。草稿自动保存，提交形成不可覆盖的版本快照；后续用“修订”追加，版本和修改理由一起填写。填写完整不等于规则正确或获得交易资格。</p>
+<p>“一页”是执行摘要，细规则和事故预案可以放附表，在相应栏记录文件名、版本及定位。文件型附件需自行与导出档案一起保留。未知参数明确写未知，并写停止条件。</p>
+<div id="plan-editor"></div><p id="plan-next" role="status">先填写市场与Setup；随后完成4007的预算练习。</p>
+<p><a id="plan-action" href="../lessons/4007-position-sizing.html#allocation-practice">下一步：预算与资金竞争练习</a> · <a href="../lessons/4009-one-page-plan.html">逐栏解释与查阅</a></p></section>
+<section id="before-order"><h2>首笔模拟前 <span class="time-chip">逐项核对</span></h2><p>以下是每次模拟委托前的最小核对；任一项未知就先停止：</p>
+<table><tr><th>核对</th><th>须留下的证据</th><th>不满足时</th></tr>
+<tr><td>教学范围</td><td>固定普通主板现金轨；数据源、会话、币种、适用规则及核对日期</td><td>科创板、创业板、融资、衍生品另学，不混用</td></tr>
+<tr><td>数量与现金</td><td>买入单位、可用现金、费用预留、计划风险与压力损失</td><td>取所有约束下的较小数量；最小单位都超预算则拒绝</td></tr>
+<tr><td>并行信号</td><td>事前固定排序、已有持仓和挂单占用、相关组及组合预算</td><td>不借后续涨跌挑优胜者；记录未分配原因</td></tr>
+<tr><td>可执行性</td><td>可卖数量、有效交易时段、报价有效性、停牌/价格限制、可用委托类型</td><td>触发不等于成交；无法成交保留风险和待处理状态</td></tr>
+<tr><td>决策与事故</td><td>依据、反证、不交易理由；核对订单回报而非仅看图</td><td>异常时停发新单、核对持仓与未结委托，再处理</td></tr></table>
+<p>简版衔接：<a href="../../phase-5/lessons/5002-decision-quality.html">5002过程与结果分开</a>：先记依据与反证，事后盈亏另栏；<a href="../../phase-5/lessons/5005-execution-checklist.html">5005执行检查</a>：发单前核对范围/数量/预算，发单后核对订单与成交，异常时先停发新单。</p>
+<p>规则核对基线为<a href="https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml">上交所2026版交易规则及暂缓条款</a>。本教学简化轨：普通主板竞价买入按100股整数倍；普通股票不属当日回转品种。真实模拟参数仍须按标的、交易日与券商可用功能核对，不能由本表推及所有市场。</p></section>
 
 <div class="plan-sheet" id="plan-sheet">
   <div class="plan-head">
@@ -52,7 +66,7 @@ table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-spa
 </div>
 
 <h2><span class="no">附</span>与范例的对照检查</h2>
-<div class="two">
+<details><summary>历史研究填写范例（保留审计，不是现行现金执行计划）</summary><div class="two">
 <div class="plan-sheet">
   <div class="plan-head"><div class="ttl" style="font-size:.92rem">训练者一号·A股版（4009 v2 范例精简）</div></div>
   <table class="plan">
@@ -88,7 +102,7 @@ table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-spa
 </div>
 </div>
 
-<footer class="course">
+</details><footer class="course">
   <div class="nav">
     <a href="../lessons/4009-one-page-plan.html">← 第 4009 课</a>
     <a href="../lessons/4010-backtest-graduation.html">第 4010 课 →</a>
@@ -98,6 +112,8 @@ table.plan td.k { width: 8.5em; font-weight: 700; background: #f4f1ea; white-spa
   <div class="citations">结构依据 Grimes (2012) Part IV 与课程 4001–4009 各课；范例条款均可溯源（见 4009 带读）。打印建议：A4 纵向、缩放 100%、勾选“打印背景图形”。</div>
 </footer>
 
-<script src="../assets/nav.js" defer></script>
+<script src="../assets/answer.js"></script><script src="../assets/learning-store.js"></script><script>
+KbarAnswer.mount("#plan-editor",{taskId:"M4.plan",caseId:"cash-v1",packId:"p4-plan",courseVersion:"2026-09-15",title:"贯穿课程的计划",onState:function(s){if(s.attempts.length){document.getElementById("plan-next").textContent="已保存版本快照；请逐栏核对是否仍有未知条件，再按冻结版本验证。保存本身不代表具备模拟或交易资格。";var action=document.getElementById("plan-action");action.href="../lessons/4010-backtest-graduation.html";action.textContent="下一步：核对冻结计划并验证";}},fields:[{"id": "version", "label": "计划版本与本次修改理由", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "scope", "label": "① 市场/主周期/币种/数据源/会话与排除范围", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "universe", "label": "② 标的池与不交易条件", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "setup", "label": "③ Setup 条件、可观察但不足交易的情形", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "entry", "label": "④ 订单触发/类型/有效期/未成交及部分成交", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "stop", "label": "⑤ 失效与退出；T+1、跳空、停牌或无法成交时的处置", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "exit", "label": "⑥ 目标、时间退出与附表索引", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "budget", "label": "⑦ 现金/单位/单笔与组合预算/相关组/竞争排序/压力损失", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "record", "label": "⑧ 原始订单/成交/拒单/错误分类与复盘", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "change", "label": "⑨ 版本冻结、变更与重新验证", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}, {"id": "limits", "label": "学习目标、未知参数与停止模拟条件", "type": "longtext", "rows": 3, "required": true, "placeholder": "本课尚未学习的内容先留空；不要用猜测填满。"}]});
+</script><script src="../assets/nav.js" defer></script>
 </body>
 </html>
