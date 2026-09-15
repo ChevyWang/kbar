@@ -2,9 +2,43 @@
  * 1) 左侧两级小节导航：自动从 h2[id] + 其下属 h3 生成本课目录（≥1240px 显示，css 在 course.css）。
  *    滚动时高亮当前小节/小小节；点击平滑滚动。目录标签用短标签（去编号、去括注、取"："前段，
  *    撞名回退全称）；无 h2[id] 的页面静默退出；考场页（/exam/）与 data-no-toc 不建目录（防结构泄漏）。
- * 2) 法务免责页脚：全站每页注入（批次 C，调研 05 号文案）；涉加密品种页加加密风险句。零依赖。 */
+ * 2) 法务免责页脚：全站每页注入（批次 C，调研 05 号文案）；涉加密品种页加加密风险句。
+ * 3) 课程上下文导航：课页统一提供阶段返回与能力档案入口。零依赖。 */
 (function () {
   if (typeof document === 'undefined') return;
+
+  /* ---- 课程上下文导航（课页统一入口） ---- */
+  function injectLessonContext() {
+    if (document.querySelector('.lesson-nav') || !document.body) return;
+
+    var match = location.pathname.match(/\/phase-([0-6])\/lessons\/([^/]+)\.html$/);
+    if (!match) match = location.pathname.match(/\/phase([1-6])\/course\/lessons\/([^/]+)\.html$/);
+    if (!match) {
+      var p0 = location.pathname.match(/\/course\/lessons\/([^/]+)\.html$/);
+      if (p0) match = ['', '0', p0[1]];
+    }
+    if (!match) return;
+
+    var phase = match[1];
+    var lesson = match[2].match(/^(\d{4})/);
+    var names = ['辨认', '复述推理', '作图应用', '概率引用', '组装综合', '执行自律', '贡献输出'];
+    var nav = document.createElement('nav');
+    nav.className = 'lesson-nav';
+    nav.setAttribute('aria-label', '课程上下文');
+    nav.innerHTML = '<a href="../index.html">← 返回 P' + phase + ' 阶段</a>'
+      + '<span>P' + phase + ' · ' + names[Number(phase)] + ' · 第 ' + (lesson ? lesson[1] : '') + ' 课</span>'
+      + '<a href="../mastery.html">' + (phase === '6' ? '产物档案' : '能力档案') + ' →</a>';
+
+    var style = document.createElement('style');
+    style.setAttribute('data-kbar-context-nav', '');
+    style.textContent = '.lesson-nav{display:flex;justify-content:space-between;gap:1rem;margin:0 0 1.25rem;font:.82rem var(--sans,sans-serif);}'
+      + '.lesson-nav a{color:var(--lesson-accent,var(--ink));border-bottom-color:rgba(45,86,107,.35);}'
+      + '.lesson-nav a:focus-visible{outline:3px solid var(--lesson-focus,var(--ink));outline-offset:3px;}'
+      + '@media(max-width:560px){.lesson-nav{flex-wrap:wrap;}}'
+      + '@media print{.lesson-nav{display:none;}}';
+    document.head.appendChild(style);
+    document.body.insertBefore(nav, document.body.firstElementChild);
+  }
 
   /* ---- 法务免责（每页注入） ---- */
   function injectDisclaimer() {
@@ -130,6 +164,7 @@
     setActive();
   }
 
+  injectLessonContext();
   injectDisclaimer();
   buildToc();
 })();

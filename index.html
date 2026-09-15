@@ -108,6 +108,9 @@
   .route-hint { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.7; }
   .route-hint { padding: .7rem .85rem; border-left: 3px solid var(--home-accent); background: var(--home-accent-soft); }
   .route-list { display: grid; gap: .55rem; margin-top: 1rem; }
+  .route-direct { display: flex; flex-wrap: wrap; gap: .65rem; align-items: baseline; margin: 1rem 0 0; padding-top: .9rem; border-top: 1px solid var(--line); font-family: var(--sans); font-size: .86rem; }
+  .route-direct a { color: var(--home-accent); font-weight: 700; }
+  .route-direct span { color: var(--muted); }
   .route-item { position: relative; }
   .route-item:not(:last-child)::after { content: ''; position: absolute; left: 1.15rem; top: 3.1rem; bottom: -.55rem; border-left: 1px solid var(--line); }
   .route-node { position: relative; z-index: 1; display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto 1.25rem; gap: .8rem; align-items: center; width: 100%; padding: .8rem 1rem; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; text-align: left; font: inherit; cursor: pointer; }
@@ -171,7 +174,7 @@
   <div class="kicker">Kbar Bootcamp · K线训练营</div>
   <h1>技术分析大师之路</h1>
   <p class="sub">一条能力链，每一段都为下一段供弹药：读图 → 流利 → 地形 → 概率 → 系统 → 执行 → 大师。真实案例＋合成边界练习 · 可离线可打印 · 免费公开 · <b>不以「上完课」结业，以「能否做到」结业</b>——每个阶段以能力里程碑验收。</p>
-  <p style="margin:.8rem 0 0"><a href="progress.html">学习进度 →</a>（各课练习记录、到期错题与里程碑提交，仅存本浏览器）</p>
+  <p style="margin:.8rem 0 0"><a href="progress.html#course-index">按课程浏览 →</a><span aria-hidden="true"> · </span><a href="progress.html">学习进度 →</a>（各课练习记录、到期错题与里程碑提交，仅存本浏览器）</p>
 </header>
 
 <section class="current-task" data-current-task aria-labelledby="current-task-title">
@@ -235,6 +238,7 @@
     <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P5" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P5</span><span class="route-node-copy"><span class="route-node-verb">执行自律</span><span class="route-node-name">执行</span><span class="route-node-artifact">产物：订单事故记录</span></span><span class="route-node-status" data-route-status="P5">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
     <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P6" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P6</span><span class="route-node-copy"><span class="route-node-verb">贡献输出</span><span class="route-node-name">大师</span><span class="route-node-artifact">产物：复盘文与研究表达</span></span><span class="route-node-status" data-route-status="P6">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
   </div>
+  <p class="route-direct"><a href="progress.html#course-index">按课程浏览全部课程 →</a><span>想直接进入任意一课，从这里选；不会改变当前任务。</span></p>
 </section>
 
 <h2><span class="no">04</span>产物与验证</h2>
