@@ -13,7 +13,7 @@
 <h1>手工回测：验证自己的规则，然后毕业</h1>
   <p class="sub">Phase 4 的验收原文：<b>写出自己的一页纸交易计划 + 30 笔样本手工验证报告</b>。本课教协议（逐根推进、无未来函数、九字段记账），带一遍全流程，交付我们按同一协议抽出的 30 笔真实样本（BT30：A股14+美股10+加密6）全表与统计，然后把两张<b>与全部课件不同源的盲图</b>交给你，毕业考。通过即开模拟盘（Phase 4 里程碑）。本课约 86 分钟（知识 59 + 毕业考 21 + 结业 6）。</p>
 </header>
-<aside class="callout"><b>版本与验证范围（2026-09-10复核）</b>：现行研究实现 trader1-v2.1 / ohlc-gross-reference-v1 为33品种日线毛R参照：594笔、胜率46.1%、均值+0.0908R；剔上证指数576笔、+0.0956R。旧v2.0的732笔混入5分钟且有退出索引错误，相关旧统计仅供审计，不背书现行规则。历史图例与BT30-v1均为已揭晓算术材料。<b>主教学轨 cn-mainboard-cash-v1</b>为普通主板现金只多，按订单回报、100股买入单位、T+1、现金、成本和未知成交独立验收；研究参照不模拟这些约束，不是可交易净收益或账户曲线。全部风险百分比仅为指定教学情景参数，无默认实盘额度。</aside>
+<aside class="callout"><b>研究身份</b>：现行参照为 trader1-v2.1 的日线毛 R，不代表净收益或账户曲线。主教学执行轨为 cn-mainboard-cash-v1；历史图例与 BT30 仅作已揭晓练习。详见<a href="../reference/research-lineage.html">研究版本与证据</a>。</aside>
 
 <div class="lesson-map">
   <div class="lm-title">本课地图</div>
@@ -144,7 +144,7 @@
     <a href="../reference/glossary-p4.html">Phase 4 词汇</a>
   </div>
   <p><b>主资源（本课 grounded on）：</b>Adam Grimes (2012) Part III–IV（交易测试与交易者成长）；《认知天性》（提取练习与测试效应，回测的学习学基础）；训练者一号 BT30 数据；调查方法论总纲 = Steenbarger《Daily Trading Coach》第 10 章（hypothesis-generating research）。</p>
-  <div class="citations"><b>延伸阅读：</b>Harris《交易与交易所》Ch.21–22（交易成本与业绩评估，回测报告与记分卡的学术延伸）。<b>引用：</b>Grimes (2012) · Brown, Roediger &amp; McDaniel (2014)。数据：BT30 为 v1 审计样本 seed=44 分层抽样（A股14/美股10/加密6，scan_p4.py），v2.0 历史版本 scan_p4_v2.py（732 笔）+ PROTOCOL-trader1-v2.md 可复算；盲图为 META 2023-05 与 XOM 2025-04 真实日线（yfinance），与全部教学案例不同源。</div>
+  <div class="citations"><b>延伸阅读：</b>Harris《交易与交易所》Ch.21–22（交易成本与业绩评估，回测报告与记分卡的学术延伸）。<b>引用：</b>Grimes (2012) · Brown, Roediger &amp; McDaniel (2014)。数据：BT30 为 v1 审计样本 seed=44 分层抽样（A股14/美股10/加密6，scan_p4.py），旧 v2.0 账本保留 732 笔供审计，不能用当前脚本声称重现旧结果；当前 scan_p4_v2.py 重算 v2.1 日线 594 笔，版本范围见研究附录；盲图为 META 2023-05 与 XOM 2025-04 真实日线（yfinance），与全部教学案例不同源。</div>
 </footer>
 
 <script src="../assets/candles.js"></script>

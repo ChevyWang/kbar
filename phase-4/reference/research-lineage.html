@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研究版本与证据 — K线训练营</title><link rel="stylesheet" href="../assets/course.css"></head><body>
+<header class="course"><div class="kicker">K线训练营 · 研究参考</div><h1>研究版本与证据</h1>
+<p class="sub">现行研究参照只有 trader1-v2.1 / ohlc-gross-reference-v1。它用于检查规则与计算，不代表可交易净收益。主教学执行轨仍是 cn-mainboard-cash-v1，需另查现金、费用和订单回报。</p></header>
+<h2 id="current">现行与历史</h2>
+<p>先辨认研究对象，再读统计；以下记录各自能复核的范围：</p>
+<table><thead><tr><th>对象</th><th>能复核什么</th><th>不能据此推出什么</th></tr></thead><tbody>
+<tr><td>现行 v2.1：594 笔</td><td>当前日线输入经 scan_p4_v2.py 重算，与保存账本逐条一致；正 R 274 笔，毛均值 +0.0908R</td><td>未认证复权/PIT、真实成交、净收益或账户曲线</td></tr>
+<tr><td>历史形态：3594 标签</td><td>scan_p3.json 中 33 品种标签可复计；失败与达标按各自窗口定义</td><td>原完整检测器未定位，不能声称从原棒重现全部标签；标签比例不是交易胜率</td></tr>
+<tr><td>历史 v1：87 笔</td><td>当前日线输入经 scan_p4.py 可重现保存账本；毛均值 +0.204R</td><td>含未显式写进原规则的低点过滤，不能把成绩归因于公开规则</td></tr>
+<tr><td>BT30-v1：30 笔</td><td>从 v1 按市场分层、seed=44 抽样；15 笔正 R，均值 +0.095R，用于已揭晓算术</td><td>不是新研究、独立盲测或现行系统优势证据；BT30 是样本名，须带来源版本</td></tr>
+<tr><td>错误旧 v2.0：732 笔</td><td>旧账本保留供定位错误：混入 5 分钟输入、退出索引错误</td><td>不能背书现行规则；旧 BT30-v2 与现行 v2.1 也不能混称</td></tr>
+</tbody></table>
+<p>以上完整账本与扫描复核来自课程构建端，本页不是完整研究数据下载包。站内可独立操作的研究练习是<a href="../../phase-3/milestones/m3-3-research.html">M3.3 冻结规则与原棒复核</a>；其范围与旧标签库分开。执行练习见<a href="../milestones/m4-3-system.html">M4.3</a>。是否复现、是否样本外、是否可交易，要分别提供证据。</p>
+<h2 id="audit">错误与修正</h2>
+<p>保留版本史是为了学习审查过程。新生可在遇到对应错误时展开，不必在每课重复阅读。</p>
+<details><summary>原版本说明与修正轨迹</summary><aside class="callout"><b>版本与验证范围（2026-09-10复核）</b>：现行研究实现 trader1-v2.1 / ohlc-gross-reference-v1 为33品种日线毛R参照：594笔、胜率46.1%、均值+0.0908R；剔上证指数576笔、+0.0956R。旧v2.0的732笔混入5分钟且有退出索引错误，相关旧统计仅供审计，不背书现行规则。历史图例与BT30-v1均为已揭晓算术材料。<b>主教学轨 cn-mainboard-cash-v1</b>为普通主板现金只多，按订单回报、100股买入单位、T+1、现金、成本和未知成交独立验收；研究参照不模拟这些约束，不是可交易净收益或账户曲线。全部风险百分比仅为指定教学情景参数，无默认实盘额度。</aside></details>
+<details><summary>4006 原导语留档</summary><p class="sub">训练者一号两代成绩（v1 审计 +0.204R / v2.0 历史 +0.047R），这些数能赚多少、会亏多惨、该下多少注，全是数学。本课三件套：R 度量衡与期望公式（用 BT30 三十条历史研究记录算给你看）；连亏数学（60% 胜率 30 笔内出现四连亏的概率是 37%，精确计算）；凯利公式与破产风险（为什么从“别交易”到“全押”都在置信区间内，以及风险比例为何只是教学参数）。含可交互蒙特卡洛模拟器。本课约 76 分钟。</p></details>
+<p>修正顺序是冻结输入身份、排除混入周期、修复退出索引，再重算逐笔账本。正的毛均值不能消除费用、选择偏差或执行未知；本附录不重新认证任何策略优势。</p>
+<footer class="course"><div class="nav"><a href="../index.html">返回 P4</a><a href="../../phase-3/index.html">返回 P3</a></div></footer>
+<script src="../assets/nav.js"></script></body></html>
