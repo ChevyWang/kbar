@@ -84,7 +84,7 @@ figcaption li { margin: .15rem 0; }
 .candle-cell .cap b { color: var(--ink); font-size: .82rem; display: block; }
 
 /* ---------- 表 ---------- */
-table { border-collapse: collapse; width: 100%; margin: 1.4rem 0; font-size: .92rem; }
+table { border-collapse: collapse; width: 100%; max-width: 100%; margin: 1.4rem 0; font-size: .92rem; display: block; overflow-x: auto; }
 th, td { border-bottom: 1px solid var(--line); text-align: left; padding: .5rem .6rem; vertical-align: top; }
 th { font-family: var(--sans); font-size: .8rem; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--ink); }
 td:first-child { white-space: nowrap; font-weight: 600; }

@@ -21,6 +21,12 @@
 .rv-log td { border: 1px solid var(--line); padding: .45rem .6rem; font-size: .85rem; }
 .rv-log td:first-child { white-space: nowrap; font-family: var(--sans); font-size: .78rem; color: var(--muted); width: 6.5rem; }
 .et-row td { height: 1.6rem; }
+@media (max-width: 600px) {
+  .rv-item { flex-wrap: wrap; }
+  .rv-item .q { flex: 1 1 12rem; min-width: 0; overflow-wrap: anywhere; }
+  .rv-item .fill { flex: 1 1 8rem; min-width: 5rem; }
+  .rv-item .hint { flex: 1 1 100%; min-width: 0; text-align: left; overflow-wrap: anywhere; }
+}
 @media print {
   body { font-size: 10.5pt; max-width: none; padding: 0; }
   .rv-group, .rv-meta { break-inside: avoid; }
