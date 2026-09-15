@@ -13,6 +13,11 @@ function valid(value,depth=0){if(depth>50)throw Error('记录嵌套过深');if(v
 function restore(payload){if(!payload||payload.kind!=='kbar-specialist-archive'||payload.version!==1||!payload.records||Array.isArray(payload.records)||typeof payload.records!=='object')throw Error('不支持的专门练习档案版本');
 const all=Object.entries(payload.records);all.forEach(([k,v])=>{if(!/^kbar-answer::[A-Za-z0-9.:-]+$/.test(k))throw Error('档案含非课程键');valid(v);
  if(k.includes('::import-'))return;
+ if(k.endsWith('::attempts')){
+  if(!Array.isArray(v)||v.some(a=>!a||typeof a.attemptId!=='string'||typeof a.submittedAt!=='string'||!a.answers||typeof a.answers!=='object'||Array.isArray(a.answers)))throw Error('原答列表损坏');
+  return;
+ }
+
  if(k.endsWith('::lastPack')){if(typeof v!=='string'||!['A','B','C','D','E','T'].includes(v))throw Error('题包选择值无效');return;}
  if(!v||typeof v!=='object'||Array.isArray(v))throw Error('任务记录必须是对象');
  if(/::M(?:0\.1|1\.4|4\.3|5\.2)::[A-Z](?:-[A-Za-z0-9]+)?$/.test(k)&&!Array.isArray(v.attempts))throw Error('任务缺少attempts列表');

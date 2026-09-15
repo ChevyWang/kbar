@@ -1,0 +1,92 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>连续观察与新图产物 — K线训练营 P0</title><link rel="stylesheet" href="../assets/course.css">
+<style>button,summary{min-height:44px}button{padding:.6rem;margin:.3rem}#sequence-chart svg{max-width:none}#sequence-chart{overflow-x:auto}.kba-row{flex-wrap:wrap}#sequence-feedback{white-space:pre-wrap}#sequence-feedback:empty{display:none}</style></head><body>
+<header class="course"><div class="kicker">K线训练营 · P0 · 连续观察实作</div><h1>连续观察与新图产物</h1><p class="sub">先看 A 图的完整校准示范，再在 B 图按时点提交“事实、位置、未知、下一验证条件”。本页使用两组独立编写的合成边界序列，不冒充真实成交或研究样本外。提交只证明留有产物，开放质量仍按量规自评。</p></header>
+<p>本课严格摆动规则为左右各 N=3 根，相等极点不成立。不能由尚未出现的右侧棒提前确认；结构破坏也不自动证明反向趋势成立。</p>
+<button id="sequence-demo">学习 A 图示范</button><button id="sequence-start">用 B 图独立记录</button>
+<p id="sequence-status" role="status"></p><h2 id="sequence-title">请选择学习或检验</h2>
+<p id="sequence-cutoff"></p><div id="sequence-chart"></div><div id="sequence-answer"></div>
+<button id="sequence-next" hidden>提交当前记录后继续</button>
+<nav id="sequence-review" aria-label="回看已提交时点" hidden></nav>
+<section id="sequence-feedback" tabindex="-1" role="status" hidden></section>
+<p>B 图首次打开会记录曝光；再看属于修订或复习。迟于首次的修改作为新答卷保留，不改原答。重新打开会续接首个未提交时点。每段可单独导出，页面底部也可备份全部专门练习。</p>
+<p><a href="../mastery.html">返回 P0 能力档案</a> · <a href="../lessons/0004-market-structure.html">结构课</a> · <a href="../lessons/0007-chart-reading-training.html">训练流程</a></p>
+<script src="../assets/candles.js"></script><script src="../assets/answer.js"></script><script src="../assets/learning-store.js"></script>
+<script>
+var A=[{o:95,h:98,l:94,c:97},{o:97,h:100,l:96,c:99},{o:98,h:101,l:97,c:100},{o:97,h:100,l:96,c:99},{o:96,h:99,l:95,c:98},{o:97,h:100,l:96,c:99},{o:98,h:101,l:97,c:100},{o:99,h:102,l:98,c:101},{o:101,h:104,l:100,c:103},{o:100,h:103,l:99,c:102},{o:99,h:102,l:98,c:101},{o:98,h:101,l:97,c:100},{o:100,h:103,l:99,c:102},{o:101,h:104,l:100,c:103},{o:103,h:106,l:102,c:105},{o:105,h:108,l:104,c:107},{o:104,h:107,l:103,c:106},{o:103,h:106,l:102,c:105},{o:102,h:105,l:101,c:104},{o:101,h:104,l:100,c:103},{o:103,h:106,l:102,c:105},{o:105,h:108,l:104,c:107},{o:107,h:110,l:106,c:109},{o:106,h:110,l:105,c:108},{o:105,h:108,l:104,c:107},{o:104,h:107,l:103,c:106},{o:103,h:104,l:94,c:96}];
+var B=[{o:133,h:135,l:130,c:131},{o:131,h:133,l:128,c:129},{o:129,h:131,l:126,c:127},{o:128,h:130,l:125,c:126},{o:127,h:129,l:124,c:125},{o:129,h:131,l:126,c:127},{o:131,h:133,l:128,c:129},{o:130,h:132,l:127,c:128},{o:129,h:131,l:126,c:127},{o:127,h:129,l:124,c:125},{o:125,h:127,l:122,c:123},{o:123,h:125,l:120,c:121},{o:121,h:123,l:118,c:119},{o:123,h:125,l:120,c:121},{o:125,h:127,l:122,c:123},{o:127,h:129,l:124,c:125},{o:125,h:127,l:122,c:123},{o:123,h:125,l:120,c:121},{o:121,h:123,l:118,c:119},{o:119,h:121,l:116,c:117},{o:119,h:121,l:116,c:117},{o:122,h:124,l:119,c:120},{o:123,h:125,l:120,c:121},{o:124,h:126,l:121,c:122},{o:122,h:124,l:119,c:120},{o:120,h:122,l:117,c:118},{o:118,h:120,l:115,c:116},{o:119,h:121,l:116,c:117},{o:121,h:123,l:118,c:119},{o:120,h:136,l:119,c:134}];
+(function(){
+ const cuts=[18,23,29],store=KbarLearningStore.storage,taskId='M0.2-observation-B';
+ const root=document.getElementById('sequence-answer'),next=document.getElementById('sequence-next');
+ let stage=0;
+ function key(i){return 'kbar-answer::'+taskId+'::v1-step-'+i+'::attempts';}
+ function attempts(i){try{return JSON.parse(localStorage.getItem(key(i))||'[]');}catch(e){return [];}}
+ function chart(bars,last){
+  const known=bars.slice(0,last+1);
+  document.getElementById('sequence-chart').innerHTML=Kbar.chart(known,{w:760,h:300,yLabels:true,span:known.length,asOf:known.length-1});
+  document.getElementById('sequence-chart').dataset.bars=String(known.length);
+  document.getElementById('sequence-cutoff').textContent='截至第'+(last+1)+'根；只显示当时已知的'+known.length+'根。';
+ }
+ const demo=[
+ 'A 图时点一（截至第22根）：已确认高点由104到108，低点由95到97。合格回答甲：上升结构仍在，97为已确认的下方参照；未来路径未知，等待收盘是否跌破或新高能否确认。合格回答乙：当前仍接近前高区域，暂不报交易方向，只记录结构维持；等待新的收盘与右侧确认。两者都没有猜订单或要求持仓。',
+ 'A 图时点二（截至第24根）：第23、24根高点同为110，不满足严格新摆动高点；第20根低点100已有右侧确认。合格回答甲：把100–110记作当前观察区域，110仍是候选极点带。合格回答乙：保留前次上升判断但标记新高确认不足，等待收盘失效条件。不能把两个相等极点算成两个已确认高点。',
+ 'A 图时点三（截至第27根）：收盘96跌破已确认低点100。合格回答甲：撤销原上升假设，下降趋势尚缺后续已确认的低高点序列，继续等。合格回答乙：改记结构过渡、中性观察，等待反抽能否收回失效区。不能写“早已知道会跌”，也不能仅因破位马上反手。',
+ '反证量规：每次事实能对应当时可见根号；位置由已知极值定义；未知不写成主体意图；下一条件事先具体可核；新增事实只追加，不修改首答。不可接受：提前借后续棒确认、忽略相等/未完成、写“下一根必跌”、用事后盈亏覆盖过程。'
+ ];
+ function showDemo(){
+  const key='kbar-answer::M0.2-observation::exposure';
+  let exposed;try{exposed=JSON.parse(store.getItem(key)||'null');}catch(e){}
+  if(exposed){exposed.hintedAt=new Date().toISOString();store.setItem(key,JSON.stringify(exposed));document.getElementById('sequence-status').textContent='B 图记录已标记为查看示范后的辅助练习，原答不变。';}
+  root.innerHTML='';next.hidden=true;document.getElementById('sequence-review').hidden=true;
+  document.getElementById('sequence-title').textContent='A 图：学习示范（已揭晓）';
+  const notes=A.map(()=> '只记录已揭示的事实；摆动点须等右侧各三根确认。未知的后续路径保持未知。');
+  notes[21]=demo[0];notes[23]=demo[1];notes[26]=demo[2];
+  document.getElementById('sequence-cutoff').textContent='教学示范：逐根回放，按已知前缀观察。';
+  Kbar.playback('#sequence-chart',A,{w:760,h:300,yLabels:true,live:true,notes:notes});
+  const feedback=document.getElementById('sequence-feedback');feedback.hidden=false;feedback.textContent=demo[3];
+ }
+ function updateReview(){
+  const nav=document.getElementById('sequence-review');nav.innerHTML='';
+  cuts.forEach((_,i)=>{if(!attempts(i).length)return;const button=document.createElement('button');
+   button.textContent='回看时点'+(i+1);button.dataset.stage=i;
+   button.onclick=function(){stage=i;render();const focus=root.querySelector('.kba-revise,summary,textarea');if(focus)focus.focus();};nav.appendChild(button);
+  });nav.hidden=!nav.children.length;
+ }
+ function render(){
+  document.getElementById('sequence-title').textContent='B 图：第'+(stage+1)+'次当时记录';
+  const feedback=document.getElementById('sequence-feedback');feedback.hidden=true;feedback.textContent='';
+  chart(B,cuts[stage]);next.hidden=false;next.disabled=true;
+  next.textContent=stage===cuts.length-1?'查看产物量规':'提交后揭示下一时点';
+  let seen=attempts(stage).length;
+  KbarAnswer.mount(root,{taskId:taskId,caseId:'v1-step-'+stage,packId:'p0-observation-B-v1',courseVersion:'2026-09-15',title:'保留本时点原答',
+   fields:[
+    {id:'facts',label:'事实：可见根号与可复算依据',required:true},
+    {id:'position',label:'位置：已确认或候选区域，注明区别',required:true},
+    {id:'unknown',label:'未知：现在还不能判断什么',required:true},
+    {id:'condition',label:'下一验证条件：什么新增事实会使你改变判断',required:true}
+   ],
+   onState:function(s){
+    next.disabled=!s.attempts.length||!s.storageOk;updateReview();
+    if(!s.storageOk)document.getElementById('sequence-status').textContent='本段未可靠保存：请先用本段导出保留原答，恢复可用存储后再继续。';
+    if(s.attempts.length>seen){seen=s.attempts.length;if(!next.disabled)next.focus();}
+   }});
+ }
+ document.getElementById('sequence-demo').onclick=showDemo;
+ document.getElementById('sequence-start').onclick=function(){
+  const exposure='kbar-answer::M0.2-observation::exposure';
+  let old;try{old=JSON.parse(store.getItem(exposure)||'null');}catch(e){}
+  document.getElementById('sequence-status').textContent=old?(old.hintedAt?'B 图已曝光且查看过示范：辅助轨迹保留，不计陌生检验。':'B 图已曝光：续作/复习保留，不能重新称为陌生图。'):'B 图首次打开：逐时点保留原答；开放质量尚未评价。';
+  if(!old)store.setItem(exposure,JSON.stringify({firstSeen:new Date().toISOString(),source:'synthetic-B-v1'}));
+  stage=cuts.findIndex((_,i)=>!attempts(i).length);if(stage<0)stage=cuts.length-1;
+  render();root.querySelector('textarea').focus();
+ };
+ next.onclick=function(){
+  if(next.disabled)return;
+  if(stage<cuts.length-1){stage++;render();root.querySelector('textarea').focus();return;}
+  const feedback=document.getElementById('sequence-feedback');feedback.hidden=false;
+  feedback.textContent='B 图校准：初期已确认高点133→129、低点124→118，下降结构成立；中段相等低点116不能生成严格新摆动低点；末段收盘134越过已确认低高点126，原下降结构失效，但新的上升结构尚待确认。\n\n可接受回答：撤销空头假设并等待，或改为中性观察并写收回失效区的条件。不能由破位直接推出必涨、持仓或反手。请逐项核对事实、区域、未知、下一条件，把不一致的地方以修订追加。原答仍可逐段导出；本页不自动授予能力通过。';
+  feedback.focus();next.hidden=true;
+ };
+ Kbar.observationSequence={cuts:cuts.slice(),showDemo:showDemo};
+})();
+</script><script src="../assets/nav.js"></script></body></html>

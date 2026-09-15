@@ -91,16 +91,13 @@
       return ans;
     }
 
-    var saveTimer = null;
     function scheduleDraftSave() {
       state.draft = collect(); state.draftSaved = false;
-      if (!ls) { renderStatus(); return; }
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(function () {
-        try { ls.setItem(keyOf(cfg, 'draft'), JSON.stringify(collect())); state.draftSaved = true; }
+      if (ls) {
+        try { ls.setItem(keyOf(cfg, 'draft'), JSON.stringify(state.draft)); state.draftSaved = true; }
         catch (e) { state.storageOk = false; }
-        renderStatus(); emit();
-      }, 400);
+      }
+      renderStatus(); emit();
     }
 
     function attemptHtml(a, idx) {
@@ -164,7 +161,7 @@
         var missing = fields.filter(function (f) { return f.required && !ans[f.id]; });
         if (missing.length) { renderStatus('还有必填项未完成：' + missing.map(function (f) { return f.label; }).join('、'), true); return; }
         state.attempts.push({ attemptId: uid(), submittedAt: new Date().toLocaleString(), answers: ans });
-        clearTimeout(saveTimer); state.draft = {}; state.draftSaved = false; persist();
+        state.draft = {}; state.draftSaved = false; persist();
         if (ls) { try { ls.removeItem(keyOf(cfg, 'draft')); } catch (e) {} }
         render(); emit();
       };
@@ -177,7 +174,7 @@
         reviseBtn.onclick = function () {
           var ans = collect();
           state.attempts.push({ attemptId: uid(), submittedAt: new Date().toLocaleString(), answers: ans });
-          clearTimeout(saveTimer); state.draft = {}; state.draftSaved = false; persist();
+          state.draft = {}; state.draftSaved = false; persist();
           if (ls) { try { ls.removeItem(keyOf(cfg, 'draft')); } catch (e) {} }
           render(); emit();
         };
