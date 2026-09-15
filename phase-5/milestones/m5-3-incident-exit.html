@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M5.3 · 事故退出演练 — K线训练营 Phase 5</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+.panel{border:1.5px solid var(--line);border-radius:12px;padding:1rem 1.2rem;margin:1rem 0;background:#fff;font-family:var(--sans);line-height:1.75}.rule{border-left:4px solid #d33a2c;padding:.65rem .8rem;background:#fdf1ef}.state{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.08rem .6rem;font-size:.78rem;margin:.2rem .3rem .2rem 0}.state.done{border-color:#1a7f37;color:#1a7f37;font-weight:700}button.mbtn{font:inherit;border:1.5px solid var(--ink);border-radius:8px;padding:.45rem 1rem;background:#fff;cursor:pointer;margin:.25rem .5rem .25rem 0}button.mbtn.dark{background:var(--ink);color:#fff}.feedback{border-left:4px solid #4a6fa5;padding:.65rem .8rem;background:#f4f7fb}
+</style>
+</head>
+<body>
+<header class="course">
+  <div class="kicker">K线训练营 · Phase 5 执行 · 事故退出演练 M5.3</div>
+  <h1>证据不足时先退出风险</h1>
+  <p class="sub">本页补做三种“全绿也不能放行”的场景：网络中断、撤单回报未知、tilt 纠偏失败。你要写的是保护已有风险、保留未知、停止新增风险和恢复条件；页面只检查记录完整性，不认证执行真实性，也不授予实盘或升仓资格。</p>
+</header>
+<div class="panel"><b>共同协议</b><ol><li>先停止新增风险，再确认当前状态；未知不能被猜成成交、撤单或安全。</li><li>保存时间、订单/模拟记录和回报证据；不要重复下单或覆盖历史。</li><li>如果四步纠偏仍失败，按退出条件保护已有仓位，改用新模拟场景复测。</li></ol><div class="rule"><b>退出是合格分支。</b>“没有下单”“没有追单”“等待确认”都可以是正确动作；事故记录不因最终盈亏而改写。</div></div>
+<div class="panel"><b>演练进度</b><div id="progress"></div></div>
+<div id="workspace"></div>
+<footer class="course"><div class="nav"><a href="../index.html">← Phase 5 主页</a><a href="../lessons/5007-tilt-repair.html">回到 5007</a><a href="../lessons/5006-scaling-graduation.html">进入 5006 证据档案 →</a></div><div class="citations">M5.3 是本地模拟练习；实盘、账户状态和第三方回报仍在课程之外独立核验。</div></footer>
+<script src="../assets/answer.js"></script><script src="../assets/nav.js" defer></script>
+<script>
+(function(){
+  var CASES=[
+    {id:'network',title:'场景 A · 发送后网络中断',brief:'下单按钮已触发，客户端断线，成交状态未回传。',safe:'停止重复下单；保留发送时间、订单参数和断线证据；用独立渠道核对状态；在未确认前按持续暴露处理。'},
+    {id:'cancel-unknown',title:'场景 B · 撤单回报未知',brief:'撤单请求已发送，页面没有确认；原委托是否仍在市场上未知。',safe:'不要把未知当已撤；保留原委托与撤单请求；先核对回报和实际成交，再决定是否保护风险。'},
+    {id:'tilt-failed',title:'场景 C · tilt 四步仍失败',brief:'识别、打断、注入逻辑、策略提醒都做过，但仍想立即报复下单。',safe:'停止新增风险；撤销未成交开仓委托并核对回报；按预案保护已有仓位；记录失败并换新模拟场景复测。'}
+  ];
+  var i=0;
+  var fields=[
+    {id:'status',type:'select',label:'当前状态',required:true,options:['未知，尚未确认','已确认无成交','已确认有成交','不适用（只做退出）']},
+    {id:'action',type:'longtext',label:'立即动作',required:true,rows:4,placeholder:'先写停止新增风险、保护已有暴露和不重复下单。'},
+    {id:'evidence',type:'longtext',label:'要保存的证据',required:true,rows:3,placeholder:'时间、订单参数、回报、断线或情绪记录。'},
+    {id:'exit',type:'longtext',label:'退出与恢复条件',required:true,rows:4,placeholder:'什么条件下停止本次操作？何时用新模拟场景复测？'}
+  ];
+  function key(id){return 'kbar-answer::M5.3::'+id+'::attempts';}
+  function done(id){try{return JSON.parse(localStorage.getItem(key(id))||'[]').length>0;}catch(e){return false;}}
+  function renderProgress(){document.getElementById('progress').innerHTML=CASES.map(function(c){return '<span class="state '+(done(c.id)?'done':'')+'">'+c.id+'：'+(done(c.id)?'已提交':'未完成')+'</span>';}).join('');}
+  function mount(){var c=CASES[i];renderProgress();document.getElementById('workspace').innerHTML='<div class="panel"><b>'+c.title+'</b><p>'+c.brief+'</p><div id="answer"></div><div id="feedback"></div></div>';KbarAnswer.mount('#answer',{taskId:'M5.3',caseId:c.id,packId:'incident-exit-v1',courseVersion:'2026-09-15',title:'冻结事故记录',fields:fields,onState:function(s){renderProgress();var f=document.getElementById('feedback');if(!f||!s.attempts.length)return;f.innerHTML='<div class="feedback"><b>退出分支核对：</b>'+c.safe+'<br>此核对只帮助你比较记录完整性；页面不把文字匹配当作真实执行证明。</div><button class="mbtn dark" id="next" type="button">'+(i<CASES.length-1?'进入下一场景 →':'三场完成，回到 5006 →')+'</button>';document.getElementById('next').onclick=function(){if(i<CASES.length-1){i++;mount();}else{location.href='../lessons/5006-scaling-graduation.html';}};}});}
+  mount();
+})();
+</script>
+</body>
+</html>
