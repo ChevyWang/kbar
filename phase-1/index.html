@@ -5,15 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phase 1 · 流利：逐根推理（Brooks 体系）— K线训练营</title>
 <link rel="stylesheet" href="assets/course.css">
+<style>
+  :root { --stage-accent: #2d566b; --stage-soft: #eef4f5; --stage-focus: #0b5c7d; }
+  .stage-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .stage-nav a { color: var(--stage-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .stage-nav a:focus-visible, .stage-primary:focus-visible, .stage-secondary:focus-visible { outline: 3px solid var(--stage-focus); outline-offset: 3px; }
+  .stage-hero { margin: 0 0 2.4rem; padding: 1.2rem 1.25rem; border: 1px solid var(--ink); border-top: 5px solid var(--stage-accent); background: #fff; }
+  .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
+  .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+  .stage-hero .lede { margin: 0; color: var(--muted); }
+  .stage-facts { width: 100%; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); border-collapse: collapse; }
+  .stage-facts th, .stage-facts td { padding: .6rem 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .stage-facts th { width: 6.5rem; padding-right: 1rem; color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts td { font-size: .95rem; }
+  .stage-facts tr:last-child th, .stage-facts tr:last-child td { border-bottom: 0; }
+  .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+  .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
+  .stage-primary { color: #fff !important; background: var(--stage-accent); }
+  .stage-secondary { color: var(--stage-accent); background: #fff; }
+  .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts th { width: 5.5rem; padding-right: .7rem; } .stage-hero { padding: 1rem; } }
+  @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
+</style>
 </head>
 <body>
-<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段能力验收与学习档案</a></p>
+<nav class="stage-nav" aria-label="阶段导航"><a href="../">← 返回课程路线</a><a href="mastery.html">进入能力档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 1 逐根推理 · Brooks 体系</div>
   <h1>流利：逐根推理</h1>
   <p class="sub">十天 · 十课 · 内容时长 60–77 min/课（视觉增强版）+ 课外作业 · 全真实数据（ETH 锚定 60 根 + SOL 毕业考盲图）· 可离线可打印。前置：Phase 0 七日课。</p>
 </header>
+
+<section class="stage-hero" aria-labelledby="stage-hero-title">
+  <p class="eyebrow">P1 · 复述推理 · 阶段入口</p>
+  <h2 id="stage-hero-title">流利：逐根推理</h2>
+  <p class="lede">本阶段把 P0 的静态镜头连成逐帧动画：每根 K 线都更新方向、腿数、位置和失效条件，最终留下连续推理记录。</p>
+  <table class="stage-facts"><tbody>
+    <tr><th scope="row">阶段目标</th><td>复述推理：连续说出 Always-In 的变化及依据</td></tr>
+    <tr><th scope="row">阶段产物</th><td>逐根状态记录、回放原答和一份盲图推理答卷</td></tr>
+    <tr><th scope="row">核心验收</th><td>M1.4 连续推理 + SOL 盲图毕业考</td></tr>
+    <tr><th scope="row">证据边界</th><td>熟悉锚定图的流利不等于陌生窗口迁移通过</td></tr>
+  </tbody></table>
+  <div class="stage-actions" aria-label="阶段主要入口">
+    <a class="stage-primary" href="lessons/1001-always-in.html">开始第 1001 课 →</a>
+    <a class="stage-secondary" href="drill.html">进入训练场</a>
+    <a class="stage-secondary" href="milestones/m1-4-sequence.html">查看 M1.4 验收</a>
+  </div>
+  <p class="stage-boundary"><b>学习路径：</b>先看带读示范 → 键盘逐根回放 → 独立连续推理 → 反馈与补救 → 换题或跨日复测。回放提示不替代独立证据。</p>
+</section>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
 
@@ -25,7 +65,7 @@
 <b>教材依据（grounding，四层缺一不可）：</b>①经典原著——每课页脚标注到 Al Brooks《Trading Price Action》三部曲的具体章节（本阶段主底稿），辅以 Grimes《The Art and Science of Technical Analysis》；②统计检验（Bulkowski 百科、学术研究）；③学习方法论（《认知天性》《刻意练习》——训练场/交错复习/毕业考蓝图的设计依据）；④真实数据——九课共用一段 ETH 锚定行情（2026-06-01 → 07-30，Binance），每课换镜头重读；毕业考用 SOL 盲图（与全部课件不同源）。课件中面向读者的数字均由数据脚本计算生成、发布前过自动校验。
 </div>
 
-<h2><span class="no">01</span>十课地图</h2>
+<h2><span class="no">01</span>阶段任务</h2>
 
 <a class="lesson-card" href="lessons/1001-always-in.html">
   <div class="day">DAY 1 · 第 1001 课</div>
@@ -104,10 +144,12 @@
   <div class="meta">60 min + 实操附录 · 训练场 12 题 · Trends Ch.13/14/15/17</div>
 </a>
 
-<h2><span class="no">02</span>配套资料</h2>
+<div class="note info"><b>阶段任务的状态边界：</b>带读、键盘回放、训练场反馈、独立连续推理和 M1.4 盲图分别留痕；熟悉行情说对，不自动变成陌生窗口的能力通过。</div>
+
+<h2><span class="no">02</span>训练与配套资料</h2>
 <p><a href="reference/glossary.html">术语手册（Phase 0+1 全量版）</a>（64 词条，含 Brooks 体系与画线工具术语、丁圣元译名对照）· <a href="reference/review-template.html">复盘 2.0 模板</a>（十二维五组 + 事件日志 + 错误六分类，可打印）· <a href="reference/tradingview-guide.html">TradingView 实操图解</a>（真实界面截图 + 趋势线/水平位/平行通道/斐波那契逐步画法 + 回放与警报）——Phase 1 毕业后从七维清单切换至复盘 2.0 · 每课页脚含精确到章的课外阅读指引。</p>
 
-<h2><span class="no">03</span>复习入口</h2>
+<h2><span class="no">03</span>核心验收与复习</h2>
 <ul class="checklist">
   <li><b>里程碑实验室</b>：<a href="mastery.html">本阶段能力档案</a>——冻结题库独立作答、换题复测、跨日补证，可导出学习档案。</li>
   <li><b>易混形态混练</b>：<a href="drill.html">易混形态混练（3 组 15 例）</a>——相似形态混着练（交错练习），记录与错题到期同样进总览页。</li>

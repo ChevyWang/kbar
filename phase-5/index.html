@@ -14,15 +14,17 @@
   .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
   .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
   .stage-hero .lede { margin: 0; color: var(--muted); }
-  .stage-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1rem; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); }
-  .stage-facts dt { color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
-  .stage-facts dd { margin: .12rem 0 0; font-size: .95rem; }
+  .stage-facts { width: 100%; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); border-collapse: collapse; }
+  .stage-facts th, .stage-facts td { padding: .6rem 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .stage-facts th { width: 6.5rem; padding-right: 1rem; color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts td { font-size: .95rem; }
+  .stage-facts tr:last-child th, .stage-facts tr:last-child td { border-bottom: 0; }
   .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
   .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
   .stage-primary { color: #fff !important; background: var(--stage-accent); }
   .stage-secondary { color: var(--stage-accent); background: #fff; }
   .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
-  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts { grid-template-columns: 1fr; } .stage-hero { padding: 1rem; } }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts th { width: 5.5rem; padding-right: .7rem; } .stage-hero { padding: 1rem; } }
   @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
 </style>
 </head>
@@ -39,12 +41,12 @@
   <p class="eyebrow">P5 · 执行自律 · 阶段入口</p>
   <h2 id="stage-hero-title">执行：心理与实盘</h2>
   <p class="lede">本阶段把“知道规则”变成可追溯的执行记录：记录决策质量、事故、退出和修复，而不是用盈亏或情绪好坏替代证据。</p>
-  <dl class="stage-facts">
-    <div><dt>阶段目标</dt><dd>执行自律：让事前协议在压力场景中可复核</dd></div>
-    <div><dt>阶段产物</dt><dd>执行记录、订单事故档案和回撤修复协议</dd></div>
-    <div><dt>核心验收</dt><dd>模拟 30 笔记录 + 毕业考 + 回撤演练</dd></div>
-    <div><dt>证据边界</dt><dd>模拟与自报实践不授予升仓或实盘资格</dd></div>
-  </dl>
+  <table class="stage-facts"><tbody>
+    <tr><th scope="row">阶段目标</th><td>执行自律：让事前协议在压力场景中可复核</td></tr>
+    <tr><th scope="row">阶段产物</th><td>执行记录、订单事故档案和回撤修复协议</td></tr>
+    <tr><th scope="row">核心验收</th><td>模拟 30 笔记录 + 毕业考 + 回撤演练</td></tr>
+    <tr><th scope="row">证据边界</th><td>模拟与自报实践不授予升仓或实盘资格</td></tr>
+  </tbody></table>
   <div class="stage-actions" aria-label="阶段主要入口">
     <a class="stage-primary" href="lessons/5001-probability-mindset.html">开始第 5001 课 →</a>
     <a class="stage-secondary" href="drill.html">进入训练场</a>

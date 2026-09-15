@@ -5,15 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phase 4 · 系统：组装交易系统（Grimes Part 2-4 / Brooks setups）— K线训练营</title>
 <link rel="stylesheet" href="assets/course.css">
+<style>
+  :root { --stage-accent: #2d566b; --stage-soft: #eef4f5; --stage-focus: #0b5c7d; }
+  .stage-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .stage-nav a { color: var(--stage-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .stage-nav a:focus-visible, .stage-primary:focus-visible, .stage-secondary:focus-visible { outline: 3px solid var(--stage-focus); outline-offset: 3px; }
+  .stage-hero { margin: 0 0 2.4rem; padding: 1.2rem 1.25rem; border: 1px solid var(--ink); border-top: 5px solid var(--stage-accent); background: #fff; }
+  .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
+  .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+  .stage-hero .lede { margin: 0; color: var(--muted); }
+  .stage-facts { width: 100%; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); border-collapse: collapse; }
+  .stage-facts th, .stage-facts td { padding: .6rem 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .stage-facts th { width: 6.5rem; padding-right: 1rem; color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts td { font-size: .95rem; }
+  .stage-facts tr:last-child th, .stage-facts tr:last-child td { border-bottom: 0; }
+  .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+  .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
+  .stage-primary { color: #fff !important; background: var(--stage-accent); }
+  .stage-secondary { color: var(--stage-accent); background: #fff; }
+  .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts th { width: 5.5rem; padding-right: .7rem; } .stage-hero { padding: 1rem; } }
+  @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
+</style>
 </head>
 <body>
-<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段能力验收与学习档案</a></p>
+<nav class="stage-nav" aria-label="阶段导航"><a href="../">← 返回课程路线</a><a href="mastery.html">进入能力档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · Grimes / Brooks / Harris / Kelly</div>
   <h1>系统：组装交易系统</h1>
   <p class="sub">十天 · 十课 · 内容时长 65–86 min/课 + 毕业考 · 全真实数据（示范系统“训练者一号”跑 33 品种×5 年：修正研究 v2.1 日线594笔/毛均值 +0.0908R；历史版本统一见研究附录；限价/跟踪/混合三种执行变体对照实验；四市场微观结构活例）· 可离线可打印。前置：Phase 0–3。<b>本阶段以冻结规则、执行情景和可追溯验证包为课程产物。</b></p>
 </header><p class="callout">先<a href="reference/one-page-plan.html#working-plan">建立4009计划草稿</a>。学习顺序：4001 → 4007预算与市场最低约束 → 4002–4005 → 4006核心期望 → 4008适配 → 4009核对 → 4010验证。Kelly与模拟器作为选读。</p>
+
+<section class="stage-hero" aria-labelledby="stage-hero-title">
+  <p class="eyebrow">P4 · 组装综合 · 阶段入口</p>
+  <h2 id="stage-hero-title">系统：组装交易系统</h2>
+  <p class="lede">本阶段把前四个能力层组装成一份可执行、可复算、会被打脸的规则包；计划、执行情景和验证包分开留痕。</p>
+  <table class="stage-facts"><tbody>
+    <tr><th scope="row">阶段目标</th><td>组装综合：冻结规则、成本、未知和验证方式</td></tr>
+    <tr><th scope="row">阶段产物</th><td>一页纸计划、执行记录和可复算验证包</td></tr>
+    <tr><th scope="row">核心验收</th><td>M4.3 一页纸系统 + 30 笔验证</td></tr>
+    <tr><th scope="row">证据边界</th><td>固定笔数和历史毛 R 不证明真实优势或未来收益</td></tr>
+  </tbody></table>
+  <div class="stage-actions" aria-label="阶段主要入口">
+    <a class="stage-primary" href="lessons/4001-setup-definition.html">开始第 4001 课 →</a>
+    <a class="stage-secondary" href="reference/one-page-plan.html">打开计划模板</a>
+    <a class="stage-secondary" href="milestones/validation-packet.html">查看验证包</a>
+  </div>
+  <p class="stage-boundary"><b>学习路径：</b>先定义 setup → 冻结入场、止损、目标、仓位 → 写执行情景 → 留候选与未知 → 在新窗口验证。示范系统不是个人授权。</p>
+</section>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
 
@@ -26,7 +66,7 @@
 <b>教材依据（grounding）：</b>①经典原著——Adam Grimes《The Art and Science of Technical Analysis》(2012) Part III（Trading Strategies：五步决策链、Ch.8 Trade Management 的止损与目标、Ch.10 六类 setup）+ Part IV（自我导向交易者的计划与风控）；Al Brooks 三部曲（H2/出场/通道线实务）；②微观结构——Larry Harris《Trading and Exchanges》(2003)（订单与流动性）+ Osler (2000/2003)（限价/止损单聚集）；③数学——Kelly (1956)（信息速率与最优赌注）+ Thorp（分数凯利实务）；④真实数据——训练者一号 v2.1（594笔，scan_p4_v2.py；研究毛R）与 v1 审计样本 BT30（seed=44）、相关性矩阵（33 品种日收益，日期对齐口径）、涨跌停/暴跌事件，当前v2.1脚本与输入可复算；历史v1/v2.0保留审计，复权/PIT与真实成交并未认证。
 </div>
 
-<h2><span class="no">01</span>十课地图</h2>
+<h2><span class="no">01</span>阶段任务</h2>
 
 <a class="lesson-card" href="lessons/4001-setup-definition.html">
   <div class="day">DAY 1 · 第 4001 课</div>
@@ -98,12 +138,14 @@
   <div class="meta">86 min · 知识诊断 12 题 · 认知天性 + BT30 · <a href="milestones/m4-3-system.html">M4.3 知识诊断 →</a> · <a href="milestones/validation-packet.html">验证包 →</a></div>
 </a>
 
-<h2><span class="no">02</span>配套资料</h2>
+<div class="note info"><b>阶段任务的状态边界：</b>规则卡、计划草稿、执行记录、验证包和开放解释分别保留原答与修订；通过知识诊断或看过示范，不自动变成系统优势、模拟盘或实盘资格。</div>
+
+<h2><span class="no">02</span>训练与配套资料</h2>
 <p><a href="milestones/validation-packet.html">冻结协议与验证包</a>（规则版本、候选分母、成交/未知、成本、结论与下一窗口分开记录） · <a href="milestones/execution-lab.html">委托到对账执行练习</a></p>
 <p><a href="reference/setup-atom-cards.html">Setup 原子卡片库</a>（failure test / Anti / knot 参数卡 + Grimes 八类索引——任何卡片先过 4001 三标准与 4002 交易者方程）</p>
 <p><a href="reference/one-page-plan.html">一页纸交易计划模板</a>（可打印，含范例对照与逐栏自检五问）· <a href="reference/glossary-p4.html">Phase 4 词汇速查</a>（系统篇 15 词）· 全量术语手册见 <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">Phase 2 版</a>（P0–P2 + 中文圈语境对照组）· 训练者一号现行与历史范围见<a href="reference/research-lineage.html">研究版本与证据</a>；当前脚本为 scan_p4_v2.py。</p>
 
-<h2><span class="no">03</span>复习入口</h2>
+<h2><span class="no">03</span>核心验收与复习</h2>
 <ul class="checklist">
   <li><b>里程碑实验室</b>：<a href="mastery.html">本阶段能力档案</a>——冻结题库独立作答、换题复测、跨日补证，可导出学习档案。</li>
   <li><b>训练场重练</b>：<a href="lessons/4010-backtest-graduation.html">第 4010 课</a>的回测毕业训练场可反复重练；隔天重练还能对，才算记住。</li>

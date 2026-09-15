@@ -14,15 +14,17 @@
   .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
   .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
   .stage-hero .lede { margin: 0; color: var(--muted); }
-  .stage-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1rem; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); }
-  .stage-facts dt { color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
-  .stage-facts dd { margin: .12rem 0 0; font-size: .95rem; }
+  .stage-facts { width: 100%; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); border-collapse: collapse; }
+  .stage-facts th, .stage-facts td { padding: .6rem 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  .stage-facts th { width: 6.5rem; padding-right: 1rem; color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts td { font-size: .95rem; }
+  .stage-facts tr:last-child th, .stage-facts tr:last-child td { border-bottom: 0; }
   .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
   .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
   .stage-primary { color: #fff !important; background: var(--stage-accent); }
   .stage-secondary { color: var(--stage-accent); background: #fff; }
   .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
-  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts { grid-template-columns: 1fr; } .stage-hero { padding: 1rem; } }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts th { width: 5.5rem; padding-right: .7rem; } .stage-hero { padding: 1rem; } }
   @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
 </style>
 </head>
@@ -39,12 +41,12 @@
   <p class="eyebrow">P2 · 作图应用 · 阶段入口</p>
   <h2 id="stage-hero-title">地形：供需区域地图</h2>
   <p class="lede">本阶段把逐根观察提升为结构化地形图：标出区域、价值位置、替代解释和失效条件，再用陌生窗口检查迁移。</p>
-  <dl class="stage-facts">
-    <div><dt>阶段目标</dt><dd>作图应用：把结构、区域和价值位置画成可复核地图</dd></div>
-    <div><dt>阶段产物</dt><dd>区域图、陌生窗口迁移记录和一份盲图报告</dd></div>
-    <div><dt>核心验收</dt><dd>M2.3 地形报告 + M2.5 陌生窗迁移</dd></div>
-    <div><dt>证据边界</dt><dd>图上解释是候选，不能自动推出交易优势或通过</dd></div>
-  </dl>
+  <table class="stage-facts"><tbody>
+    <tr><th scope="row">阶段目标</th><td>作图应用：把结构、区域和价值位置画成可复核地图</td></tr>
+    <tr><th scope="row">阶段产物</th><td>区域图、陌生窗口迁移记录和一份盲图报告</td></tr>
+    <tr><th scope="row">核心验收</th><td>M2.3 地形报告 + M2.5 陌生窗迁移</td></tr>
+    <tr><th scope="row">证据边界</th><td>图上解释是候选，不能自动推出交易优势或通过</td></tr>
+  </tbody></table>
   <div class="stage-actions" aria-label="阶段主要入口">
     <a class="stage-primary" href="lessons/2001-composite-operator.html">开始第 2001 课 →</a>
     <a class="stage-secondary" href="drill.html">进入训练场</a>
