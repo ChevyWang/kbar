@@ -5,15 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phase 3 · 概率：形态统计全景（Bulkowski / Morris）— K线训练营</title>
 <link rel="stylesheet" href="assets/course.css">
+<style>
+  :root { --stage-accent: #2d566b; --stage-soft: #eef4f5; --stage-focus: #0b5c7d; }
+  .stage-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .stage-nav a { color: var(--stage-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .stage-nav a:focus-visible, .stage-primary:focus-visible, .stage-secondary:focus-visible { outline: 3px solid var(--stage-focus); outline-offset: 3px; }
+  .stage-hero { margin: 0 0 2.4rem; padding: 1.2rem 1.25rem; border: 1px solid var(--ink); border-top: 5px solid var(--stage-accent); background: #fff; }
+  .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
+  .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+  .stage-hero .lede { margin: 0; color: var(--muted); }
+  .stage-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1rem; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .stage-facts dt { color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts dd { margin: .12rem 0 0; font-size: .95rem; }
+  .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+  .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
+  .stage-primary { color: #fff !important; background: var(--stage-accent); }
+  .stage-secondary { color: var(--stage-accent); background: #fff; }
+  .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts { grid-template-columns: 1fr; } .stage-hero { padding: 1rem; } }
+  @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
+</style>
 </head>
 <body>
-<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段能力验收与学习档案</a></p>
+<nav class="stage-nav" aria-label="阶段导航"><a href="../">← 返回课程路线</a><a href="mastery.html">进入能力档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 3 概率 · Bulkowski / Morris / 自建统计</div>
   <h1>概率：形态统计全景</h1>
   <p class="sub">七天 · 七课 · 内容时长 55–75 min/课 + 毕业考 · 全真实数据（33 品种×5 年、3594 个形态实例的三市场统计 + 随机抽样的人工判定实验）· 可离线可打印。前置：Phase 0–2。</p>
 </header>
+
+<section class="stage-hero" aria-labelledby="stage-hero-title">
+  <p class="eyebrow">P3 · 概率引用 · 阶段入口</p>
+  <h2 id="stage-hero-title">概率：形态统计全景</h2>
+  <p class="lede">本阶段把形态名称转成有口径的统计身份证：说清样本、时间边界、过滤条件、失效条件和下一次复测怎么做。</p>
+  <dl class="stage-facts">
+    <div><dt>阶段目标</dt><dd>概率引用：在正确分母和时点下解释统计预期</dd></div>
+    <div><dt>阶段产物</dt><dd>统计身份证、最小实验记录和一份研究报告</dd></div>
+    <div><dt>核心验收</dt><dd>M3.3 统计研究实验室 + P3 毕业考</dd></div>
+    <div><dt>证据边界</dt><dd>统计描述不等于未来收益保证，也不替代独立复算</dd></div>
+  </dl>
+  <div class="stage-actions" aria-label="阶段主要入口">
+    <a class="stage-primary" href="lessons/3001-reading-stats.html">开始第 3001 课 →</a>
+    <a class="stage-secondary" href="lessons/3006-hands-on.html">进入最小实验</a>
+    <a class="stage-secondary" href="milestones/m3-3-research.html">查看 M3.3 验收</a>
+  </div>
+  <p class="stage-boundary"><b>学习路径：</b>先读统计口径 → 冻结规则与分母 → 做最小实验 → 写统计身份证 → 换题或跨日复测。查看排行榜不替代复算证据。</p>
+</section>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
 
@@ -25,7 +63,7 @@
 <b>教材依据（grounding）：</b>①经典原著——Bulkowski《Encyclopedia of Chart Patterns》v3（Introduction 方法论三节+各形态章）、Bulkowski《Encyclopedia of Candlestick Charts》、Morris《Candlestick Charting Explained》v3 Ch.7–9；②学术柱——LMW 2000（形态有信息）/ Marshall 2006（裸用无优势）/ Lo 2004（AMH 边衰减）/ Velay 2018（机器也在识别形态）；③学习方法论——《认知天性》（3006 的提取练习与测试效应设计）；④真实数据——33 品种×5 年（yfinance+通达信核对+Binance），3594 例统计、20 样本人工实验、毕业考盲图，现有标签可复计；原完整检测器未定位，不能保证从原棒重现全部标签。
 </div>
 
-<h2><span class="no">01</span>七课地图</h2>
+<h2><span class="no">01</span>阶段任务</h2>
 
 <a class="lesson-card" href="lessons/3001-reading-stats.html">
   <div class="day">DAY 1 · 第 3001 课</div>
@@ -78,11 +116,13 @@
   <div class="meta">75 min · 毕业考 12 题 · RESEARCH-counting-systems + AMH · <a href="milestones/m3-3-research.html">M3.3 里程碑验收 →</a></div>
 </a>
 
-<h2><span class="no">02</span>配套资料</h2>
+<div class="note info"><b>阶段任务的状态边界：</b>统计表、最小实验、统计引用和研究报告各自保留口径与原答；看过数据或得到辅助解释，不等于独立复算或研究验收通过。</div>
+
+<h2><span class="no">02</span>训练与配套资料</h2>
 <p><a href="exam/blind-report-p3.html"><b>盲图报告考场（P3）</b></a>（M3.3 写作练习场：50 分钟给形态发统计身份证，六维量规自评——总分不授予掌握状态，结业要件见 <a href="milestones/m3-3-research.html">M3.3 里程碑</a>）</p>
 <p><a href="reference/pattern-stats.html">形态统计总表</a>（三市场×十形态全列，N≥6 行；口径声明与读表纪律内置）· <a href="reference/glossary-p3.html">Phase 3 词汇速查</a>（本阶段新词，带出处课标）· 术语手册见 <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">全量版</a>（含中文圈语境对照组——体系解剖学的词汇层）· 复盘 3.0 模板的"三合一检查"栏即 3005 五层管线的日常版。</p>
 
-<h2><span class="no">03</span>复习入口</h2>
+<h2><span class="no">03</span>核心验收与复习</h2>
 <ul class="checklist">
   <li><b>里程碑实验室</b>：<a href="mastery.html">本阶段能力档案</a>——冻结题库独立作答、换题复测、跨日补证，可导出学习档案。</li>
   <li><b>训练场重练</b>：<a href="lessons/3007-graduation.html">第 3007 课</a>的结业训练场可反复重练；隔天重练还能对，才算记住。</li>

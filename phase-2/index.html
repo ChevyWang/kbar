@@ -5,15 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phase 2 · 地形：供需区域地图（Wyckoff + Profile）— K线训练营</title>
 <link rel="stylesheet" href="assets/course.css">
+<style>
+  :root { --stage-accent: #2d566b; --stage-soft: #eef4f5; --stage-focus: #0b5c7d; }
+  .stage-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .stage-nav a { color: var(--stage-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .stage-nav a:focus-visible, .stage-primary:focus-visible, .stage-secondary:focus-visible { outline: 3px solid var(--stage-focus); outline-offset: 3px; }
+  .stage-hero { margin: 0 0 2.4rem; padding: 1.2rem 1.25rem; border: 1px solid var(--ink); border-top: 5px solid var(--stage-accent); background: #fff; }
+  .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
+  .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+  .stage-hero .lede { margin: 0; color: var(--muted); }
+  .stage-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1rem; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .stage-facts dt { color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts dd { margin: .12rem 0 0; font-size: .95rem; }
+  .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+  .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
+  .stage-primary { color: #fff !important; background: var(--stage-accent); }
+  .stage-secondary { color: var(--stage-accent); background: #fff; }
+  .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts { grid-template-columns: 1fr; } .stage-hero { padding: 1rem; } }
+  @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
+</style>
 </head>
 <body>
-<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段能力验收与学习档案</a></p>
+<nav class="stage-nav" aria-label="阶段导航"><a href="../">← 返回课程路线</a><a href="mastery.html">进入能力档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 2 地形 · Wyckoff + Volume Profile</div>
   <h1>地形：供需区域地图</h1>
   <p class="sub">十课 · 内容时长 66–87 min/课 + 毕业作业（2009 波图课教学位置在 2005 之后） · 全真实数据（XRP 完整周期锚定 134 根 + 2906 根 1h 剖面数据 + LINK 毕业考盲图）· 可离线可打印。前置：Phase 0 七日课 + Phase 1 十课。</p>
 </header>
+
+<section class="stage-hero" aria-labelledby="stage-hero-title">
+  <p class="eyebrow">P2 · 作图应用 · 阶段入口</p>
+  <h2 id="stage-hero-title">地形：供需区域地图</h2>
+  <p class="lede">本阶段把逐根观察提升为结构化地形图：标出区域、价值位置、替代解释和失效条件，再用陌生窗口检查迁移。</p>
+  <dl class="stage-facts">
+    <div><dt>阶段目标</dt><dd>作图应用：把结构、区域和价值位置画成可复核地图</dd></div>
+    <div><dt>阶段产物</dt><dd>区域图、陌生窗口迁移记录和一份盲图报告</dd></div>
+    <div><dt>核心验收</dt><dd>M2.3 地形报告 + M2.5 陌生窗迁移</dd></div>
+    <div><dt>证据边界</dt><dd>图上解释是候选，不能自动推出交易优势或通过</dd></div>
+  </dl>
+  <div class="stage-actions" aria-label="阶段主要入口">
+    <a class="stage-primary" href="lessons/2001-composite-operator.html">开始第 2001 课 →</a>
+    <a class="stage-secondary" href="drill.html">进入训练场</a>
+    <a class="stage-secondary" href="milestones/m2-5-terrain-transfer.html">查看 M2.5 验收</a>
+  </div>
+  <p class="stage-boundary"><b>学习路径：</b>先读结构示范 → 画出候选区域 → 写替代解释与失效 → 盲图报告 → 换未曝光窗口复测。报告完成不等于自动通过。</p>
+</section>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
 
@@ -25,7 +63,7 @@
 <b>教材依据（grounding，四层缺一不可）：</b>①经典原著——Rubén Villahermosa《The Wyckoff Methodology in Depth》（结构/事件/阶段，W1）与《Wyckoff 2.0》（Volume Profile，W2）为主底稿，David Weis《Trades About to Happen》（Spring/Upthrust 盘口级定义）、James Dalton《Mind Over Markets》(2nd)（拍卖理论/价值/接受）、孟洪涛《新威科夫操盘法》（中文术语标准），每课页脚标注到章；②统计检验（StockCharts ChartSchool 免费教程交叉验证）；③学习方法论（《认知天性》——训练场/交错复习/毕业作业的考试效应）；④真实数据——八课共用一段 XRP 完整市场周期（2026-04-20 → 08-31，Binance：派发→下跌→吸筹→拉升一图打尽），剖面由 2906 根 1 小时数据逐档计算；毕业考用 LINK 盲图（2025 年窗口，与全部课件不同源）。课件中面向读者的数字均由数据脚本计算生成、发布前过自动校验。
 </div>
 
-<h2><span class="no">01</span>八课地图</h2>
+<h2><span class="no">01</span>阶段任务</h2>
 
 <a class="lesson-card" href="lessons/2001-composite-operator.html">
   <div class="day">DAY 1 · 第 2001 课</div>
@@ -99,10 +137,12 @@
 
 <div class="callout"><b>M2.5 陌生窗迁移验收：</b><a href="milestones/m2-5-terrain-transfer.html">区域取舍与可否定预案 →</a>。它承接 2007–2008 的写作练习，换未曝光窗口检查是否只保留会改变行动的区域；合流数量不换算成信心，弱解释先补练再换窗复测。</div>
 
-<h2><span class="no">02</span>配套资料</h2>
+<div class="note info"><b>阶段任务的状态边界：</b>图表阅读、区域标注、盲图报告和 M2.5 迁移是不同证据；先看答案或在熟悉窗口画对，不等于陌生窗口的独立迁移通过。</div>
+
+<h2><span class="no">02</span>训练与配套资料</h2>
 <p><a href="exam/blind-report-p2.html"><b>盲图报告考场（P2）</b></a>（M2.3 写作版结业要件：60 分钟给基金经理画地形图，五维量规 ≥7/10）· <a href="reference/glossary.html">术语手册（全量版）</a>（94 词条（22 个高价值词条内嵌教学示意图）：P0 基础 + P1 Brooks 体系 + P2 Wyckoff/Profile 新增，孟洪涛中文译名对照）· <a href="reference/review-template.html">复盘 3.0 模板</a>（十四维六组 + 新增 F 地形组 + 错误七分类，可打印）——Phase 2 毕业后从复盘 2.0 切换至此 · 每课页脚含精确到章的课外阅读指引 · Volume Profile 实操见 2006 课附录（TradingView 免费版路径），基础操作见 <a href="https://chevywang.github.io/kbar/phase-1/reference/tradingview-guide.html">Phase 1 实操图解手册</a>。</p>
 
-<h2><span class="no">03</span>复习入口</h2>
+<h2><span class="no">03</span>核心验收与复习</h2>
 <ul class="checklist">
   <li><b>里程碑实验室</b>：<a href="mastery.html">本阶段能力档案</a>——冻结题库独立作答、换题复测、跨日补证，可导出学习档案。</li>
   <li><b>易混形态混练</b>：<a href="drill.html">易混形态混练（4 组 16 例）</a>——相似形态混着练（交错练习），记录与错题到期同样进总览页。</li>
