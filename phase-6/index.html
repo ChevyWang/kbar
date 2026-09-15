@@ -5,9 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phase 6 · 大师：输出与体系化 — K线训练营</title>
 <link rel="stylesheet" href="assets/course.css">
+<style>
+  :root { --stage-accent: #2d566b; --stage-soft: #eef4f5; --stage-focus: #0b5c7d; }
+  .stage-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .stage-nav a { color: var(--stage-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .stage-nav a:focus-visible, .stage-primary:focus-visible, .stage-secondary:focus-visible { outline: 3px solid var(--stage-focus); outline-offset: 3px; }
+  .stage-hero { margin: 0 0 2.4rem; padding: 1.2rem 1.25rem; border: 1px solid var(--ink); border-top: 5px solid var(--stage-accent); background: #fff; }
+  .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
+  .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+  .stage-hero .lede { margin: 0; color: var(--muted); }
+  .stage-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1rem; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .stage-facts dt { color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts dd { margin: .12rem 0 0; font-size: .95rem; }
+  .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+  .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
+  .stage-primary { color: #fff !important; background: var(--stage-accent); }
+  .stage-secondary { color: var(--stage-accent); background: #fff; }
+  .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts { grid-template-columns: 1fr; } .stage-hero { padding: 1rem; } }
+  @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
+</style>
 </head>
 <body>
-<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段产物档案与体系总目录</a></p>
+<nav class="stage-nav" aria-label="阶段导航"><a href="../">← 返回课程路线</a><a href="mastery.html">进入产物档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 6 大师 · 贡献输出</div>
@@ -15,10 +35,28 @@
   <p class="sub">四课 · 内容时长 70 min/课 + 持续生涯协议。Phase 0–5 你为自己读盘；本阶段你把读盘变成<b>别人能检验的产物</b>——分析文、复盘文、原创研究、教学文，四件核心产物（M6.1–M6.4）。<b>结业锚点：一份通过双闸的可复算原创研究表达；3000–5000 字只是计划工作区间。</b>公开发表、双人评审与社区回应分别记录，不阻断离线主线。前置：Phase 0–5（5006 毕业后进入最佳）。</p>
 </header>
 
+<section class="stage-hero" aria-labelledby="stage-hero-title">
+  <p class="eyebrow">P6 · 贡献输出 · 阶段入口</p>
+  <h2 id="stage-hero-title">输出与体系化：教是最好的学</h2>
+  <p class="lede">本阶段把交易学习变成别人能够复核的产物：分析、复盘、研究和教学分别留痕，写完不等于技术成熟。</p>
+  <dl class="stage-facts">
+    <div><dt>阶段目标</dt><dd>贡献输出：写出可复算、可修订、边界清楚的研究表达</dd></div>
+    <div><dt>阶段产物</dt><dd>分析文、复盘文、原创研究和教学文</dd></div>
+    <div><dt>核心验收</dt><dd>M6.3 预审／终稿双闸 + 延迟再测</dd></div>
+    <div><dt>证据边界</dt><dd>开放产物和社区反馈不自动推出盈利或交易成熟</dd></div>
+  </dl>
+  <div class="stage-actions" aria-label="阶段主要入口">
+    <a class="stage-primary" href="lessons/6001-analysis-writing.html">开始第 6001 课 →</a>
+    <a class="stage-secondary" href="mastery.html">进入产物档案</a>
+    <a class="stage-secondary" href="milestones/m6-3-research-gate.html">查看 M6.3 双闸</a>
+  </div>
+  <p class="stage-boundary"><b>学习路径：</b>先写结构化草稿 → 预审与退回修订 → 终稿双闸 → 延迟再测。人工自评和可选 AI 反馈只作为辅助记录，不替代结构化检查。</p>
+</section>
+
 <h2><span class="no">00</span>这个阶段教什么、不教什么</h2>
 <p><b>教：</b>输出的手艺——五段式分析备忘录、六段复盘文（决策质量语言）、MFTA 式研究流水线（大纲预审+可退回重写）、费曼教学文（比喻+例子+反例）与专业社区检验协议。<b>不教：</b>新的盘面技术（52 课主线已齐）；本阶段的全部技术输入来自你自己实盘记录的复利。课程越来越少，输出越来越多——这是设计，不是偷懒（诚实条款：课程压缩知识获取，压缩不了盘感与实盘时长）。</p>
 
-<h2><span class="no">01</span>课程</h2>
+<h2><span class="no">01</span>阶段任务</h2>
 
 <a class="lesson-card" href="lessons/6001-analysis-writing.html">
   <div class="day">第 6001 课 · M6.1</div>
@@ -51,10 +89,12 @@
 <h2><span class="no">02</span>持续实盘协议（非课程，生涯节奏）</h2>
 <p><b>周节奏</b>：每周一篇复盘文（周中缩略四篇+周末完整一篇，6002 协议）· <b>季度节奏</b>：体系回顾——错误统计→交易手册修订 v1→v2→v3（5006 季度协议）· <b>社区</b>：Brooks 论坛/r/Daytrading 可选参与（回应与未回应都单独存档）· <b>升仓阶梯</b>持续运转（5006 三级门）。全部原料来自你的记录：错误统计、滑点分布、日型日记、波账——四件工具的产出即稿件库。</p>
 
-<h2><span class="no">03</span>配套资料</h2>
+<div class="note info"><b>阶段任务的状态边界：</b>开放回答、人工自评、可选 AI 反馈、预审和终稿双闸分别记账；写完一篇文章或得到反馈，不自动变成交易能力通过。</div>
+
+<h2><span class="no">03</span>训练与配套资料</h2>
 <p><a href="reference/glossary-p6.html">Phase 6 词汇速查</a>（输出篇）· 全站词汇见 <a href="../glossary.html">全站术语手册</a> · 复盘写作的记录体系见 Phase 5 工具包 · <a href="mastery.html">产物档案（M6.1–M6.4 登记+体系总目录）</a> · <a href="milestones/m6-3-research-gate.html">M6.3 原创研究双闸</a>。</p>
 
-<h2><span class="no">04</span>复习入口</h2>
+<h2><span class="no">04</span>核心验收与复习</h2>
 <ul class="checklist">
   <li><b>产物档案</b>：<a href="mastery.html">本阶段能力档案（产物制）</a>——四件输出的登记槽与自评量规，草稿存本浏览器，可导出 JSON 备份。</li>
   <li><b>训练场重练</b>：<a href="lessons/6003-original-research.html">第 6003 课</a>的结业件训练场可反复重练；隔天重练还能对，才算记住。</li>

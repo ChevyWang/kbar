@@ -5,15 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Phase 5 · 执行：心理与实盘（Douglas + 行为金融）— K线训练营</title>
 <link rel="stylesheet" href="assets/course.css">
+<style>
+  :root { --stage-accent: #2d566b; --stage-soft: #eef4f5; --stage-focus: #0b5c7d; }
+  .stage-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .stage-nav a { color: var(--stage-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .stage-nav a:focus-visible, .stage-primary:focus-visible, .stage-secondary:focus-visible { outline: 3px solid var(--stage-focus); outline-offset: 3px; }
+  .stage-hero { margin: 0 0 2.4rem; padding: 1.2rem 1.25rem; border: 1px solid var(--ink); border-top: 5px solid var(--stage-accent); background: #fff; }
+  .stage-hero .eyebrow { margin: 0; color: var(--stage-accent); font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .12em; }
+  .stage-hero h2 { margin: .35rem 0 .5rem; font-size: 1.45rem; }
+  .stage-hero .lede { margin: 0; color: var(--muted); }
+  .stage-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1rem; margin: 1.15rem 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .stage-facts dt { color: var(--muted); font-family: var(--sans); font-size: .74rem; letter-spacing: .06em; }
+  .stage-facts dd { margin: .12rem 0 0; font-size: .95rem; }
+  .stage-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+  .stage-primary, .stage-secondary { display: inline-block; padding: .55rem .8rem; border: 1px solid var(--stage-accent); font-family: var(--sans); font-size: .84rem; font-weight: 700; }
+  .stage-primary { color: #fff !important; background: var(--stage-accent); }
+  .stage-secondary { color: var(--stage-accent); background: #fff; }
+  .stage-boundary { margin: 1rem 0 0; padding: .7rem .85rem; border-left: 3px solid var(--stage-accent); background: var(--stage-soft); font-family: var(--sans); font-size: .82rem; line-height: 1.65; }
+  @media (max-width: 560px) { .stage-nav { flex-wrap: wrap; } .stage-facts { grid-template-columns: 1fr; } .stage-hero { padding: 1rem; } }
+  @media print { .stage-nav, .stage-actions { display: none; } .stage-hero { break-inside: avoid; } }
+</style>
 </head>
 <body>
-<!-- mastery-entry --><p style="margin:1rem;text-align:center"><a href="mastery.html">进入本阶段能力验收与学习档案</a></p>
+<nav class="stage-nav" aria-label="阶段导航"><a href="../">← 返回课程路线</a><a href="mastery.html">进入能力档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 5 执行 · Douglas / KT / Shefrin-Statman / Odean / Duke / Gawande</div>
   <h1>执行：心理与实盘</h1>
   <p class="sub">七课 · 内容时长 45–74 min/课 + 并行实践（是否实盘为课程外个人决定）· 全程用课程自己的数据解剖心理：18 笔止损单的“如果不走”研究（扛单中位 −0.86R 好看、合计持平、39% 更深 0% 转正、22% 回本诱惑=间歇性强化）、BT30 水下 21 笔解剖、走后 10 根的 34/25 噪音分布。交付四件工具 + tilt 修复系统（5007）。<b>课程任务验收：模拟 30 笔记录 + 毕业考 + 回撤演练（与盈亏脱钩）；自报小仓/实盘记录可选另记，不构成实盘授权。</b></p>
 </header>
+
+<section class="stage-hero" aria-labelledby="stage-hero-title">
+  <p class="eyebrow">P5 · 执行自律 · 阶段入口</p>
+  <h2 id="stage-hero-title">执行：心理与实盘</h2>
+  <p class="lede">本阶段把“知道规则”变成可追溯的执行记录：记录决策质量、事故、退出和修复，而不是用盈亏或情绪好坏替代证据。</p>
+  <dl class="stage-facts">
+    <div><dt>阶段目标</dt><dd>执行自律：让事前协议在压力场景中可复核</dd></div>
+    <div><dt>阶段产物</dt><dd>执行记录、订单事故档案和回撤修复协议</dd></div>
+    <div><dt>核心验收</dt><dd>模拟 30 笔记录 + 毕业考 + 回撤演练</dd></div>
+    <div><dt>证据边界</dt><dd>模拟与自报实践不授予升仓或实盘资格</dd></div>
+  </dl>
+  <div class="stage-actions" aria-label="阶段主要入口">
+    <a class="stage-primary" href="lessons/5001-probability-mindset.html">开始第 5001 课 →</a>
+    <a class="stage-secondary" href="drill.html">进入训练场</a>
+    <a class="stage-secondary" href="milestones/m5-3-incident-exit.html">查看事故验收</a>
+  </div>
+  <p class="stage-boundary"><b>学习路径：</b>先读概率与防线 → 记录决策质量 → 演练回撤与事故退出 → 独立补证。可选 AI 只做解释和质疑，不授予通过或资格。</p>
+</section>
 
 <h2><span class="no">00</span>这个阶段教什么、怎么教</h2>
 
@@ -25,7 +63,7 @@
 <b>教材依据（grounding）：</b>①主底稿——Mark Douglas《Trading in the Zone》(2000)（概率思维、无保留执行、drawdown 纪律）；②行为金融学术柱——Kahneman &amp; Tversky (1979 Econometrica)（前景理论三形状、λ≈2.25）、Shefrin &amp; Statman (1985 JF)（处置效应命名）、Odean (1998 JF)（10,000 账户：PGR/PLR 0.148/0.098、卖出的赢家多涨 3.4%）；③方法论——Annie Duke《Thinking in Bets》(2018)（resulting）、Atul Gawande《清单革命》(2009)（B-17 与手术清单）；④自有数据——18 笔止损研究 / 59 笔时间出场研究 / BT30 水下段（scan_p4.py + p5_extras.py 可复算）。
 </div>
 
-<h2><span class="no">01</span>六课地图</h2>
+<h2><span class="no">01</span>阶段任务</h2>
 
 <a class="lesson-card" href="lessons/5001-probability-mindset.html">
   <div class="day">DAY 1 · 第 5001 课</div>
@@ -77,10 +115,12 @@
 </a>
 
 
-<h2><span class="no">02</span>配套资料</h2>
+<div class="note info"><b>阶段任务的状态边界：</b>执行记录、开放自评、模拟与自报实践分别留痕；盈亏结果、看过示范或 AI 辅助都不自动变成执行通过或升仓依据。</div>
+
+<h2><span class="no">02</span>训练与配套资料</h2>
 <p><a href="reference/toolkit.html">执行工具包</a>（可打印四件套：记分卡 / 60 秒检查单 / 回撤协议 / 证据档案 + 盘中三脚本）· <a href="reference/glossary-p5.html">Phase 5 词汇速查</a>（执行篇 16 词）· 全量术语见 <a href="https://chevywang.github.io/kbar/phase-2/reference/glossary.html">Phase 2 版</a> · 系统篇词汇见 <a href="https://chevywang.github.io/kbar/phase-4/reference/glossary-p4.html">Phase 4 版</a> · 心理课的数据口径（18 笔/59 笔研究）见 5001 课页脚。</p>
 
-<h2><span class="no">03</span>复习入口</h2>
+<h2><span class="no">03</span>核心验收与复习</h2>
 <ul class="checklist">
   <li><b>里程碑实验室</b>：<a href="mastery.html">本阶段能力档案</a>——冻结题库独立作答、换题复测、跨日补证，可导出学习档案。</li>
   <li><b>训练场重练</b>：<a href="lessons/5006-scaling-graduation.html">第 5006 课</a>的结业训练场可反复重练；隔天重练还能对，才算记住。</li>
