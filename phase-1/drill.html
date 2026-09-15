@@ -108,8 +108,10 @@ function startRound(gi) {
   var n = pick.length;
   Quiz.mount('#drill', {
     title: '易混混练 · ' + g.name,
-    questions: pick.map(function (inst) {
+    roundIndices: pick.map(function (inst) { return g.pool.indexOf(inst); }),
+    questions: g.pool.map(function (inst) {
       return {
+        id: g.name + '::' + inst.n,
         stage: chartFor(g, inst),
         q: inst.ask || g.ask,
         options: g.opts,

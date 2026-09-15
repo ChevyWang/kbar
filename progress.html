@@ -76,8 +76,8 @@
 <div class="honest" id="stats">
   <div class="cell"><div class="n" id="stat-practiced">0 / 56</div><div class="l">有练习记录的课（训练场交卷口径，未交卷不计）</div></div>
   <div class="cell"><div class="n" id="stat-attempts">0 次</div><div class="l">里程碑任务提交（含复习与提示后提交）</div></div>
-  <div class="cell"><div class="n calm" id="stat-due">0 题</div><div class="l">到期错题（答对升档 1→3→7→21 天）</div></div>
-  <div class="note">口径：以上读取本浏览器 localStorage——训练场交卷汇总（kbar-quizsum）、能力档案（kbar-mastery）、旧版专门练习（kbar-answer）。换浏览器或清数据后从零开始；跨设备先在各阶段能力档案页导出。「到期错题」为跨课聚合：进入对应课的训练场，交卷后即出现「错题重练」入口。</div>
+  <div class="cell"><div class="n calm" id="stat-due">0 题</div><div class="l">到期复习（答对升档 1→3→7→21 天）</div></div>
+  <div class="note">口径：以上读取本浏览器 localStorage——训练场交卷汇总（kbar-quizsum）、能力档案（kbar-mastery）、旧版专门练习（kbar-answer）。换浏览器或清数据后从零开始；跨设备先在各阶段能力档案页导出。「到期复习」为跨课聚合：进入对应课的训练场，首题上方可进入到期复习；已纠正题仍按间隔返回，旧版未映射记录不计入到期数。</div>
 </div>
 
 <div class="note tip hidden" id="empty">
@@ -100,7 +100,7 @@
 <p class="ph-sub" id="legacy-line"></p>
 
 <h2>分课进度</h2>
-<p class="ph-sub">每课一行：训练场练习次数、最佳成绩、最近练习日期与到期错题数。空行表示尚未练过，点击课号直接进入该课。</p>
+<p class="ph-sub">每课一行：训练场练习次数、最佳成绩、最近练习日期与到期复习数。空行表示尚未练过，点击课号直接进入该课。</p>
 <div id="phases"></div>
 
 <footer class="course">
@@ -108,11 +108,11 @@
   <div class="citations">本站为技术分析投资者教育内容，仅记录历史行情与统计口径，<b>不构成投资建议</b>，不提供投资咨询服务；所涉品种与数据仅作教学示例，不代表任何未来表现。本页所有数字来自你本人在本浏览器的练习记录，无任何上传，<b>「完成度」只证明练过，不证明盈利能力</b>。</div>
 </footer>
 
+<script src="phase-0/assets/quiz.js"></script>
 <script>
 (function () {
   'use strict';
   /* ---- 数据源（与 lib/quiz.js、lib/mastery.js、lib/learning-store.js 的键约定一致） ---- */
-  var LADDER = [1, 3, 7, 21]; // 错题升档间隔（天）
   /* 课号 → 文件名映射：从各 phase 工作区 course/lessons/ 目录名硬编码 */
   var PHASES = [
     { p: 'P0', name: '读图 · 辨认', dir: 'phase-0', lessons: [['drill0', 'drill', '易混形态混练（4 组 24 例）'],
@@ -193,18 +193,7 @@
     var d = new Date(ts); function p(n) { return (n < 10 ? '0' : '') + n; }
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
-  /* 与 quiz.js dueQuestions 同口径：lastOk===false 且距 lastTs ≥ LADDER[box] 天 */
-  function dueCount(log) {
-    if (!log || !log.boxes) return 0;
-    var n = 0, now = Date.now();
-    for (var qi in log.boxes) {
-      var b = log.boxes[qi];
-      if (!b || b.lastOk !== false) continue;
-      var days = (now - b.lastTs) / 86400000;
-      if (days >= LADDER[Math.min(b.box || 0, LADDER.length - 1)]) n++;
-    }
-    return n;
-  }
+  function dueCount(log) { return KbarQuizLog.dueCount(log); }
   function msDirOf(mid) { return mid && mid.length > 1 ? 'phase-' + mid.charAt(1) : null; }
 
   var storageOk = true, keyCount = 0, legacyCount = 0;
@@ -297,9 +286,9 @@
   rowByPhase.forEach(function (blk) {
     phHtml.push('<h3>' + blk.ph.p + ' ' + blk.ph.name + '</h3>');
     phHtml.push('<p class="ph-sub">' + blk.done + ' / ' + blk.rows.length + ' 课有练习记录' +
-      (blk.due > 0 ? ' · <span style="color:var(--up);font-weight:700">到期错题 ' + blk.due + ' 题</span>' : '') +
+      (blk.due > 0 ? ' · <span style="color:var(--up);font-weight:700">到期复习 ' + blk.due + ' 题</span>' : '') +
       (blk.ph.p === 'P6' ? ' · Phase 6 以写作为主，训练场记录仅覆盖课内练习' : '') + '</p>');
-    phHtml.push('<table><thead><tr><th>课号</th><th class="num">练习次数</th><th class="num">最佳成绩</th><th class="num">最近练习</th><th class="num">到期错题</th></tr></thead><tbody>');
+    phHtml.push('<table><thead><tr><th>课号</th><th class="num">练习次数</th><th class="num">最佳成绩</th><th class="num">最近练习</th><th class="num">到期复习</th></tr></thead><tbody>');
     blk.rows.forEach(function (r) {
       phHtml.push('<tr><td><a href="' + r.href + '">' + r.id + '</a><span class="lt">' + r.title + '</span></td>' +
         '<td class="num' + (r.runs ? '' : ' dim') + '">' + (r.runs || '—') + '</td>' +

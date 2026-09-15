@@ -10,7 +10,7 @@
  * 无障碍（批次 D）：解析区 aria-live=polite；答完焦点交"下一题"、换题后焦点落新题第一项、
  *   交卷页焦点落首要动作；按钮触控目标 ≥44px（样式注入）。
  * 学习记录（批次 C）：每次作答写入本地 kbar-quizlog::（课号+题号+对错+时间戳）；
- *   交卷页显示「错题重练」——按 1/3/7/21 天间隔只重练到期错题（答对升档、再错归零）。
+ *   交卷页显示「错题重练」——按 1/3/7/21 天间隔复习到期题（含已纠正题）（答对升档、再错归零）。
  *   记录仅存本浏览器，可随时清空；不含任何个人信息。
  */
 (function () {
@@ -43,28 +43,52 @@
   }
   function logKey() { return 'kbar-quizlog::' + lessonId(); }
   function sumKey() { return 'kbar-quizsum::' + lessonId(); }
-  function getState() { return store(logKey()) || { events: [], boxes: {} }; }
-  function recordAnswer(qi, ok, tag) {
+  function getState() { return store(logKey()) || { schema: 2, events: [], boxes: {}, archives: [] }; }
+  // Fingerprint source templates, never randomized question text or chart instances.
+  function templateVersion() {
+    var text = Array.from(document.scripts).filter(function (s) { return !s.src; }).map(function (s) { return s.textContent; }).join('\n');
+    return 'template-' + fingerprint(text);
+  }
+  function fingerprint(text) {
+    var hash = 2166136261;
+    for (var i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
+    return (hash >>> 0).toString(16);
+  }
+  function prepare(version) {
     var s = getState();
-    s.events.push({ qi: qi, ok: ok, ts: Date.now() });
+    if (s.schema !== 2 || (s.version && s.version !== version)) {
+      var archives = (s.archives || []).slice();
+      archives.push({ version: s.version || 'legacy-unmapped', events: s.events || [], boxes: s.boxes || {}, archivedAt: Date.now() });
+      s = { schema: 2, events: [], boxes: {}, archives: archives };
+    }
+    s.version = version;
+    store(logKey(), s);
+  }
+  function isDue(b, now) {
+    return !!b && Number.isFinite(b.lastTs) && (now === undefined ? Date.now() : now) - b.lastTs >= LADDER[Math.min(Math.max(b.box || 0, 0), LADDER.length - 1)] * 86400000;
+  }
+  function dueCount(s) {
+    return s && s.schema === 2 && s.boxes ? Object.keys(s.boxes).filter(function (key) { return isDue(s.boxes[key]); }).length : 0;
+  }
+  function recordAnswer(qi, ok, tag, question, choice) {
+    var s = getState();
+    var variant = fingerprint(JSON.stringify(question));
+    s.events.push({ qi: qi, variant: variant, choice: choice, ok: ok, ts: Date.now() });
     if (s.events.length > 500) s.events = s.events.slice(-500);
     var b = s.boxes[qi] = s.boxes[qi] || { box: 0, lastTs: 0, lastOk: null, tag: tag || null };
+    if (!b.first) b.first = { ok: ok, choice: choice, question: question, variant: variant, ts: Date.now() };
+    b.question = question; b.variant = variant;
     b.lastTs = Date.now(); b.lastOk = ok; b.tag = tag || b.tag || null;
     b.box = ok ? Math.min(b.box + 1, LADDER.length) : 0;
     store(logKey(), s);
   }
-  function dueQuestions(total) {
-    var s = getState(), due = [], now = Date.now();
-    for (var qi = 0; qi < total; qi++) {
-      var b = s.boxes[qi];
-      if (b && b.lastOk === false) {
-        var days = (now - b.lastTs) / 86400000;
-        var wait = LADDER[Math.min(b.box, LADDER.length - 1)];
-        if (days >= wait) due.push(qi);
-      }
-    }
-    return due;
+  function dueQuestions(questions) {
+    var s = getState();
+    return questions.map(function (_, i) { return i; }).filter(function (i) {
+      return isDue(s.boxes[questionId(questions[i], i)]);
+    });
   }
+  function questionId(q, i) { return q.id === undefined ? String(i) : String(q.id); }
   function recordSession(correct, total) {
     var sum = store(sumKey()) || { runs: 0, best: 0, lastScore: 0, lastTotal: 0, lastTs: 0 };
     sum.runs++; sum.best = Math.max(sum.best, correct);
@@ -75,6 +99,8 @@
   window.KbarQuizLog = {
     lessonId: lessonId,
     state: getState,
+    isDue: isDue,
+    dueCount: dueCount,
     summary: function () { return store(sumKey()); },
     allLessons: function () {
       var out = { logs: {}, sums: {} };
@@ -102,15 +128,20 @@
       st.textContent = '.quiz button{min-height:44px;min-width:44px}';
       document.head.appendChild(st);
     }
-    var order = shuffle(cfg.questions.map(function (_, i) { return i; }));
+    prepare(String(cfg.version || templateVersion()));
+    var order = shuffle(cfg.reviewIndices || cfg.roundIndices || cfg.questions.map(function (_, i) { return i; }));
     var idx = 0, correct = 0, reviewing = !!cfg.review;
     var advanced = false; // 本次重渲染是否由交互触发（首渲染/重挂载不抢页面焦点）
 
     function render() {
       if (idx >= order.length) return finish();
       var q = cfg.questions[order[idx]];
+      var saved = getState().boxes[questionId(q, order[idx])];
+      if (reviewing && saved && saved.question) q = saved.question;
       var opts = shuffle(q.options.map(function (label, i) { return { label: label, ok: i === q.answer }; }));
       root.innerHTML =
+        ((getState().archives || []).length ? '<p class="quiz-archive">旧记录已保留为历史档案，题库版本或题号无法可靠映射；请重新作答补证。</p>' : '') +
+        (!reviewing && idx === 0 && dueQuestions(cfg.questions).length ? '<button class="review-due">到期复习（含已纠正题）</button>' : '') +
         '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (reviewing ? '（错题重练）' : '') + '</div>' +
         '<div class="q-text">' + q.q + '</div>' +
         (q.stage ? '<div class="q-stage">' + q.stage + '</div>' : '') +
@@ -120,12 +151,14 @@
         '<div class="explain" aria-live="polite"></div>' +
         '<div class="quiz-foot"><span class="score">已答对 ' + correct + ' / ' + order.length + '</span><button class="next" hidden>下一题 →</button></div>';
 
+      var reviewDue = root.querySelector('.review-due');
+      if (reviewDue) reviewDue.onclick = function () { mount(sel, Object.assign({}, cfg, { reviewIndices: dueQuestions(cfg.questions), review: true, focus: true })); };
       var explain = root.querySelector('.explain');
       var next = root.querySelector('.next');
       root.querySelectorAll('.opt').forEach(function (btn) {
         btn.addEventListener('click', function () {
           if (!root.querySelector('.opt:disabled')) {
-            recordAnswer(order[idx], opts[+btn.dataset.i].ok, q.tag);
+            recordAnswer(questionId(q, order[idx]), opts[+btn.dataset.i].ok, q.tag, q, opts[+btn.dataset.i].label);
           }
           var pick = opts[+btn.dataset.i];
           root.querySelectorAll('.opt').forEach(function (b) { b.disabled = true; });
@@ -148,7 +181,7 @@
     function finish() {
       var v = (cfg.verdicts || []).find(function (x) { return correct >= x[0]; });
       if (!reviewing) recordSession(correct, order.length);
-      var due = dueQuestions(cfg.questions.length);
+      var due = dueQuestions(cfg.questions);
       root.innerHTML =
         '<div class="verdict">' +
         '<div class="big">' + correct + ' / ' + order.length + '</div>' +
@@ -159,19 +192,16 @@
         '<button class="next">' + (reviewing ? '返回正常练习' : '再练一遍（重排顺序）') + '</button></div>';
       var rs = root.querySelector('.review-start');
       if (rs) rs.addEventListener('click', function () {
-        mount(sel, {
-          title: (cfg.title || '训练') + ' · 错题重练',
-          questions: due.map(function (qi) { return cfg.questions[qi]; }),
-          review: true
-        });
+        mount(sel, Object.assign({}, cfg, { reviewIndices: due, review: true, focus: true }));
       });
       root.querySelector('.next:not(.review-start)').addEventListener('click', function () {
-        mount(sel, { title: cfg.title, questions: cfg.questions, verdicts: cfg.verdicts });
+        mount(sel, Object.assign({}, cfg, { reviewIndices: null, review: false, focus: true }));
       });
       if (advanced) { advanced = false; var fb = root.querySelector('.review-start') || root.querySelector('.next'); if (fb) fb.focus(); } // 交卷页焦点落在首要动作
     }
 
     render();
+    if (cfg.focus) { var focus = root.querySelector('.opt') || root.querySelector('.next'); if (focus) focus.focus(); }
   }
 
   window.Quiz = { mount: mount };
