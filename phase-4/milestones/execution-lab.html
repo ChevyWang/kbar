@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>委托回报与对账 · P4 执行练习</title><link rel="stylesheet" href="../assets/course.css"><style>button{min-height:44px}.kba-row{flex-wrap:wrap}.kba-v{overflow-wrap:anywhere}#execution-feedback{white-space:pre-line}</style></head><body>
+<header class="course"><div class="kicker">Phase 4 · 专门实作</div><h1>委托回报与对账</h1><p class="sub">练习订单状态与成本记录；已见合成材料，不记陌生迁移或实盘资格。</p></header>
+<p id="execution-intro"></p><p><a href="../reference/one-page-plan.html#before-order">先核对计划与委托前清单</a>。遇到未知回报，先查询和保留暴露；练习中的“现金”指账面余额，开仓待决预算另行冻结。</p>
+<button type="button" id="execution-start">开始或续做执行练习</button><nav id="execution-review" aria-label="回看已提交步骤"></nav>
+<section id="execution-work" hidden><h2 id="execution-title" tabindex="-1"></h2><p id="execution-fact"></p><div id="execution-answer"></div><p id="execution-feedback" role="status"></p><button id="execution-next" type="button" disabled>提交后查看下一回报</button></section>
+<p id="execution-done" hidden tabindex="-1">已保留全部步骤。逐项检查状态、现金、数量与解释，错项回到对应步骤追加修订；首次原答仍保留。下一步：<a href="../lessons/4010-backtest-graduation.html">把对账证据放入验证包</a>。这次完成不证明真实撮合或陌生迁移能力。</p>
+<footer class="course"><div class="nav"><a href="../lessons/4002-entries.html">回到委托课</a><a href="../index.html">Phase 4 主页</a></div><p>制度核对：<a href="https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml">上交所2026交易规则</a>；<a href="https://www.htsc.com.cn/browser/mz/index.jsp">华泰证券交易软件说明</a>提醒超时后先核实委托，避免重复买卖（2026-09-15核对）。本页费用为给定教学回报，不是券商费率。</p></footer>
+<script src="../assets/answer.js"></script><script src="../assets/learning-store.js"></script><script src="../assets/nav.js" defer></script>
+<script>
+var EXECUTION = {"title":"委托回报与对账","intro":"使用合成回报练习普通主板现金轨，所有价格、费用和预算只为教学。先在计划中冻结现金10000元、含双边费用的计划风险预算810元、买限20元、失效参考18元、费用预留10元；不叠加仓位，余单撤销确认前不结算退出。每一步先留原答，再对照下一条回报。分数不授予执行能力。","steps":[{"title":"信号与现金","fact":"D1：已核对信号及主板规则，拟买600股，每股限价20元，另预留10元费用。还未发单。","q":"下一动作","options":["发送600股，止损会限制资金占用","拒绝600股；按现金和风险预算重算400股"],"correct":1,"cash":10000,"shares":0,"pending":0,"explain":"600×20+10=12010，超过现金；扣除双边费用预留后，(810−10)÷(20−18)=400股，现金也足够400股。信号合格不保证订单合格。"},{"title":"发送与延迟","fact":"D1：改发400股买限20元，订单号O1。软件显示发送成功，但尚无券商或交易所接受回报；报价已触20元。","q":"如何记账","options":["先记400股成交，以免漏掉触价","保持待核对；不重复发单、不记持仓"],"correct":1,"cash":10000,"shares":0,"pending":400,"explain":"待核对400股是本地待决意图，不能冒充交易所已接受；内部保留8010元预算。触价与发送成功都不是成交回报。"},{"title":"部分成交","fact":"D1：收到O1成交回报F1：买入200股，成交20元，实际买入费用5元；余200股仍待决。","q":"如何更新记录","options":["只登记已成交200股，并保留余单","整单按400股记持仓，稍后统一修正"],"correct":0,"cash":5995,"shares":200,"pending":200,"explain":"账面现金10000−200×20−5=5995；剩余委托按限价加原费用预留4010，内部可用1985。已成交部分的毛价格风险分母400元，与含费用计划预算不同；买费5元及预计卖费另列。"},{"title":"撤单未知","fact":"D1：发出撤销O1余200股请求，屏幕超时，未收到撤销确认。","q":"下一动作","options":["立即释放冻结预算再发一张买单","保留待决数量，查询O1及回报；暂停新增风险"],"correct":1,"cash":5995,"shares":200,"pending":200,"explain":"撤单请求不等于撤销成功。不要盲目补单；若后来收到成交回报，先核对订单号、成交号和数量，不能忽略迟到回报。"},{"title":"撤销确认与当日退出","fact":"D1：核对收到O1余200股撤销确认，未出现新成交。盘中触及18元后收回，收盘19元；这是当日新买股票。","q":"如何执行失效处置","options":["把剩余持仓按18元记为已卖","余单清零；当日新买不可卖，记录持续暴露"],"correct":1,"cash":5995,"shares":200,"pending":0,"explain":"撤销确认释放余单预算；持仓200股仍在。触价保护、收盘论点与T+1限制分别记录，不能用收盘收回删除盘中风险事件。"},{"title":"次日跳空","fact":"D2：开盘17.50元，低于18元失效参考。你按冻结事故规则发出卖出请求，暂无成交回报。","q":"如何记录","options":["记−1R并关闭持仓","记退出待核对，仍持有200股；实际损失待回报"],"correct":1,"cash":5995,"shares":200,"pending":0,"explain":"已满足可卖交收条件不代表已经卖出。保留卖出请求和未知状态，核对回报；不得用计划止损价伪造成交。这里pending只记开仓余单，卖出待决另写在动作记录。"},{"title":"退出与成本","fact":"D3：收到完整卖出回报F2：200股全部成交17.50元，卖出费用5元，确认没有其他未决单。","q":"如何对账","options":["净损失−510元，初始风险400元，净R=−1.275","净损失−400元，风险只允许记到−1R"],"correct":0,"cash":9490,"shares":0,"pending":0,"explain":"卖出净收入3495；终值现金9490。毛损益−500，双边费用10，净损益−510；以已成交200股的冻结风险400为分母。不能再重复扣滑点：成交价已包含相对参考价的差异。"},{"title":"同棒双触反例","fact":"另一个已持仓的研究窗口：入场20、止损18、目标22；当天OHLC为20/22/18/20。没有逐笔路径，也没有订单回报。本题不改前面已结清的台账。","q":"可以确定什么","options":["收盘回到20，所以一定先止损后目标","只确定两个价都触及；实际先后和成交未知"],"correct":1,"cash":9490,"shares":0,"pending":0,"explain":"研究可事前报告先止损和先目标两条敏感性路径，或保留未知并说明纳入分母方式；最坏路径是研究约定，不是实际成交。返回4004对照同入场的退出政策。"}]};
+(function(){
+const root=document.getElementById('execution-answer'),next=document.getElementById('execution-next');
+let stage=0;
+document.getElementById('execution-intro').textContent=EXECUTION.intro;
+function attempts(i){try{return JSON.parse(localStorage.getItem('kbar-answer::M4.execution::v1-step-'+i+'::attempts')||'[]')}catch(e){return []}}
+function review(){const nav=document.getElementById('execution-review');nav.innerHTML='';EXECUTION.steps.forEach((s,i)=>{if(attempts(i).length){const b=document.createElement('button');b.type='button';b.textContent='回看'+(i+1);b.onclick=()=>{stage=i;render();document.getElementById('execution-title').focus()};nav.appendChild(b)}})}
+function render(){
+ const s=EXECUTION.steps[stage];document.getElementById('execution-work').hidden=false;document.getElementById('execution-title').textContent=(stage+1)+' · '+s.title;document.getElementById('execution-fact').textContent=s.fact;
+ const feedback=document.getElementById('execution-feedback');feedback.textContent='';next.disabled=true;let seen=attempts(stage).length;
+ KbarAnswer.mount(root,{taskId:'M4.execution',caseId:'v1-step-'+stage,packId:'cash-reports-v1',courseVersion:'2026-09-15',title:'先保留当时记录',fields:[
+ {id:'action',type:'radio',label:s.q,options:s.options,required:true},
+ {id:'cash',type:'number',label:'账面现金（元）',required:true},
+ {id:'shares',type:'number',label:'已成交且尚未退出的股数',required:true},
+ {id:'pending',type:'number',label:'开仓待决数量（股，不含卖出请求）',required:true},
+ {id:'reason',label:'依据、仍未知的事项与下一核对动作',required:true}
+ ],onState:function(state){
+  next.disabled=!state.attempts.length||!state.storageOk;
+  if(state.attempts.length){const a=state.attempts[state.attempts.length-1].answers,ok=a.action===s.options[s.correct]&&['cash','shares','pending'].every(k=>Number(a[k])===s[k]);
+   feedback.textContent=(ok?'结构化记录一致；解释仍须自评。':'记录有待修正；原答已保留，请按回报重算后追加修订。')+'\n'+s.explain+'\n核对：现金'+s.cash+'，持仓'+s.shares+'，开仓待决'+s.pending+'。合格解释须区分已知/未知并写下一动作；不能把触价、发出或撤单请求当成交。';
+  }
+  review();if(state.attempts.length>seen){seen=state.attempts.length;if(!next.disabled)next.focus()}
+ }});
+ next.textContent=stage===EXECUTION.steps.length-1?'核对完成后的下一步':'提交后查看下一回报';
+}
+document.getElementById('execution-start').onclick=()=>{stage=EXECUTION.steps.findIndex((s,i)=>!attempts(i).length);if(stage<0)stage=EXECUTION.steps.length-1;render();document.getElementById('execution-title').focus()};
+next.onclick=()=>{if(next.disabled)return;if(stage<EXECUTION.steps.length-1){stage++;render();document.getElementById('execution-title').focus()}else{const done=document.getElementById('execution-done');done.hidden=false;done.focus()}};
+window.Kbar=window.Kbar||{};window.Kbar.executionLab={start:()=>document.getElementById('execution-start').click()};
+})();
+</script></body></html>
