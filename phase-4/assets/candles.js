@@ -106,7 +106,7 @@
     var bodyTop = Math.min(yO, yC), bodyH = Math.abs(yC - yO);
     var col = bull ? UP : DOWN;
 
-    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="K线解剖图：上影线、实体、下影线；左侧开收刻度；右侧阳线与阴线对照。" style="max-width:100%">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="K线解剖图：上影线、实体、下影线；左侧高低开收刻度；右侧阳线与阴线对照。" style="max-width:100%">';
     // 价格阶梯（右缘）
     [[k.h, '最高 ' + k.h], [Math.max(k.o, k.c), bull ? '收 ' + k.c : '开 ' + k.o], [Math.min(k.o, k.c), bull ? '开 ' + k.o : '收 ' + k.c], [k.l, '最低 ' + k.l]].forEach(function (t) {
       s += '<line x1="' + mainX + '" y1="' + y(t[0]) + '" x2="' + (mainX + 70) + '" y2="' + y(t[0]) + '" stroke="' + FAINT + '" stroke-width="1" stroke-dasharray="3 4"/>';
