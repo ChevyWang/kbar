@@ -5,8 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>4001 · Setup 的正式定义：从“看到”到“等到” — K线训练营 Phase 4</title>
 <link rel="stylesheet" href="../assets/course.css">
+<style>
+  :root { --lesson-accent: #2d566b; --lesson-soft: #eef4f5; --lesson-focus: #0b5c7d; }
+  .lesson-nav { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 1.25rem; font-family: var(--sans); font-size: .82rem; }
+  .lesson-nav a { color: var(--lesson-accent); border-bottom-color: rgba(45,86,107,.35); }
+  .lesson-nav a:focus-visible, .lesson-next a:focus-visible { outline: 3px solid var(--lesson-focus); outline-offset: 3px; }
+  .lesson-brief { margin: 0 0 2rem; padding: 1rem 1.15rem; border: 1px solid var(--line); border-left: 4px solid var(--lesson-accent); background: #fff; }
+  .lesson-brief .eyebrow { margin: 0; color: var(--lesson-accent); font-family: var(--sans); font-size: .72rem; font-weight: 700; letter-spacing: .12em; }
+  .lesson-brief h2 { margin: .25rem 0 .7rem; font-size: 1.15rem; }
+  .lesson-context-table { margin: .6rem 0 0; font-size: .86rem; }
+  .lesson-context-table th { width: 7rem; }
+  .lesson-brief .lesson-boundary { margin: .8rem 0 0; color: var(--muted); font-family: var(--sans); font-size: .8rem; line-height: 1.65; }
+  .lesson-next { margin: 1.4rem 0; padding: .8rem 1rem; border: 1px solid var(--lesson-accent); background: var(--lesson-soft); font-family: var(--sans); font-size: .9rem; }
+  .lesson-next a { color: var(--lesson-accent); font-weight: 700; }
+  @media (max-width: 560px) { .lesson-nav { flex-wrap: wrap; } .lesson-brief { padding: .85rem; } .lesson-context-table th { width: 5.7rem; } }
+  @media print { .lesson-nav { display: none; } .lesson-brief, .lesson-next { break-inside: avoid; } }
+</style>
 </head>
 <body>
+
+<nav class="lesson-nav" aria-label="课程上下文"><a href="../index.html">← 返回 P4 阶段</a><span>P4 · 组装综合 · 第 4001 课</span><a href="../mastery.html">能力档案 →</a></nav>
 
 <header class="course">
   <div class="kicker">K线训练营 · Phase 4 系统 · 第 4001 课</div>
@@ -14,6 +32,20 @@
   <p class="sub">Phase 0–3 你积累了词汇（形态）、语法（位置语境）、地形（结构）与概率（统计）。Phase 4 把它们组装成一台机器：<b>交易系统</b>。第一课先定义机器的第一个零件——setup（候场条件）。标准只有一句：<b>规则能预先写死吗？错了会被打脸吗？</b>（3007 课两轴矩阵的自己动手版）。本课约 73 分钟（知识 37 + 案例 20 + 训练 14 + 小结 2）。</p>
 </header><p class="callout"><a href="../reference/one-page-plan.html#working-plan">续填同一份4009计划</a>：先填写市场、标的池和Setup；观察合格但执行条件不足时仍可不交易。下一步先完成4007预算。</p>
 <aside class="callout"><b>研究身份</b>：现行参照为 trader1-v2.1 的日线毛 R，不代表净收益或账户曲线。主教学执行轨为 cn-mainboard-cash-v1；历史图例与 BT30 仅作已揭晓练习。详见<a href="../reference/research-lineage.html">研究版本与证据</a>。</aside>
+
+<section class="lesson-brief" aria-labelledby="lesson-brief-title">
+  <p class="eyebrow">本课上下文 · 组装层</p>
+  <h2 id="lesson-brief-title">本课只完成一个核心动作</h2>
+  <table class="lesson-context-table">
+    <tbody>
+      <tr><th scope="row">核心动作</th><td>把 setup 写成可预先检查、可被打脸的条件卡。</td></tr>
+      <tr><th scope="row">当前模式</th><td>先看示范规则，再独立写一张自己的 setup 卡；原答与修订分开保留。</td></tr>
+      <tr><th scope="row">完成后</th><td>先完成本课训练场，再回 P4 阶段入口确认 4002 入场课或能力档案。</td></tr>
+      <tr><th scope="row">返回路径</th><td>本课 → 训练场与反馈 → <a href="../index.html">P4 阶段入口</a>；示范系统不等于个人优势证明。</td></tr>
+    </tbody>
+  </table>
+  <p class="lesson-boundary"><b>证据边界：</b>看过规则和辅助解释不替代独立计划；原答、修订、未知和拒绝理由要分开记录。</p>
+</section>
 
 <div class="lesson-map">
   <div class="lm-title">本课地图</div>
@@ -108,6 +140,8 @@
 
 <h2 id="s07"><span class="no">07</span>训练场：十二题 <span class="time-chip">≈8 min</span></h2>
 <div id="trainer"></div>
+
+<p class="lesson-next"><b>本课完成后的唯一主行动：</b>先完成训练场反馈，再<a href="../index.html">返回 P4 阶段入口</a>确认 4002 入场课或能力验收。</p>
 
 <h2 id="s08"><span class="no">08</span>小结 <span class="time-chip">≈2 min</span></h2>
 <p><b>本课带走四样：</b></p>
