@@ -1,0 +1,36 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>冻结协议与验证包 · P4</title><link rel="stylesheet" href="../assets/course.css"><style>button{min-height:44px}.kba-row{flex-wrap:wrap}.kba-v{overflow-wrap:anywhere}#packet-feedback{white-space:pre-line}</style></head><body>
+<header class="course"><div class="kicker">P4 · 开放研究产物</div><h1>冻结协议与验证包</h1><p class="sub">先保存协议，再揭晓与记账。知识诊断、结构化事实、开放研究包与陌生迁移分别记录，题分不能给系统有效性盖章。</p></header>
+<p><a href="../reference/one-page-plan.html#working-plan">带入你的计划与附表版本</a>；已有资料可写本地文件名或路径，导出本页不会自动打包这些附件，迁移时须一起保存。没有费用、全部候选或未看窗口时，如实保留证据不足。</p>
+<details id="packet-calibration"><summary>核对两种合格结论与不可接受回答</summary><p>以下为已揭晓的合成校准材料。它们展示记录标准，不是策略收益证据：</p>
+<table><tr><th>记录</th><th>合格结论</th><th>继续动作</th></tr><tr><td>候选6：成交2、未成交1、未知1、拒绝2；已结清毛20、费用12、净8。未知候选可能改变判断。</td><td>证据不足；净正值不能覆盖未知与少样本。</td><td>保留原结果，补订单回报和候选分母，不删除未知。</td></tr><tr><td>候选5：成交3、未成交1、未知0、拒绝1；毛8、费用12、净−4。预登记要求本窗口扣费后为正。</td><td>本窗口不满足冻结判据；不支持当前假设。</td><td>失败版本继续留档，任何新规则重新登记尝试并另留窗口。</td></tr><tr><td>“知识题全对，30笔赚了钱，所以可升仓。”</td><td>不可接受：把知识、流程、优势与授权混为一谈。</td><td>回到结论边界，逐项提交证据。</td></tr></table>
+<p>解释量规：别人能从台账重算数量和金额；每个未知有处置；结论不超过窗口、成本与规则范围；下一步有尚未参与选参的材料。可以选择等待或不交易，不要求凑出正结论。</p></details>
+<h2>一、冻结协议 <span class="time-chip">分次完成</span></h2><p>已看过的材料可练记录，但须标为已见。新增修订会形成另一版本，后续结果须重新绑定；揭晓后修改不能把旧窗口重新称为保留窗口。</p><div id="packet-freeze"></div>
+<section id="packet-result-section" hidden><h2>二、结果与证据 <span class="time-chip">分次完成</span></h2><p id="packet-binding"></p><p>下面数量按互斥的候选最终状态统计；部分成交归已成交，余单在明细单列。毛/净金额只统计已结清样本，未结清风险另列，不把未退出持仓估值冒充实现盈亏。</p><div id="packet-results"></div><p id="packet-feedback" role="status"></p><a id="packet-next" href="../lessons/4010-backtest-graduation.html">继续补齐研究包</a></section>
+<p><a href="../milestones/m4-3-system.html">M4.3知识诊断</a>只检验规则理解；<a href="../mastery.html">结构化事实、换题与跨日证据</a>另存。完成本页自查不自动取得课程结业、实盘或升仓资格。</p>
+<footer class="course"><div class="nav"><a href="../lessons/4010-backtest-graduation.html">回到4010</a><a href="../index.html">P4主页</a></div></footer>
+<script src="../assets/answer.js"></script><script src="../assets/learning-store.js"></script><script src="../assets/nav.js" defer></script><script>
+(function(){
+let binding=null;
+const freezeFields=[{"id":"version","label":"规则/数据/执行配置版本与本次修改理由","type":"longtext","required":true,"rows":3},{"id":"scope","label":"市场、周期、币种、单位、数据来源及排除范围","type":"longtext","required":true,"rows":3},{"id":"rules","label":"信号、入场、退出、资金竞争与事故规则（或本地附件路径）","type":"longtext","required":true,"rows":3},{"id":"windows","label":"按日期与品种冻结窗口清单；标明已见、选参、拟保留各部分","type":"longtext","required":true,"rows":3},{"id":"attempts","label":"此前试过的规则及参数次数（包括失败和未采用版本）","type":"longtext","required":true,"rows":3},{"id":"protocol","label":"候选分母、未成交/未知/拒绝及成本、精度、同棒双触处理","type":"longtext","required":true,"rows":3},{"id":"criterion","label":"揭晓前判据、停止条件及何种结果仍不足以支持优势","type":"longtext","required":true,"rows":3}],resultFields=[{"id":"ledger","label":"全部候选逐条台账：时间、品种、规则判定、状态与原始记录/附件路径","type":"longtext","required":true,"rows":3},{"id":"execution","label":"订单与成交/未成交/拒绝/未知证据；纸上路径假设须明确","type":"longtext","required":true,"rows":3},{"id":"candidates","label":"候选总数","type":"number","required":true,"rows":3},{"id":"filled","label":"已成交数量（候选笔数）","type":"number","required":true,"rows":3},{"id":"unfilled","label":"未成交数量（候选笔数）","type":"number","required":true,"rows":3},{"id":"unknown","label":"状态未知数量（候选笔数）","type":"number","required":true,"rows":3},{"id":"rejected","label":"规则/预算拒绝数量（候选笔数）","type":"number","required":true,"rows":3},{"id":"gross","label":"已结清样本毛损益（同一币种）","type":"number","required":true,"rows":3},{"id":"fees","label":"已结清样本实际或假设费用（非负）","type":"number","required":true,"rows":3},{"id":"net","label":"已结清样本净损益（同一币种）","type":"number","required":true,"rows":3},{"id":"unresolved","label":"未结清持仓与未决风险；未知是否影响结论","type":"longtext","required":true,"rows":3},{"id":"trialCount","label":"截至本次共尝试的规则/参数版本次数","type":"number","required":true,"rows":3},{"id":"independence","label":"窗口是否保持独立？何时揭晓？事后改规则如何另验？","type":"longtext","required":true,"rows":3},{"id":"conclusion","label":"本次证据结论","type":"select","options":["证据不足","在冻结范围内不支持","在冻结范围内暂时支持"],"required":true,"rows":3},{"id":"reason","label":"结论依据、反证、限制及下一验证窗口","type":"longtext","required":true,"rows":3},{"id":"selfCheck","label":"开放产物自查","type":"select","options":["待补证：至少一项未核对","已逐项自查：仍非外部认证"],"required":true,"rows":3}];
+function mountResult(attempt){
+ if(binding===attempt.attemptId)return;binding=attempt.attemptId;
+ document.getElementById('packet-result-section').hidden=false;document.getElementById('packet-binding').textContent='绑定冻结记录：'+binding+'；版本说明：'+attempt.answers.version;
+ document.getElementById('packet-feedback').textContent='';
+ const next=document.getElementById('packet-next');next.href='../lessons/4010-backtest-graduation.html';next.textContent='下一步：补齐当前版本的证据';
+ KbarAnswer.mount('#packet-results',{taskId:'M4.packet-results',caseId:binding,packId:'p4-validation-v1',courseVersion:'2026-09-15',title:'绑定本冻结版本的研究结果',fields:resultFields,onState:function(state){
+  if(!state.attempts.length)return;
+  const a=state.attempts[state.attempts.length-1].answers,counts=['candidates','filled','unfilled','unknown','rejected'].map(k=>Number(a[k]));
+  const countOk=counts.every(x=>Number.isInteger(x)&&x>=0)&&counts[0]===counts.slice(1).reduce((x,y)=>x+y,0);
+  const moneyOk=['gross','fees','net'].every(k=>Number.isFinite(Number(a[k])))&&Number(a.fees)>=0&&Math.abs(Number(a.gross)-Number(a.fees)-Number(a.net))<.011;
+  const tried=Number.isInteger(Number(a.trialCount))&&Number(a.trialCount)>=1;
+  const feedback=document.getElementById('packet-feedback');
+  feedback.textContent='原答已保存。候选对账：'+(countOk?'一致':'待补证')+'；金额对账：'+(moneyOk?'一致':'待补证')+'；尝试登记：'+(tried?'已填':'待补证')+'。\n这些检查只核算输入，不能认证附件真实性、窗口独立性或解释质量。未知回报、少样本和事后改规则仍须在结论中处理。';
+  if(!countOk||!moneyOk){next.href='execution-lab.html';next.textContent='下一步：补练回报与对账，再追加修订';}
+  else if(!tried||a.selfCheck!==resultFields[resultFields.length-1].options[1]){next.href='#packet-calibration';next.textContent='下一步：按校准例补查开放证据';}
+  else {next.href='../mastery.html';next.textContent='下一步：M4.3换未曝光材料检验，另补跨日证据';}
+ }});
+}
+KbarAnswer.mount('#packet-freeze',{taskId:'M4.packet-freeze',caseId:'protocol-v1',packId:'p4-validation-v1',courseVersion:'2026-09-15',title:'保存揭晓前协议（本地时间，不是可信第三方时间戳）',fields:freezeFields,onState:function(s){if(s.attempts.length)mountResult(s.attempts[s.attempts.length-1]);}});
+window.Kbar=window.Kbar||{};window.Kbar.validationPacket={version:1};
+})();
+</script></body></html>
