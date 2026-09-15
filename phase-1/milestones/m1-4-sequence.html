@@ -22,6 +22,7 @@
 .gate-msg .bad { color: #d33a2c; }
 .logline { font-size: .78rem; color: var(--muted); border-left: 2px solid var(--line); padding-left: .6rem; margin: .15rem 0; font-family: var(--sans); }
 .logline .upd { color: #b3541e; font-weight: 700; }
+button,input,select,summary {min-height:44px;} #chart{overflow-x:auto;} #chart svg{max-width:none;}
 button.mbtn { font-family: var(--sans); font-size: .9rem; border: 1.5px solid var(--ink); border-radius: 8px; padding: .45rem 1.05rem; cursor: pointer; background: #fff; margin: .3rem .5rem .3rem 0; }
 button.mbtn.dark { background: var(--ink); color: #fff; }
 button.mbtn[disabled] { opacity: .4; cursor: not-allowed; }
@@ -39,7 +40,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <div class="kicker">K线训练营 · Phase 1 逐根推理 · 里程碑验收 M1.4（代表任务 2/6）</div>
   <h1>连续推理：60 根逐根档案</h1>
   <p class="sub">每个决策时点只见截至当根的图（纵轴随已揭示前缀重算，无未来信息）。逐根提交 always-in 判断（维持也要明确确认（confirmation）），在 6 个检查点提交完整结构（状态/证据/价区/触发/失效/替代剧本）并通过事实门禁。<b>确认即存档、不可回改（禁止回写原判断）</b>；草稿自动保存，刷新续作。<b>通过＝「M1.4 结构化过程任务通过（自动可判部分）」，时点纪律与证据合法性；不证明行情预测能力。</b></p>
-</header>
+</header><p class="callout">短状态与证据先提交，重要检查点才写完整预案。前段提供提示，中段撤去示范措辞，后段只保留字段名；维持和等待都是有效判断。每个检查点可暂停，实际阅读、作答与纠错用时另记。</p>
 <p style="margin:1rem"><a href="../mastery.html">统一能力验收与学习档案（与本页专门实作分别记录）</a></p>
 
 <details class="lesson-map">
@@ -48,7 +49,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
     <li><b>目标行为</b>：在只见前缀的图上逐根记录 always-in（多/空/中性存疑）与依据；新信息到来时及时更新并引用证据棒；每 10 根提交一次完整结构（关键价区、触发/失效、替代剧本）。接受"无新信息，维持"——不要求每根编故事。</li>
     <li><b>先修诊断</b>：1001（always-in 与两票制）、1003（H/L 与候选/确认）、1004/1005（腿与目标）、1009（失败突破）。</li>
     <li><b>评分（自动可判部分）</b>：60/60 根逐根提交（时点纪律）；6/6 检查点事实门禁通过，证据棒已可见、价位在可见前缀范围内、方向与触发/失效相对位置一致（多：失效&lt;触发；空：触发&lt;失效；中性：观望带上下沿不等）、替代剧本非空。</li>
-    <li><b>不自动判的部分</b>：分支质量（所选状态是否与证据相容、更新是否及时），完成后与"生成稿参考"对照并做开放自评（三档量规＋一句修订），另记状态、不并入核心通过。人工锚定的评分键属后续工作（台账 B16）。</li>
+    <li><b>不自动判的部分</b>：分支质量（所选状态是否与证据相容、更新是否及时），完成后与"生成稿参考"对照并做开放自评（三档量规＋一句修订），另记状态、不并入核心通过。完成后按预先冻结的校准例核对多种合格解释、不可接受答案与反证，不以唯一方向评分。满足=事实正确且条件具体；部分满足=事实正确但条件含糊；不足=借未来、编机构意图或忽略自己事前的失效。开放判断由学习者自评，不自动授予交易能力。</li>
     <li><b>包角色</b>：A=首次档案；B=延迟复测（建议距 A ≥24h，记录实际间隔）；C=备用（补测池，A/B 答案曝光耗尽时用）。</li>
     <li><b>成绩能证明的范围</b>：指定窗口上的过程纪律与证据引用任务达标。</li>
   </ol>
@@ -99,7 +100,7 @@ var PACKS = [
   { id: 'A', role: '首次档案', note: '60 根逐根记录，一次性完成或分次续作' },
   { id: 'B', role: '延迟复测', note: '建议距 A 包首次 ≥24 小时；完成时显示实际间隔' },
   { id: 'C', role: '备用补测', note: 'A/B 已作答曝光后，补测/复测用' },
-  { id: 'D', role: '备用二', note: '第三扇未曝光窗（同契约）' }
+  { id: 'D', role: '备用二', note: '另一未曝光窗（同契约）' }
 ];
 
 /* ---------- 参考生成稿（确定性，只用前缀；仅供对照学习） ---------- */
@@ -136,6 +137,7 @@ if (LS) { try { var lp = LS.getItem(LS_KEY + 'lastPack'); if (lp && CASES[lp]) c
 function packState(pid) {
   var rec = loadRec(pid);
   if (rec.attempts.length) return { label: '已完成 ' + rec.attempts.length + ' 次档案', cls: 'ok' };
+  if (rec.firstViewedAt && (!rec.draft || rec.draft.k === 1))return {label:'已打开；原曝光保留',cls:''};
   if (rec.draft && rec.draft.k > 1) return { label: '进行中（第 ' + rec.draft.k + '/60 根）', cls: '' };
   return { label: '未开始', cls: '' };
 }
@@ -154,6 +156,7 @@ function renderTabs() {
 function renderStatusLine() {
   var rec = loadRec(cur);
   var parts = ['<span class="msb">包 ' + cur + '：' + packState(cur).label + '</span>'];
+  if(rec.exposureUnknown)parts.push('<span class="msb">旧曝光时间待补证；不计陌生延迟证据</span>');
   if (cur === 'B') {
     var ra = loadRec('A');
     var t0 = (ra.attempts[0] && ra.attempts[0].ts) || (ra.draft && ra.draft.startedTs);
@@ -168,8 +171,16 @@ function startPack() {
   var c = CASES[cur];
   bars = c.bars;
   var rec = loadRec(cur);
+  if(!rec.firstViewedAt){
+    var oldTime=rec.draft&&rec.draft.startedTs||rec.attempts[0]&&(rec.attempts[0].startedTs||rec.attempts[0].ts);
+    if(oldTime&&Number.isFinite(Date.parse(oldTime)))rec.firstViewedAt=oldTime;
+    else if(rec.draft||rec.attempts.length)rec.exposureUnknown=true;
+    else rec.firstViewedAt=new Date().toISOString();
+  }
   draft = rec.draft || { k: 1, startedTs: new Date().toISOString(), states: {}, cps: {} };
-  var legacy=CPS.find(function(k){return draft.cps[k]&&draft.cps[k].cur&&draft.cps[k].cur.ec==null;});if(legacy){draft.legacyV1=JSON.parse(JSON.stringify(draft));draft.k=1;draft.states={};draft.cps={};rec.draft=draft;saveRec(cur,rec);}
+  if(Object.values(draft.states).some(function(v){return v.ebar==null;})){var previous=JSON.parse(JSON.stringify(draft));rec.legacyDrafts=rec.legacyDrafts||[];rec.legacyDrafts.push(previous);draft={k:1,startedTs:new Date().toISOString(),states:{},cps:{}};}
+  var legacy=CPS.find(function(k){return draft.cps[k]&&draft.cps[k].cur&&draft.cps[k].cur.ec==null;});if(legacy){rec.legacyDrafts=rec.legacyDrafts||[];rec.legacyDrafts.push(JSON.parse(JSON.stringify(draft)));draft.k=1;draft.states={};draft.cps={};rec.draft=draft;saveRec(cur,rec);}
+  rec.draft=draft;saveRec(cur,rec);
   document.getElementById('casecard').innerHTML = '<b>案例卡</b> · ' + c.mkt + ' · ' + c.sym + ' · 日线 80 根 = 20 根暖身（初始可见）＋ 60 根任务段（逐根揭示）· 案例号 M1.4-' + cur + (cur === 'C' ? '-2026b' : '-2026a') + ' · 出处：instancelib 未曝光窗口（yfinance 口径）· 视图=截至时点（asOf）——纵轴/量能只由已揭示前缀决定。';
   document.getElementById('final').innerHTML = '';
   renderStatusLine();
@@ -197,44 +208,44 @@ function prevState(k) {
   return null;
 }
 
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function persistPending(value){draft.pending=value;var rec=loadRec(cur);rec.draft=draft;saveRec(cur,rec);}
+function focusFlow(){var el=document.querySelector('#flow button:not(:disabled),#flow input');if(el)el.focus();}
+
 function renderCommit(k) {
-  var prev = prevState(k) || '中性';
-  var el = document.getElementById('flow');
-  el.innerHTML = '<div class="panel"><b class="t">第 ' + k + ' 根 · 提交你的判断（确认后不可回改）</b>' +
-    '<div style="margin:.4rem 0">always-in 状态（默认带入上根）：<span id="st-opts">' +
-    ['多', '空', '中性'].map(function (s) { return '<span class="st-opt' + (s === prev ? ' on' : '') + '" data-s="' + s + '">' + s + '</span>'; }).join('') + '</span></div>' +
-    '<div class="cp-field"><label>依据（本根发生了什么）</label><select id="c-basis">' + BASIS.map(function (b) { return '<option>' + b + '</option>'; }).join('') + '</select></div>' +
-    '<div class="cp-field"><label>备注（可选）</label><input id="c-note" type="text" placeholder="一句话即可，如：越过 12.4 摆动高，HH+HL 链完整"></div>' +
-    '<button class="mbtn dark" id="c-commit" type="button">✓ 确认第 ' + k + ' 根（存档）</button>' +
-    '<div class="gate-msg" id="c-msg"></div></div>';
-  var chosen = prev;
-  el.querySelectorAll('.st-opt').forEach(function (o) {
-    o.onclick = function () {
-      el.querySelectorAll('.st-opt').forEach(function (x) { x.classList.remove('on'); });
-      o.classList.add('on'); chosen = o.dataset.s;
-    };
-  });
-  document.getElementById('c-commit').onclick = function () {
-    var basis = document.getElementById('c-basis').value;
-    var note = document.getElementById('c-note').value.trim();
-    var changed = chosen !== prev;
-    draft.states[k] = { bar: k, dir: chosen, basis: basis, note: note, changed: changed, ts: new Date().toISOString() };
-    var rec = loadRec(cur); rec.draft = draft; saveRec(cur, rec);
-    if (isCpPending(k)) renderCp(k); else renderNextOnly();
-    renderHistory();
-  };
+ var prev=prevState(k)||'中性', pending=draft.pending&&draft.pending.k===k?draft.pending:{k:k,dir:prev,basis:BASIS[0],note:'',ebar:k<=10?String(WARM+k):''};
+ var el=document.getElementById('flow'),chosen=pending.dir,choices=k<=20?BASIS:[BASIS[0],'按已知证据更新'];
+ el.innerHTML='<div class="panel"><b class="t">第 '+k+' 根 · 先存判断，再揭示</b><p>'+(k<=10?'起步提示：可维持、中性或更新；引用当前已知证据棒。':k<=20?'撤去示范：自行选证据；只在改变判断时补一句原因。':'独立段：状态、证据、是否更新。无新信息可以维持。')+'</p><div id="st-opts">'+
+ ['多','空','中性'].map(function(s){return '<button type="button" class="st-opt'+(s===chosen?' on':'')+'" aria-pressed="'+(s===chosen)+'" data-s="'+s+'">'+s+'</button>';}).join('')+'</div>'+
+ '<label for="c-basis">依据</label><select id="c-basis">'+choices.map(function(b){return '<option>'+b+'</option>';}).join('')+'</select>'+
+ '<label for="c-ebar">证据棒号（已知绝对棒号）</label><input id="c-ebar" inputmode="numeric" value="'+esc(pending.ebar)+'">'+
+ '<label for="c-note">改判原因（维持可留空）</label><input id="c-note" value="'+esc(pending.note)+'" placeholder="'+(k<=10?'例：原失效触发，撤销并等待':'')+'">'+
+ '<button class="mbtn dark" id="c-commit">确认第 '+k+' 根（存档）</button><div class="gate-msg" id="c-msg" role="status"></div></div>';
+ document.getElementById('c-basis').value=pending.basis;
+ function save(){pending={k:k,dir:chosen,basis:document.getElementById('c-basis').value,note:document.getElementById('c-note').value,ebar:document.getElementById('c-ebar').value};persistPending(pending);}
+ ['c-basis','c-ebar','c-note'].forEach(function(id){document.getElementById(id).oninput=save;});
+ el.querySelectorAll('.st-opt').forEach(function(o){o.onclick=function(){chosen=o.dataset.s;el.querySelectorAll('.st-opt').forEach(function(x){x.classList.toggle('on',x===o);x.setAttribute('aria-pressed',String(x===o));});save();};});
+ document.getElementById('c-commit').onclick=function(){
+  save();var eb=Number(pending.ebar),changed=chosen!==prev;
+  if(!Number.isInteger(eb)||eb<1||eb>WARM+k){document.getElementById('c-msg').textContent='证据棒必须已经可见；未来棒或空值不能提交。';return;}
+  if((changed||k>20&&pending.basis!==BASIS[0])&&!pending.note.trim()){document.getElementById('c-msg').textContent='改判须说明新增证据与原假设的关系；无需编每根故事。';return;}
+  draft.states[k]={bar:k,dir:chosen,basis:pending.basis,note:pending.note.trim(),ebar:eb,changed:changed,ts:new Date().toISOString()};
+  delete draft.pending;var rec=loadRec(cur);rec.draft=draft;saveRec(cur,rec);
+  if(isCpPending(k))renderCp(k);else renderNextOnly();renderHistory();focusFlow();
+ };
 }
 
 function renderNextOnly() {
   var k = draft.k, el = document.getElementById('flow');
   var s = draft.states[k];
-  el.innerHTML = '<div class="panel"><b class="t">第 ' + k + ' 根已存档</b>状态：<b>' + s.dir + '</b>' + (s.changed ? ' <span style="color:#b3541e;font-weight:700">（更新）</span>' : '（维持）') + ' · 依据：' + s.basis + (s.note ? ' · ' + s.note : '') +
+  el.innerHTML = '<div class="panel"><b class="t">第 ' + k + ' 根已存档</b>状态：<b>' + s.dir + '</b>' + (s.changed ? ' <span style="color:#b3541e;font-weight:700">（更新）</span>' : '（维持）') + ' · 依据：' + esc(s.basis) + (s.note ? ' · ' + esc(s.note) : '') +
     '<div style="margin-top:.5rem"><button class="mbtn dark" id="c-next" type="button"' + (k >= TASK ? ' disabled' : '') + '>揭示下一根 →</button>' +
     (k >= TASK ? '<button class="mbtn" id="c-finish" type="button">进入完成面板 →</button>' : '') + '</div></div>';
   var nx = document.getElementById('c-next');
-  if (nx) nx.onclick = function () { draft.k = k + 1; var rec = loadRec(cur); rec.draft = draft; saveRec(cur, rec); renderStatusLine(); drawStep(); };
+  if (nx) nx.onclick = function () { draft.k = k + 1; var rec = loadRec(cur); rec.draft = draft; saveRec(cur, rec); renderStatusLine(); drawStep();focusFlow(); };
   var fin = document.getElementById('c-finish');
-  if (fin) fin.onclick = renderFinal;
+  if (fin) fin.onclick = function(){renderFinal();var first=document.getElementById('sa-0');if(first)first.focus();};
 }
 
 function renderCp(k) {
@@ -242,7 +253,7 @@ function renderCp(k) {
   var cp = draft.cps[k] || { first: null, revisions: 0, gate: null, cur: { dir: '', ebar: '', desc: '', lo: '', hi: '', trig: '', inval: '', alt: '' } };
   var d = cp.cur;
   el.innerHTML = '<div class="panel" style="border-color:#b3541e"><b class="t">检查点 ' + k + '/60 —— 提交完整结构（须通过事实门禁才能继续）</b>' +
-    '<div style="margin:.3rem 0">当前状态：<span id="cp-opts">' + ['多', '空', '中性'].map(function (s) { return '<span class="st-opt' + (s === (d.dir || draft.states[k].dir) ? ' on' : '') + '" data-s="' + s + '">' + s + '</span>'; }).join('') + '</span></div>' +
+    '<div style="margin:.3rem 0">当前状态：<span id="cp-opts">' + ['多', '空', '中性'].map(function (s) { return '<button type="button" class="st-opt' + (s === (d.dir || draft.states[k].dir) ? ' on' : '') + '" data-s="' + s + '">' + s + '</button>'; }).join('') + '</span></div>' +
     cpField('证据棒号（绝对 1–' + (WARM + k) + '，须已可见）', 'cp-ebar', d.ebar, '例：23') +
     cpField('所引证据棒收盘价（客观核验）','cp-ec',d.ec,'数字') +
     cpField('最近已确认N=3摆动高棒号（没有填0）','cp-sh',d.sh,'绝对棒号') +
@@ -260,7 +271,7 @@ function renderCp(k) {
   var chosen = d.dir || draft.states[k].dir;
   ['ebar','desc','lo','hi','trig','inval','alt','ec','sh','sl','relation'].forEach(function(f){var node=document.getElementById('cp-'+f);node.addEventListener('input',function(){cp.cur[f]=node.value;cp.cur.dir=chosen;draft.cps[k]=cp;var rec=loadRec(cur);rec.draft=draft;saveRec(cur,rec);});});
   el.querySelectorAll('.st-opt').forEach(function (o) {
-    o.onclick = function () { el.querySelectorAll('.st-opt').forEach(function (x) { x.classList.remove('on'); }); o.classList.add('on'); chosen = o.dataset.s; };
+    o.onclick = function () { el.querySelectorAll('.st-opt').forEach(function (x) { x.classList.remove('on'); }); o.classList.add('on'); chosen = o.dataset.s;cp.cur.dir=chosen;draft.cps[k]=cp;var rec=loadRec(cur);rec.draft=draft;saveRec(cur,rec); };
   });
   document.getElementById('cp-submit').onclick = function () {
     var data = {
@@ -286,12 +297,12 @@ function renderCp(k) {
       msg.innerHTML = errs.map(function (e) { return '<div class="bad">✗ ' + e + '</div>'; }).join('') + '<div>修正后重新提交（首次提交已留档，不会覆盖）。</div>';
     } else {
       msg.innerHTML = '<b style="color:#1a7f37">✓ 检查点 ' + k + ' 事实门禁通过</b>（已核验证据棒收盘、确认摆动及结构关系；方向与预案几何另核，开放解释需自评）。';
-      setTimeout(renderNextOnly, 350);
+      setTimeout(function(){renderNextOnly();focusFlow();}, 350);
     }
   };
 }
 function cpField(label, id, val, ph) {
-  return '<div class="cp-field" style="flex:1;min-width:130px"><label>' + label + '</label><input id="' + id + '" type="text" value="' + String(val == null ? '' : val).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;') + '" placeholder="' + ph + '"></div>';
+  return '<div class="cp-field" style="flex:1;min-width:130px"><label for="'+id+'">' + label + '</label><input id="' + id + '" type="text" value="' + String(val == null ? '' : val).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;') + '" placeholder="' + (cur==='A'&&draft.k<=20?ph:'') + '"></div>';
 }
 
 function gateCp(d, k) {
@@ -335,10 +346,27 @@ function renderHistory() {
   for (var k = draft.k; k >= Math.max(1, draft.k - 6); k--) {
     var s = draft.states[k];
     if (!s) break;
-    lines.push('<div class="logline">第 ' + k + ' 根 · ' + s.dir + (s.changed ? ' <span class="upd">更新</span>' : ' 维持') + ' · ' + s.basis + (s.note ? ' · ' + s.note : '') + '</div>');
+    lines.push('<div class="logline">第 ' + k + ' 根 · ' + s.dir + (s.changed ? ' <span class="upd">更新</span>' : ' 维持') + ' · ' + esc(s.basis) + (s.note ? ' · ' + esc(s.note) : '') + '</div>');
   }
   var upd = 0; for (var i = 1; i <= draft.k; i++) if (draft.states[i] && draft.states[i].changed) upd++;
   el.innerHTML = '<div style="font-family:var(--sans);font-size:.8rem;color:var(--muted);margin:.8rem 0 .2rem">已存档 ' + Math.min(draft.k, TASK) + '/60 根 · 其中更新 ' + upd + ' 次（最近 6 条）：</div>' + lines.join('');
+}
+
+var CALIBRATION = {"A": [[113.76, 23, 116.99, 27, 106.01], [135.39, 34, 125.5, 36, 114.53], [143.18, 47, 144.6, 46, 136.21], [129.79, 51, 146.57, 46, 136.21], [126.82, 59, 137.83, 63, 123.66], [114.41, 69, 136.49, 63, 123.66]], "B": [[377.2, 26, 402.4, 24, 336], [422.9, 26, 402.4, 34, 359.6], [399.8, 46, 443, 42, 390.5], [408.7, 46, 443, 55, 323.5], [371.9, 60, 424.9, 66, 362.8], [396, 68, 402.7, 73, 359.5]], "C": [[1517.5063, 20, 1508.9463, 24, 1436.6333], [1540.3142, 29, 1579.2332, 30, 1505.2937], [1552.0546, 45, 1589.3833, 40, 1514.4894], [1557.4792, 45, 1589.3833, 54, 1527.12], [1518.215, 61, 1580.6052, 66, 1484.8209], [1608.3749, 61, 1580.6052, 71, 1491.4088]], "D": [[245.369, 25, 259.835, 21, 244.229], [266.933, 25, 259.835, 30, 237.508], [277.18, 25, 259.835, 38, 241.014], [269.861, 52, 284.094, 48, 268.092], [255.935, 61, 271.303, 67, 243.819], [230.251, 71, 258.829, 67, 243.819]]};
+
+function calibratedRows(pid) {
+ return CALIBRATION[pid].map(function(r,i){
+  var c=r[0],hi=r[2],lo=r[4],above=c>hi,below=c<lo;
+  var fact='第'+(30+i*10)+'根收'+c+'；已确认高点第'+r[1]+'根 '+hi+'，低点第'+r[3]+'根 '+lo+'。';
+  var one=above?'偏多候选：收盘越过已确认高点；若回到该位下方，撤销本次突破假设。':below?'偏空候选：收盘跌破已确认低点；若收回该位上方，撤销本次破位假设。':'中性等待：收盘仍在最近已确认极值之间，等待有效越界；不强迫报方向。';
+  var two=above||below?'也可继续中性、不交易：当前越界尚不能满足自己的跟随或执行条件，等待新证据。':'也可有据维持原方向：引用原状态的已知结构和未触发的失效条件；不能只因本根没越界就强制改判。';
+  return '<tr><td>'+((i+1)*10)+'</td><td>'+fact+'</td><td>'+one+'<br>'+two+'</td><td>不可接受：借右侧不足的摆动确认；声称机构必然进场；方向改变却没有新增证据；原失效已触发仍称无新信息。</td></tr>';
+ }).join('');
+}
+function nextPackHtml(){
+ var fresh=PACKS.find(function(p){var r=loadRec(p.id);return p.id!==cur&&!r.firstViewedAt&&!r.attempts.length&&!r.draft;});
+ if(!fresh)return '<p>所有窗口已曝光：继续复习可保留新档案，但不能称作陌生复测。返回能力档案查看其他未曝光任务。</p>';
+ return '<p>下一步：先按本次错因补练；完成首次任务至少24小时后，再打开未曝光的'+fresh.id+'包。提前打开会保留曝光，不能重新计为延迟陌生证据。</p><button class="mbtn" id="f-new" data-pack="'+fresh.id+'">打开'+fresh.id+'包（会记录曝光）</button>';
 }
 
 function renderFinal() {
@@ -350,7 +378,7 @@ function renderFinal() {
   var refRows = CPS.map(function (c) {
     var r = refAt(bars, c);
     var mine = draft.cps[c] && draft.cps[c].cur;
-    return '<tr><td>' + c + '</td><td>' + r.swTxt + '</td><td>' + r.sug + '</td><td>' + (mine ? mine.dir + '（证据棒 ' + mine.ebar + '）' : '—') + '</td></tr>';
+    return '<tr><td>' + c + '</td><td>' + r.swTxt + '</td><td>' + r.sug + '</td><td>' + (mine ? mine.dir + '（证据棒 ' + esc(mine.ebar) + '）' : '—') + '</td></tr>';
   }).join('');
   var el = document.getElementById('flow');
   el.innerHTML = '';
@@ -360,28 +388,33 @@ function renderFinal() {
     '<div class="panel"><b class="t">参考对照（生成稿 · 仅供对照学习，不是评分依据）</b>' +
     '<table class="ref"><tr><th>检查点</th><th>已确认摆动（N=3，棒#类型 价格）</th><th>生成稿建议状态</th><th>你的提交</th></tr>' + refRows + '</table>' +
     '<div style="font-size:.78rem;color:var(--muted);margin-top:.4rem">生成稿只用截至各检查点的前缀计算（摆动确认滞后 3 根已遵守）。你的判断与它不同不代表错——对照的是证据与时点，不是"猜中未来"。每个检查点已按前缀核验收盘证据、严格摆动和价格关系；多/空/中性方案可并存。自由文字的因果合理性不能自动验证，须按下方量规另记，不能把填满字段等同完整推理正确。</div></div>' +
+    '<div class="panel"><b class="t">预先校准的多种解释</b><p>以下按冻结前缀核对事实，列出可接受分支和反证；不是唯一方向答案。</p><table class="ref"><tr><th>时点</th><th>事实锚</th><th>可接受解释</th><th>反例量规</th></tr>'+calibratedRows(cur)+'</table><p>补练：事实错误回查原根与确认时点；条件含糊重写触发和失效；把等待误作答不出时，补写还缺哪条证据。再用未曝光窗口复测。</p></div>'+
     '<div class="panel"><b class="t">开放自评（三档量规，另记状态，不影响核心通过）</b>' +
     ['时点纪律：我只用了当时可见的信息', '证据引用：每次更新都指向了具体棒/价位', '更新合理性：改变判断有据、维持有理由'].map(function (t, i) {
-      return '<div style="margin:.4rem 0">' + t + '：<select id="sa-' + i + '"><option>满足</option><option>部分满足</option><option>不足</option></select></div>';
+      return '<div style="margin:.4rem 0">' + t + '：<select id="sa-' + i + '"><option value="">请自行核对</option><option>满足</option><option>部分满足</option><option>不足</option></select></div>';
     }).join('') +
     '<div class="cp-field"><label>一句修订（下次连续推理我最想改进的一点）</label><input id="sa-note" type="text" placeholder="例：先写触发/失效再谈方向"></div>' +
     '<button class="mbtn dark" id="f-save" type="button">完成任务并存档</button></div>';
   document.getElementById('f-save').onclick = function () {
     var sa = [0, 1, 2].map(function (i) { return document.getElementById('sa-' + i).value; });
     var saNote = document.getElementById('sa-note').value.trim();
-    if(Object.keys(draft.states).length!==60||!CPS.every(function(k){return draft.cps[k]&&gateCp(draft.cps[k].cur,k).length===0;})){alert('60根状态与六个事实检查点须全部完成；旧版档案需重新核验。');return;}
+    if(sa.some(function(v){return !v;})||!saNote){alert('请逐项自评并写下一次的改进动作。');return;}
+    if(Object.keys(draft.states).length!==60||Object.values(draft.states).some(function(v){return !Number.isInteger(v.ebar)||v.ebar<1||v.ebar>WARM+v.bar||v.changed&&!v.note;})||!CPS.every(function(k){return draft.cps[k]&&gateCp(draft.cps[k].cur,k).length===0;})){alert('60根状态与六个事实检查点须全部完成；旧版档案需重新核验。');return;}
     var rec = loadRec(cur);
+    var independent=rec.attempts.length===0&&!rec.exposureUnknown&&!(rec.legacyDrafts&&rec.legacyDrafts.length);
     rec.attempts.push({
       attemptId: 'a' + Date.now().toString(36), ts: new Date().toISOString(), submittedAt: new Date().toLocaleString(),
       pack: cur, caseId: 'M1.4-' + cur + (cur === 'C' ? '-2026b' : '-2026a'),
       states: draft.states, cps: draft.cps,
-      processPassed: true, independent:rec.attempts.length===0, evidenceVersion:2, selfAssessment: sa, selfNote: saNote
+      processPassed: true, independent:independent, evidenceVersion:3, firstViewedAt:rec.firstViewedAt, delayedEvidence:!!(independent&&rec.firstViewedAt&&cur!=='A'&&loadRec('A').attempts[0]&&new Date(rec.firstViewedAt)-new Date(loadRec('A').attempts[0].ts)>=86400000), selfAssessment: sa, selfNote: saNote
     });
     rec.draft = null; saveRec(cur, rec);
     draft = { k: 1, startedTs: new Date().toISOString(), states: {}, cps: {} };
     document.getElementById('final').innerHTML = '<div class="panel"><b style="color:#1a7f37">✓ M1.4 结构化过程任务通过（' + cur + ' 包 · 自动可判部分）</b><br>时点纪律 60/60、检查点门禁 6/6、开放自评已另记。<b>通过范围声明</b>：本包证明的是指定窗口上的过程纪律与证据引用，不证明行情预测或交易能力。<div style="margin-top:.5rem"><button class="mbtn" id="f-again" type="button">重开本包（新一次档案）</button></div></div>';
+    document.getElementById('final').insertAdjacentHTML('beforeend',nextPackHtml());
+    var freshButton=document.getElementById('f-new');if(freshButton)freshButton.onclick=function(){cur=freshButton.dataset.pack;LS.setItem(LS_KEY+'lastPack',cur);startPack();focusFlow();};
     document.getElementById('f-again').onclick = startPack;
-    renderStatusLine(); renderTabs();
+    renderStatusLine(); renderTabs();var action=document.getElementById('f-new')||document.getElementById('f-again');if(action)action.focus();
   };
 }
 
