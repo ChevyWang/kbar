@@ -85,9 +85,22 @@
   <ul>
     <li>从 <a href="phase-0/lessons/0001-anatomy-of-a-candle.html">phase-0 第 0001 课</a>开始：读完一课，交一次训练场，本页就会出现第一行数据。</li>
     <li>记录<b>仅存本浏览器</b>：不同浏览器、不同设备互不相通；清除浏览器数据会一并清掉。</li>
-    <li>需要留档或换设备：各阶段能力档案页（如 <a href="phase-0/mastery.html">phase-0 能力档案</a>）有「导出全部学习档案」按钮，旧版专门练习在其原页面底部导出。</li>
+    <li>需要留档或换设备：各阶段能力档案页（如 <a href="phase-0/mastery.html">phase-0 能力档案</a>）有「导出 P0–P5 能力档案」按钮，旧版专门练习在其原页面底部导出。</li>
   </ul>
 </div>
+
+<section id="backup-scope">
+<h2>备份与恢复</h2>
+<p>备份按存储类型分开。先在正在作答的页面保存或导出草稿，再按下表逐项下载；确认文件可打开后再换设备。各类范围如下：</p>
+<table><thead><tr><th>档案</th><th>包含</th><th>备份入口</th></tr></thead><tbody>
+<tr><td>P0–P5 能力档案</td><td>原答、草稿、曝光、反馈与导入任务包；不含 quiz、旧实作或 P6</td><td><a href="phase-0/mastery.html">能力档案页</a>：导出 P0–P5 能力档案</td></tr>
+<tr><td>训练场 quiz</td><td>各课与混练的单题、首次记录、变体、复习档位、总分和旧版本档案；不含其他实作</td><td>本节下方导出与恢复</td></tr>
+<tr><td>旧实作及 M6.3 双闸</td><td>本来源下 kbar-answer 记录、草稿和冲突副本</td><td><a href="phase-6/milestones/m6-3-research-gate.html">双闸页</a>底部：导出全部专门练习</td></tr>
+<tr><td>P6 四件作品</td><td>作品文本、自评与导入冲突档案；不含 M6.3 双闸</td><td><a href="phase-6/mastery.html">P6 作品档案</a>：导出 JSON</td></tr>
+</tbody></table>
+<p>localhost、线上域名、file:// 文件和不同浏览器可能各有一份记录；同域不同端口也分开。请在每个实际使用的来源分别导出。离线文件的存储范围由浏览器决定，不能假定相邻页面共享；在原页面导出后到目标页面导入。课程不提供云同步。</p>
+<div id="quiz-backup"></div>
+</section>
 
 <h2>里程碑任务</h2>
 <p class="ph-sub" id="ms-sub">按能力档案的提交记录分组；「提交」不等于「通过」，独立换题与跨日复测的判定在各阶段能力档案页内进行。</p>
@@ -193,6 +206,7 @@
     var d = new Date(ts); function p(n) { return (n < 10 ? '0' : '') + n; }
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
+  Kbar.quizBackup('#quiz-backup');
   function dueCount(log) { return KbarQuizLog.dueCount(log); }
   function msDirOf(mid) { return mid && mid.length > 1 ? 'phase-' + mid.charAt(1) : null; }
 

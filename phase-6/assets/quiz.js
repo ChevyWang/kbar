@@ -95,9 +95,98 @@
     sum.lastScore = correct; sum.lastTotal = total; sum.lastTs = Date.now();
     store(sumKey(), sum);
   }
+  function exportArchive() {
+    var records = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (/^kbar-quiz(log|sum)::/.test(key)) records[key] = localStorage.getItem(key);
+    }
+    return { kind: 'kbar-quiz-archive', version: 1, records: records };
+  }
+  function restoreArchive(data) {
+    function plain(v) { return v && typeof v === 'object' && !Array.isArray(v); }
+    function tree(v, depth) {
+      if (depth > 40) throw Error('档案嵌套过深');
+      if (v && typeof v === 'object') Object.keys(v).forEach(function (k) {
+        if (['__proto__','constructor','prototype'].includes(k)) throw Error('不安全字段');
+        tree(v[k], depth + 1);
+      });
+    }
+    function log(v) {
+      if (!plain(v) || !Array.isArray(v.events) || !plain(v.boxes)) throw Error('训练记录损坏');
+      if (v.schema !== undefined && v.schema !== 2) throw Error('不支持的记录版本');
+      if (v.schema === 2 && (typeof v.version !== 'string' || !Array.isArray(v.archives))) throw Error('记录版本或历史档案损坏');
+      Object.values(v.boxes).forEach(function (b) {
+        if (!plain(b) || !Number.isInteger(b.box) || b.box < 0 || b.box > 4 || !Number.isFinite(b.lastTs) || typeof b.lastOk !== 'boolean') throw Error('复习记录损坏');
+        if (b.question && (!plain(b.question) || typeof b.question.q !== 'string' || !Array.isArray(b.question.options) || b.question.options.some(function (o) { return typeof o !== 'string'; }) || !Number.isInteger(b.question.answer) || b.question.answer < 0 || b.question.answer >= b.question.options.length)) throw Error('题面记录损坏');
+      });
+      if (v.archives) v.archives.forEach(log);
+    }
+    tree(data, 0);
+    if (!plain(data) || data.kind !== 'kbar-quiz-archive' || data.version !== 1 || !plain(data.records)) throw Error('不支持的训练场档案');
+    var entries = Object.entries(data.records), pending = [];
+    entries.forEach(function (entry) {
+      var key = entry[0], raw = entry[1];
+      if (!/^kbar-quiz(log|sum)::[A-Za-z0-9_.-]+$/.test(key) || typeof raw !== 'string') throw Error('非课程记录键');
+      var value = JSON.parse(raw); tree(value, 0);
+      if (key.startsWith('kbar-quizlog::')) log(value);
+      else if (!plain(value) || !['runs','best','lastScore','lastTotal','lastTs'].every(function (k) { return Number.isFinite(value[k]) && value[k] >= 0; })) throw Error('总分记录损坏');
+      var previous = localStorage.getItem(key);
+      if (previous !== null && previous !== raw) throw Error('记录冲突：原答未覆盖，请保留两份备份，在空白浏览器档案中恢复另一份');
+      if (previous === null) pending.push(entry);
+    });
+    var written = [];
+    try { pending.forEach(function (entry) { localStorage.setItem(entry[0], entry[1]); written.push(entry[0]); }); }
+    catch (e) { written.forEach(function (key) { localStorage.removeItem(key); }); throw Error('存储空间或权限不足，恢复已撤销'); }
+    return pending.length;
+  }
+  // Imported snapshots remain data: permit formatting and static SVG only.
+  function snapshotHTML(value) {
+    var fragment = document.createElement('template');
+    fragment.innerHTML = String(value || '');
+    var allowed = /^(b|strong|i|em|br|p|div|span|ul|ol|li|table|thead|tbody|tr|td|th|caption|code|pre|sup|sub|small|svg|g|defs|clippath|lineargradient|radialgradient|stop|rect|line|path|polyline|polygon|circle|ellipse|text|tspan|title|desc)$/i;
+    fragment.content.querySelectorAll('*').forEach(function (el) {
+      if (!allowed.test(el.tagName)) { el.remove(); return; }
+      Array.from(el.attributes).forEach(function (attr) {
+        if (/^on|href|src|style/i.test(attr.name) || /url\s*\(\s*[^#]/i.test(attr.value)) el.removeAttribute(attr.name);
+      });
+    });
+    return fragment.innerHTML;
+  }
+
+  function mountBackup(target) {
+    var root = typeof target === 'string' ? document.querySelector(target) : target;
+    if (!root) return;
+    var section = document.createElement('details');
+    section.className = 'quiz-backup';
+    section.innerHTML = '<summary>备份训练场记录</summary><p>包含此来源的 quiz 单题、复习与历史记录，不含能力档案、旧实作或 P6。file:// 页面若存储隔离，请在每个原课页分别导出，在目标课页恢复。localhost、线上域名、端口及不同浏览器不自动同步。</p><button id="quiz-export" type="button">导出训练场记录</button><label>恢复训练场记录 <input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
+    root.appendChild(section);
+    section.querySelectorAll('button,input,summary').forEach(function (el) { el.style.minHeight='44px'; });
+    section.querySelector('summary').style.cursor='pointer';
+    var status=section.querySelector('[role=status]');
+    section.querySelector('button').onclick=function () {
+      try {
+        var url=URL.createObjectURL(new Blob([JSON.stringify(exportArchive(),null,2)],{type:'application/json'}));
+        var link=document.createElement('a');link.href=url;link.download='kbar-quiz-archive.json';link.click();
+        setTimeout(function () {URL.revokeObjectURL(url);},1000);
+        status.textContent='备份已生成，请确认文件已保存。';
+      } catch(e) {status.textContent='导出失败：'+e.message;}
+    };
+    section.querySelector('input').onchange=async function (event) {
+      var file=event.target.files[0];if(!file)return;
+      try {
+        var count=restoreArchive(JSON.parse(await file.text()));
+        status.textContent='已恢复 '+count+' 项记录；刷新页面后继续练习。';
+      } catch(e) {status.textContent='恢复失败：'+e.message+'；原记录未覆盖。';}
+      event.target.value='';
+    };
+  }
+
   /* 总览页/外部聚合用 */
   window.KbarQuizLog = {
     lessonId: lessonId,
+    exportArchive: exportArchive,
+    restoreArchive: restoreArchive,
     state: getState,
     isDue: isDue,
     dueCount: dueCount,
@@ -137,7 +226,11 @@
       if (idx >= order.length) return finish();
       var q = cfg.questions[order[idx]];
       var saved = getState().boxes[questionId(q, order[idx])];
-      if (reviewing && saved && saved.question) q = saved.question;
+      if (reviewing && saved && saved.question) {
+        q = Object.assign({}, saved.question);
+        ['q','stage','explain'].forEach(function (key) { q[key] = snapshotHTML(q[key]); });
+        q.options = q.options.map(snapshotHTML);
+      }
       var opts = shuffle(q.options.map(function (label, i) { return { label: label, ok: i === q.answer }; }));
       root.innerHTML =
         ((getState().archives || []).length ? '<p class="quiz-archive">旧记录已保留为历史档案，题库版本或题号无法可靠映射；请重新作答补证。</p>' : '') +
@@ -151,6 +244,7 @@
         '<div class="explain" aria-live="polite"></div>' +
         '<div class="quiz-foot"><span class="score">已答对 ' + correct + ' / ' + order.length + '</span><button class="next" hidden>下一题 →</button></div>';
 
+      mountBackup(root);
       var reviewDue = root.querySelector('.review-due');
       if (reviewDue) reviewDue.onclick = function () { mount(sel, Object.assign({}, cfg, { reviewIndices: dueQuestions(cfg.questions), review: true, focus: true })); };
       var explain = root.querySelector('.explain');
@@ -190,6 +284,7 @@
           ? '<button class="next review-start">错题重练（今日到期 ' + due.length + ' 题，答对升档 1→3→7→21 天）</button>'
           : '') +
         '<button class="next">' + (reviewing ? '返回正常练习' : '再练一遍（重排顺序）') + '</button></div>';
+      mountBackup(root);
       var rs = root.querySelector('.review-start');
       if (rs) rs.addEventListener('click', function () {
         mount(sel, Object.assign({}, cfg, { reviewIndices: due, review: true, focus: true }));
@@ -204,5 +299,7 @@
     if (cfg.focus) { var focus = root.querySelector('.opt') || root.querySelector('.next'); if (focus) focus.focus(); }
   }
 
+  window.Kbar = window.Kbar || {};
+  window.Kbar.quizBackup = mountBackup;
   window.Quiz = { mount: mount };
 })();

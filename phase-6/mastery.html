@@ -33,7 +33,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 6 输出 · 能力档案（产物制）</div>
   <h1>产物档案：四件输出与体系总目录</h1>
-  <p class="sub">Phase 0–5 的能力档案验收「读盘与执行」；Phase 6 是<b>产物制验收</b>（portfolio）——分析文、复盘文、原创研究、教学文四件输出，没有标准答案，只有各课量规。本页是四件产物的登记槽：每槽一个文本框（草稿自动保存在本浏览器）+ 对应课的自评量规三档（未成立 / 待补证 / 已自评）。全部档案可导出 JSON 备份、导入恢复。结业件 M6.3 的流程验收在<a href="milestones/m6-3-research-gate.html">双闸页</a>，与本页分别记录。</p>
+  <p class="sub">Phase 0–5 的能力档案验收「读盘与执行」；Phase 6 是<b>产物制验收</b>（portfolio）——分析文、复盘文、原创研究、教学文四件输出，没有标准答案，只有各课量规。本页是四件产物的登记槽：每槽一个文本框（草稿自动保存在本浏览器）+ 对应课的自评量规三档（未成立 / 待补证 / 已自评）。本页四槽可导出 JSON 备份、导入恢复；冲突导入作为历史档案随再次导出保留。P0–P5、训练场与旧实作需另行备份，见<a href="https://chevywang.github.io/kbar/progress.html#backup-scope">备份范围</a>。结业件 M6.3 的流程验收在<a href="milestones/m6-3-research-gate.html">双闸页</a>，与本页分别记录。</p>
 </header>
 
 <p style="margin:1rem"><a href="index.html">← Phase 6 课程</a></p>
@@ -141,7 +141,7 @@
   function blank() {
     var slots = {};
     secs.forEach(function (sec) { slots[sec.getAttribute('data-slot')] = blankSlot(sec.querySelectorAll('select[data-rubric]').length); });
-    return { kind: 'kbar-p6-portfolio', version: 1, updatedAt: null, slots: slots };
+    return { kind: 'kbar-p6-portfolio', version: 1, updatedAt: null, slots: slots, imports: [] };
   }
   function safeTree(v, depth) {
     depth = depth || 0;
@@ -156,6 +156,7 @@
   function validate(data) {
     safeTree(data);
     if (!data || data.kind !== 'kbar-p6-portfolio' || data.version !== 1 || !data.slots || typeof data.slots !== 'object') throw new Error('不支持的档案结构或版本');
+    if (data.imports !== undefined && !Array.isArray(data.imports)) throw new Error('历史导入档案损坏');
     Object.keys(data.slots).forEach(function (id) {
       var s = data.slots[id];
       if (!s || typeof s !== 'object' || typeof s.text !== 'string' || !Array.isArray(s.rubric) || s.rubric.some(function (v) { return OPTS.indexOf(v) < 0; })) throw new Error('槽位记录损坏：' + id);
@@ -233,6 +234,7 @@
   function importJSON(data) {
     validate(data);
     collect();
+    message = store ? '' : '恢复内容仅在本页：存储不可用，请立即导出。';
     var conflicts = 0, taken = 0;
     Object.keys(data.slots).forEach(function (id) {
       if (!archive.slots[id]) return;
@@ -245,9 +247,11 @@
         return v;
       });
     });
-    if (store) { try { store.setItem(KEY, JSON.stringify(archive)); } catch (e) {} }
+    archive.imports = archive.imports || [];
+    if (conflicts || (data.imports && data.imports.length)) archive.imports.push(JSON.parse(JSON.stringify(data)));
+    if (store) { try { store.setItem(KEY, JSON.stringify(archive)); } catch (e) { message = '恢复内容仅在本页：保存失败，请立即导出。'; } }
     applyToDom(); status();
-    return { taken: taken, conflicts: conflicts };
+    return { taken: taken, conflicts: conflicts, persisted: !!store && !message };
   }
 
   load();
@@ -277,7 +281,7 @@
     reader.onload = function () {
       try {
         var r = importJSON(JSON.parse(String(reader.result)));
-        message = '导入完成：补入空位 ' + r.taken + ' 项；内容不同的字段保留本页原值 ' + r.conflicts + ' 项（不覆盖）。';
+        message = r.persisted ? '导入完成：补入空位 ' + r.taken + ' 项；内容不同的字段保留本页原值 ' + r.conflicts + ' 项（不覆盖，冲突副本随导出保留）。' : message;
       } catch (err) { message = '导入失败：' + err.message + '；原记录未改动。'; }
       status();
     };

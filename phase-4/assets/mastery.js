@@ -188,7 +188,7 @@
       root.querySelectorAll('[data-mid]').forEach(b=>b.onclick=()=>{milestone=catalog.find(m=>m.id===b.dataset.mid);task=milestone.tasks.find(t=>!archive.exposure[t.source.overlapGroup])||milestone.tasks[0];pendingFocus='#mastery-start';renderTask();});
       bindToolbar();status();applyPendingFocus();
     }
-    function toolbar() {return '<button id="mastery-export">导出全部学习档案</button><label class="mastery-file">导入学习档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新静态任务包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button>';}
+    function toolbar() {return '<p>本次包含 P0–P5 原答、草稿、曝光与反馈；训练场、旧实作及 P6 需分别备份，见<a href="https://chevywang.github.io/kbar/progress.html#backup-scope">备份范围与入口</a>。</p><button id="mastery-export">导出 P0–P5 能力档案</button><label class="mastery-file">导入学习档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新静态任务包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button>';}
     function bindToolbar() {
       root.querySelector('#mastery-export').onclick=()=>{if(ready) collect();download('kbar-learning-archive.json',JSON.stringify(archive,null,2));dirty=false;message='学习档案已生成下载；请确认文件已保存。';status();};
       root.querySelector('#mastery-print').onclick=()=>global.print();
