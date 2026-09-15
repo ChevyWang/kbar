@@ -67,7 +67,7 @@
     var yO = y(o), yC = y(c), yH = y(h_), yL = y(l);
     var bodyTop = Math.min(yO, yC), bodyH = Math.max(Math.abs(yC - yO), 3);
 
-    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="单根K线：开 ' + esc(o) + '，高 ' + esc(h_) + '，低 ' + esc(l) + '，收 ' + esc(c) + '。' + (bull ? '阳线，空心实体。' : '阴线，实心实体。') + '">';
     s += '<line x1="' + cx + '" y1="' + yH + '" x2="' + cx + '" y2="' + bodyTop + '" stroke="' + col + '" stroke-width="2"/>';
     s += '<line x1="' + cx + '" y1="' + (bodyTop + bodyH) + '" x2="' + cx + '" y2="' + yL + '" stroke="' + col + '" stroke-width="2"/>';
     s += '<rect x="' + (cx - bw / 2) + '" y="' + bodyTop + '" width="' + bw + '" height="' + bodyH +
@@ -150,7 +150,8 @@
     var range = (hi - lo) || 1;
     var step = w / n, bw = Math.min(step * 0.52, 30);
     var y = function (p) { return pad + (1 - (p - lo) / range) * (h - pad * 2 - capH); };
-    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img">';
+    var rowAria = candles.map(function (k, i) { return '第 ' + (i + 1) + ' 根：开 ' + k.o + '，高 ' + k.h + '，低 ' + k.l + '，收 ' + k.c + (opts.caps && opts.caps[i] ? '，' + opts.caps[i] : ''); }).join('；');
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="K线序列，共 ' + n + ' 根；' + esc(rowAria) + '">';
     candles.forEach(function (k, i) {
       var bull = k.c >= k.o, col = bull ? UP : DOWN;
       var cx = step * (i + 0.5);
@@ -233,13 +234,21 @@
     var aLo = Infinity, aHi = -Infinity;
     for (var ai = 0; ai < reveal; ai++) { var ak = candles[ai]; if (ak.l < aLo) aLo = ak.l; if (ak.h > aHi) aHi = ak.h; }
     var aRg = (aHi - aLo) || 1;
+    var hiIdx = Math.max(0, Math.min(reveal - 1, opts.hl == null ? reveal - 1 : Math.floor(opts.hl)));
+    var hk = candles[hiIdx];
+    var annotation = [];
+    if (phases.length) annotation.push('阶段标记：' + phases.map(function (p) { return p.label || '未命名'; }).join('、'));
+    if (zones.length) annotation.push('价格区间：' + zones.map(function (z) { return z.label || (z.y1 + '–' + z.y2); }).join('、'));
+    if (marks.length) annotation.push('摆动标记：' + marks.map(function (m) { return m.text || ('第 ' + (m.i + 1) + ' 根'); }).join('、'));
     var aria = (opts.title ? esc(opts.title) + '：' : '') + 'K线图' +
       (asOf != null ? '，已揭示 ' + reveal + ' 根'
         : (reveal < n ? '，共 ' + n + ' 根，已揭示前 ' + reveal + ' 根' : '，共 ' + n + ' 根')) +
       '，价格区间 ' + fmtPrice(aLo, aRg) + '–' + fmtPrice(aHi, aRg) +
-      '，最新收盘 ' + fmtPrice(candles[reveal - 1].c, aRg) + '。';
+      '，最新收盘 ' + fmtPrice(candles[reveal - 1].c, aRg) +
+      '，当前高亮第 ' + (hiIdx + 1) + ' 根：开 ' + hk.o + '，高 ' + hk.h + '，低 ' + hk.l + '，收 ' + hk.c +
+      '。' + (annotation.length ? annotation.join('；') + '。' : '');
 
-    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + aria + '" style="max-width:100%">';
+    var s = '<svg data-kbar-chart="1" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + esc(aria) + '" style="max-width:100%">';
 
     // 顶部阶段带（Wyckoff A–E）：{i1,i2,label,color}，i 为 0-based 棒索引
     phases.forEach(function (P, idx) {
@@ -694,5 +703,3 @@
     var st=document.createElement('style');st.textContent='@media print{#kbar-palette-toggle{display:none!important}}';document.head.appendChild(st);
   });
 })();
-
-
