@@ -117,6 +117,7 @@
   .route-node:hover { border-color: var(--home-accent); background: var(--home-accent-soft); }
   .route-node[aria-pressed="true"] { border-color: var(--home-accent); box-shadow: inset 4px 0 0 var(--home-accent); background: var(--home-accent-soft); }
   .route-node:focus-visible { outline: 3px solid var(--home-focus); outline-offset: 3px; }
+  a.route-node { text-decoration: none; }
   .route-node-id { font-family: var(--sans); font-size: .78rem; font-weight: 700; color: var(--home-accent); }
   .route-node-copy { min-width: 0; }
   .route-node-verb { display: block; font-family: var(--sans); font-size: .72rem; letter-spacing: .08em; color: var(--muted); }
@@ -198,7 +199,7 @@
   <aside class="task-side">
     <p class="task-side-label">唯一主行动</p>
     <a class="task-action" data-current-action href="phase-0/lessons/0001-anatomy-of-a-candle.html"><span data-current-action-label>开始第一项任务</span> <span aria-hidden="true">→</span></a>
-    <p class="task-note" data-current-note>首次进入：先完成第 0001 课，再进入训练场和能力验收。</p>
+    <p class="task-note" data-current-note>首次进入：先完成第 0001 课，再进入训练场和阶段实操。</p>
   </aside>
 </section>
 
@@ -228,34 +229,21 @@
     <h3 id="ability-route-title">从辨认到贡献输出</h3>
     <p>每个节点只回答三件事：要形成什么能力、留下什么产物、下一步从哪里进入。详细课程、训练场和里程碑进入阶段页后查看。</p>
   </div>
-  <p class="route-hint" id="ability-route-hint">选择节点只会更新上方当前任务预览，不会写入学习记录、产生曝光或消耗复测机会。</p>
+  <p class="route-hint">点击节点进入该阶段首页；查看页面不会写入学习记录、产生曝光或消耗复测机会。</p>
   <div class="route-list" role="list">
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P0" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P0</span><span class="route-node-copy"><span class="route-node-verb">辨认</span><span class="route-node-name">读图</span><span class="route-node-artifact">产物：事实卡</span></span><span class="route-node-status" data-route-status="P0">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P1" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P1</span><span class="route-node-copy"><span class="route-node-verb">复述推理</span><span class="route-node-name">流利</span><span class="route-node-artifact">产物：逐根状态</span></span><span class="route-node-status" data-route-status="P1">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P2" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P2</span><span class="route-node-copy"><span class="route-node-verb">作图应用</span><span class="route-node-name">地形</span><span class="route-node-artifact">产物：区域图</span></span><span class="route-node-status" data-route-status="P2">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P3" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P3</span><span class="route-node-copy"><span class="route-node-verb">概率引用</span><span class="route-node-name">概率</span><span class="route-node-artifact">产物：统计身份证</span></span><span class="route-node-status" data-route-status="P3">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P4" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P4</span><span class="route-node-copy"><span class="route-node-verb">组装综合</span><span class="route-node-name">系统</span><span class="route-node-artifact">产物：冻结计划</span></span><span class="route-node-status" data-route-status="P4">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P5" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P5</span><span class="route-node-copy"><span class="route-node-verb">执行自律</span><span class="route-node-name">执行</span><span class="route-node-artifact">产物：订单事故记录</span></span><span class="route-node-status" data-route-status="P5">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
-    <div class="route-item" role="listitem"><button class="route-node" type="button" data-route-stage="P6" aria-controls="current-task-title" aria-describedby="ability-route-hint" aria-pressed="false"><span class="route-node-id">P6</span><span class="route-node-copy"><span class="route-node-verb">贡献输出</span><span class="route-node-name">大师</span><span class="route-node-artifact">产物：复盘文与研究表达</span></span><span class="route-node-status" data-route-status="P6">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></button></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-0/" data-route-stage="P0"><span class="route-node-id">P0</span><span class="route-node-copy"><span class="route-node-verb">辨认</span><span class="route-node-name">读图</span><span class="route-node-artifact">产物：事实卡</span></span><span class="route-node-status" data-route-status="P0">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-1/" data-route-stage="P1"><span class="route-node-id">P1</span><span class="route-node-copy"><span class="route-node-verb">复述推理</span><span class="route-node-name">流利</span><span class="route-node-artifact">产物：逐根状态</span></span><span class="route-node-status" data-route-status="P1">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-2/" data-route-stage="P2"><span class="route-node-id">P2</span><span class="route-node-copy"><span class="route-node-verb">作图应用</span><span class="route-node-name">地形</span><span class="route-node-artifact">产物：区域图</span></span><span class="route-node-status" data-route-status="P2">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-3/" data-route-stage="P3"><span class="route-node-id">P3</span><span class="route-node-copy"><span class="route-node-verb">概率引用</span><span class="route-node-name">概率</span><span class="route-node-artifact">产物：统计身份证</span></span><span class="route-node-status" data-route-status="P3">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-4/" data-route-stage="P4"><span class="route-node-id">P4</span><span class="route-node-copy"><span class="route-node-verb">组装综合</span><span class="route-node-name">系统</span><span class="route-node-artifact">产物：冻结计划</span></span><span class="route-node-status" data-route-status="P4">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-5/" data-route-stage="P5"><span class="route-node-id">P5</span><span class="route-node-copy"><span class="route-node-verb">执行自律</span><span class="route-node-name">执行</span><span class="route-node-artifact">产物：订单事故记录</span></span><span class="route-node-status" data-route-status="P5">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
+    <div class="route-item" role="listitem"><a class="route-node" href="phase-6/" data-route-stage="P6"><span class="route-node-id">P6</span><span class="route-node-copy"><span class="route-node-verb">贡献输出</span><span class="route-node-name">大师</span><span class="route-node-artifact">产物：复盘文与研究表达</span></span><span class="route-node-status" data-route-status="P6">未开始</span><span class="route-node-arrow" aria-hidden="true">→</span></a></div>
   </div>
   <p class="route-direct"><a href="progress.html#course-index">按课程浏览全部课程 →</a><span>想直接进入任意一课，从这里选；不会改变当前任务。</span></p>
 </section>
 
-<h2><span class="no">04</span>产物与验证</h2>
-<p>主线按同一条练习链逐阶段增加一种产物；每一步都保留原答、时间点和局限。右侧状态是<b>学习档案的含义</b>：路线图只指路，不替本地档案授予通过。</p>
-<table class="route-chain">
-  <tr><th>产物</th><th>入口</th><th>独立验证</th><th>状态含义</th></tr>
-  <tr><td>事实卡</td><td><a href="phase-0/mastery.html">P0 能力档案</a></td><td>未曝光单根/多根题</td><td class="state">未验证 → 结构化证据</td></tr>
-  <tr><td>逐根状态</td><td><a href="phase-1/milestones/m1-4-sequence.html">M1.4 连续推理</a></td><td>隔离新窗口逐根提交</td><td class="state">未验证 → 已完成流程</td></tr>
-  <tr><td>区域图</td><td><a href="phase-2/milestones/m2-5-terrain-transfer.html">M2.5 陌生窗迁移</a></td><td>换未曝光窗口取舍区域</td><td class="state">未验证 → 已完成流程</td></tr>
-  <tr><td>统计身份证</td><td><a href="phase-3/milestones/m3-3-research.html">M3.3 研究实验室</a></td><td>冻结规则后再揭晓</td><td class="state">未验证 → 已留痕</td></tr>
-  <tr><td>冻结计划</td><td><a href="phase-4/milestones/validation-packet.html">P4 验证包</a></td><td>新窗口、候选/成本/未知分轨</td><td class="state">未验证 → 证据包</td></tr>
-  <tr><td>订单事故记录</td><td><a href="phase-5/milestones/m5-3-incident-exit.html">M5.3 事故退出</a></td><td>网络、撤单未知、tilt 失败三场</td><td class="state">未验证 → 退出档案</td></tr>
-  <tr><td>复盘文与研究表达</td><td><a href="phase-6/mastery.html">P6 产物档案</a> · <a href="phase-6/milestones/m6-3-research-gate.html">M6.3 双闸</a></td><td>原答/修订、双闸、延迟再测</td><td class="state">未选择 / 未验证 / 已完成</td></tr>
-</table>
-<p class="note"><b>分支边界：</b>P2 的 2010 日型、P4 的执行练习与 P6 的公开评审是进阶或外部证据；未选择不阻断主线，已完成也不等于盈利、实盘授权或可持续优势。所有状态保存在学习者浏览器，导出文件由学习者自行保管。</p>
 
-<h2><span class="no">05</span>教学的证据基础</h2>
+<h2><span class="no">04</span>教学的证据基础</h2>
 <details class="books">
   <summary>22 本经典（按阶段分组，主书加粗）</summary>
   <p><b>P0：</b><b>Nison《日本蜡烛图技术》第2版</b>（丁圣元 译，形态命名标准源）· Marshall-Young-Rose (2006, JBF)</p>
@@ -270,7 +258,7 @@
 
 <div class="progress-strip">
   <b>掌握状态说明</b><br>
-  <span style="font-size:.8rem;color:var(--faint)">路线图不会替本地档案授予通过；上方当前任务只读取已有记录来提供下一步。请在各阶段能力档案与里程碑页确认“未选择 / 未验证 / 已完成”，再用隔离新窗口和跨日记录补证；估时置信度也要等真人记录后再校准。</span>
+  <span style="font-size:.8rem;color:var(--faint)">路线图只指路，不授予通过：通过与未通过以你在各阶段实操页的记录为准；上方当前任务只读取已有记录给出下一步。估时置信度随真人记录逐档校准。</span>
 </div>
 
 <footer class="course">
@@ -281,17 +269,17 @@
   (function () {
     'use strict';
     var stages = {
-      P0: { verb: '辨认', name: '读图', artifact: '事实卡', action: '写出开高低收（OHLC）事实、位置、未知和下一验证条件。', effort: '先完成一个可停下的单次动作；内容分钟只是标称预算，练习与复测另计。', mastery: 'phase-0/mastery.html', entry: 'phase-0/', previewTitle: '把一根 K 线读成事实卡', previewLede: '先辨认可观察事实，再把位置、未知和下一验证条件写下来。' },
-      P1: { verb: '复述推理', name: '流利', artifact: '逐根状态', action: '逐根记录状态变化，并在新证据出现时改判。', effort: '先完成一次逐根练习；连续推理、复测和开放记录另计。', mastery: 'phase-1/mastery.html', entry: 'phase-1/', previewTitle: '让逐根推理连续起来', previewLede: '从单根判断推进到连续复述，保留每次状态变化与改判依据。' },
-      P2: { verb: '作图应用', name: '地形', artifact: '区域图', action: '画出区域，保留替代解释与失效条件。', effort: '先完成一张可复核的区域图；陌生窗口迁移另计。', mastery: 'phase-2/mastery.html', entry: 'phase-2/', previewTitle: '画出可复核的地形图', previewLede: '把结构、区域、价值位置和失效条件放进同一张可复核地图。' },
-      P3: { verb: '概率引用', name: '概率', artifact: '统计身份证', action: '匹配统计口径，写出预期、过滤和失效。', effort: '先完成一次冻结规则后的引用；复核与研究产物另计。', mastery: 'phase-3/mastery.html', entry: 'phase-3/', previewTitle: '用正确口径引用概率', previewLede: '先冻结形态和样本口径，再写出预期、过滤条件与失效边界。' },
-      P4: { verb: '组装综合', name: '系统', artifact: '冻结计划', action: '冻结规则、成本、未知与验证方式。', effort: '先完成一份版本化计划；验证包和复测另计。', mastery: 'phase-4/mastery.html', entry: 'phase-4/', previewTitle: '组装一份可验证的计划', previewLede: '把规则、成本、未知和验证方式组装成一份可复算的版本化计划。' },
-      P5: { verb: '执行自律', name: '执行', artifact: '订单事故记录', action: '记录事故、退出条件与按因修复动作。', effort: '先完成一个情景记录；模拟或自报实践另计。', mastery: 'phase-5/mastery.html', entry: 'phase-5/', previewTitle: '把执行事故变成修复记录', previewLede: '区分决策质量与盈亏，记录事故、退出条件和下一次按因修复动作。' },
-      P6: { verb: '贡献输出', name: '大师', artifact: '复盘文与研究表达', action: '提交可复算的复盘文，并标明证据边界。', effort: '先完成一份可复核草稿；双闸与延迟再测另计。', mastery: 'phase-6/mastery.html', entry: 'phase-6/', previewTitle: '留下可复算的研究表达', previewLede: '把复盘和研究写成可复核、可修订、边界清楚的公开产物。' },
+      P0: { verb: '辨认', name: '读图', artifact: '事实卡', action: '写出开高低收（OHLC）事实、位置、未知和下一验证条件。', effort: '先完成一个可停下的单次动作；内容分钟只是标称预算，练习与复测另计。', mastery: 'phase-0/mastery.html' },
+      P1: { verb: '复述推理', name: '流利', artifact: '逐根状态', action: '逐根记录状态变化，并在新证据出现时改判。', effort: '先完成一次逐根练习；连续推理、复测和开放记录另计。', mastery: 'phase-1/mastery.html' },
+      P2: { verb: '作图应用', name: '地形', artifact: '区域图', action: '画出区域，保留替代解释与失效条件。', effort: '先完成一张可复核的区域图；陌生窗口迁移另计。', mastery: 'phase-2/mastery.html' },
+      P3: { verb: '概率引用', name: '概率', artifact: '统计身份证', action: '匹配统计口径，写出预期、过滤和失效。', effort: '先完成一次冻结规则后的引用；复核与研究产物另计。', mastery: 'phase-3/mastery.html' },
+      P4: { verb: '组装综合', name: '系统', artifact: '冻结计划', action: '冻结规则、成本、未知与验证方式。', effort: '先完成一份版本化计划；验证包和复测另计。', mastery: 'phase-4/mastery.html' },
+      P5: { verb: '执行自律', name: '执行', artifact: '订单事故记录', action: '记录事故、退出条件与按因修复动作。', effort: '先完成一个情景记录；模拟或自报实践另计。', mastery: 'phase-5/mastery.html' },
+      P6: { verb: '贡献输出', name: '大师', artifact: '复盘文与研究表达', action: '提交可复算的复盘文，并标明证据边界。', effort: '先完成一份可复核草稿；双闸与延迟再测另计。', mastery: 'phase-6/mastery.html' },
       COURSE: { verb: '待核对', artifact: '学习记录', action: '打开学习进度，确认已有记录所属阶段和下一步。', effort: '先核对一条记录；练习与复测另计。', mastery: 'progress.html' }
     };
     var first = {
-      stage: 'P0', title: '先完成第一项读图任务', lede: '从第 0001 课开始，把一根 K 线读成一张可核查的事实卡。', state: '未开始', label: '进入 P0 阶段', href: 'phase-0/', note: '首次进入：先看阶段目标，再开始第 0001 课、训练场和能力验收。'
+      stage: 'P0', title: '先完成第一项读图任务', lede: '从第 0001 课开始，把一根 K 线读成一张可核查的事实卡。', state: '未开始', label: '进入 P0 阶段', href: 'phase-0/', note: '首次进入：先看阶段目标，再开始第 0001 课、训练场和阶段实操。'
     };
     function readJson(key) {
       try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
@@ -312,11 +300,11 @@
       if (latest && /^M[0-6]\./.test(latest.milestone || '')) {
         var key = 'P' + latest.milestone.slice(1, 2), stage = stages[key];
         var status = latest.unknown ? '待换题：自动规则无法判断' : latest.hinted ? '待独立检验：本次包含辅助' : latest.independent ? '已提交独立答卷，待核对' : '已有记录，待补证';
-        return { stage: key, title: '继续 ' + key + ' 的能力验收', lede: '沿用已有记录，从当前阶段继续形成可核查的学习证据。', state: status, label: '继续能力验收', href: stage.mastery, note: '页面只读取本地记录；查看首页不会新增曝光、答题或完成证据。' };
+        return { stage: key, title: '继续 ' + key + ' 的阶段实操', lede: '沿用已有记录，从当前阶段继续形成可核查的学习证据。', state: status, label: '继续阶段实操', href: stage.mastery, note: '页面只读取本地记录；查看首页不会新增曝光、答题或完成证据。' };
       }
       var pendingStage = stageFromKeys(archive && archive.drafts);
       if (pendingStage) {
-        return { stage: pendingStage, title: '继续 ' + pendingStage + ' 的学习任务', lede: '发现尚未收口的草稿或已曝光案例；继续当前阶段，不把它当作新的独立任务。', state: '待继续：草稿或已曝光案例', label: '继续能力验收', href: stages[pendingStage].mastery, note: '原草稿与曝光记录会保留；查看首页不会新增学习证据。' };
+        return { stage: pendingStage, title: '继续 ' + pendingStage + ' 的学习任务', lede: '发现尚未收口的草稿或已曝光案例；继续当前阶段，不把它当作新的独立任务。', state: '待继续：草稿或已曝光案例', label: '继续阶段实操', href: stages[pendingStage].mastery, note: '原草稿与曝光记录会保留；查看首页不会新增学习证据。' };
       }
       if (archive && archive.exposure && Object.keys(archive.exposure).length) {
         return { stage: 'COURSE', title: '核对已有学习记录', lede: '发现已曝光案例，但当前记录没有保存所属阶段；先核对学习进度，不猜测阶段。', state: '待核对：已有曝光记录', label: '打开学习进度', href: 'progress.html', note: '曝光不等于完成或独立证据；确认阶段后再继续。' };
@@ -328,7 +316,7 @@
           if (/^kbar-(quizsum|quizlog)::/.test(name)) { hasPractice = true; }
         }
       } catch (e) {}
-      return hasPractice ? { stage: 'P0', title: '把课内练习收束为可核查证据', lede: '已发现课内练习记录；下一步进入 P0 能力验收，区分看过示范与独立检验。', state: '下一步做能力验收', label: '进入 P0 能力验收', href: stages.P0.mastery, note: '课内练习分数不自动替代能力档案中的独立证据。' } : first;
+      return hasPractice ? { stage: 'P0', title: '把课内练习收束为可核查证据', lede: '已发现课内练习记录；下一步进入 P0 阶段实操，区分看过示范与独立检验。', state: '下一步做阶段实操', label: '进入 P0 阶段实操', href: stages.P0.mastery, note: '课内练习分数不自动替代阶段实操中的独立证据。' } : first;
     }
     function statusForStage(key) {
       var archive = readJson('kbar-mastery::v1');
@@ -342,14 +330,8 @@
       return '未开始';
     }
     var current = currentRecommendation();
-    var selectedStage = current.stage;
     var text = function (selector, value) { var node = document.querySelector(selector); if (node) node.textContent = value; };
-    function previewFor(key) {
-      var stage = stages[key];
-      if (key === current.stage) return current;
-      return { stage: key, title: stage.previewTitle, lede: stage.previewLede, state: statusForStage(key), label: '进入 ' + key + ' 阶段', href: stage.entry, note: '选择路线只改变当前任务预览；进入阶段后再查看详细课程、训练场和能力验收。' };
-    }
-    function render(preview, activeStage) {
+    function render(preview) {
       var stage = stages[preview.stage] || stages.P0;
       text('[data-current-phase]', (preview.stage === 'COURSE' ? '课程' : preview.stage) + ' · ' + stage.verb);
       text('[data-current-state]', preview.state);
@@ -369,20 +351,11 @@
       var nodes = document.querySelectorAll('[data-route-stage]');
       for (var i = 0; i < nodes.length; i += 1) {
         var node = nodes[i], key = node.getAttribute('data-route-stage');
-        var status = key === activeStage ? preview.state : key === current.stage ? current.state : statusForStage(key);
         var statusNode = node.querySelector('[data-route-status]');
-        if (statusNode) statusNode.textContent = status;
-        node.setAttribute('aria-pressed', key === activeStage ? 'true' : 'false');
+        if (statusNode) statusNode.textContent = key === current.stage ? current.state : statusForStage(key);
       }
     }
-    render(current, selectedStage);
-    var routeNodes = document.querySelectorAll('[data-route-stage]');
-    for (var r = 0; r < routeNodes.length; r += 1) {
-      routeNodes[r].addEventListener('click', function () {
-        selectedStage = this.getAttribute('data-route-stage');
-        render(previewFor(selectedStage), selectedStage);
-      });
-    }
+    render(current);
   }());
 </script>
 <script src="phase-0/assets/nav.js" defer></script>
