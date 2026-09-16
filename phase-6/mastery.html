@@ -57,12 +57,13 @@
 
 <h2 id="s02"><span class="no">02</span>四件作品登记</h2>
 
-<p>每槽对应一件结业产物：先在文本框里登记（发布链接、日期、摘录或全文草稿），再按对应课的量规逐条自评。草稿与自评自动存入本浏览器；跨设备迁移用下方导出 / 导入。</p>
+<p>每槽对应一件结业产物：先在文本框里登记（发布链接、日期、摘录或全文草稿），再按对应课的量规逐条自评。草稿与自评自动存入本浏览器；备份与恢复统一在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页。</p>
 
 <div class="pf-toolbar">
-  <button type="button" class="pf-btn dark" id="pf-export">导出全部作品集（JSON）</button>
-  <label class="pf-file pf-btn">导入作品集<input type="file" id="pf-import" accept="application/json"></label>
   <span id="pf-status" role="status" aria-live="polite"></span>
+</div>
+<div class="pf-toolbar" id="pf-emergency" hidden>
+  <button type="button" class="pf-btn dark" id="pf-export">导出当前作品集</button>
 </div>
 
 <section class="pf-slot" data-slot="m61">
@@ -118,7 +119,7 @@
 
 <footer class="course">
   <div class="nav"><a href="index.html">← Phase 6 主页</a><a href="milestones/m6-3-research-gate.html">M6.3 原创研究双闸 →</a><a href="lessons/6004-feynman-community.html">回到 6004</a></div>
-  <div class="citations">量规条目逐条取自 6001（五段式/选图三问/标注=证据指认）、6002（六段模板/脱敏规则/正面镜子）、6003（六步流水线/预审清单/口径独立成节）、6004（三件套/外行测试/术语预算/社区协议）课文原文；产物制验收口径与 index「四件全产物制验收（M6.1–M6.4）」一致。本页记录仅存于本地浏览器，导出文件由学习者自行保管。</div>
+  <div class="citations">量规条目逐条取自 6001（五段式/选图三问/标注=证据指认）、6002（六段模板/脱敏规则/正面镜子）、6003（六步流水线/预审清单/口径独立成节）、6004（三件套/外行测试/术语预算/社区协议）课文原文；产物制验收口径与 index「四件全产物制验收（M6.1–M6.4）」一致。本页记录仅存于本地浏览器；备份在学习进度总览页。</div>
 </footer>
 
 <script>
@@ -213,15 +214,17 @@
     collect();
     if (store) {
       try { store.setItem(KEY, JSON.stringify(archive)); lastSave = new Date().toISOString(); }
-      catch (e) { message = '自动保存失败（空间不足或权限限制）：请立即导出；内容仍在本页。'; }
+      catch (e) { message = '自动保存失败（空间不足或权限限制）：内容仍在本页，请用下方按钮导出。'; }
     }
     status();
   }
   var saveTimer = null, lastSave = '';
   function queueSave() { message = ''; if (saveTimer) clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
   function status() {
+    var em = document.getElementById('pf-emergency');
+    if (em) em.hidden = !(!store || /保存失败|仅在本页/.test(message));
     if (!statusEl) return;
-    statusEl.textContent = message || (store ? '上次自动保存：' + (lastSave || '尚无修改') : '本地存储不可用：关闭前请导出。');
+    statusEl.textContent = message || (store ? '' : '本地存储不可用：内容仅在本页，请用下方按钮导出。');
   }
 
   function snapshot() {
@@ -234,7 +237,7 @@
   function importJSON(data) {
     validate(data);
     collect();
-    message = store ? '' : '恢复内容仅在本页：存储不可用，请立即导出。';
+    message = store ? '' : '恢复内容仅在本页：存储不可用，请用下方按钮导出。';
     var conflicts = 0, taken = 0;
     Object.keys(data.slots).forEach(function (id) {
       if (!archive.slots[id]) return;
@@ -249,7 +252,7 @@
     });
     archive.imports = archive.imports || [];
     if (conflicts || (data.imports && data.imports.length)) archive.imports.push(JSON.parse(JSON.stringify(data)));
-    if (store) { try { store.setItem(KEY, JSON.stringify(archive)); } catch (e) { message = '恢复内容仅在本页：保存失败，请立即导出。'; } }
+    if (store) { try { store.setItem(KEY, JSON.stringify(archive)); } catch (e) { message = '恢复内容仅在本页：保存失败，请用下方按钮导出。'; } }
     applyToDom(); status();
     return { taken: taken, conflicts: conflicts, persisted: !!store && !message };
   }
@@ -272,20 +275,6 @@
     a.href = URL.createObjectURL(blob); a.download = 'kbar-p6-portfolio.json'; a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
     message = '导出文件已生成下载，请确认已保存。'; status();
-  };
-  var importBtn = document.getElementById('pf-import');
-  if (importBtn) importBtn.onchange = function (e) {
-    var file = e.target.files && e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () {
-      try {
-        var r = importJSON(JSON.parse(String(reader.result)));
-        message = r.persisted ? '导入完成：补入空位 ' + r.taken + ' 项；内容不同的字段保留本页原值 ' + r.conflicts + ' 项（不覆盖，冲突副本随导出保留）。' : message;
-      } catch (err) { message = '导入失败：' + err.message + '；原记录未改动。'; }
-      status();
-    };
-    reader.readAsText(file);
   };
 
   global.KbarP6Portfolio = { snapshot: snapshot, importJSON: importJSON, KEY: KEY };
