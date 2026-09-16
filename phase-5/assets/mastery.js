@@ -164,7 +164,7 @@
       if (storage && storageOk) try { const latest=storage.getItem(KEY);if(latest){const other=JSON.parse(latest);validateArchive(other);archive=mergeForSave(archive,other,baselineDrafts);}storage.setItem(KEY,stringify(archive)); dirty = false; lastSave = now(); baselineDrafts=clone(archive.drafts); } catch(e) { storageOk = false; message = '自动保存失败（空间不足或权限限制），请立即导出；当前答卷仍在本页。'; }
       status();
     }
-    function status() { const el = root.querySelector('#mastery-status'); if (el) el.textContent = message || (storageOk ? '上次成功保存：'+(lastSave || '尚无修改') : '本地存储不可用：本页可继续作答；关闭前请导出，重开后导入。'); }
+    function status() { const el = root.querySelector('#mastery-status'); if (el) el.textContent = message || (storageOk ? '' : '本浏览器无法自动保存：本页仍可作答，关闭前请在页底「记录与备份」导出。'); }
     function download(name,data,type) { const url = URL.createObjectURL(new Blob([data],{type:type || 'application/json'})); const a = document.createElement('a'); a.href=url; a.download=name; a.click(); setTimeout(() => URL.revokeObjectURL(url),1000); }
     function currentDraft() { return archive.drafts[task.id] || {answers:{},report:'',hinted:false,selfAssessment:[]}; }
     function collect() {
@@ -176,10 +176,18 @@
       return draft;
     }
     function history() {
-      return archive.attempts.filter(a => a.milestone === milestone.id).map(a => {
+      const list = archive.attempts.filter(a => a.milestone === milestone.id);
+      if (!list.length) return '<p class="ms-note">还没有提交记录。</p>';
+      return list.map(a => {
         const t = milestone.tasks.find(t => t.id === a.task), compatible=t && fingerprint(t)===a.taskFingerprint;
         const g = compatible ? grade(t,a.answers,a.unknown) : null;
-        return '<details><summary>'+esc(a.task)+' · '+esc(a.submittedAt)+' · '+(!compatible?'需重新验证':g.status==='unresolved'?'无法自动判定':g.passed?(a.independent&&!a.hinted?'本次核心通过':'复习/提示后完成，非独立证据'):'待补练')+'</summary><pre>'+esc(JSON.stringify(a.answers,null,2))+'</pre><p>'+esc(a.report)+'</p>'+(g?g.checks.map(c=>'<p>'+ (c.passed?'✓':'待补练')+' '+esc(c.id)+'：'+esc(c.explain)+(c.passed?'':'<br>补练：'+esc(c.remedy))+'</p>').join(''):'')+'</details>';
+        const verdict = !compatible ? '旧版题，需在新题下补证' : a.unknown ? '答案超出选项，未自动判定' : g.passed ? (a.independent&&!a.hinted?'独立通过':'练习通过（看过提示）') : '未通过';
+        const rows = t ? t.fields.map(f => {
+          const c = g && !a.unknown ? g.checks.find(x => x.id === f.id) : null;
+          const v = a.answers[f.id];
+          return '<div class="mastery-dl-row"><span class="k">'+esc(f.label)+'</span><span class="v">'+esc(Array.isArray(v)?v.join('、'):(v==null||v===''?'—':String(v)))+'</span>'+(c&&!c.passed?'<span class="miss">未过</span>':'')+'</div>';
+        }).join('') : '';
+        return '<details><summary>'+esc(a.task)+' · '+esc(String(a.submittedAt).slice(0,10))+' · '+verdict+'</summary>'+rows+(a.report?'<p class="ms-note">开放分析：'+esc(a.report)+'</p>':'')+(g&&!a.unknown?g.checks.filter(c=>!c.passed).map(c=>'<p class="ms-note" style="color:#b3541e">补练 '+esc(c.id)+'：'+esc(c.remedy)+'</p>').join(''):'')+'</details>';
       }).join('');
     }
     function teachingHtml(m) {
@@ -197,20 +205,46 @@
         const t=m.tasks.find(t=>t.id===a.task);
         return t&&fingerprint(t)===a.taskFingerprint?grade(t,a.answers,a.unknown).checks.filter(c=>!c.passed):[];
       });
-      root.innerHTML='<section id="mastery-learning"><h1>'+esc(m.title)+' · 学习示范</h1><p>这里学习通用示范，不打开独立题包。进入检验后再看提示或使用AI，会把该次答卷记为辅助练习。</p>'+teachingHtml(m)+(failed.length?'<h2>本次补练</h2><ul>'+[...new Set(failed.map(c=>c.remedy))].map(text=>'<li>'+esc(text)+'</li>').join('')+'</ul>':'')+'<button id="mastery-check">学习完成，换新例独立检验</button><button id="mastery-home">返回阶段实操</button></section>';
+      root.innerHTML='<section id="mastery-learning"><h1>'+esc(m.title)+' · 学习示范</h1><p>这里看通用示范，不消耗题库。之后的独立检验里，看过提示或用过 AI 的那次作答会记为练习，不作为独立证据。</p>'+teachingHtml(m)+(failed.length?'<h2>本次补练</h2><ul>'+[...new Set(failed.map(c=>c.remedy))].map(text=>'<li>'+esc(text)+'</li>').join('')+'</ul>':'')+'<div class="mastery-toolbar"><button id="mastery-check" class="mastery-primary">学习完成，去独立检验</button><button id="mastery-home" class="mastery-ghost">返回阶段实操</button></div></section>';
       root.querySelector('#mastery-check').onclick=()=>chooseTask(m);
       root.querySelector('#mastery-home').onclick=()=>{pendingFocus='[data-learn="'+m.id+'"]';renderHome();};
       root.querySelector('#mastery-check').focus();
     }
 
+    function cardState(m) {
+      const e = evidence(m, archive);
+      const started = archive.attempts.some(a => a.milestone === m.id);
+      const hasDraft = m.tasks.some(t => archive.drafts[t.id]);
+      let label;
+      if (!e.core) label = hasDraft ? '继续作答' : !started ? '开始 · 先看示范' : (e.weakness.length ? '继续 · 先补错因' : '继续独立检验');
+      else if (!e.retest) label = '换一题独立复测';
+      else if (!e.delayed) label = '做跨日复测（隔天）';
+      else label = '复核证据记录';
+      return { e: e, started: started, hasDraft: hasDraft, label: label };
+    }
+
     function renderHome() {
       ready=false;
-      root.innerHTML='<p id="mastery-status" role="status" aria-live="polite"></p><div class="mastery-toolbar">'+toolbar()+'</div><div class="mastery-grid">'+catalog.map(m=>{const e=evidence(m,archive);return '<article><h2>'+esc(m.id+' '+m.title)+'</h2><p>'+esc(m.objective)+'</p><p>'+(e.core?'核心初次通过':'核心待验证')+' · '+(e.retest?'独立换题通过':'独立换题待验证')+' · '+(e.delayed?'跨日记录已有':'跨日记录待补')+' · 开放报告'+(e.selfAssessed?'已自评':'未自评')+(e.needsRecheck?' · '+e.needsRecheck+'份待补证':'')+'</p>'+(e.weakness.length?'<p>待补练集中：'+e.weakness.slice(0,3).map(w=>esc(w.category)+' ×'+w.count).join(' · ')+'</p>':'')+'<button data-learn="'+esc(m.id)+'">'+(!e.core?(e.weakness.length?'先按错因补练':'先学习示范'):'查看学习示范')+'</button><button data-mid="'+esc(m.id)+'">'+(!e.core?'独立检验（已学过）':!e.retest?'换未曝光案例检验':!e.delayed?'做延迟复测':'复核结构化记录')+'</button></article>';}).join('')+'</div><p>本页验证指定结构化检查；连续推理、作图研究及执行档案还须在专题任务中完成，并保留其证据。结构化证据、独立复测、开放自评与AI反馈分别记录；当前不自动授予完整里程碑或阶段结业。以上状态不证明实际盈利能力；跨日间隔是设计参数，尚待试学校准。</p>';
+      root.innerHTML='<p id="mastery-status" role="status" aria-live="polite"></p><div class="mastery-grid">'+catalog.map(m=>{const c=cardState(m),e=c.e;
+        const chips=[['首次独立',e.core],['换题复测',e.retest],['跨日复测',e.delayed]].map(s=>'<span class="'+(s[1]?'on':'')+'">'+s[0]+'</span>').join('');
+        const tags=[e.selfAssessed?'自评已交':'自评未交']; if(c.hasDraft) tags.push('有未交草稿');
+        return '<article><h2>'+esc(m.id+' '+m.title)+'</h2><p>'+esc(m.objective)+'</p>'+
+          '<div class="ms-steps" aria-label="证据进度">'+chips+'</div><p class="ms-tags">'+tags.map(esc).join(' · ')+'</p>'+
+          (e.weakness.length?'<p class="ms-weak">常错：'+e.weakness.slice(0,3).map(w=>esc(w.category)+' ×'+w.count).join(' · ')+'</p>':'')+
+          '<div class="ms-actions"><button class="mastery-primary" data-mid="'+esc(m.id)+'">'+esc(c.label)+' →</button><button class="mastery-ghost" data-learn="'+esc(m.id)+'">学习示范</button></div>'+
+          '<details class="ms-evidence"><summary>证据明细</summary><p>核心初次通过：'+(e.core?'是':'否')+'；独立换题通过：'+(e.retest?'是':'否')+'；跨日记录：'+(e.delayed?'已有':'待补')+'；开放报告自评：'+(e.selfAssessed?'已交':'未交')+(e.needsRecheck?'；'+e.needsRecheck+' 份历史答卷需在新版题下补证':'')+(e.weakness.length?'<br>常错项：'+e.weakness.map(w=>esc(w.category)+' ×'+w.count).join(' · '):'')+'</p></details></article>';}).join('')+'</div>'+
+        '<p class="ms-note">三步证据齐备，这个里程碑才算拿到结构化证据；开放自评与 AI 反馈单独记录、不互相替代。状态只证明练过，不证明盈利能力；连续推理、作图研究与执行记录在专题任务中完成。</p>'+
+        dataDrawer();
       root.querySelectorAll('[data-learn]').forEach(b=>b.onclick=()=>renderLearning(catalog.find(m=>m.id===b.dataset.learn)));
-      root.querySelectorAll('[data-mid]').forEach(b=>b.onclick=()=>chooseTask(catalog.find(m=>m.id===b.dataset.mid)));
+      root.querySelectorAll('[data-mid]').forEach(b=>b.onclick=()=>{
+        const m=catalog.find(x=>x.id===b.dataset.mid), c=cardState(m);
+        if (!c.e.core && !c.started && !c.hasDraft) { renderLearning(m); return; }
+        if (!c.e.core && c.started && c.e.weakness.length) { renderLearning(m); return; }
+        chooseTask(m);
+      });
       bindToolbar();status();applyPendingFocus();
     }
-    function toolbar() {return '<p>导出各阶段实操（P0–P5）的档案：原答、草稿、曝光与反馈，不含训练场与作品集。全部学习记录的完整备份，在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页一次完成。</p><button id="mastery-export">导出实操档案</button><label class="mastery-file">导入实操档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新静态任务包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button>';}
+    function dataDrawer() {return '<details id="mastery-data"><summary><b>记录与备份</b><span class="ms-sum-sub">导出 / 导入本页档案</span></summary><p>本页档案含各阶段实操的原答、草稿与全部记录，不含训练场与作品集；全部学习记录的一次性备份在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页。</p><div class="mastery-toolbar"><button id="mastery-export">导出本页档案</button><label class="mastery-file">导入档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新题库包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button></div></details>';}
     function bindToolbar() {
       root.querySelector('#mastery-export').onclick=()=>{if(ready) collect();download('kbar-learning-archive.json',JSON.stringify(archive,null,2));dirty=false;message='实操档案已生成下载；请确认文件已保存。';status();};
       root.querySelector('#mastery-print').onclick=()=>global.print();
@@ -221,7 +255,19 @@
       ready=false;
       const m=milestone,t=task,d=currentDraft(), attempts=archive.attempts.filter(a=>a.task===t.id), exposed=!!archive.exposure[t.source.overlapGroup];
       const exhausted=m.tasks.every(t=>archive.exposure[t.source.overlapGroup]);
-      root.innerHTML='<p><button id="mastery-home">← 阶段实操</button></p><h1>'+esc(m.id+' '+m.title)+'</h1><p>'+esc(m.objective)+'</p><details><summary>教学卡：先修、示范、反例与量规（使用后本任务计提示练习）</summary>'+teachingHtml(m)+'<p>首次独立作答→反馈与补练→未曝光换题→跨日复测；每项核心均需通过。原答永久保留，复习不重新计为陌生证据。</p></details><nav class="mastery-toolbar">'+m.tasks.map(t=>'<button data-task="'+esc(t.id)+'" '+(t.id===task.id?'aria-current="true"':'')+'>'+esc(t.id)+' · '+esc({initial:'首次',remedy:'补救',delayed:'延迟',reserve1:'备用一',reserve2:'备用二'}[t.role]||t.role)+(archive.exposure[t.source.overlapGroup]?' · 已曝光':' · 未曝光')+'</button>').join('')+'</nav>'+(exhausted?'<p class="mastery-warning">当前离线包没有未曝光案例。可以复习并保留记录；导入新的静态任务包后增加独立证据。</p>':'')+'<p id="mastery-status" role="status" aria-live="polite"></p><div class="mastery-toolbar">'+toolbar()+'</div><section><h2>'+esc(t.id)+'</h2><div id="mastery-task-preview" hidden><p class="mastery-scenario">'+esc(t.scenario)+'</p><details><summary>数据与截至时点</summary><p>'+Object.entries(t.source).map(([k,v])=>esc(k)+': '+esc(v)).join('<br>')+'</p></details><div id="mastery-chart"></div></div>'+(attempts.length?'<p>本任务已有提交；再次作答属于修订/复习，不会改写首次证据。</p>':'')+'<button id="mastery-start">'+(exposed?'继续草稿或复习':'开始本任务（记录曝光）')+'</button><div id="mastery-form" hidden>'+t.fields.map(f=>'<label class="mastery-field">'+esc(f.label)+(f.type==='select'?'<select data-field="'+esc(f.id)+'"><option value="">请选择</option>'+f.options.map(o=>'<option '+(d.answers[f.id]===o?'selected':'')+'>'+esc(o)+'</option>').join('')+'</select>':'<input data-field="'+esc(f.id)+'" type="'+(f.type==='number'?'number':'text')+'" step="any" value="'+esc(d.answers[f.id] == null ? '' : d.answers[f.id])+'">')+'</label>').join('')+'<label class="mastery-field">开放分析（与自动评分分开）：'+esc(t.reflection)+'<textarea id="mastery-report" rows="7">'+esc(d.report)+'</textarea></label>'+m.rubric.map((r,i)=>'<label class="mastery-field">自评：'+esc(r)+'<select data-rubric="'+i+'">'+['未成立','待补证','已自评'].map(v=>'<option '+((d.selfAssessment||[])[i]===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label>').join('')+'<div class="mastery-toolbar"><button id="mastery-submit">提交并揭晓（保留原答）</button><button id="mastery-unknown">我的解释超出选项：转替代任务</button><button id="mastery-coach-json">导出AI教练包 JSON（计辅助）</button><button id="mastery-coach-md">导出AI教练包 Markdown（计辅助）</button></div></div></section><div id="mastery-result" role="status"></div><section><h2>提交与补练记录</h2>'+history()+'</section><details><summary>保存可选AI反馈（不影响核心成绩）</summary><label>来源<input id="mastery-ai-source" placeholder="模型/工具与版本"></label><label>反馈<textarea id="mastery-ai-feedback" rows="4"></textarea></label><button id="mastery-ai-save">保存反馈</button></details>';
+      root.innerHTML='<p><button id="mastery-home" class="mastery-ghost">← 阶段实操</button></p><h1>'+esc(m.id+' '+m.title)+'</h1><p>'+esc(m.objective)+'</p>'+
+        '<details><summary>学习示范与量规——打开后，本次作答会记为练习（不作独立检验）</summary>'+teachingHtml(m)+'<p>作答路径：先独立作答 → 看反馈补错 → 换未看过的题 → 隔天再测一次。原答永久保留，复习不改写首次记录。</p></details>'+
+        '<nav class="mastery-pool" aria-label="任务池"><span class="mastery-pool-label">题目（打开即标记为已看）：</span>'+m.tasks.map(x=>{const role={initial:'首次',remedy:'补救',delayed:'延迟',reserve1:'备用',reserve2:'备用'}[x.role]||x.role;return '<button data-task="'+esc(x.id)+'" '+(x.id===task.id?'aria-current="true"':'')+'>'+esc(x.id.slice(-1)+' · '+role)+(archive.exposure[x.source.overlapGroup]?' · 已看':' · 未看')+'</button>';}).join('')+'</nav>'+
+        (exhausted?'<p class="mastery-warning">这套题库的题你都看过了：复习不再计为新证据；等课程扩充题库后可继续加证。</p>':'')+
+        '<p id="mastery-status" role="status" aria-live="polite"></p>'+
+        '<section><h2>'+esc(t.id)+'</h2><div id="mastery-task-preview" hidden><p class="mastery-scenario">'+esc(t.scenario)+'</p><details><summary>数据与截至时点</summary><p>'+Object.entries(t.source).map(([k,v])=>esc(k+': '+v)).join('<br>')+'</p></details><div id="mastery-chart"></div></div>'+
+        (attempts.length?'<p class="ms-note">本题已交过卷：再答属于复习或修订，不会改写首次记录。</p>':'')+
+        '<button id="mastery-start" class="mastery-primary">'+(exposed?'继续本题':'开始作答')+'</button>'+
+        '<div id="mastery-form" hidden>'+t.fields.map(f=>'<label class="mastery-field">'+esc(f.label)+(f.type==='select'?'<select data-field="'+esc(f.id)+'"><option value="">请选择</option>'+f.options.map(o=>'<option '+(d.answers[f.id]===o?'selected':'')+'>'+esc(o)+'</option>').join('')+'</select>':'<input data-field="'+esc(f.id)+'" type="'+(f.type==='number'?'number':'text')+'" step="any" value="'+esc(d.answers[f.id] == null ? '' : d.answers[f.id])+'">')+'</label>').join('')+'<label class="mastery-field">开放分析（不计入自动评分）：'+esc(t.reflection)+'<textarea id="mastery-report" rows="7">'+esc(d.report)+'</textarea></label>'+m.rubric.map((r,i)=>'<label class="mastery-field">自评：'+esc(r)+'<select data-rubric="'+i+'">'+['未成立','待补证','已自评'].map(v=>'<option '+((d.selfAssessment||[])[i]===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label>').join('')+'<div class="mastery-toolbar"><button id="mastery-submit" class="mastery-primary">提交答卷</button><button id="mastery-unknown" class="mastery-ghost">我的答案不在选项里</button></div></div></section>'+
+        '<div id="mastery-result" role="status"></div>'+
+        '<section class="ms-history"><h2>作答记录</h2>'+history()+'</section>'+
+        '<details id="mastery-ai"><summary><b>AI 辅助（可选）</b><span class="ms-sum-sub">使用后本题记为辅助练习</span></summary><p>把本题材料交给你的 AI 工具求辅导；AI 建议单独保存，不改变原答与判定。</p><div class="mastery-toolbar"><button id="mastery-coach-json">生成辅导材料 JSON</button><button id="mastery-coach-md">生成辅导材料 Markdown</button></div><label>来源<input id="mastery-ai-source" placeholder="模型 / 工具与版本"></label><label>收到的建议<textarea id="mastery-ai-feedback" rows="4"></textarea></label><button id="mastery-ai-save">保存建议</button></details>'+
+        dataDrawer();
       root.querySelector('#mastery-home').onclick=()=>{if(ready)collect();save();pendingFocus='[data-mid="'+milestone.id+'"]';renderHome();};
       root.querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>{if(ready)collect();save();task=m.tasks.find(t=>t.id===b.dataset.task);pendingFocus='[data-task="'+task.id+'"]';renderTask();});
       const teaching=root.querySelector('details');teaching.addEventListener('toggle',()=>{if(teaching.open){d.hinted=true;archive.drafts[t.id]=d;save();}});
@@ -244,7 +290,7 @@
         const next=m.tasks.find(t=>!archive.exposure[t.source.overlapGroup]), e=evidence(m,archive);
         const waiting=e.retest&&!e.delayed;
         const action=document.createElement('button');action.id='mastery-next-step';
-        action.textContent=!result.passed?'查看具体补练动作':e.delayed?'返回档案，核对开放产物':waiting?'间隔至少24小时后做延迟复测':next?'换未曝光案例检验':'案例已耗尽：查看补练与档案';
+        action.textContent=!result.passed?'看错因与补练':e.delayed?'回到总览，补开放自评':waiting?'间隔至少 24 小时后做跨日复测':next?'换一题继续':'题库已用完：看补练建议';
         action.onclick=()=>{
           if(!result.passed){renderLearning(m);return;}
           if(e.delayed){pendingFocus='[data-mid="'+m.id+'"]';renderHome();return;}
