@@ -50,7 +50,6 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <div id="chart"></div>
   <div id="work"></div>
   <div class="state-line" id="statusline"></div>
-  <div style="margin:.6rem 0 1.4rem"><button class="mbtn" id="export-btn" type="button">导出 M2.4 档案（JSON）</button></div>
 </div>
 
 <footer class="course">
@@ -200,16 +199,6 @@ function finishDay(d, rec) {
     '<p style="margin-top:.6rem"><b>生成稿参考（冻结启发式，仅对照不评分）：</b>' + d.refType + '（收位 ' + d.refFacts.cp + '、日幅比 ' + d.refFacts.rr + '×前20日均幅、全日量 ' + d.refFacts.volr + '×均量）。把你在 30/60/90 分钟的假设演变与它对照——<b>改判是否及时、观望是否守住</b>，比"最后猜没猜对"重要。</p>' +
     '<p style="font-size:.84rem;color:var(--muted)">通过判定：4/4 快照提交＋IB/开盘/量比/战术门禁全过；失败首答与修订均在档案。它只验证指定事实和一致性，不自动证明自由日型解释正确，不证明日内盈利能力。</p></div>';
 }
-
-document.getElementById('export-btn').onclick = function () {
-  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M2.4', courseVersion: 'rev-2026-09-10', exportedAt: new Date().toISOString(),
-    packs: ['A', 'B', 'C', 'D', 'E'].map(function (p) { return { pack: p, date: DAYS[p].date, record: loadRec(p) }; }) };
-  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'm2-4-daytype.json'; a.click();
-  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-};
-
 start();
 </script>
 <script src="../assets/nav.js" defer></script>
