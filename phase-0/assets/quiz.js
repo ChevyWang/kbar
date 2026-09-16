@@ -157,12 +157,24 @@
   function mountBackup(target) {
     var root = typeof target === 'string' ? document.querySelector(target) : target;
     if (!root) return;
+    /* 042：与全站统一的按钮体系（course.css 令牌，缺省回退） */
+    if (document.head && !document.getElementById('kbar-kbtn-style')) {
+      var kb = document.createElement('style');
+      kb.id = 'kbar-kbtn-style';
+      kb.textContent = '.kbtn{font-family:var(--sans,system-ui,sans-serif);font-size:.9rem;border:1.5px solid var(--ink,#1c1c1a);border-radius:8px;padding:.45rem 1.05rem;margin:.25rem .5rem .25rem 0;cursor:pointer;background:#fff;color:var(--ink,#1c1c1a);min-height:44px}'
+        + '.kbtn:hover{background:var(--note-bg,#f7f3e3)}'
+        + '.kbtn:focus-visible{outline:3px solid #2255bb;outline-offset:2px}'
+        + '.quiz-backup{margin-top:1rem;border-top:1px dashed var(--line,#e4e2d9);padding-top:.7rem}'
+        + '.quiz-backup summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-family:var(--sans,system-ui,sans-serif);font-size:.88rem}'
+        + '.quiz-backup p{font-family:var(--sans,system-ui,sans-serif);font-size:.82rem;color:var(--muted,#6e6c64)}'
+        + '.quiz-backup .kbtn-file{position:relative;overflow:hidden;display:inline-flex;align-items:center}'
+        + '.quiz-backup .kbtn-file input{position:absolute;inset:0;opacity:0;cursor:pointer}';
+      document.head.appendChild(kb);
+    }
     var section = document.createElement('details');
     section.className = 'quiz-backup';
-    section.innerHTML = '<summary>备份训练场记录</summary><p>只包含本来源训练场的作答、复习与历史，训练场之外的学习记录不在内。全部学习记录的完整备份与恢复，在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页一次完成。</p><button id="quiz-export" type="button">导出训练场记录</button><label>恢复训练场记录 <input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
+    section.innerHTML = '<summary>备份训练场记录</summary><p>只含本课训练场的作答与复习；全部学习记录的备份与恢复，统一在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页。</p><button id="quiz-export" type="button" class="kbtn">导出训练场记录</button><label class="kbtn kbtn-file">恢复训练场记录<input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
     root.appendChild(section);
-    section.querySelectorAll('button,input,summary').forEach(function (el) { el.style.minHeight='44px'; });
-    section.querySelector('summary').style.cursor='pointer';
     var status=section.querySelector('[role=status]');
     section.querySelector('button').onclick=function () {
       try {
