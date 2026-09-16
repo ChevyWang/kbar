@@ -38,7 +38,7 @@ button.mbtn.dark { background: var(--ink); color: #fff; }
 <header class="course">
   <div class="kicker">K线训练营 · Phase 0 读图 · 里程碑验收 M0.1（代表任务 1/6）</div>
   <h1>单K双K辨认</h1>
-  <p class="sub">比例与方向、阳阴镜像、吞没（Engulfing）/内包边界、合法 OHLC、路径不可知——五个核心检查点，12 道结构化题目（含 5 道关键项）。完全离线作答，档案本地保存可导出。<b>通过＝「M0.1 课程结构化任务通过」；不证明陌生行情实盘能力，也不是实盘授权。</b></p>
+  <p class="sub">比例与方向、阳阴镜像、吞没（Engulfing）/内包边界、合法 OHLC、路径不可知——五个核心检查点，12 道结构化题目（含 5 道关键项）。完全离线作答，档案本地保存；备份见学习进度总览页。<b>通过＝「M0.1 课程结构化任务通过」；不证明陌生行情实盘能力，也不是实盘授权。</b></p>
 </header>
 <p style="margin:1rem"><a href="../mastery.html">统一到阶段实操（与本页专题任务分别记录）</a></p>
 
@@ -64,7 +64,6 @@ button.mbtn.dark { background: var(--ink); color: #fff; }
   <div id="remedy"></div>
   <div class="state-line" id="statusline"></div>
   <div style="margin:.6rem 0 1.4rem">
-    <button class="mbtn" id="export-btn" type="button">导出 M0.1 档案（JSON）</button>
   </div>
 </div>
 
@@ -418,16 +417,6 @@ function runPractice(cat, slotEl) {
 }
 
 /* ---------- 导出 ---------- */
-document.getElementById('export-btn').onclick = function () {
-  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M0.1', courseVersion: 'rev-2026-09-10',
-    exportedAt: new Date().toISOString(),
-    packs: PACKS.map(function (p) { return { pack: p.id, role: p.role, caseId: 'M0.1-' + p.id + '-2026a', case: caseMeta(p.id), record: loadPack(p.id) }; }) };
-  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'm0-1-progress.json'; a.click();
-  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-};
-
 startPack();
 </script>
 <script src="../assets/nav.js" defer></script>
