@@ -58,13 +58,13 @@
     font-family: var(--sans); font-size: .95rem; padding: .9rem 0 .3rem; min-height: 44px; }
   #backup summary .sum-sub { font-size: .78rem; color: var(--faint); font-weight: 400; }
   #backup .backup-body p { font-size: .92rem; }
-  #backup button { padding: .45rem 1.05rem; min-height: 44px; border: 1.5px solid var(--ink); border-radius: 8px; background: #fff;
-    font-family: var(--sans); font-size: .9rem; cursor: pointer; }
-  #backup button:hover { background: var(--note-bg); }
+  #backup button, #backup label.kbtn { padding: .32rem .85rem; min-height: 36px; border: 1.5px solid var(--ink); border-radius: 8px; background: #fff;
+    font-family: var(--sans); font-size: .85rem; cursor: pointer; }
+  #backup button:hover, #backup label.kbtn:hover { background: var(--note-bg); }
   #backup #backup-export { background: var(--ink); color: #fff; }
   #backup #backup-export:hover { background: #000; }
-  #backup label { display: inline-flex; align-items: center; gap: .45rem; margin-left: .9rem;
-    font-family: var(--sans); font-size: .88rem; }
+  #backup label.kbtn { display: inline-flex; align-items: center; position: relative; overflow: hidden; margin-left: .6rem; }
+  #backup label.kbtn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   #backup-status { font-family: var(--sans); font-size: .85rem; color: var(--muted); min-height: 1.5em; }
   /* v1.7（批次 D 移动端）：<768px 版心 fluid + 宽表横滚（与 course.css 移动端块同口径；本页自包含样式）；
    * <560px 顶部三格堆叠单列 */
@@ -111,10 +111,10 @@
 <details id="backup-details">
   <summary><b>备份与恢复</b><span class="sum-sub">换设备、换浏览器或清除浏览器数据之前使用</span></summary>
   <div class="backup-body">
-    <p>课程没有云同步，学习记录只存在这台设备的浏览器里。点「导出全部学习记录」会得到一个备份文件，请自行妥善保管；到新设备或新浏览器后，打开本页点「导入备份」选择该文件，记录即恢复。不同浏览器与设备之间的记录互不相通，备份文件可以在任意一边导入合并。</p>
+    <p>课程没有云同步，学习记录只存在这台设备的浏览器里。点「导出学习记录」会得到一个备份文件，请自行妥善保管；到新设备或新浏览器后，打开本页点「导入学习记录」选择该文件，记录即恢复。不同浏览器与设备之间的记录互不相通，备份文件可以在任意一边导入合并。</p>
     <p>备份包含：各课训练场作答与复习、阶段实操、专题任务与结业研究、P6 作品集。导入只补充本机没有的记录，不会覆盖任何已有内容。</p>
-    <button id="backup-export" type="button">导出全部学习记录</button>
-    <label>导入备份 <input id="backup-import" type="file" accept="application/json"></label>
+    <button id="backup-export" type="button">导出学习记录</button>
+    <label class="kbtn">导入学习记录<input id="backup-import" type="file" accept="application/json"></label>
     <p id="backup-status" role="status"></p>
   </div>
 </details>
