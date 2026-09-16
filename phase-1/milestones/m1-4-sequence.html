@@ -41,7 +41,7 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <h1>连续推理：60 根逐根档案</h1>
   <p class="sub">每个决策时点只见截至当根的图（纵轴随已揭示前缀重算，无未来信息）。逐根提交 always-in 判断（维持也要明确确认（confirmation）），在 6 个检查点提交完整结构（状态/证据/价区/触发/失效/替代剧本）并通过事实门禁。<b>确认即存档、不可回改（禁止回写原判断）</b>；草稿自动保存，刷新续作。<b>通过＝「M1.4 结构化过程任务通过（自动可判部分）」，时点纪律与证据合法性；不证明行情预测能力。</b></p>
 </header><p class="callout">短状态与证据先提交，重要检查点才写完整预案。前段提供提示，中段撤去示范措辞，后段只保留字段名；维持和等待都是有效判断。每个检查点可暂停，实际阅读、作答与纠错用时另记。</p>
-<p style="margin:1rem"><a href="../mastery.html">统一能力验收与学习档案（与本页专门实作分别记录）</a></p>
+<p style="margin:1rem"><a href="../mastery.html">统一到阶段实操（与本页专题任务分别记录）</a></p>
 
 <details class="lesson-map">
   <summary><b>教学卡（评分依据与流程）</b>——先读再答</summary>
@@ -365,7 +365,7 @@ function calibratedRows(pid) {
 }
 function nextPackHtml(){
  var fresh=PACKS.find(function(p){var r=loadRec(p.id);return p.id!==cur&&!r.firstViewedAt&&!r.attempts.length&&!r.draft;});
- if(!fresh)return '<p>所有窗口已曝光：继续复习可保留新档案，但不能称作陌生复测。返回能力档案查看其他未曝光任务。</p>';
+ if(!fresh)return '<p>所有窗口已曝光：继续复习可保留新档案，但不能称作陌生复测。返回阶段实操查看其他未曝光任务。</p>';
  return '<p>下一步：先按本次错因补练；完成首次任务至少24小时后，再打开未曝光的'+fresh.id+'包。提前打开会保留曝光，不能重新计为延迟陌生证据。</p><button class="mbtn" id="f-new" data-pack="'+fresh.id+'">打开'+fresh.id+'包（会记录曝光）</button>';
 }
 
