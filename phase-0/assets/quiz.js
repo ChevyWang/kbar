@@ -159,7 +159,7 @@
     if (!root) return;
     var section = document.createElement('details');
     section.className = 'quiz-backup';
-    section.innerHTML = '<summary>备份训练场记录</summary><p>包含此来源的 quiz 单题、复习与历史记录，不含能力档案、专题任务或 P6。file:// 页面若存储隔离，请在每个原课页分别导出，在目标课页恢复。localhost、线上域名、端口及不同浏览器不自动同步。</p><button id="quiz-export" type="button">导出训练场记录</button><label>恢复训练场记录 <input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
+    section.innerHTML = '<summary>备份训练场记录</summary><p>只包含本来源训练场的作答、复习与历史，训练场之外的学习记录不在内。全部学习记录的完整备份与恢复，在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页一次完成。</p><button id="quiz-export" type="button">导出训练场记录</button><label>恢复训练场记录 <input id="quiz-import" type="file" accept="application/json"></label><p id="quiz-backup-status" role="status">冲突时整份停止，原答不覆盖；请保留两份备份文件。</p>';
     root.appendChild(section);
     section.querySelectorAll('button,input,summary').forEach(function (el) { el.style.minHeight='44px'; });
     section.querySelector('summary').style.cursor='pointer';
