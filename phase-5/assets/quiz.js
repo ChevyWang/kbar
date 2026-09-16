@@ -279,7 +279,7 @@
       root.innerHTML =
         '<div class="verdict">' +
         '<div class="big">' + correct + ' / ' + order.length + '</div>' +
-        '<p>' + (v ? v[1] : '') + '</p><p>以上是课内检索练习结果，不授予核心能力或实盘资格。里程碑依据另见本阶段能力验收与专门实作。</p>' +
+        '<p>' + (v ? v[1] : '') + '</p><p>以上是课内检索练习结果，不授予核心能力或实盘资格。里程碑依据另见本阶段实操与专题任务。</p>' +
         (due.length && !reviewing
           ? '<button class="next review-start">错题重练（今日到期 ' + due.length + ' 题，答对升档 1→3→7→21 天）</button>'
           : '') +
