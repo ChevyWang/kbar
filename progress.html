@@ -52,17 +52,30 @@
   footer.course .citations { font-size: .78rem; color: #8a8578; line-height: 1.7; }
   footer.course .citations b { color: var(--muted); }
   .hidden { display: none; }
+  /* 页底备份区（039：主体不出现备份，收进折叠区） */
+  #backup { margin-top: 3.5rem; border-top: 1px solid var(--line); }
+  #backup summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: .6rem; cursor: pointer;
+    font-family: var(--sans); font-size: .95rem; padding: .9rem 0 .3rem; min-height: 44px; }
+  #backup summary .sum-sub { font-size: .78rem; color: var(--faint); font-weight: 400; }
+  #backup .backup-body p { font-size: .92rem; }
+  #backup button { padding: .55rem 1rem; min-height: 44px; border: 1px solid var(--ink); border-radius: 8px; background: #fff;
+    font-family: var(--sans); font-size: .92rem; cursor: pointer; }
+  #backup button:hover { background: var(--note-bg); }
+  #backup label { display: inline-flex; align-items: center; gap: .45rem; margin-left: .9rem;
+    font-family: var(--sans); font-size: .88rem; }
+  #backup-status { font-family: var(--sans); font-size: .85rem; color: var(--muted); min-height: 1.5em; }
   /* v1.7（批次 D 移动端）：<768px 版心 fluid + 宽表横滚（与 course.css 移动端块同口径；本页自包含样式）；
    * <560px 顶部三格堆叠单列 */
   @media (max-width: 767.98px) {
     body { max-width: 100%; padding: 1.2rem 1rem 3rem; }
     p, ul, ol, .note { max-width: 46rem; }
     table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    #backup label { margin-left: 0; margin-top: .5rem; }
   }
   @media (max-width: 560px) {
     .honest { grid-template-columns: 1fr; }
   }
-  @media print { .honest .cell, table { border-color: #999; } a { border-bottom: none; } }
+  @media print { .honest .cell, table { border-color: #999; } a { border-bottom: none; } #backup { display: none; } }
 </style>
 </head>
 <body>
@@ -70,53 +83,43 @@
 <header class="course">
   <div class="kicker">Kbar Bootcamp · 学习记录</div>
   <h1>学习进度总览</h1>
-  <p class="sub">把散在本浏览器的训练场、里程碑与专门练习记录汇成一页。<b>只统计「做到过」的痕迹，不上完课不算进度</b>——记录由你在课页里的作答实时产生，本页随时刷新可见。</p>
+  <p class="sub">各课训练场、阶段实操与结业作品的作答痕迹汇成一页。只统计「做到过」——不上完课不算进度，记录随你的作答实时更新。</p>
 </header>
 
 <div class="honest" id="stats">
   <div class="cell"><div class="n" id="stat-practiced">0 / 56</div><div class="l">有练习记录的课（训练场交卷口径，未交卷不计）</div></div>
-  <div class="cell"><div class="n" id="stat-attempts">0 次</div><div class="l">里程碑任务提交（含复习与提示后提交）</div></div>
+  <div class="cell"><div class="n" id="stat-attempts">0 次</div><div class="l">实操任务提交（含复习与提示后提交）</div></div>
   <div class="cell"><div class="n calm" id="stat-due">0 题</div><div class="l">到期复习（答对升档 1→3→7→21 天）</div></div>
-  <div class="note">口径：以上读取本浏览器 localStorage——训练场交卷汇总（kbar-quizsum）、能力档案（kbar-mastery）和专题任务记录。换浏览器或清数据后从零开始；跨设备先在各阶段能力档案页导出。「到期复习」为跨课聚合：进入对应课的训练场，首题上方可进入到期复习；已纠正题仍按间隔返回。</div>
+  <div class="note">口径：实操「提交」不等于「通过」，独立换题与跨日复测的判定在阶段实操页内进行。到期复习进入对应课的训练场，首题上方有入口；已纠正题仍按间隔返回。全部学习记录只保存在这台设备的浏览器里，不上传、不联网；清除浏览器数据或换设备前，先用页底「备份与恢复」导出。</div>
 </div>
 
 <div class="note tip hidden" id="empty">
   <b>还没有任何学习记录。</b>
   <ul>
     <li>从 <a href="phase-0/lessons/0001-anatomy-of-a-candle.html">phase-0 第 0001 课</a>开始：读完一课，交一次训练场，本页就会出现第一行数据。</li>
-    <li>记录<b>仅存本浏览器</b>：不同浏览器、不同设备互不相通；清除浏览器数据会一并清掉。</li>
-    <li>需要留档或换设备：各阶段能力档案页（如 <a href="phase-0/mastery.html">phase-0 能力档案</a>）有「导出 P0–P5 能力档案」按钮；专题任务在其原页面底部导出。</li>
+    <li>学习记录只存在这台设备的浏览器里，不上传、不联网。换设备或清除浏览器数据之前，在页底「备份与恢复」导出一份文件即可带走。</li>
   </ul>
 </div>
-
-<section id="backup-scope">
-<h2>备份与恢复</h2>
-<p>备份按存储类型分开。先在正在作答的页面保存或导出草稿，再按下表逐项下载；确认文件可打开后再换设备。各类范围如下：</p>
-<table><thead><tr><th>档案</th><th>包含</th><th>备份入口</th></tr></thead><tbody>
-<tr><td>P0–P5 能力档案</td><td>原答、草稿、曝光、反馈与导入任务包；不含训练场、专题任务或 P6</td><td><a href="phase-0/mastery.html">能力档案页</a>：导出 P0–P5 能力档案</td></tr>
-<tr><td>训练场 quiz</td><td>各课与混练的单题、首次记录、变体、复习档位、总分和历史归档；不含其他实作</td><td>本节下方导出与恢复</td></tr>
-<tr><td>专题任务及 M6.3 双闸</td><td>专题任务的回答、草稿和冲突副本</td><td><a href="phase-6/milestones/m6-3-research-gate.html">双闸页</a>底部：导出专题任务</td></tr>
-<tr><td>P6 四件作品</td><td>作品文本、自评与导入冲突档案；不含 M6.3 双闸</td><td><a href="phase-6/mastery.html">P6 作品档案</a>：导出 JSON</td></tr>
-</tbody></table>
-<p>localhost、线上域名、file:// 文件和不同浏览器可能各有一份记录；同域不同端口也分开。请在每个实际使用的来源分别导出。离线文件的存储范围由浏览器决定，不能假定相邻页面共享；在原页面导出后到目标页面导入。课程不提供云同步。</p>
-<div id="quiz-backup"></div>
-</section>
-
-<h2>里程碑任务</h2>
-<p class="ph-sub" id="ms-sub">按能力档案的提交记录分组；「提交」不等于「通过」，独立换题与跨日复测的判定在各阶段能力档案页内进行。</p>
-<table class="hidden" id="ms-table">
-  <thead><tr><th>里程碑</th><th class="num">提交次数</th><th class="num">最近提交</th><th>入口</th></tr></thead>
-  <tbody id="ms-body"></tbody>
-</table>
-<p class="ph-sub hidden" id="ms-none">尚无里程碑提交记录。进入任一 <a href="phase-0/mastery.html">阶段能力档案</a> 开始第一个任务。</p>
-<p class="ph-sub hidden" id="p6-line"></p>
 
 <h2 id="course-index">课程目录与进度</h2>
 <p class="ph-sub">每课一行：训练场练习次数、最佳成绩、最近练习日期与到期复习数。空行表示尚未练过；想从任意一课开始，直接点击课号。</p>
 <div id="phases"></div>
 
+<section id="backup" aria-label="学习记录备份与恢复">
+<details id="backup-details">
+  <summary><b>备份与恢复</b><span class="sum-sub">换设备、换浏览器或清除浏览器数据之前使用</span></summary>
+  <div class="backup-body">
+    <p>课程没有云同步，学习记录只存在这台设备的浏览器里。点「导出全部学习记录」会得到一个备份文件，请自行妥善保管；到新设备或新浏览器后，打开本页点「导入备份」选择该文件，记录即恢复。不同浏览器与设备之间的记录互不相通，备份文件可以在任意一边导入合并。</p>
+    <p>备份包含：各课训练场作答与复习、阶段实操、专题任务与结业研究、P6 作品集。导入只补充本机没有的记录，不会覆盖任何已有内容。</p>
+    <button id="backup-export" type="button">导出全部学习记录</button>
+    <label>导入备份 <input id="backup-import" type="file" accept="application/json"></label>
+    <p id="backup-status" role="status"></p>
+  </div>
+</details>
+</section>
+
 <footer class="course">
-  <div class="nav"><a href="index.html">← 全站路线图</a><span>学习进度 · 记录仅存本浏览器</span><a href="glossary.html">术语手册 →</a></div>
+  <div class="nav"><a href="index.html">← 全站路线图</a><span>学习进度 · 记录仅存本设备</span><a href="glossary.html">术语手册 →</a></div>
   <div class="citations">本站为技术分析投资者教育内容，仅记录历史行情与统计口径，<b>不构成投资建议</b>，不提供投资咨询服务；所涉品种与数据仅作教学示例，不代表任何未来表现。本页所有数字来自你本人在本浏览器的练习记录，无任何上传，<b>「完成度」只证明练过，不证明盈利能力</b>。</div>
 </footer>
 
@@ -205,7 +208,6 @@
     var d = new Date(ts); function p(n) { return (n < 10 ? '0' : '') + n; }
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
-  Kbar.quizBackup('#quiz-backup');
   function dueCount(log) { return KbarQuizLog.dueCount(log); }
   function msDirOf(mid) { return mid && mid.length > 1 ? 'phase-' + mid.charAt(1) : null; }
 
@@ -235,7 +237,7 @@
     rowByPhase.push({ ph: ph, rows: rows, due: phDue, done: phDone });
   });
 
-  /* ---- 里程碑档案 ---- */
+  /* ---- 实操提交（按阶段聚合，进各阶段块；不再单独成节） ---- */
   var archive = storageOk ? jget('kbar-mastery::v1') : null;
   var msMap = {};
   if (archive && Array.isArray(archive.attempts)) {
@@ -246,8 +248,22 @@
       if (a.submittedAt && a.submittedAt > m.last) m.last = a.submittedAt;
     });
   }
-  var msTotal = 0;
-  for (var mid in msMap) msTotal += msMap[mid].count;
+  var msTotal = 0, msByPhase = {};
+  for (var mid in msMap) {
+    msTotal += msMap[mid].count;
+    var d = msDirOf(mid);
+    if (d) msByPhase[d] = (msByPhase[d] || 0) + msMap[mid].count;
+  }
+
+  /* ---- P6 作品集动笔数（进 P6 阶段块） ---- */
+  var p6 = storageOk ? jget('kbar-p6-portfolio::v1') : null, p6Used = 0, p6Total = 0;
+  if (p6 && p6.slots) {
+    for (var sid in p6.slots) {
+      p6Total++;
+      var sl = p6.slots[sid];
+      if (sl && ((sl.text && String(sl.text).trim()) || (Array.isArray(sl.rubric) && sl.rubric.some(function (v) { return v && v !== '未成立'; })))) p6Used++;
+    }
+  }
 
   /* ---- 渲染 ---- */
   document.getElementById('stat-practiced').textContent = practiced + ' / ' + total;
@@ -256,41 +272,20 @@
   dueEl.textContent = dueTotal + ' 题';
   dueEl.className = 'n' + (dueTotal > 0 ? ' alert' : ' calm');
 
-  var msKeys = Object.keys(msMap).sort();
-  if (msKeys.length) {
-    document.getElementById('ms-table').classList.remove('hidden');
-    var tbody = document.getElementById('ms-body'), html = [];
-    msKeys.forEach(function (mid) {
-      var d = msDirOf(mid), last = fmtDate(Date.parse(msMap[mid].last)) || '—';
-      html.push('<tr><td>' + mid + '</td><td class="num">' + msMap[mid].count + '</td><td class="num">' + last +
-        '</td><td>' + (d ? '<a href="' + d + '/mastery.html">阶段能力档案 →</a>' : '—') + '</td></tr>');
-    });
-    tbody.innerHTML = html.join('');
-  } else {
-    document.getElementById('ms-none').classList.remove('hidden');
-  }
-  /* Phase 6 产物档案（kbar-p6-portfolio::v1，槽位制，与里程碑档案分别记录） */
-  var p6 = storageOk ? jget('kbar-p6-portfolio::v1') : null;
-  if (p6 && p6.slots) {
-    var used = 0, total6 = 0;
-    for (var sid in p6.slots) {
-      total6++;
-      var sl = p6.slots[sid];
-      if (sl && ((sl.text && String(sl.text).trim()) || (Array.isArray(sl.rubric) && sl.rubric.some(function (v) { return v && v !== '未成立'; })))) used++;
-    }
-    if (used > 0) {
-      var p6el = document.getElementById('p6-line');
-      p6el.innerHTML = 'Phase 6 产物档案：' + used + ' / ' + total6 + ' 槽有登记（草稿或自评），见<a href="phase-6/mastery.html">phase-6 产物档案</a>。';
-      p6el.classList.remove('hidden');
-    }
-  }
-
   var phHtml = [];
   rowByPhase.forEach(function (blk) {
+    var parts = [blk.done + ' / ' + blk.rows.length + ' 课有练习记录'];
+    if (blk.due > 0) parts.push('<span style="color:var(--up);font-weight:700">到期复习 ' + blk.due + ' 题</span>');
+    if (blk.ph.p === 'P6') {
+      if (p6Used > 0) parts.push('作品集 ' + p6Used + ' / ' + p6Total + ' 件已动笔');
+    } else {
+      var msN = msByPhase[blk.ph.dir] || 0;
+      if (msN > 0) parts.push('实操提交 ' + msN + ' 次');
+    }
+    parts.push('<a href="' + blk.ph.dir + '/mastery.html">' + (blk.ph.p === 'P6' ? '进入作品集 →' : '进入实操 →') + '</a>');
     phHtml.push('<h3>' + blk.ph.p + ' ' + blk.ph.name + '</h3>');
-    phHtml.push('<p class="ph-sub">' + blk.done + ' / ' + blk.rows.length + ' 课有练习记录' +
-      (blk.due > 0 ? ' · <span style="color:var(--up);font-weight:700">到期复习 ' + blk.due + ' 题</span>' : '') +
-      (blk.ph.p === 'P6' ? ' · Phase 6 以写作为主，训练场记录仅覆盖课内练习' : '') + '</p>');
+    phHtml.push('<p class="ph-sub">' + parts.join(' · ') +
+      (blk.ph.p === 'P6' ? '（Phase 6 以写作为主，训练场记录仅覆盖课内练习）' : '') + '</p>');
     phHtml.push('<table><thead><tr><th>课号</th><th class="num">练习次数</th><th class="num">最佳成绩</th><th class="num">最近练习</th><th class="num">到期复习</th></tr></thead><tbody>');
     blk.rows.forEach(function (r) {
       phHtml.push('<tr><td><a href="' + r.href + '">' + r.id + '</a><span class="lt">' + r.title + '</span></td>' +
@@ -303,13 +298,72 @@
   });
   document.getElementById('phases').innerHTML = phHtml.join('');
 
-  if (practiced === 0 && msTotal === 0 && !(used > 0)) {
+  if (practiced === 0 && msTotal === 0 && p6Used === 0) {
     document.getElementById('empty').classList.remove('hidden');
   }
   if (!storageOk) {
     document.getElementById('empty').classList.remove('hidden');
     document.getElementById('empty').querySelector('b').textContent = '本浏览器禁止或无法读取本地存储。';
   }
+
+  /* ---- 学习记录全量备份（039：一键导出/导入，导入只补缺、绝不覆盖） ---- */
+  var BACKUP_KEY_RE = /^kbar-(?:quizlog|quizsum|mastery|answer|p6-portfolio)::[A-Za-z0-9_.:-]+$/;
+  function backupCollect() {
+    var records = {};
+    if (storageOk) {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (BACKUP_KEY_RE.test(k)) records[k] = localStorage.getItem(k);
+      }
+    }
+    return { kind: 'kbar-full-archive', version: 1, exportedAt: new Date().toISOString(), records: records };
+  }
+  function backupRestore(data) {
+    if (!data || typeof data !== 'object' || Array.isArray(data) ||
+        data.kind !== 'kbar-full-archive' || data.version !== 1 ||
+        !data.records || typeof data.records !== 'object' || Array.isArray(data.records)) throw Error('不是本站学习记录的备份文件');
+    var r = { added: 0, same: 0, kept: 0 };
+    Object.keys(data.records).forEach(function (k) {
+      var raw = data.records[k];
+      if (!BACKUP_KEY_RE.test(k) || typeof raw !== 'string') throw Error('备份含非课程记录：' + k);
+      if (!/::lastPack$/.test(k)) { try { JSON.parse(raw); } catch (e) { throw Error('记录损坏：' + k); } }
+      var old = localStorage.getItem(k);
+      if (old === null) { localStorage.setItem(k, raw); r.added++; }
+      else if (old === raw) r.same++;
+      else r.kept++;
+    });
+    return r;
+  }
+  var bakDetails = document.getElementById('backup-details');
+  if (location.hash === '#backup') bakDetails.open = true;
+  var bakStatus = document.getElementById('backup-status');
+  document.getElementById('backup-export').onclick = function () {
+    try {
+      var payload = backupCollect();
+      var url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+      var a = document.createElement('a');
+      var dt = new Date(); function p2(n) { return (n < 10 ? '0' : '') + n; }
+      a.href = url; a.download = 'kbar-backup-' + dt.getFullYear() + p2(dt.getMonth() + 1) + p2(dt.getDate()) + '.json';
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      bakStatus.textContent = '已导出 ' + Object.keys(payload.records).length + ' 项学习记录，请确认文件已保存。';
+    } catch (e) {
+      bakStatus.textContent = '导出失败：' + e.message;
+    }
+  };
+  document.getElementById('backup-import').onchange = async function (event) {
+    var file = event.target.files[0]; if (!file) return;
+    try {
+      var r = backupRestore(JSON.parse(await file.text()));
+      bakStatus.textContent = '已恢复 ' + r.added + ' 项' +
+        (r.same ? '，相同 ' + r.same + ' 项跳过' : '') +
+        (r.kept ? '，本机已有 ' + r.kept + ' 项不同记录未改动' : '') + '。本页稍后自动刷新。';
+      setTimeout(function () { location.reload(); }, 1200);
+    } catch (e) {
+      bakStatus.textContent = '导入失败：' + e.message + '；本机记录未改动。';
+    }
+    event.target.value = '';
+  };
 })();
 </script>
 
