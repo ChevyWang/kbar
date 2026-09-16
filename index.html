@@ -26,13 +26,13 @@
   body button:focus-visible { outline: 3px solid var(--home-focus); outline-offset: 3px; }
   .current-task {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(13rem, 17rem);
-    gap: clamp(1.2rem, 4vw, 3rem);
-    align-items: stretch;
-    margin: 2rem 0 3.5rem;
-    padding: clamp(1.25rem, 3vw, 2rem);
+    grid-template-columns: minmax(0, 1fr) minmax(11rem, 14rem);
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: center;
+    margin: 1.3rem 0 2.2rem;
+    padding: clamp(.9rem, 2.4vw, 1.3rem);
     border: 1px solid var(--ink);
-    border-top: 5px solid var(--home-accent);
+    border-top: 4px solid var(--home-accent);
     background: #fff;
   }
   .task-main { min-width: 0; }
@@ -47,10 +47,10 @@
     letter-spacing: .12em;
     color: var(--muted);
   }
-  .task-kicker { color: var(--home-accent); font-weight: 700; }
-  .task-title { margin: .4rem 0 .55rem; font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.35; }
-  .task-lede { max-width: 46rem; margin: 0; font-size: 1.02rem; }
-  .task-status-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: baseline; margin-top: .85rem; }
+  .task-kicker { color: var(--home-accent); font-weight: 700; font-size: .7rem; }
+  .task-title { margin: .3rem 0 .4rem; font-size: clamp(1.15rem, 2.6vw, 1.5rem); line-height: 1.35; }
+  .task-lede { max-width: 40rem; margin: 0; font-size: .95rem; }
+  .task-status-row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: baseline; margin-top: .55rem; }
   .task-phase { color: var(--ink); font-weight: 700; }
   .task-state { color: var(--home-accent); letter-spacing: .04em; }
   .task-meta {
@@ -58,49 +58,49 @@
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    margin: 1.35rem 0 0;
-    padding-top: 1rem;
+    margin: .85rem 0 0;
+    padding-top: .7rem;
     border-top: 1px solid var(--line);
   }
   .task-meta th,
-  .task-meta td { border-bottom: 1px solid var(--line); padding: .6rem 0; text-align: left; vertical-align: top; }
-  .task-meta th { width: 6.5rem; padding-right: 1rem; letter-spacing: .04em; }
-  .task-meta td { font-size: .9rem; line-height: 1.55; }
+  .task-meta td { border-bottom: 1px solid var(--line); padding: .38rem 0; text-align: left; vertical-align: top; }
+  .task-meta th { width: 5.2rem; padding-right: .8rem; letter-spacing: .04em; }
+  .task-meta td { font-size: .84rem; line-height: 1.5; }
   .task-meta tr:last-child th,
   .task-meta tr:last-child td { border-bottom: 0; }
   .task-boundary {
-    margin: 1.15rem 0 0;
-    padding: .7rem .85rem;
+    margin: .85rem 0 0;
+    padding: .5rem .7rem;
     border-left: 3px solid var(--home-accent);
     background: var(--home-accent-soft);
     font-family: var(--sans);
-    font-size: .82rem;
-    line-height: 1.65;
+    font-size: .76rem;
+    line-height: 1.6;
   }
   .task-side {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: clamp(1rem, 3vw, 2rem);
+    padding-left: clamp(.85rem, 2.4vw, 1.4rem);
     border-left: 1px solid var(--line);
   }
   .task-action {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    margin-top: .75rem;
-    padding: .85rem 1rem;
+    gap: .7rem;
+    margin-top: .45rem;
+    padding: .55rem .9rem;
     color: #fff !important;
     background: var(--home-accent);
     border: 1px solid var(--home-accent);
     font-family: var(--sans);
-    font-size: .95rem;
+    font-size: .9rem;
     font-weight: 700;
     line-height: 1.3;
   }
   .task-action:hover { background: #234656; border-color: #234656; }
-  .task-note { margin: .8rem 0 0; color: var(--muted); font-family: var(--sans); font-size: .78rem; line-height: 1.65; }
+  .task-note { margin: .55rem 0 0; color: var(--muted); font-family: var(--sans); font-size: .74rem; line-height: 1.55; }
   .ability-route { margin: 1.2rem 0 2.8rem; }
   .route-intro { max-width: 42rem; margin-bottom: 1rem; }
   .route-intro h3 { margin: 0 0 .35rem; font-size: 1.1rem; }
@@ -136,8 +136,8 @@
   details.books b { color: var(--ink); }
   .progress-strip { background: #fff; border: 1px dashed var(--line); border-radius: 12px; padding: .8rem 1.25rem; margin: .9rem 0; }
   @media (max-width: 767.98px) {
-    .current-task { grid-template-columns: 1fr; gap: 1.2rem; margin: 1.35rem 0 2.5rem; }
-    .task-side { padding: 1.1rem 0 0; border-top: 1px solid var(--line); border-left: 0; }
+    .current-task { grid-template-columns: 1fr; gap: .9rem; margin: 1.1rem 0 1.8rem; }
+    .task-side { padding: .85rem 0 0; border-top: 1px solid var(--line); border-left: 0; }
   }
   /* v1.7（批次 D 移动端）：<560px 三格堆叠单列（course.css 的 <768px 版心/图表/表格规则经链接同样生效） */
   @media (max-width: 560px) {
@@ -176,7 +176,6 @@
       <tbody>
         <tr><th scope="row">核心动作</th><td data-current-action-copy>写出开高低收（OHLC）事实、位置、未知和下一验证条件。</td></tr>
         <tr><th scope="row">阶段产物</th><td data-current-artifact>事实卡</td></tr>
-        <tr><th scope="row">预计投入</th><td data-current-effort>先完成一个可停下的单次动作；内容分钟只是标称预算，练习与复测另计。</td></tr>
       </tbody>
     </table>
     <p class="callout task-boundary" data-current-boundary><b>证据边界：</b>先学习示范，再做独立检验；辅助学习会被单独记录，不替代独立证据。</p>
@@ -242,14 +241,14 @@
   (function () {
     'use strict';
     var stages = {
-      P0: { verb: '辨认', name: '读图', artifact: '事实卡', action: '写出开高低收（OHLC）事实、位置、未知和下一验证条件。', effort: '先完成一个可停下的单次动作；内容分钟只是标称预算，练习与复测另计。', mastery: 'phase-0/mastery.html' },
-      P1: { verb: '复述推理', name: '流利', artifact: '逐根状态', action: '逐根记录状态变化，并在新证据出现时改判。', effort: '先完成一次逐根练习；连续推理、复测和开放记录另计。', mastery: 'phase-1/mastery.html' },
-      P2: { verb: '作图应用', name: '地形', artifact: '区域图', action: '画出区域，保留替代解释与失效条件。', effort: '先完成一张可复核的区域图；陌生窗口迁移另计。', mastery: 'phase-2/mastery.html' },
-      P3: { verb: '概率引用', name: '概率', artifact: '统计身份证', action: '匹配统计口径，写出预期、过滤和失效。', effort: '先完成一次冻结规则后的引用；复核与研究产物另计。', mastery: 'phase-3/mastery.html' },
-      P4: { verb: '组装综合', name: '系统', artifact: '冻结计划', action: '冻结规则、成本、未知与验证方式。', effort: '先完成一份版本化计划；验证包和复测另计。', mastery: 'phase-4/mastery.html' },
-      P5: { verb: '执行自律', name: '执行', artifact: '订单事故记录', action: '记录事故、退出条件与按因修复动作。', effort: '先完成一个情景记录；模拟或自报实践另计。', mastery: 'phase-5/mastery.html' },
-      P6: { verb: '贡献输出', name: '大师', artifact: '复盘文与研究表达', action: '提交可复算的复盘文，并标明证据边界。', effort: '先完成一份可复核草稿；双闸与延迟再测另计。', mastery: 'phase-6/mastery.html' },
-      COURSE: { verb: '待核对', artifact: '学习记录', action: '打开学习进度，确认已有记录所属阶段和下一步。', effort: '先核对一条记录；练习与复测另计。', mastery: 'progress.html' }
+      P0: { verb: '辨认', name: '读图', artifact: '事实卡', action: '写出开高低收（OHLC）事实、位置、未知和下一验证条件。', mastery: 'phase-0/mastery.html' },
+      P1: { verb: '复述推理', name: '流利', artifact: '逐根状态', action: '逐根记录状态变化，并在新证据出现时改判。', mastery: 'phase-1/mastery.html' },
+      P2: { verb: '作图应用', name: '地形', artifact: '区域图', action: '画出区域，保留替代解释与失效条件。', mastery: 'phase-2/mastery.html' },
+      P3: { verb: '概率引用', name: '概率', artifact: '统计身份证', action: '匹配统计口径，写出预期、过滤和失效。', mastery: 'phase-3/mastery.html' },
+      P4: { verb: '组装综合', name: '系统', artifact: '冻结计划', action: '冻结规则、成本、未知与验证方式。', mastery: 'phase-4/mastery.html' },
+      P5: { verb: '执行自律', name: '执行', artifact: '订单事故记录', action: '记录事故、退出条件与按因修复动作。', mastery: 'phase-5/mastery.html' },
+      P6: { verb: '贡献输出', name: '大师', artifact: '复盘文与研究表达', action: '提交可复算的复盘文，并标明证据边界。', mastery: 'phase-6/mastery.html' },
+      COURSE: { verb: '待核对', artifact: '学习记录', action: '打开学习进度，确认已有记录所属阶段和下一步。', mastery: 'progress.html' }
     };
     var first = {
       stage: 'P0', title: '先完成第一项读图任务', lede: '从第 0001 课开始，把一根 K 线读成一张可核查的事实卡。', state: '未开始', label: '进入 P0 阶段', href: 'phase-0/', note: '首次进入：先看阶段目标，再开始第 0001 课、训练场和阶段实操。'
@@ -312,7 +311,6 @@
       text('[data-current-lede]', preview.lede);
       text('[data-current-action-copy]', stage.action);
       text('[data-current-artifact]', stage.artifact);
-      text('[data-current-effort]', stage.effort);
       text('[data-current-note]', preview.note);
       var action = document.querySelector('[data-current-action]');
       if (action) {
