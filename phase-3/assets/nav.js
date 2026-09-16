@@ -3,7 +3,7 @@
  *    滚动时高亮当前小节/小小节；点击平滑滚动。目录标签用短标签（去编号、去括注、取"："前段，
  *    撞名回退全称）；无 h2[id] 的页面静默退出；考场页（/exam/）与 data-no-toc 不建目录（防结构泄漏）。
  * 2) 法务免责页脚：全站每页注入（批次 C，调研 05 号文案）；涉加密品种页加加密风险句。
- * 3) 课程上下文导航：课页统一提供阶段返回与能力档案入口。零依赖。 */
+ * 3) 课程上下文导航：课页统一提供阶段返回与阶段实操入口。零依赖。 */
 (function () {
   if (typeof document === 'undefined') return;
 
@@ -27,7 +27,7 @@
     nav.setAttribute('aria-label', '课程上下文');
     nav.innerHTML = '<a href="../index.html">← 返回 P' + phase + ' 阶段</a>'
       + '<span>P' + phase + ' · ' + names[Number(phase)] + ' · 第 ' + (lesson ? lesson[1] : '') + ' 课</span>'
-      + '<a href="../mastery.html">' + (phase === '6' ? '产物档案' : '能力档案') + ' →</a>';
+      + '<a href="../mastery.html">' + (phase === '6' ? '作品集' : '阶段实操') + ' →</a>';
 
     var style = document.createElement('style');
     style.setAttribute('data-kbar-context-nav', '');
