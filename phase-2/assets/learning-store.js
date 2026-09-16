@@ -31,7 +31,7 @@ document.getElementById('kbar-legacy-export').onclick=()=>{global.dispatchEvent(
 document.getElementById('kbar-legacy-import').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;const n=restore(JSON.parse(await f.text()));notice('导入完成，'+n+'项冲突另存而未覆盖原答。刷新页面恢复已导入任务。');}catch(err){notice('导入失败：'+err.message+'；原记录未覆盖。');}};
 // Existing quiz-like div choices become keyboard reachable without changing scoring.
 const enhance=()=>document.querySelectorAll('.q-opt').forEach(el=>{if(el.tagName!=='BUTTON'){el.setAttribute('role','button');el.tabIndex=0;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}};}});enhance();new MutationObserver(enhance).observe(document.body,{childList:true,subtree:true});}
-global.addEventListener('beforeunload',e=>{if(!healthy&&cache.size&&Date.now()-lastExport>1000){e.preventDefault();e.returnValue='请先导出学习档案';}});
+global.addEventListener('beforeunload',e=>{if(!healthy&&cache.size&&Date.now()-lastExport>1000){e.preventDefault();e.returnValue='请先导出学习记录';}});
 global.KbarLearningStore={storage:api,restore,entries};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })(window);

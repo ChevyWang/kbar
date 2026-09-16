@@ -140,7 +140,7 @@
       html += '<button type="button" class="kba-export" style="border:1.5px solid #a3a198;border-radius:8px;padding:.45rem 1rem;background:#fff;cursor:pointer">导出 JSON</button>';
       html += '<label class="kba-import" style="border:1.5px solid #a3a198;border-radius:8px;padding:.45rem 1rem;background:#fff;cursor:pointer">导入 JSON<input type="file" accept="application/json" style="display:none"></label>';
       html += '</div></div>';
-      html += '<div class="kba-note" style="font-size:.76rem;color:#6e6c64">提交后原答保留；修订另存新记录。导出文件是可迁移的学习档案；课程不发送任何数据。</div>';
+      html += '<div class="kba-note" style="font-size:.76rem;color:#6e6c64">提交后原答保留；修订另存新记录。导出文件是可迁移的学习记录；课程不发送任何数据。</div>';
       html += '</div>';
       root.innerHTML = html;
       fields.forEach(function(f){var input=root.querySelector('[data-kba="'+f.id+'"]');if(input)input.setAttribute('aria-label',f.label);});
