@@ -53,7 +53,6 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <div id="chart"></div>
   <div id="work"></div>
   <div class="state-line" id="statusline"></div>
-  <div style="margin:.6rem 0 1.4rem"><button class="mbtn" id="export-btn" type="button">导出 M3.3 档案（JSON）</button></div>
 </div>
 
 <footer class="course">
@@ -365,14 +364,6 @@ function finishC() {
 }
 
 /* ---------- 导出 ---------- */
-document.getElementById('export-btn').onclick = function () {
-  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M3.3', courseVersion: 'rev-2026-09-10', exportedAt: new Date().toISOString(), record: loadRec() };
-  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'm3-3-research.json'; a.click();
-  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-};
-
 /* 启动自检：全部样本池的页面重算引擎与嵌入参考集必须一致（数据完整性） */
 (function () {
   var engines = POOL_B.map(function (bw, si) {
