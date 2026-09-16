@@ -65,7 +65,6 @@ table.ref th { background: #f6f5f2; font-size: .74rem; color: var(--muted); }
   <div id="final"></div>
   <div class="state-line" id="statusline"></div>
   <div style="margin:.6rem 0 1.4rem">
-    <button class="mbtn" id="export-btn" type="button">导出 M1.4 档案（JSON）</button>
   </div>
 </div>
 
@@ -417,16 +416,6 @@ function renderFinal() {
     renderStatusLine(); renderTabs();var action=document.getElementById('f-new')||document.getElementById('f-again');if(action)action.focus();
   };
 }
-
-document.getElementById('export-btn').onclick = function () {
-  var payload = { kind: 'kbar-answer-export', version: 1, taskId: 'M1.4', courseVersion: 'rev-2026-09-10', exportedAt: new Date().toISOString(),
-    packs: PACKS.map(function (p) { return { pack: p.id, role: p.role, caseId: 'M1.4-' + p.id + (p.id === 'C' ? '-2026b' : '-2026a'), record: loadRec(p.id) }; }) };
-  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'm1-4-progress.json'; a.click();
-  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-};
-
 startPack();
 </script>
 <script src="../assets/nav.js" defer></script>
