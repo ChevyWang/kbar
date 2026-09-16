@@ -210,7 +210,7 @@
       root.querySelectorAll('[data-mid]').forEach(b=>b.onclick=()=>chooseTask(catalog.find(m=>m.id===b.dataset.mid)));
       bindToolbar();status();applyPendingFocus();
     }
-    function toolbar() {return '<p>本次包含 P0–P5 原答、草稿、曝光与反馈；训练场、专题任务及 P6 需分别备份，见<a href="https://chevywang.github.io/kbar/progress.html#backup-scope">备份范围与入口</a>。</p><button id="mastery-export">导出 P0–P5 能力档案</button><label class="mastery-file">导入学习档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新静态任务包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button>';}
+    function toolbar() {return '<p>导出各阶段实操（P0–P5）的档案：原答、草稿、曝光与反馈，不含训练场与作品集。全部学习记录的完整备份，在<a href="https://chevywang.github.io/kbar/progress.html#backup">学习进度总览</a>页一次完成。</p><button id="mastery-export">导出实操档案</button><label class="mastery-file">导入实操档案<input id="mastery-import" type="file" accept="application/json"></label><label class="mastery-file">导入新静态任务包<input id="mastery-pack" type="file" accept="application/json"></label><button id="mastery-print">打印</button>';}
     function bindToolbar() {
       root.querySelector('#mastery-export').onclick=()=>{if(ready) collect();download('kbar-learning-archive.json',JSON.stringify(archive,null,2));dirty=false;message='学习档案已生成下载；请确认文件已保存。';status();};
       root.querySelector('#mastery-print').onclick=()=>global.print();
