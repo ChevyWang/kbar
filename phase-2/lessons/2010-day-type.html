@@ -171,7 +171,7 @@ document.getElementById('cmp-snap').innerHTML = Kbar.compare([
   {title:'03-19 · 90 分钟快照（5m×18 根）', data:S_0319, opts:{h:225, vol:vols(S_0319), yLabels:true}},
   {title:'03-19 · 全日（15m×96 根）', data:B_0319, opts:{h:225, vol:vols(B_0319), yLabels:true,
     zones:[{y1:66861.1, y2:68124.1, label:'IB', color:'#1a7f37'}]}}
-], {w:420, note:'判别点：左图是 01:30 时你拥有的全部——区外开盘、窄 IB、开盘未收复；右图是它最终长成的样子（收位 0.06、量能 2.53×）。'});
+], {w:420, note:'左图是 01:30 时你拥有的全部——区外开盘、窄 IB、开盘未收复；右图是它最终长成的样子（收位 0.06、量能 2.53×）。'});
 document.getElementById('cmp-days').innerHTML = Kbar.compare([
   {title:'03-18 常态日', data:B_0318, opts:{h:230, vol:vols(B_0318), yLabels:true,
     zones:[{y1:67286.8, y2:68426.0, label:'IB', color:'#1a7f37'}]}, note:'IB=全天区间 48%，收中段 0.44，量 1.4×'},
@@ -181,7 +181,7 @@ document.getElementById('cmp-days').innerHTML = Kbar.compare([
     zones:[{y1:51621.1, y2:51796.5, label:'IB', color:'#1a7f37'}]}, note:'IB 仅 4%；下午延伸、尾段第二平衡，收位 0.89'},
   {title:'05-03 常态变形（上）', data:B_0503, opts:{h:230, vol:vols(B_0503), yLabels:true,
     zones:[{y1:58811.3, y2:59131.1, label:'IB', color:'#1a7f37'}]}, note:'上半区间（19%）、下半趋势（83%），量仅 1.09×'}
-], {w:310, note:'判别点：同市场同窗口四种走法——读「过程」而不是读「收盘」：02-26 与 05-03 的日线外形几乎一样（都是单边收高），盘中过程完全不同。'});
+], {w:310, note:'同市场同窗口四种走法——读「过程」而不是读「收盘」：02-26 与 05-03 的日线外形几乎一样（都是单边收高），盘中过程完全不同。'});
 
 var questions = [
   { q: 'Dalton 把六种日型摆在一条什么光谱上？', options: ['方向信念：从零信念到满信念排成一条谱', '成交量：从地量日到天量日的单向排列', '波动率：从窄幅日到宽幅日的简单排序', '时间：按 OTF 进场早晚从早到晚排列'], answer: 0, explain: '图 2.10 的核心：日型不是六个孤立形状，是一条 gradually ascending 的信念谱——判型=定位今天在谱上的位置。' },
