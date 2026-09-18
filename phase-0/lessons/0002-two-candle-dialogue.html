@@ -506,7 +506,7 @@ document.getElementById('cmp-engulf').innerHTML = Kbar.compare([
   {title: '美股 · 苹果 2026-06-30 · 看涨吞没（严格）',
    data: P0_ENG_U, opts: {h: 230, vol: P0_ENG_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
    note: '低开（280.93 &lt; 前收 281.50）后一路反攻收 289.11，包 1.6 倍——<b>跳空市场同样有严格样本</b>，别用"美股必然宽松"当偷懒借口。'}
-], {w: 420, note: '判别点：<b>吞没看实体两端</b>（不是影线），且收盘必须站在被包实体之上；量能只是加分项（两例量能都不突出——0.7×/1.0× 均量）。'});
+], {w: 420, note: '<b>吞没看实体两端</b>（不是影线），且收盘必须站在被包实体之上；量能只是加分项（两例量能都不突出——0.7×/1.0× 均量）。'});
 
 document.getElementById('cmp-pin').innerHTML = Kbar.compare([
   {title: 'A股 · 赛力斯 2026-08-17 · 长下影', data: P0_HAMMER_A,
@@ -521,7 +521,7 @@ document.getElementById('cmp-pin').innerHTML = Kbar.compare([
   {title: '美股 · 特斯拉 2026-08-17 · 长上影', data: P0_SHOOT_U,
    opts: {h: 240, vol: P0_SHOOT_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
    note: '上影 <b>59.72%</b>、收位 23%。主影线未达全长 2/3，只记长上影反例。'}
-], {w: 330, note: '判别点：<b>影线归属</b>（上影记卖方、下影记买方）+ <b>两个度量</b>（影线占比≥2/3、收位在影线反侧）——两例A股的主影线达标，两例美股未达标；形状合格后仍须分别检查位置过滤与后续确认。'});
+], {w: 330, note: '<b>影线归属</b>（上影记卖方、下影记买方）+ <b>两个度量</b>（影线占比≥2/3、收位在影线反侧）——两例A股的主影线达标，两例美股未达标；形状合格后仍须分别检查位置过滤与后续确认。'});
 
 document.getElementById('cmp-inside').innerHTML = Kbar.compare([
   {title: 'A股 · 长江电力 2026-08-14 · 内包日', data: P0_INS_A,
@@ -530,7 +530,7 @@ document.getElementById('cmp-inside').innerHTML = Kbar.compare([
   {title: '美股 · 微软 2026-08-13 · 内包日', data: P0_INS_U,
    opts: {h: 230, vol: P0_INS_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
    note: '母线实体 76%，子线实体 43%——同是内包，子线更"胖"：收缩程度是连续谱，触发线的意义不变。'}
-], {w: 420, note: '判别点：内包的信息在<b>母线</b>（它的极值=触发线），不在子线——子线越安静，突破那天的量能越有分量。'});
+], {w: 420, note: '内包的信息在<b>母线</b>（它的极值=触发线），不在子线——子线越安静，突破那天的量能越有分量。'});
 
 var DUAL = [
   {o:104, h:105, l:99, c:99.5}, {o:99, h:106.5, l:98.5, c:105.8},
