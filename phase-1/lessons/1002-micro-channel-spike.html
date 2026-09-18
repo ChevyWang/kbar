@@ -270,7 +270,7 @@ document.getElementById('cmp-micro').innerHTML = Kbar.compare([
    opts: {h: 225, vol: P1_MIC_U.map(function(k){return k.v;}), yLabels: true,
           marks: [{i: 20, text: '通道起点', pos: 'below'}, {i: 24, text: '第5棒', pos: 'above'}]},
    note: '个股猛版：五棒累计 <b>+16.0%</b>——紧度相同、幅度不同，止损单位规则相同。'}
-], {w: 420, note: '判别点：微通道的法定证据是<b>低点序列</b>（每根更高），不是"连续阳线"——阳线簇若低点走平，是通道不是微通道。'});
+], {w: 420, note: '微通道的法定证据是<b>低点序列</b>（每根更高），不是"连续阳线"——阳线簇若低点走平，是通道不是微通道。'});
 document.getElementById('cmp-spike').innerHTML = Kbar.compare([
   {title: 'A股 · 中信证券 2026-06-22 · Spike', data: P1_SPIKE_A,
    opts: {h: 225, vol: P1_SPIKE_A.map(function(k){return k.v;}), yLabels: true, hl: 24},
@@ -278,7 +278,7 @@ document.getElementById('cmp-spike').innerHTML = Kbar.compare([
   {title: '美股 · 特斯拉 2025-09-12 · Spike', data: P1_SPIKE_U,
    opts: {h: 225, vol: P1_SPIKE_U.map(function(k){return k.v;}), yLabels: true, hl: 24},
    note: '+7.4%、实体 95%、2.2×量——一根表态，随后沿通道阶梯推进。'}
-], {w: 420, note: '判别点：spike 的价值不在它自己，在它的<b>中点</b>——回撤至中点不破=S&C 延续；跌破 spike 起点=趋势生命线告急。'});
+], {w: 420, note: 'spike 的价值不在它自己，在它的<b>中点</b>——回撤至中点不破=S&C 延续；跌破 spike 起点=趋势生命线告急。'});
 var TIGHT = [
   {o:95, h:97, l:94.5, c:96.8}, {o:96.8, h:99, l:96.3, c:98.5}, {o:98.5, h:100.5, l:98, c:100},
   {o:100, h:100.8, l:98.2, c:99}, {o:99, h:102, l:98.6, c:101.5}, {o:101.5, h:102.5, l:99.8, c:100.3},
