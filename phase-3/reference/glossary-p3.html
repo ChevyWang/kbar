@@ -13,6 +13,11 @@
   text-decoration: none; border: 1px solid var(--line); border-radius: 99px;
   padding: .18rem .7rem; background: #fff; }
 .gloss-nav a:hover { border-color: var(--ink); }
+.gloss-search { margin: .9rem 0 0; font-family: var(--sans); }
+.gloss-search input { width: min(24rem, 100%); padding: .45rem .8rem; font: inherit; font-size: .9rem;
+  border: 1.5px solid var(--line); border-radius: 8px; min-height: 36px; background: #fff; }
+.gloss-search input:focus-visible { outline: 3px solid #2255bb; outline-offset: 2px; }
+.gloss-search span { font-size: .78rem; color: var(--muted); margin-left: .6rem; }
 h2 { scroll-margin-top: 4.2rem; }
 h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
@@ -42,7 +47,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .bdg.p5 { background: #a44a3f; }
 .bdg.p6 { background: #0f4c81; }
 @media print {
-  .gloss-nav { display: none; }
+  .gloss-nav, .gloss-search { display: none; }
   .gloss-grid { grid-template-columns: 1fr 1fr; gap: .4rem .8rem; }
   .term { border: .5pt solid #999; }
 }
@@ -55,6 +60,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
   <p class="sub">Phase 3 七课的新词，出处课标在词尾。前面阶段的全部词汇见 <a href="../../glossary.html">全站术语手册</a>。</p>
 </header>
 <nav class="gloss-nav"><a href="#g-p3-0">Phase 3 · 概率与统计</a></nav>
+
 <h2 id="g-p3-0"><span class="no">§</span>Phase 3 · 概率与统计<a class="top" href="#top">↑</a></h2>
 <dl class="gloss-grid"><div class="term" id="t-统计预期"><dt>统计预期<span class="bdg p3">P3</span><span class="en">Statistical expectation</span></dt><dd>先定义事件、分母、观察窗与未知，再报告频率/区间。描述形态达标率不等于可交易策略胜率。<span class="src">3001</span></dd></div><div class="term" id="t-胜率表四列"><dt>胜率表四列<span class="bdg p3">P3</span><span class="en">Performance table columns</span></dt><dd>Bulkowski 表的读法：突破方向 / 触发后行情 / 失败与表现 / 样本量——先看样本量与口径再看结论。<span class="src">3001</span></dd></div><div class="term" id="t-口径陷阱"><dt>口径陷阱<span class="bdg p3">P3</span><span class="en">Caveats</span></dt><dd>同一形态在不同市场/时段/参数口径下数字不同；引用统计必须声明口径（我们的 28 品种扫描自带口径声明）。<span class="src">3001</span></dd></div><div class="term" id="t-统计身份证"><dt>统计身份证<span class="bdg p3">P3</span><span class="en">Statistical ID</span></dt><dd>样本来源、事件定义、分母流、截止窗、计数、区间与限制；未完成窗口不能直接当失败。<span class="src">3002</span></dd></div><div class="term" id="t-高价值形态"><dt>高价值形态<span class="bdg p3">P3</span><span class="en">High-value patterns</span></dt><dd>仅表示某个给定数据/规则下值得研究的候选。排名与样本量本身不能证明可交易优势。<span class="src">3002</span></dd></div><div class="term" id="t-中性形态"><dt>中性形态<span class="bdg p3">P3</span><span class="en">Neutral patterns</span></dt><dd>在某一统计口径下方向区分有限的形态。没有交易出入场协议不能宣称期望值为零。<span class="src">3003</span></dd></div><div class="term" id="t-垃圾形态"><dt>垃圾形态<span class="bdg p3">P3</span><span class="en">Junk patterns</span></dt><dd>高频低信息且无统计支持：对新形态保持免疫（「新」不是价值来源）。<span class="src">3003</span></dd></div><div class="term" id="t-失败形态学"><dt>失败形态学<span class="bdg p3">P3</span><span class="en">Failure study</span></dt><dd>按事先定义的失败事件与期限研究形态失效；失败和随后达标可同时发生，失败本身不授权反向交易。<span class="src">3004</span></dd></div><div class="term" id="t-过滤三问"><dt>过滤三问<span class="bdg p3">P3</span><span class="en">Morris filter</span></dt><dd>参数过线了吗（形状）→ 位置说得通吗（语境）→ 确认来了吗（行为）——三问齐备才把形态组装成信号。<span class="src">3005</span></dd></div><div class="term" id="t-人肉检测器"><dt>人肉检测器<span class="bdg p3">P3</span><span class="en">Human detector</span></dt><dd>按冻结规则在连续窗口独立检索候选，与参考口径对照漏标/多标，再在留出样本记录判断。<span class="src">3006</span></dd></div><div class="term" id="t-两轴矩阵"><dt>两轴矩阵<span class="bdg p3">P3</span><span class="en">Testability × Evidence</span></dt><dd>解剖任何流派的坐标系：规则能写成程序吗（可检验性）× 错了会被打脸吗（证据强度）。<span class="src">3007</span></dd></div><div class="term" id="t-体系解剖学"><dt>体系解剖学<span class="bdg p3">P3</span><span class="en">System anatomy</span></dt><dd>用两轴矩阵评估流派的方法论：高频/趋势跟随/计数叙事体系在矩阵上的位置与其可信度。<span class="src">3007</span></dd></div><div class="term" id="t-双轨立场"><dt>双轨立场<span class="bdg p3">P3</span><span class="en">Dual-track stance</span></dt><dd>原著统计与课程研究各自保留定义、样本和时间边界；两者口径不同不能直接合并或声称互相验证。<span class="src">3001</span></dd></div><div class="term" id="t-反迷信"><dt>反迷信<span class="bdg p3">P3</span><span class="en">Anti-superstition</span></dt><dd>P3 的立柱：形态是概率语言不是信号；名字不是能力；任何体系先过两轴矩阵。<span class="src">3007</span></dd></div></dl>
 <script src="../assets/candles.js"></script>
