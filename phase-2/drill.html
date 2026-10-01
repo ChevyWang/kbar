@@ -110,6 +110,7 @@ function startRound(gi) {
   var pick = shuffle(g.pool).slice(0, Math.min(5, g.pool.length));
   var n = pick.length;
   Quiz.mount('#drill', {
+  version: 'bank-drill2-r1', // 随机生成题库：静态库号作指纹（题库语义变更时手动 +1）
     title: '易混混练 · ' + g.name,
     roundIndices: pick.map(function (inst) { return g.pool.indexOf(inst); }),
     questions: g.pool.map(function (inst) {

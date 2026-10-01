@@ -12,7 +12,7 @@
   <div class="kicker">K线训练营 · Phase 2 地形 · 第 2006 课</div>
   <h1>Volume Profile：把量能画成地形</h1>
   <p class="sub">量能柱在时间轴上回答"什么时候打了多大的仗"；把它旋转 90°、堆到价格轴上，就回答一个新问题——<b>"哪些价位打过仗、哪些价位无人问津"</b>。这就是 Volume Profile：市场的历史战场地图。本课学它的解剖（VPOC/价值区/高中低量节点）、三种形状，然后用锚定图的两段真实剖面（由 1 小时数据逐档计算）把"吸筹签名"画出来。</p>
-<p>本课约 68 分钟（视觉增强版：知识 30 + 案例 11 + 图示化小结 4 + 重演 3 + 训练场 14 + 小结 2）（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
+<p>本课约 68 分钟（知识 30 + 案例 11 + 重演 3 + 训练场 14 + 小结 2）。</p>
 </header>
 
 <div class="lesson-map">
@@ -21,11 +21,13 @@
     <li>竖着看量：从时间轴到价格轴 <span class="t">≈6 min</span></li>
     <li>解剖：VPOC / 价值区 / HVN / LVN <span class="t">≈9 min</span></li>
     <li>三种形状：D / P / b <span class="t">≈7 min</span></li>
-    <li>三种剖面工具与组合用法 <span class="t">≈5 min</span></li>
+    <li>三种剖面工具与组合用法 <span class="t">≈9 min</span></li>
     <li>案例深读：同一行情的两种剖面 <span class="t">≈11 min</span></li>
     <li>一图带走：剖面解剖与三形 <span class="t">≈4 min</span></li>
     <li>亲手重演 + 训练场：十二题 <span class="t">≈20 min</span></li>
     <li>小结与 TradingView 实操附录 <span class="t">≈2 min</span></li>
+    <li>同一OHLCV，逐价路径可以不同</li>
+    <li>离线剖面重建实验：同一窗口，两种粒度、两种分箱</li>
   </ol>
 </div>
 
@@ -41,8 +43,8 @@
 <tr><th>部件</th><th>定义</th><th>含义</th></tr>
 <tr><td><b>VPOC</b></td><td>成交量最大的价位</td><td>双方最公认的"公允价"——"大资金建仓最密集处"是分析假设而非身份证据（历史量不能识别参与者与动机）</td></tr>
 <tr><td><b>价值区 VA</b></td><td>围绕 VPOC 向外扩展至约 70% 成交量的价格带（VAH 上沿 / VAL 下沿）</td><td>"共识价值"的地界，价格在区内=平衡，出区=失衡</td></tr>
-<tr><td><b>HVN</b> 高量节点</td><td>剖面中的峰（局部量能集中）</td><td>达成过充分换手的价位=平衡区，未来是<b>吸引/支撑</b></td></tr>
-<tr><td><b>LVN</b> 低量节点</td><td>剖面中的谷（几乎无人成交）</td><td>被拒绝的价位=失衡区，未来是<b>快速穿越/反弹墙</b></td></tr>
+<tr><td><b>HVN</b> 高量节点</td><td>剖面中的峰（局部量能集中）</td><td>达成过充分换手的价位=平衡区。可检验倾向：未来充当<b>吸引/支撑</b>——是否出现须以预案验证</td></tr>
+<tr><td><b>LVN</b> 低量节点</td><td>剖面中的谷（几乎无人成交）</td><td>被拒绝的价位=失衡区。可检验倾向：未来<b>快速穿越/反弹墙</b>——是否出现须以预案验证</td></tr>
 <tr><td><b>剖面端点</b></td><td>最高/最低价档</td><td>拍卖的极值，未完成拍卖（单边节点）常暗示 revisit</td></tr>
 </table>
 <p>两条使用纪律：</p>
@@ -134,7 +136,7 @@ document.getElementById('vp-run').onclick=vpShow;document.getElementById('vp-exp
     <a href="2007-terrain-map.html">第 2007 课：区域地图 →</a>
     <a href="../reference/glossary.html">术语手册</a>
   </div>
-  <p><b>主资源（本课 grounded on）：</b>Rubén Villahermosa《Wyckoff 2.0》Part 5（Volume Profile：§5.1 AMT+VP / §5.2 剖面组成：VPOC/VA/HVN/LVN / §5.3 剖面类型：固定区间·可见范围·组合 / §5.4 垂直与水平量之辨 / §5.5 VP 与 Market Profile 之辨）· James Dalton《Mind Over Markets 2nd》附录一（价值区计算）与 Ch.4（High/Low Volume Areas）；TPO vs Volume Profile 裁决与两条失真 = Dalton 附录二（Appendix II: TPO versus Volume Profiles）。>
+  <p><b>主资源（本课 grounded on）：</b>Rubén Villahermosa《Wyckoff 2.0》Part 5（Volume Profile：§5.1 AMT+VP / §5.2 剖面组成：VPOC/VA/HVN/LVN / §5.3 剖面类型：固定区间·可见范围·组合 / §5.4 垂直与水平量之辨 / §5.5 VP 与 Market Profile 之辨）· James Dalton《Mind Over Markets 2nd》附录一（价值区计算）与 Ch.4（High/Low Volume Areas）；TPO vs Volume Profile 裁决与两条失真 = Dalton 附录二（Appendix II: TPO versus Volume Profiles）。</p>
   <div class="citations"><b>引用：</b>Villahermosa (2019) W2 Part 5 · Dalton et al. (2013) 附录一/Ch.4（引文出自 EPUB 原文）· Steidlmayer 起源见 W2 §5.1。案例数据：Binance 公开数据（XRPUSDT 1d + 1h，2026-04-20 → 08-31），两张剖面由 2906 根 1h 数据脚本计算（分箱 0.01，均匀分布近似），VPOC/VA/上下半占比均为计算值。</div>
 </footer>
 

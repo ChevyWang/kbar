@@ -20,7 +20,7 @@
 <header class="course">
   <div class="kicker">K线训练营 · Phase 2 地形 · 第 2010 课（P2 收口课，M2.4 里程碑）</div>
   <h1>日型战术：今天会是哪种天</h1>
-  <p class="sub">2006 给了你静态地形图，2009 给了你波账，缺的最后一环是<b>动态转接头</b>：「今天开盘之后，该用哪套战术？」Dalton 的六种日型按「方向信念」从无到排满，配 Brooks 的首小时剧本，把「看到什么打什么」升级成「开局先判型、按型取战术」。学完的标志：开盘 90 分钟内写出今日日型假设 + 对应战术清单，收盘对答案。本课约 87 分钟（知识 38 + 盘中解剖 24 + 一图带走 3 + 训练场 14 + 小结 8）。</p>
+  <p class="sub">2006 给了你静态地形图，2009 给了你波账，缺的最后一环是<b>动态转接头</b>：「今天开盘之后，该用哪套战术？」Dalton 的六种日型按「方向信念」从无到排满，配 Brooks 的首小时剧本，把「看到什么打什么」升级成「开局先判型、按型取战术」。学完的标志：开盘 90 分钟内写出今日日型假设 + 对应战术清单，收盘对答案。本课约 87 分钟（知识 38 + 盘中解剖 14 + 日线外形 10 + 一图带走 3 + 训练场 14 + 小结 8）。</p>
 <p><b>日内进阶分支：</b>建议先完成 2008 地形图与 2009 波图，便于理解 VA 与波账；本课保留真实 5m 常规会话练习，不是 2008/2009 的自动先修门槛，也不替代 M2.5 的陌生窗迁移验收。</p>
 </header>
 
@@ -35,6 +35,7 @@
     <li>一图带走：判型五问 <span class="t">≈3 min</span></li>
     <li>训练场：十四题 <span class="t">≈14 min</span></li>
     <li>小结与日型日记协议 <span class="t">≈8 min</span></li>
+    <li>标准交易所会话：AAPL 30/60/90分钟冻结记录</li>
   </ol>
 </div>
 
@@ -147,7 +148,7 @@ function exDraw(){var day=EX_SESSIONS[exState.day],n=exTimes[exState.step],b=day
 document.getElementById('session-start').onclick=exDraw;document.getElementById('session-export').onclick=function(){var a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify({kind:'kbar-exchange-session',version:1,state:exState,source:'AAPL_5m_yahoo.json',timezone:'America/New_York'},null,2)],{type:'application/json'}));a.href=u;a.download='exchange-session.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
 </script>
 <div class="nav">
-  <a href="2009-wave-chart.html">← 第 2009 课（波图）</a>
+  <a href="2008-graduation-terrain.html">← 第 2008 课（综合作业与毕业考）</a>
   <a href="../index.html">课程主页</a>
   <a href="../reference/glossary.html">术语手册</a>
   <a href="https://chevywang.github.io/kbar/phase-3/">Phase 3（概率）→</a>
@@ -170,13 +171,13 @@ function vols(a){return a.map(function(k){return k.v;});}
 document.getElementById('cmp-snap').innerHTML = Kbar.compare([
   {title:'03-19 · 90 分钟快照（5m×18 根）', data:S_0319, opts:{h:225, vol:vols(S_0319), yLabels:true}},
   {title:'03-19 · 全日（15m×96 根）', data:B_0319, opts:{h:225, vol:vols(B_0319), yLabels:true,
-    zones:[{y1:66861.1, y2:68124.1, label:'IB', color:'#1a7f37'}]}}
+    zones:[{y1:66861.10, y2:68124.11, label:'IB', color:'#1a7f37'}]}}
 ], {w:420, note:'左图是 01:30 时你拥有的全部——区外开盘、窄 IB、开盘未收复；右图是它最终长成的样子（收位 0.06、量能 2.53×）。'});
 document.getElementById('cmp-days').innerHTML = Kbar.compare([
   {title:'03-18 常态日', data:B_0318, opts:{h:230, vol:vols(B_0318), yLabels:true,
     zones:[{y1:67286.8, y2:68426.0, label:'IB', color:'#1a7f37'}]}, note:'IB=全天区间 48%，收中段 0.44，量 1.4×'},
   {title:'03-19 趋势日（下）', data:B_0319, opts:{h:230, vol:vols(B_0319), yLabels:true,
-    zones:[{y1:66861.1, y2:68124.1, label:'IB', color:'#1a7f37'}]}, note:'日高在头 15 分钟，收位 0.06，量 2.53×'},
+    zones:[{y1:66861.10, y2:68124.11, label:'IB', color:'#1a7f37'}]}, note:'日高在头 15 分钟，收位 0.06，量 2.53×'},
   {title:'02-26 双分布趋势（上）', data:B_0226, opts:{h:230, vol:vols(B_0226), yLabels:true,
     zones:[{y1:51621.1, y2:51796.5, label:'IB', color:'#1a7f37'}]}, note:'IB 仅 4%；下午延伸、尾段第二平衡，收位 0.89'},
   {title:'05-03 常态变形（上）', data:B_0503, opts:{h:230, vol:vols(B_0503), yLabels:true,
@@ -185,7 +186,7 @@ document.getElementById('cmp-days').innerHTML = Kbar.compare([
 
 var questions = [
   { q: 'Dalton 把六种日型摆在一条什么光谱上？', options: ['方向信念：从零信念到满信念排成一条谱', '成交量：从地量日到天量日的单向排列', '波动率：从窄幅日到宽幅日的简单排序', '时间：按 OTF 进场早晚从早到晚排列'], answer: 0, explain: '图 2.10 的核心：日型不是六个孤立形状，是一条 gradually ascending 的信念谱——判型=定位今天在谱上的位置。' },
-  { q: 'OTF（other timeframe）指的是：', options: ['比当日短线更强的周期参与者——机构与波段资金', '下一根K线里那个尚未发生的未知未来走势的走势方向', '交易所做市商的自动化报单程序本身', '与你自己持仓周期相同的其他散户们'], answer: 0, explain: '日型由 OTF 进场的时间与力度决定——六型差异本质都是「OTF 什么时候来、来得多凶」。' },
+  { q: 'OTF（other timeframe）指的是：', options: ['比当日短线更强的周期参与者——机构与波段资金', '下一根K线里那个尚未发生的未知未来走势的方向', '交易所做市商的自动化报单程序本身', '与你自己持仓周期相同的其他散户们'], answer: 0, explain: '日型由 OTF 进场的时间与力度决定——六型差异本质都是「OTF 什么时候来、来得多凶」。' },
   { q: '趋势日最常见的结构特征是：', options: ['开盘即当日极值——开盘后从未回访开盘一侧', '收盘总是落在全天区间正中间的那个位置附近徘徊', '成交量显著低于二十日均量的水平', '上下影线等长的完美对称形态'], answer: 0, explain: 'Dalton 原文：The open forms the upper or lower extreme in the large majority of cases——判型第③问就是它。' },
   { q: '双分布趋势日的关键战术位是：', options: ['第二分布的边缘——中途歇脚处的加仓位', '开盘第一根K线的高点——突破就全仓进', '全天最低点——跌破止损位反手做空', '午盘整点——时钟一到就下单入场'], answer: 0, explain: '趋势中途暂停建第二个价值区再续一段；把歇脚误判成反转会被第二段打穿。' },
   { q: '「常态日」这个名字的陷阱在于：', options: ['它其实是少数派——常态日反而是例外', '它只出现在期货市场股票没有', '它必然会演变成趋势日所以需要追入进去才行', '它只能在周线图上被识别出来'], answer: 0, explain: 'Dalton 原文提醒 the label is misleading：名为常态，实为少数——别默认每天都是它。' },
