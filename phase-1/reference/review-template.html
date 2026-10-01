@@ -21,6 +21,11 @@
 .rv-log table { width: 100%; }
 .rv-log td { border: 1px solid var(--line); padding: .45rem .6rem; font-size: .85rem; }
 .rv-log td:first-child { white-space: nowrap; font-family: var(--sans); font-size: .78rem; color: var(--muted); width: 6.5rem; }
+/* 票 052：窄屏解除双 min-width 叠加（375px 溢出来源） */
+@media (max-width: 767.98px) {
+  .rv-item .q, .rv-item .hint { min-width: 0; text-align: left; }
+  .rv-item { flex-wrap: wrap; }
+}
 .et-row td { height: 1.6rem; }
 @media print {
   body { font-size: 10.5pt; max-width: none; padding: 0; }
