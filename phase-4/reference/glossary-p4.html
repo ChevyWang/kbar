@@ -13,6 +13,11 @@
   text-decoration: none; border: 1px solid var(--line); border-radius: 99px;
   padding: .18rem .7rem; background: #fff; }
 .gloss-nav a:hover { border-color: var(--ink); }
+.gloss-search { margin: .9rem 0 0; font-family: var(--sans); }
+.gloss-search input { width: min(24rem, 100%); padding: .45rem .8rem; font: inherit; font-size: .9rem;
+  border: 1.5px solid var(--line); border-radius: 8px; min-height: 36px; background: #fff; }
+.gloss-search input:focus-visible { outline: 3px solid #2255bb; outline-offset: 2px; }
+.gloss-search span { font-size: .78rem; color: var(--muted); margin-left: .6rem; }
 h2 { scroll-margin-top: 4.2rem; }
 h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
@@ -42,7 +47,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .bdg.p5 { background: #a44a3f; }
 .bdg.p6 { background: #0f4c81; }
 @media print {
-  .gloss-nav { display: none; }
+  .gloss-nav, .gloss-search { display: none; }
   .gloss-grid { grid-template-columns: 1fr 1fr; gap: .4rem .8rem; }
   .term { border: .5pt solid #999; }
 }
@@ -55,6 +60,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
   <p class="sub">Phase 4 十课的新词，出处课标在词尾；核心词附判据、反例与易混、统计口径与出现课次。前面阶段的全部词汇见 <a href="../../glossary.html">全站术语手册</a>。</p>
 </header>
 <nav class="gloss-nav"><a href="#g-p4-0">系统与执行</a><a href="#g-p4-1">数学与风控</a><a href="#g-p4-2">微观结构与验证</a></nav>
+
 <h2 id="g-p4-0"><span class="no">§</span>系统与执行<a class="top" href="#top">↑</a></h2>
 <dl class="gloss-grid"><div class="term" id="t-Setup候场条件"><dt>Setup（候场条件）<span class="bdg p4">P4</span><span class="en">Setup</span></dt><dd>入场前必须全部满足的客观条件清单。三条标准：完全客观（两人同答）、预先写死、错了会被打脸。<span class="src">4001</span></dd></div><div class="term" id="t-触发器"><dt>触发器<span class="bdg p4">P4</span><span class="en">Trigger</span></dt><dd>setup 条件中被“等待”的最后一项（如收盘创十根新高）——它把候场变成动作。<span class="src">4001</span></dd></div><div class="term" id="t-五步决策链"><dt>五步决策链<span class="bdg p4">P4</span><span class="en">Grimes' trade sequence</span></dt><dd>setup → 入场 → 初始止损 → 目标 → 仓位。五点全部盘前有答案，盘中只执行。<span class="src">4001（Grimes Part III）</span></dd></div><div class="term" id="t-训练者一号"><dt>训练者一号<span class="bdg p4">P4</span><span class="en">Trainer No.1</span></dt><dd>价格行为教学规则。v1、v2.0与修正后的v2.1研究结果分别存档；研究代理毛R不等于普通主板现金执行。主板执行情景另按T+1、数量、费用与回报核验。<span class="src">4001–4010</span></dd></div><div class="term" id="t-逆向选择限价单"><dt>逆向选择（限价单）<span class="bdg p4">P4</span><span class="en">Adverse selection</span></dt><dd>成交与未成交样本可能系统性不同。比较须固定信号、有效期、撮合与成本，不能预设所有限价单一定较差。历史v1子样本不为新版成绩背书。<span class="src">4002</span></dd></div><div class="term" id="t-结构止损"><dt>结构止损<span class="bdg p4">P4</span><span class="en">Structural stop</span></dt><dd>止损放在论点死亡线（如回调摆动低点），而非金额或百分比算术位——先问“错在哪”，再算“亏多少”。<span class="src">4003</span></dd><dd class="ext"><span class="lbl">判据</span>止损=论点的死亡线：把每个 setup 翻译成一句话论点，价格到那里论点已被市场否认（H2 回调恢复→跌破回调摆动低点；Spring→跌破 spring 低点；突破入场→跌回突破位内侧；区间下沿买入→收盘跌出区间）。放在结构位上、且距离落在可承受带宽（实例 1%–12%，风险/入场>12% 直接放弃）才交易。论证用收盘语言、执行用触价语言，同课两种语言分开写。</dd><dd class="ext"><span class="lbl">反例与易混</span>金额止损三问题：与论点无关（可能恰在<a class="xl" href="#t-噪音带">噪音带</a>里）、每天漂移、把「错在哪/亏多少」搅成一个——分工：结构位回答错在哪，仓位回答亏多少（金额约束作过滤器或仓位变量，不作价格位置）。初始止损不许动：浮亏下挪/删除/小赚上移保本=换了一个未经检查的新 setup；想改规则，复盘时改、下一笔生效。止损必须设在「还能成交」的地方（跌停封死/T+1 首日/跳空穿越的现实约束）。</dd><dd class="ext"><span class="lbl">统计</span>第 4003 课双结局案例：紧止损（入场 −1%）当日被 19.22 的回踩击穿；结构止损（摆动低点 18.14）存活到 +2R 达标——紧止损死于噪音带。</dd><dd class="ext"><span class="lbl">课次</span><a class="cs" href="../lessons/4003-initial-stop.html" title="第 4003 课 · 初始止损：结构止损的艺术">4003</a></dd><dd class="ext"><span class="lbl">带走</span><b>止损放在论点死亡线（如回调摆动低点），而非金额或百分比算术位——先问“错在哪”，再算“亏多少”。</b></dd></div><div class="term" id="t-噪音带"><dt>噪音带<span class="bdg p4">P4</span><span class="en">Noise band</span></dt><dd>入场价附近正常呼吸的波动范围。止损设在带内=把生死交给随机（紧止损死法）。<span class="src">4003</span></dd></div><div class="term" id="t-三族出场"><dt>三族出场<span class="bdg p4">P4</span><span class="en">Exit families</span></dt><dd>目标（确定性，砍右尾）/跟踪（右尾，付胜率）/时间（资金效率）——出场是政策不是动作，同时改写期望公式四个变量。<span class="src">4004</span></dd></div><div class="term" id="t-合流"><dt>合流<span class="bdg p4">P4</span><span class="en">Confluence</span></dt><dd>两把以上尺子（量度目标/高度投影/Profile 边缘/回撤比例）量出同一价格带（容差约 0.5%）——单独不下注，合流才加权。即 Phase 0 的「证据重叠」（0003 课），同一概念。<span class="src">4005</span></dd></div></dl>
 <h2 id="g-p4-1"><span class="no">§</span>数学与风控<a class="top" href="#top">↑</a></h2>
