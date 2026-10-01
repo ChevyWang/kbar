@@ -13,6 +13,11 @@
   text-decoration: none; border: 1px solid var(--line); border-radius: 99px;
   padding: .18rem .7rem; background: #fff; }
 .gloss-nav a:hover { border-color: var(--ink); }
+.gloss-search { margin: .9rem 0 0; font-family: var(--sans); }
+.gloss-search input { width: min(24rem, 100%); padding: .45rem .8rem; font: inherit; font-size: .9rem;
+  border: 1.5px solid var(--line); border-radius: 8px; min-height: 36px; background: #fff; }
+.gloss-search input:focus-visible { outline: 3px solid #2255bb; outline-offset: 2px; }
+.gloss-search span { font-size: .78rem; color: var(--muted); margin-left: .6rem; }
 h2 { scroll-margin-top: 4.2rem; }
 h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
@@ -42,7 +47,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .bdg.p5 { background: #a44a3f; }
 .bdg.p6 { background: #0f4c81; }
 @media print {
-  .gloss-nav { display: none; }
+  .gloss-nav, .gloss-search { display: none; }
   .gloss-grid { grid-template-columns: 1fr 1fr; gap: .4rem .8rem; }
   .term { border: .5pt solid #999; }
 }
@@ -55,6 +60,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
   <p class="sub">Phase 5 六课的新词，出处课标在词尾。前面阶段的全部词汇见 <a href="../../glossary.html">全站术语手册</a>。</p>
 </header>
 <nav class="gloss-nav"><a href="#g-p5-0">思维与评价</a><a href="#g-p5-1">行为金融（学术第三柱）</a><a href="#g-p5-2">流程与协议</a><a href="#g-p5-tilt">tilt 系统（Tendler，5007 课）</a></nav>
+
 <h2 id="g-p5-0"><span class="no">§</span>思维与评价<a class="top" href="#top">↑</a></h2>
 <dl class="gloss-grid"><div class="term" id="t-概率思维"><dt>概率思维<span class="bdg p5">P5</span><span class="en">Probabilistic mindset</span></dt><dd>按事件与样本不确定性思考。30笔等数字只是练习组织方式，不保证优势兑现或排除连续亏损。<span class="src">5001（Douglas）</span></dd></div><div class="term" id="t-五大基本事实"><dt>五大基本事实<span class="bdg p5">P5</span><span class="en">Five fundamental truths</span></dt><dd>Douglas 概率思维的五块基石：任何事都可能发生/不需要预测也能赚/输赢随机分布/优势只是概率倾斜/每刻独一无二。<span class="src">5001</span></dd></div><div class="term" id="t-样本思维vs单笔思维"><dt>样本思维 vs 单笔思维<span class="bdg p5">P5</span><span class="en">Sample vs single-trade thinking</span></dt><dd>赌场按样本（单注是噪音），散户按单笔（每笔都是审判）——评价周期：30 笔/一季 vs 今天。<span class="src">5001</span></dd></div><div class="term" id="t-结果偏差"><dt>结果偏差<span class="bdg p5">P5</span><span class="en">Resulting</span></dt><dd>用结果质量评判决策质量。扑克术语带入交易：止损被打（好决策坏结果）与扛单回本（坏决策好结果）都常见。<span class="src">5002（Duke）</span></dd></div><div class="term" id="t-决策质量记分卡"><dt>决策质量记分卡<span class="bdg p5">P5</span><span class="en">Decision quality scorecard</span></dt><dd>检查计划与行为差异的课程记录工具；关键违规不能被总分抵消，高执行分既不证明系统有效，也不是升仓资格。<span class="src">5002</span></dd></div></dl>
 <h2 id="g-p5-1"><span class="no">§</span>行为金融（学术第三柱）<a class="top" href="#top">↑</a></h2>
