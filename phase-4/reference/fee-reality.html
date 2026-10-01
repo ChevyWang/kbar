@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>成本的现实 — K线训练营</title><link rel="stylesheet" href="../assets/course.css"></head>
+<body>
+<header class="course"><div class="kicker">K线训练营 · 研究参考</div><h1>成本的现实：四市场费用、净期望符号与对账清单</h1>
+<p class="sub">课程的现行研究参照是毛 R（+0.0908R/笔，594 笔，不含费用）。本页把「费用能不能吃掉它」变成可以现场验算的算术：先给四市场费用的 2026-10 核实口径，再算净期望符号，最后给基准比较、税务与自查清单。费率随时会变——<b>每项以官方/平台公示为准，本页只保证口径与算法正确</b>。</p></header>
+
+<h2 id="fees">一、四市场费用表（2026-10-01 核实）</h2>
+<p>读法：先认「双边还是单边、按金额还是按股」，再套自己的实际档位。表中「典型往返」= 买卖各一次的合计费率，按标的金额计，<b>不含价差与滑点</b>。</p>
+<table>
+<tr><th>市场</th><th>组成项</th><th>2026 现行口径</th><th>典型往返</th></tr>
+<tr><td rowspan="3"><b>A股</b>（普通主板现金）</td><td>佣金</td><td>双边各约 0.01%–0.03%（常见万 2.5），<b>最低 5 元</b>；含经手费证管费等规费（约万 0.687）。以券商公示为准</td><td rowspan="3">≈0.10%（万 2.5 档：佣金 0.05% + 印花税 0.05% + 过户费 0.002%）</td></tr>
+<tr><td>印花税</td><td>卖出单边 0.05%（2023-08-28 起减半，财政部/税务总局公告 2023 年第 39 号），买入不收</td></tr>
+<tr><td>过户费</td><td>双边各 0.001%（中国结算）。以官方公告为准</td></tr>
+<tr><td rowspan="3"><b>美股</b></td><td>佣金</td><td>主流零售券商股票/ETF $0（Fidelity/Schwab/IBKR Lite 等），以券商为准</td><td rowspan="3">≈0.003%（监管费为主，<b>不含价差</b>；零佣金不等于零成本）</td></tr>
+<tr><td>SEC Section 31 费</td><td>卖出 $20.60/百万美元（≈0.0021%，2026-04-04 起；<a href="https://www.sec.gov/rules-regulations/fee-rate-advisories/2026-2">SEC 费率公告</a>）</td></tr>
+<tr><td>FINRA TAF</td><td>卖出 $0.000195/股（封顶约 $9.79/笔）；<b>2026-10-01 至 12-31 暂免为 $0</b>，2027-01 恢复（<a href="https://www.finra.org/rules-guidance/rule-filings/sr-finra-2026-021">FINRA SR-FINRA-2026-021</a>）</td></tr>
+<tr><td rowspan="2"><b>加密</b>（现货）</td><td>币安基础档</td><td>taker/maker 各 0.10%（BNB 抵扣 0.075%）；VIP 随量降（<a href="https://www.binance.com/en/fee/trading">币安费率页</a>）</td><td rowspan="2">0.20%（币安基础 taker）至 1.20%（<a href="https://help.coinbase.com/exchange/trading-and-funding/exchange-fees">Coinbase Advanced</a> 基础档 taker 0.60%×2；简单界面更高）</td></tr>
+<tr><td>档位差</td><td>平台间差 2–6 倍是常态；资金费率是衍生品项目，现金轨不涉及。以平台公示为准</td></tr>
+<tr><td rowspan="2"><b>期货</b>（境内）</td><td>手续费</td><td>按品种：螺纹钢交易所万 1/边（上期所）；股指万 0.23/边、平今更高（中金所）；期货公司普遍加收</td><td rowspan="2">≈0.02%（螺纹交易所档×2，不含加收）；保证金另计：螺纹交易所约 7% + 期货公司加收（常见 +3% 上下）</td></tr>
+<tr><td>保证金</td><td>合约乘数×价格×保证金比例；杠杆与强平规则见 <a href="../lessons/4008-microstructure.html#s05">4008 第 05 节</a>。以交易所与期货公司公示为准</td></tr>
+</table>
+<div class="note"><b>小仓位放大器。</b>A股最低 5 元佣金意味着 1 万元以下的单子佣金被抬高：1 万元仓位单边 5 元=0.05%，往返 0.10%——仅佣金一项就翻倍。微型账户先算最低佣金再谈费率。</div>
+
+<h2 id="sign">二、净期望符号：现场验算</h2>
+<p>毛期望 G=+0.0908R（v2.1 参照，<b>不是优势认证</b>）。设止损距离为 d（入场价到止损价的百分比，参数不是统计），往返成本为 C（上表典型值），则每笔净期望 ≈ <b>G − C/d</b>。盈亏平衡点是 C* = G×d：</p>
+<table>
+<tr><th>止损距离 d</th><th>2%</th><th>4%</th><th>6%</th><th>10%</th></tr>
+<tr><td><b>盈亏平衡往返成本 C*</b></td><td class="num">0.182%</td><td class="num">0.363%</td><td class="num">0.545%</td><td class="num">0.908%</td></tr>
+</table>
+<p>把第一表的典型往返成本代进去，净期望长这样（正号=费用后仍为正，负号=费用已把毛期望吃穿）：</p>
+<table>
+<tr><th>典型档位（往返 C）</th><th>d=2%</th><th>d=4%</th><th>d=6%</th><th>d=10%</th></tr>
+<tr><td>A股 万2.5 全费（0.102%）</td><td class="num">+0.0398R</td><td class="num">+0.0653R</td><td class="num">+0.0738R</td><td class="num">+0.0806R</td></tr>
+<tr><td>美股 零佣金+监管费（0.0025%，不含价差）</td><td class="num">+0.0896R</td><td class="num">+0.0902R</td><td class="num">+0.0904R</td><td class="num">+0.0906R</td></tr>
+<tr><td>加密 币安基础 taker×2（0.20%）</td><td class="num">−0.0092R</td><td class="num">+0.0408R</td><td class="num">+0.0575R</td><td class="num">+0.0708R</td></tr>
+<tr><td>加密 Coinbase Advanced 基础 taker×2（1.20%）</td><td class="num">−0.5092R</td><td class="num">−0.2092R</td><td class="num">−0.1092R</td><td class="num">−0.0292R</td></tr>
+<tr><td>期货 螺纹 交易所档×2（0.02%）</td><td class="num">+0.0808R</td><td class="num">+0.0858R</td><td class="num">+0.0875R</td><td class="num">+0.0888R</td></tr>
+</table>
+<p>三个结论直接从表里读出来：<b>费用真的能翻转符号</b>（Coinbase 基础档在四档止损距离下全负，币安基础档在 2% 窄止损下也翻负）；<b>窄止损对费用最敏感</b>（同样成本，d 减半净期望掉的幅度翻倍）；<b>市场与档位的选择本身就是一笔期望</b>。这解释了 4002 那句「成本足以改变微小正均值的符号」——现在它有算术了。注意边界：d 是你的参数（不是 v2.1 的统计量），价差与滑点未计入，本表是验算工具不是任何市场的净收益证明。</p>
+
+<h2 id="benchmark">三、和基准比，而不是和零比</h2>
+<p>R 语言只回答「我的系统自身赚不赚」；生存还要求回答「同一笔钱放着不动会不会更好」。验证包（4010）里加一列同期基准：A股用对应指数、美股用 SPY、加密用 BTC/ETH、期货用闲置保证金的无风险收益。比较三件必须一起报：<b>区间收益、最大回撤、投入时间</b>——只报收益不报回撤与时间，是给自己发的免检牌照。跑输基准不是耻辱，不知道自己跑输才是：它决定你该继续训练，还是承认当前版本不具备替换持有的资格。</p>
+
+<h2 id="tax">四、税务：净期望的直接项</h2>
+<p>本页不构成税务建议，只登记与本课程交易直接相关的项目，执行前以税务机关口径为准。A股：印花税已入费用表；<b>股息红利差别税率</b>按持股期（1 年以上免、1 月至 1 年 10%、1 月以内 20%，以官方为准）——持仓周期设计会影响这一项。美股（含中国居民投资美股）：资本利得与本国税务居民规则的申报义务、亏损抵扣的<b>洗售规则（wash sale）</b>限制（同标的 30 天内先卖后买，亏损抵扣受限），以税务顾问与官方指引为准。加密与期货：各自辖区口径差异大，交易前单独核实。</p>
+
+<h2 id="checklist">五、动钱前的五问清单</h2>
+<ol>
+<li>我的市场<b>实际往返成本</b>是多少（含最低佣金/档位），代入我的 d 后净期望符号是什么？</li>
+<li>我的 d 是自己的统计中位数还是拍的参数？若是拍的，先回 4010 冻结再算。</li>
+<li>小仓位下最低佣金把我的实际费率抬到了多少？</li>
+<li>同期基准（指数/无风险）收益、回撤、时间三件我都能报吗？</li>
+<li>持有期跨税务档位了吗（红利税率/洗售窗口）？</li>
+</ol>
+<p>五问全答得出，才有资格谈 5006 的三态边界；答不出，答案在 4010 的验证包里，不在感觉里。</p>
+
+<footer class="course"><div class="nav"><a href="../index.html">返回 P4</a><a href="../lessons/4008-microstructure.html">4008 市场适配</a><a href="../lessons/4010-backtest-graduation.html">4010 验证</a><a href="../../phase-5/reference/real-money-bridge.html">真实资金过渡协议（P5）</a></div></footer>
+<script src="../assets/nav.js"></script></body></html>
