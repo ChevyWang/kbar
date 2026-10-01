@@ -10,7 +10,9 @@
  * 无障碍（批次 D）：解析区 aria-live=polite；答完焦点交"下一题"、换题后焦点落新题第一项、
  *   交卷页焦点落首要动作；按钮触控目标 ≥44px（样式注入）。
  * 学习记录（批次 C）：每次作答写入本地 kbar-quizlog::（课号+题号+对错+时间戳）；
- *   交卷页显示「错题重练」——按 1/3/7/21 天间隔复习到期题（含已纠正题）（答对升档、再错归零）。
+ *   交卷页显示「到期复习」——按 1/3/7/21/60 天间隔复习到期题（含已纠正题）（答对升档、再错归零）；
+ *   当场另可「重练本次错题」（练习模式，不计档不改复习档）。票 053：版本指纹只看题库本身——
+ *   确定性题库自动按题库内容指纹；随机生成题库（P0 0001–0006 等）必须在 cfg.version 传静态库号。
  *   记录仅存本浏览器，可随时清空；不含任何个人信息。
  */
 (function () {
@@ -26,7 +28,7 @@
   }
 
   /* ---- 学习记录层（纯本地，失败静默降级） ---- */
-  var LADDER = [1, 3, 7, 21]; // 天
+  var LADDER = [1, 3, 7, 21, 60]; // 天（票 053：加 60 天档，控制长期复习债务）
   function store(key, val) {
     try {
       if (arguments.length === 2) { localStorage.setItem(key, JSON.stringify(val)); return val; }
@@ -44,10 +46,10 @@
   function logKey() { return 'kbar-quizlog::' + lessonId(); }
   function sumKey() { return 'kbar-quizsum::' + lessonId(); }
   function getState() { return store(logKey()) || { schema: 2, events: [], boxes: {}, archives: [] }; }
-  // Fingerprint source templates, never randomized question text or chart instances.
-  function templateVersion() {
-    var text = Array.from(document.scripts).filter(function (s) { return !s.src; }).map(function (s) { return s.textContent; }).join('\n');
-    return 'template-' + fingerprint(text);
+  // Fingerprint the question bank itself, never the whole page (票 053：文案微调不再清空复习档)。
+  // 随机生成题库（题面/图每次加载变化）不得走此路径，必须在 Quiz.mount 的 cfg.version 传静态库号。
+  function templateVersion(cfg) {
+    return 'bank-' + fingerprint(JSON.stringify(cfg.questions));
   }
   function fingerprint(text) {
     var hash = 2166136261;
@@ -117,7 +119,7 @@
       if (v.schema !== undefined && v.schema !== 2) throw Error('不支持的记录版本');
       if (v.schema === 2 && (typeof v.version !== 'string' || !Array.isArray(v.archives))) throw Error('记录版本或历史档案损坏');
       Object.values(v.boxes).forEach(function (b) {
-        if (!plain(b) || !Number.isInteger(b.box) || b.box < 0 || b.box > 4 || !Number.isFinite(b.lastTs) || typeof b.lastOk !== 'boolean') throw Error('复习记录损坏');
+        if (!plain(b) || !Number.isInteger(b.box) || b.box < 0 || b.box > 5 || !Number.isFinite(b.lastTs) || typeof b.lastOk !== 'boolean') throw Error('复习记录损坏');
         if (b.question && (!plain(b.question) || typeof b.question.q !== 'string' || !Array.isArray(b.question.options) || b.question.options.some(function (o) { return typeof o !== 'string'; }) || !Number.isInteger(b.question.answer) || b.question.answer < 0 || b.question.answer >= b.question.options.length)) throw Error('题面记录损坏');
       });
       if (v.archives) v.archives.forEach(log);
@@ -229,9 +231,10 @@
       st.textContent = '.quiz button{min-height:44px;min-width:44px}';
       document.head.appendChild(st);
     }
-    prepare(String(cfg.version || templateVersion()));
+    prepare(String(cfg.version || templateVersion(cfg)));
     var order = shuffle(cfg.reviewIndices || cfg.roundIndices || cfg.questions.map(function (_, i) { return i; }));
-    var idx = 0, correct = 0, reviewing = !!cfg.review;
+    var idx = 0, correct = 0, reviewing = !!cfg.review, practicing = !!cfg.practice;
+    var wrongIdx = []; // 本次答错的题（当场重练用，票 053）
     var advanced = false; // 本次重渲染是否由交互触发（首渲染/重挂载不抢页面焦点）
 
     function render() {
@@ -247,7 +250,7 @@
       root.innerHTML =
         ((getState().archives || []).length ? '<p class="quiz-archive">历史归档已保留；题库版本或题号无法可靠映射，请重新作答补证。</p>' : '') +
         (!reviewing && idx === 0 && dueQuestions(cfg.questions).length ? '<button class="review-due">到期复习（含已纠正题）</button>' : '') +
-        '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (reviewing ? '（错题重练）' : '') + '</div>' +
+        '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (practicing ? '（练习 · 不计档）' : reviewing ? '（到期复习）' : '') + '</div>' +
         '<div class="q-text">' + q.q + '</div>' +
         (q.stage ? '<div class="q-stage">' + q.stage + '</div>' : '') +
         '<div class="opts">' + opts.map(function (o, i) {
@@ -263,7 +266,7 @@
       var next = root.querySelector('.next');
       root.querySelectorAll('.opt').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          if (!root.querySelector('.opt:disabled')) {
+          if (!practicing && !root.querySelector('.opt:disabled')) {
             recordAnswer(questionId(q, order[idx]), opts[+btn.dataset.i].ok, q.tag, q, opts[+btn.dataset.i].label);
           }
           var pick = opts[+btn.dataset.i];
@@ -271,7 +274,7 @@
           root.querySelectorAll('.opt').forEach(function (b, i) {
             if (opts[i].ok) b.classList.add('correct');
           });
-          if (!pick.ok) btn.classList.add('wrong'); else correct++;
+          if (!pick.ok) { btn.classList.add('wrong'); wrongIdx.push(order[idx]); } else correct++;
           explain.innerHTML = (pick.ok ? '✓ 对了。' : '✗ 不对。') + (q.explain || '');
           explain.classList.add('show');
           root.querySelector('.score').textContent = '已答对 ' + correct + ' / ' + order.length;
@@ -286,25 +289,33 @@
 
     function finish() {
       var v = (cfg.verdicts || []).find(function (x) { return correct >= x[0]; });
-      if (!reviewing) recordSession(correct, order.length);
+      if (!reviewing && !practicing) recordSession(correct, order.length);
       var due = dueQuestions(cfg.questions);
       root.innerHTML =
         '<div class="verdict">' +
         '<div class="big">' + correct + ' / ' + order.length + '</div>' +
-        '<p>' + (v ? v[1] : '') + '</p><p>以上是课内检索练习结果，不授予核心能力或实盘资格。里程碑依据另见本阶段实操与专题任务。</p>' +
-        (due.length && !reviewing
-          ? '<button class="next review-start">错题重练（今日到期 ' + due.length + ' 题，答对升档 1→3→7→21 天）</button>'
+        (practicing
+          ? '<p>练习完成——本次不计档、不改复习到期日。错了没关系，明天到期复习还会见到它。</p>'
+          : '<p>' + (v ? v[1] : '') + '</p><p>以上是课内检索练习结果，不授予核心能力或实盘资格。里程碑依据另见本阶段实操与专题任务。</p>') +
+        (!practicing && wrongIdx.length
+          ? '<button class="next retry-wrong">当场重练本次错题（' + wrongIdx.length + ' 题 · 练习不计档）</button>' : '') +
+        (due.length && !reviewing && !practicing
+          ? '<button class="next review-start">到期复习（今日 ' + due.length + ' 题，答对升档 1→3→7→21→60 天）</button>'
           : '') +
-        '<button class="next">' + (reviewing ? '返回正常练习' : '再练一遍（重排顺序）') + '</button></div>';
+        '<button class="next">' + (reviewing || practicing ? '返回正常练习' : '再练一遍（重排顺序）') + '</button></div>';
       mountBackup(root);
+      var rw = root.querySelector('.retry-wrong');
+      if (rw) rw.addEventListener('click', function () {
+        mount(sel, Object.assign({}, cfg, { reviewIndices: wrongIdx.slice(), review: true, practice: true, focus: true }));
+      });
       var rs = root.querySelector('.review-start');
       if (rs) rs.addEventListener('click', function () {
         mount(sel, Object.assign({}, cfg, { reviewIndices: due, review: true, focus: true }));
       });
-      root.querySelector('.next:not(.review-start)').addEventListener('click', function () {
-        mount(sel, Object.assign({}, cfg, { reviewIndices: null, review: false, focus: true }));
+      root.querySelector('.next:not(.review-start):not(.retry-wrong)').addEventListener('click', function () {
+        mount(sel, Object.assign({}, cfg, { reviewIndices: null, review: false, practice: false, focus: true }));
       });
-      if (advanced) { advanced = false; var fb = root.querySelector('.review-start') || root.querySelector('.next'); if (fb) fb.focus(); } // 交卷页焦点落在首要动作
+      if (advanced) { advanced = false; var fb = root.querySelector('.review-start') || root.querySelector('.retry-wrong') || root.querySelector('.next'); if (fb) fb.focus(); } // 交卷页焦点落在首要动作
     }
 
     render();

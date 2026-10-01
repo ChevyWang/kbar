@@ -258,7 +258,7 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
 .schem .schem-cap { font-size: .88rem; color: var(--muted); margin-top: .5rem; font-family: var(--sans); line-height: 1.6; text-align: left; }
 
 /* ---------- v1.7（批次 D 移动端，2026-09-11）：<768px 响应式（纯 CSS，无 JS） ----------
- * 分层裁决：本块随 phase-0 先行落地；phase1–6 的 course.css 待推广批次同步，期间两版有意分叉。
+ * 推广（票 052，2026-10-01）：本块已同步至 phase1–6 course.css；移动块以 phase-0 为权威源，改动须同步全部副本（lib/README 有约定）。
  * 版心：46rem 收 fluid（padding 1rem / max-width 100%），正文行宽仍以 46rem 封顶；
  * 图表：candles.js 的 SVG（[data-kbar-chart]）不再整体缩到不可读，改为容器横向滚动
  *       + 纯 CSS「← 滑动查看完整图表 →」提示（scroll() 时间线：仅真的可滚时出现，滚到底收起；
@@ -307,4 +307,13 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
 @keyframes kbar-hint {
   0%, 86% { opacity: 1; height: 1.3rem; }
   100% { opacity: 0; height: 0; }
+}
+
+/* ---------- v1.8（票 052，2026-10-01）：减动效偏好 ----------
+ * 自动播放图表提示（kbar-hint）与平滑滚动在 prefers-reduced-motion 下停用；逐根步进等功能不受影响。 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .pb-chart::after,
+  .term-schem::after,
+  figure:has(> svg[data-kbar-chart])::before { animation: none !important; height: 0; opacity: 0; }
 }
