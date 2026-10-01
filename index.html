@@ -271,15 +271,15 @@
       var latest = attempts[0];
       if (latest && /^M[0-6]\./.test(latest.milestone || '')) {
         var key = 'P' + latest.milestone.slice(1, 2), stage = stages[key];
-        var status = latest.unknown ? '待换题：自动规则无法判断' : latest.hinted ? '待独立检验：本次包含辅助' : latest.independent ? '已提交独立答卷，待核对' : '已有记录，待补证';
+        var status = latest.unknown ? '上次记了「不知道」——换一道没见过的题再答一次' : latest.hinted ? '上次看过示范——换题独立作答，才算独立证据' : latest.independent ? '已有独立答卷——隔天换题复核一次' : '已有记录——还缺一次独立通过';
         return { stage: key, title: '继续 ' + key + ' 的阶段实操', lede: '沿用已有记录，从当前阶段继续形成可核查的学习证据。', state: status, label: '继续阶段实操', href: stage.mastery, note: '页面只读取本地记录；查看首页不会新增曝光、答题或完成证据。' };
       }
       var pendingStage = stageFromKeys(archive && archive.drafts);
       if (pendingStage) {
-        return { stage: pendingStage, title: '继续 ' + pendingStage + ' 的学习任务', lede: '发现尚未收口的草稿或已曝光案例；继续当前阶段，不把它当作新的独立任务。', state: '待继续：草稿或已曝光案例', label: '继续阶段实操', href: stages[pendingStage].mastery, note: '原草稿与曝光记录会保留；查看首页不会新增学习证据。' };
+        return { stage: pendingStage, title: '继续 ' + pendingStage + ' 的学习任务', lede: '发现尚未收口的草稿或已曝光案例；继续当前阶段，不把它当作新的独立任务。', state: '草稿没写完——回去收口，不算新任务', label: '继续阶段实操', href: stages[pendingStage].mastery, note: '原草稿与曝光记录会保留；查看首页不会新增学习证据。' };
       }
       if (archive && archive.exposure && Object.keys(archive.exposure).length) {
-        return { stage: 'COURSE', title: '核对已有学习记录', lede: '发现已曝光案例，但当前记录没有保存所属阶段；先核对学习进度，不猜测阶段。', state: '待核对：已有曝光记录', label: '打开学习进度', href: 'progress.html', note: '曝光不等于完成或独立证据；确认阶段后再继续。' };
+        return { stage: 'COURSE', title: '核对已有学习记录', lede: '发现已曝光案例，但当前记录没有保存所属阶段；先核对学习进度，不猜测阶段。', state: '有已看过的案例——先核对进度，不算独立证据', label: '打开学习进度', href: 'progress.html', note: '曝光不等于完成或独立证据；确认阶段后再继续。' };
       }
       var hasPractice = false;
       try {
@@ -288,7 +288,7 @@
           if (/^kbar-(quizsum|quizlog)::/.test(name)) { hasPractice = true; }
         }
       } catch (e) {}
-      return hasPractice ? { stage: 'P0', title: '把课内练习收束为可核查证据', lede: '已发现课内练习记录；下一步进入 P0 阶段实操，区分看过示范与独立检验。', state: '下一步做阶段实操', label: '进入 P0 阶段实操', href: stages.P0.mastery, note: '课内练习分数不自动替代阶段实操中的独立证据。' } : first;
+      return hasPractice ? { stage: 'P0', title: '把课内练习收束为可核查证据', lede: '已发现课内练习记录；下一步进入 P0 阶段实操，区分看过示范与独立检验。', state: '课内练过了——下一步做阶段实操', label: '进入 P0 阶段实操', href: stages.P0.mastery, note: '课内练习分数不自动替代阶段实操中的独立证据。' } : first;
     }
     function statusForStage(key) {
       var archive = readJson('kbar-mastery::v1');
@@ -296,7 +296,7 @@
       var attempts = archive && Array.isArray(archive.attempts) ? archive.attempts.filter(function (item) { return String(item.milestone || '').indexOf(prefix) === 0; }) : [];
       attempts.sort(function (a, b) { return String(b.submittedAt || '').localeCompare(String(a.submittedAt || '')); });
       var latest = attempts[0];
-      if (latest) return latest.unknown ? '待换题' : latest.hinted ? '待独立检验' : latest.independent ? '待核对' : '已有记录';
+      if (latest) return latest.unknown ? '换题再答' : latest.hinted ? '需独立作答' : latest.independent ? '待跨日复核' : '已有记录';
       var drafts = archive && archive.drafts && typeof archive.drafts === 'object' ? Object.keys(archive.drafts) : [];
       for (var i = 0; i < drafts.length; i += 1) if (drafts[i].indexOf(prefix) === 0) return '草稿待继续';
       return '未开始';
