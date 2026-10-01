@@ -13,6 +13,11 @@
   text-decoration: none; border: 1px solid var(--line); border-radius: 99px;
   padding: .18rem .7rem; background: #fff; }
 .gloss-nav a:hover { border-color: var(--ink); }
+.gloss-search { margin: .9rem 0 0; font-family: var(--sans); }
+.gloss-search input { width: min(24rem, 100%); padding: .45rem .8rem; font: inherit; font-size: .9rem;
+  border: 1.5px solid var(--line); border-radius: 8px; min-height: 36px; background: #fff; }
+.gloss-search input:focus-visible { outline: 3px solid #2255bb; outline-offset: 2px; }
+.gloss-search span { font-size: .78rem; color: var(--muted); margin-left: .6rem; }
 h2 { scroll-margin-top: 4.2rem; }
 h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
@@ -42,7 +47,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
 .bdg.p5 { background: #a44a3f; }
 .bdg.p6 { background: #0f4c81; }
 @media print {
-  .gloss-nav { display: none; }
+  .gloss-nav, .gloss-search { display: none; }
   .gloss-grid { grid-template-columns: 1fr 1fr; gap: .4rem .8rem; }
   .term { border: .5pt solid #999; }
 }
@@ -55,6 +60,7 @@ h2 .top { float: right; font-size: .8rem; color: var(--faint); border: none; }
   <p class="sub">Phase 6 四课的新词，出处课标在词尾。前面阶段的全部词汇见 <a href="../../glossary.html">全站术语手册</a>。</p>
 </header>
 <nav class="gloss-nav"><a href="#g-p6-output">输出（Phase 6）</a></nav>
+
 <h2 id="g-p6-output"><span class="no">§</span>输出（Phase 6）<a class="top" href="#top">↑</a></h2>
 <dl class="gloss-grid"><div class="term" id="t-五段式备忘录"><dt>五段式备忘录<span class="bdg p6">P6</span><span class="en">Five-part memo</span></dt><dd>公开行情分析的骨架：结构/证据/概率/操作/风险——与 P2/P3 盲图报告量规同构，证据段最重（≥3 处具体指认）。<span class="src">6001</span></dd></div><div class="term" id="t-可证伪标题"><dt>可证伪标题<span class="bdg p6">P6</span><span class="en">Falsifiable headline</span></dt><dd>标题=可检验的判断而非悬念（「吸筹区间进入 Phase C」✓「要变盘了！」✗）——两轴矩阵的刀口对准自己。<span class="src">6001</span></dd></div><div class="term" id="t-正面镜子"><dt>正面镜子<span class="bdg p6">P6</span><span class="en">Positive mirror</span></dt><dd>Steenbarger：只记错题的日志=自我批评教练，迟早强化无能感——复盘文必须含「做对了什么（证据化）+下月改动一条」。<span class="src">6002</span></dd></div><div class="term" id="t-六段复盘模板"><dt>六段复盘模板<span class="bdg p6">P6</span><span class="en">Six-part review</span></dt><dd>候场→入场逻辑→执行时间线→结果与决策评分（分开报告互不解释）→教训→归档。全程决策质量语言，盈亏只作数据。<span class="src">6002</span></dd></div><div class="term" id="t-大纲预审"><dt>大纲预审<span class="bdg p6">P6</span><span class="en">Proposal review</span></dt><dd>MFTA 制度：开工前研究大纲（问题/数据/口径/输出/工作量）须过审——一页纸拦截三个月的沉没成本。<span class="src">6003</span></dd></div><div class="term" id="t-可退回重写"><dt>可退回重写<span class="bdg p6">P6</span><span class="en">Revise-and-resubmit</span></dt><dd>MFTA 质量机制：交付不达标打回改到过——退回是流程不是失败；社区检验的预演。<span class="src">6003</span></dd></div><div class="term" id="t-选题三型"><dt>选题三型<span class="bdg p6">P6</span><span class="en">Three research types</span></dt><dd>统计检验型/体系审计型/行为审计型——裁决器：一句话可检验+数据伸手可及，缺一换题。<span class="src">6003</span></dd></div><div class="term" id="t-教学文三件套"><dt>教学文三件套<span class="bdg p6">P6</span><span class="en">Metaphor-example-counterexample</span></dt><dd>一个比喻（外行入口）+一个真实例子（带日期）+一个反例（防混淆孪生场景）；外行测试=让对方复述，卡壳句重写。<span class="src">6004</span></dd></div></dl>
 <script src="../assets/candles.js"></script>
