@@ -215,6 +215,11 @@ ol ol, ul ul { list-style-type: lower-alpha; margin-top: .2em; }
   font: 700 .78rem/1 var(--sans); background: #fff;
 }
 .steps > li:last-child { margin-bottom: 0; }
+/* ---------- 票 061（STANDARDS D7）：段内枚举逐行化 ul.enum，标记留文内 ---------- */
+ul.enum { list-style: none; padding-left: .15rem; margin: .55rem 0; }
+ul.enum > li { margin-bottom: .35em; }
+ul.enum > li:last-child { margin-bottom: 0; }
+
 
 /* ---------- 打印 ---------- */
 /* v1.3（D8 导航）：宽屏左侧两级小节导航（nav.js 自动生成短标签），<1240px 隐藏，打印隐藏 */
