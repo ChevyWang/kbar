@@ -40,6 +40,69 @@
     document.body.insertBefore(nav, document.body.firstElementChild);
   }
 
+  /* ---- 主题三态（票 062）：auto（prefers-color-scheme）/浅/深 ----
+   * 存储 kbar-theme（auto/light/dark，与配色语义键 kbar-palette 相互独立）；
+   * auto 不落 data-theme 属性（由 CSS 媒体查询接管），light/dark 落属性；
+   * 切换派发 kbar-themechange → candles.js 全图重染；系统深浅变化同样派发。
+   * 切换钮与配色钮同族样式（右上角圆钮，print 隐藏；063 顶栏就位后吸收）。 */
+  function initTheme() {
+    if (typeof document === 'undefined' || !document.documentElement) return;
+    var KEY = 'kbar-theme';
+    var root = document.documentElement;
+    function stored() {
+      try { var t = localStorage.getItem(KEY); return t === 'light' || t === 'dark' ? t : 'auto'; } catch (e) { return 'auto'; }
+    }
+    function fire() { try { document.dispatchEvent(new CustomEvent('kbar-themechange')); } catch (e) {} }
+    function apply(t, silent) {
+      if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t);
+      else root.removeAttribute('data-theme');
+      try { localStorage.setItem(KEY, t); } catch (e) {}
+      if (!silent) fire();
+    }
+    apply(stored()); /* 初始也派发事件：手动档与系统态不一致时，先画的图表需要一次重染（恒等则无操作） */
+    try {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fire);
+    } catch (e) {}
+    if (document.getElementById('kbar-theme-toggle')) return;
+    function mount() {
+      if (document.getElementById('kbar-theme-toggle')) return;
+      function sysDark() { try { return window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { return false; } }
+      var b = document.createElement('button');
+      b.id = 'kbar-theme-toggle'; b.type = 'button';
+      b.style.cssText = 'position:fixed;top:14px;right:68px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(128,126,116,.4);border-radius:50%;background:var(--card,#fff);color:var(--ink,#1c1c1a);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+      function icon() {
+        var t = stored();
+        var svg = t === 'light'
+          ? '<circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.3">' +
+            [0, 45, 90, 135, 180, 225, 270, 315].map(function (d) {
+              var a = d * Math.PI / 180;
+              return '<line x1="' + (10 + 6.8 * Math.cos(a)).toFixed(1) + '" y1="' + (10 + 6.8 * Math.sin(a)).toFixed(1) +
+                '" x2="' + (10 + 8.8 * Math.cos(a)).toFixed(1) + '" y2="' + (10 + 8.8 * Math.sin(a)).toFixed(1) + '"/>';
+            }).join('') + '</g>'
+          : t === 'dark'
+          ? '<path d="M12.6 3.2A7.2 7.2 0 1 0 16.8 11.6 5.6 5.6 0 0 1 12.6 3.2z" fill="currentColor"/>'
+          : '<circle cx="10" cy="10" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 3.8a6.2 6.2 0 0 0 0 12.4z" fill="currentColor"/>';
+        b.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">' + svg + '</svg>';
+        var now = t === 'auto' ? ('跟随系统（当前' + (sysDark() ? '深色' : '浅色') + '）') : (t === 'light' ? '浅色' : '深色');
+        var next = t === 'auto' ? '浅色' : t === 'light' ? '深色' : '跟随系统';
+        var txt = '主题：' + now + '，点击切换为' + next + '；图表同步重绘，红涨绿跌与空心/实心不变。';
+        b.title = txt; b.setAttribute('aria-label', txt);
+      }
+      b.onclick = function () {
+        var t = stored();
+        apply(t === 'auto' ? 'light' : t === 'light' ? 'dark' : 'auto');
+        icon();
+      };
+      icon();
+      document.body.appendChild(b);
+      var st = document.createElement('style');
+      st.textContent = '@media print{#kbar-theme-toggle{display:none!important}}';
+      document.head.appendChild(st);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+    else mount();
+  }
+
   /* ---- 法务免责（每页注入） ---- */
   function injectDisclaimer() {
     if (document.getElementById('kbar-legal')) return;
@@ -164,6 +227,7 @@
     setActive();
   }
 
+  initTheme();
   injectLessonContext();
   injectDisclaimer();
   buildToc();
