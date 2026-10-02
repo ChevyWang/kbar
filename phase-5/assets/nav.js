@@ -40,6 +40,64 @@
     document.body.insertBefore(nav, document.body.firstElementChild);
   }
 
+  /* ---- 课页顶栏（票 063）：←上一课 / 课号·短题 / 下一课→ + 搜索入口 ----
+   * 清单=构建产物 assets/lesson-nav.js（单一权威源 window.KBAR_LESSON_NAV，防课序漏改；
+   * 用 script 标签加载而非 fetch——file:// 下 fetch 被 CORS 拦）。
+   * 豁免面与左目录一致：考场/exercises/data-no-toc 页不注入（防结构泄漏与盲测干扰）。
+   * 首课无 prev、末课无 next；打印隐藏。 */
+  function injectTopbar() {
+    if (typeof document === 'undefined' || !document.body) return;
+    if (document.querySelector('.kbar-topbar')) return;
+    if (document.body.hasAttribute('data-no-toc')) return;
+    var pn = location.pathname;
+    if (pn.indexOf('/exam/') >= 0 || pn.indexOf('/exercises/') >= 0) return;
+    var match = pn.match(/\/phase-([0-6])\/lessons\/([^/]+)\.html$/)
+      || pn.match(/\/phase([1-6])\/course\/lessons\/([^/]+)\.html$/);
+    if (!match) {
+      var p0 = pn.match(/\/course\/lessons\/([^/]+)\.html$/);
+      if (p0) match = ['', '0', p0[1]];
+    }
+    if (!match) return;
+    var phase = match[1], file = match[2] + '.html'; /* 正则组分不含扩展名，与清单 l.file 对齐 */
+
+    function bar(nav) {
+      if (document.querySelector('.kbar-topbar')) return;
+      var lessons = (nav && nav.lessons) || [];
+      var i = -1;
+      lessons.forEach(function (l, k) { if (l.file === file) i = k; });
+      if (i < 0) return; /* 清单未收（新页未再生成）则静默退出，不造幽灵链接 */
+      var prev = lessons[i - 1], next = lessons[i + 1], cur = lessons[i];
+      var root = pn.indexOf('/course/lessons/') >= 0 ? '../../' : '../../';
+      var el = document.createElement('nav');
+      el.className = 'kbar-topbar';
+      el.setAttribute('aria-label', '课序导航');
+      el.innerHTML =
+        (prev ? '<a class="tb-prev" href="' + prev.file + '" title="' + prev.no + ' ' + prev.title + '">← ' + prev.no + '</a>' : '<span class="tb-side"></span>')
+        + '<span class="tb-cur" title="' + cur.no + ' ' + cur.title + '">P' + phase + ' · ' + cur.no + ' ' + cur.short + '</span>'
+        + '<a class="tb-search" href="' + root + 'search.html">搜索</a>'
+        + (next ? '<a class="tb-next" href="' + next.file + '" title="' + next.no + ' ' + next.title + '">' + next.no + ' →</a>' : '<span class="tb-side"></span>');
+      var st = document.createElement('style');
+      st.setAttribute('data-kbar-topbar', '');
+      st.textContent = 'body{padding-top:calc(2.5rem + 52px)}' /* 顶栏占位补偿（fixed 贴顶，正文不钻栏底） */
+        + '.kbar-topbar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:.7rem;padding:.45rem clamp(1rem,4vw,2rem);background:var(--paper,#fcfcfb);border-bottom:1px solid var(--line,#e4e2d9);font:.8rem var(--sans,sans-serif)}'
+        + '.kbar-topbar a{color:var(--ink,#1c1c1a);border-bottom:none;padding:.35rem .5rem;border-radius:8px;min-height:36px;display:inline-flex;align-items:center;white-space:nowrap}'
+        + '.kbar-topbar a:hover{background:var(--note-bg,#f7f3e3)}'
+        + '.kbar-topbar a:focus-visible{outline:3px solid var(--ink,#1c1c1a);outline-offset:2px}'
+        + '.kbar-topbar .tb-cur{flex:1;text-align:center;color:var(--muted,#6e6c64);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'
+        + '.kbar-topbar .tb-side{min-width:3.2rem}'
+        + '@media(max-width:560px){.kbar-topbar .tb-cur{font-size:.72rem}.kbar-topbar a{padding:.3rem .4rem}}'
+        + '@media print{.kbar-topbar{display:none!important}}';
+      document.head.appendChild(st);
+      document.body.insertBefore(el, document.body.firstElementChild);
+    }
+
+    if (window.KBAR_LESSON_NAV && String(window.KBAR_LESSON_NAV.phase) === phase) { bar(window.KBAR_LESSON_NAV); return; }
+    var s = document.createElement('script');
+    s.src = '../assets/lesson-nav.js';
+    s.onload = function () { bar(window.KBAR_LESSON_NAV); };
+    document.head.appendChild(s);
+  }
+
   /* ---- 主题三态（票 062）：auto（prefers-color-scheme）/浅/深 ----
    * 存储 kbar-theme（auto/light/dark，与配色语义键 kbar-palette 相互独立）；
    * auto 不落 data-theme 属性（由 CSS 媒体查询接管），light/dark 落属性；
@@ -69,7 +127,7 @@
       function sysDark() { try { return window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) { return false; } }
       var b = document.createElement('button');
       b.id = 'kbar-theme-toggle'; b.type = 'button';
-      b.style.cssText = 'position:fixed;top:14px;right:68px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(128,126,116,.4);border-radius:50%;background:var(--card,#fff);color:var(--ink,#1c1c1a);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+      b.style.cssText = 'position:fixed;top:56px;right:68px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(128,126,116,.4);border-radius:50%;background:var(--card,#fff);color:var(--ink,#1c1c1a);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
       function icon() {
         var t = stored();
         var svg = t === 'light'
@@ -228,6 +286,7 @@
   }
 
   initTheme();
+  injectTopbar();
   injectLessonContext();
   injectDisclaimer();
   buildToc();
