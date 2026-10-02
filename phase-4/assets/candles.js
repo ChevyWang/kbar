@@ -471,6 +471,25 @@
         else if (e.key === 'ArrowLeft') { e.preventDefault(); stopAuto(); if (k > 1) { k--; draw('[data-a="prev"]'); } }
       });
     }
+    /* 触控手势（059）：图面横划 = 下一根/退一根，语义与 ←/→ 键一致（先停自动播放）。
+     * 判定：单指、水平位移 ≥40px 且大于垂直位移（不劫持纵向滚动）；passive，不阻断缺省行为。 */
+    if (typeof root.addEventListener === 'function' && !root._kbarSwipe) {
+      root._kbarSwipe = true;
+      var sx = null, sy = 0;
+      root.addEventListener('touchstart', function (e) {
+        if (!e.touches || e.touches.length !== 1) { sx = null; return; }
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+      }, { passive: true });
+      root.addEventListener('touchend', function (e) {
+        if (sx == null || !e.changedTouches || e.changedTouches.length !== 1) return;
+        var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+        sx = null;
+        if (Math.abs(dx) < 40 || Math.abs(dx) <= Math.abs(dy)) return;
+        stopAuto();
+        if (dx < 0) step(false);
+        else if (k > 1) { k--; draw('[data-a="prev"]'); }
+      }, { passive: true });
+    }
     draw();
   }
 

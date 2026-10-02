@@ -254,7 +254,7 @@
       const exhausted=m.tasks.every(t=>archive.exposure[t.source.overlapGroup]);
       root.innerHTML='<p><button id="mastery-home" class="kbtn">← 阶段实操</button></p><h2>'+esc(m.id+' '+m.title)+'</h2><p>'+esc(m.objective)+'</p>'+
         '<details><summary>学习示范与量规——打开后，本次作答会记为练习（不作独立检验）</summary>'+teachingHtml(m)+'<p>作答路径：先独立作答 → 看反馈补错 → 换未看过的题 → 隔天再测一次。原答永久保留，复习不改写首次记录。</p></details>'+
-        '<nav class="mastery-pool" aria-label="任务池"><span class="mastery-pool-label">题目（打开即标记为已看）：</span>'+m.tasks.map(x=>{const role={initial:'首次',remedy:'补救',delayed:'延迟',reserve1:'备用',reserve2:'备用'}[x.role]||x.role;return '<button data-task="'+esc(x.id)+'" '+(x.id===task.id?'aria-current="true"':'')+'>'+esc(x.id.slice(-1)+' · '+role)+(archive.exposure[x.source.overlapGroup]?' · 已看':' · 未看')+'</button>';}).join('')+'</nav>'+
+        '<nav class="mastery-pool" aria-label="任务池"><span class="mastery-pool-label">题目（打开即标记为已看）：</span>'+m.tasks.map(x=>{const role={initial:'首次',remedy:'补救',delayed:'延迟',reserve1:'备用',reserve2:'备用',reserve3:'备用',reserve4:'备用',reserve5:'备用'}[x.role]||x.role;return '<button data-task="'+esc(x.id)+'" '+(x.id===task.id?'aria-current="true"':'')+'>'+esc(x.id.slice(-1)+' · '+role)+(archive.exposure[x.source.overlapGroup]?' · 已看':' · 未看')+'</button>';}).join('')+'</nav>'+
         (exhausted?'<p class="mastery-warning">这套题库的题你都看过了：复习不再计为新证据；等课程扩充题库后可继续加证。</p>':'')+
         '<p id="mastery-status" role="status" aria-live="polite"></p>'+
         '<section><h3>'+esc(t.id)+'</h3><div id="mastery-task-preview" hidden><p class="mastery-scenario">'+esc(t.scenario)+'</p><details><summary>数据与截至时点</summary><p>'+Object.entries(t.source).map(([k,v])=>esc(k+': '+v)).join('<br>')+'</p></details><div id="mastery-chart"></div></div>'+
