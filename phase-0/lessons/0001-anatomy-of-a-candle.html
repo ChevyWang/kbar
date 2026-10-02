@@ -29,6 +29,8 @@
   </ol>
 </div>
 
+<div id="preq"></div>
+
 <h2 id="s01"><span class="no">01</span>K线是一份战报 <span class="time-chip">≈6 min</span></h2>
 
 <p>很多人想要<b>盘感</b>。盘感不是玄学，也不是背一百个形态名字。它的原子单位是一个可以训练的动作：看一眼任何一根K线，读出这场战斗的<b>胜负、战场、和胜负的干净程度</b>。这门课从第一天就把 OHLC 从"知识"升级为"技能"。</p>
@@ -346,6 +348,9 @@ var questions = [
   qClosePos(0),qClosePos(1),qClosePos(2),
   qEdge('flat'), qEdge('doji')
 ];
+
+Quiz.preq('#preq', { title: '先猜 · 开读之前', questions: [ { q: '先猜：一根K线拖着长长的上影线，它最直接告诉你什么？', answer: 0, options: [ { t: '上方曾遭遇卖压，争夺发生在那里', why: '对了一半的正解：影线记录「哪里发生过争夺」，位置信息；但只说曾发生，不承诺后面。', see: '0001-anatomy-of-a-candle.html#s02' }, { t: '接下来要跌了', why: '影线是已发生的战报，不是方向承诺——把「记录」读成「预言」是本课要拆的第一个习惯。' }, { t: '这根K线的成交量很大', why: 'K线不含成交量，量是另一把尺（第 0005 课）。' }, { t: '影线越长越不重要，可以忽略', why: '恰好相反：影线标出了多空交火的位置，是定位信息。' } ] } ],
+  next: 's01' });
 
 Quiz.mount('#trainer', {
   version: 'bank-0001-r1', // 随机生成题库：静态库号作指纹（题库语义变更时手动 +1）

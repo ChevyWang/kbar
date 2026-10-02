@@ -31,6 +31,8 @@
   </ol>
 </div>
 
+<div id="preq"></div>
+
 <h2 id="s01"><span class="no">01</span>为什么需要结构 <span class="time-chip">≈4 min</span></h2>
 
 <p>"这图看着像在涨"——这句话没法交易。看着像涨和<b>客观定义的涨</b>之间隔着一整套被验证的语言：市场结构（market structure）。它是 Adam Grimes 在《The Art and Science of Technical Analysis》（Part II：Market Structure）中搭建整本书的地基，也是 Al Brooks 价格行为学的骨架。</p>
@@ -462,9 +464,13 @@ var questions = [
   rvWickBody(), rvTouch(), rvPin(), rvDir(), rvDecisive()
 ];
 
+Quiz.preq('#preq', { title: '先猜 · 开读之前', questions: [ { q: '清算上一课：课程里说的「位置」，具体指什么？', answer: 0, options: [ { t: '支撑、阻力等关键区域', why: '对。位置=价格结构里的关键区域，画区域不画头发丝。', see: '0003-position-beats-pattern.html#s02' }, { t: 'K线在屏幕上的横坐标', why: '位置是价格维度的高低，不是时间轴上的前后。' }, { t: '所用的时间周期', why: '那是多周期问题（第 0006 课）。' }, { t: '距离今天的天数远近', why: '远近与位置语法无关。' } ] }, { q: '先猜：「市场结构」是由什么定义的？', answer: 0, options: [ { t: '摆动高低点的序列（高低点抬升或降低）', why: '对。结构=高低点的语言，HH/HL/LH/LL 四象限。', see: '0004-market-structure.html#s02' }, { t: '随手画一条趋势线连起来', why: '趋势线是结构的下游表达，随手一连恰恰是本课要拆的坏习惯。' }, { t: '均线的方向', why: '均线是滞后的派生指标，不是结构的定义。' }, { t: '成交量的大小', why: '量确认结构转变，但不定义结构。' } ] } ],
+  next: 's01' });
+
 Quiz.mount('#trainer', {
   version: 'bank-0004-r1', // 随机生成题库：静态库号作指纹（题库语义变更时手动 +1）
   title:'市场结构训练',
+  recallQuestions: [ { id: 'r-0003', tag: '上一课·0003', q: '上一课回顾：「位置」在课程里指——', options: [ '支撑、阻力等关键区域', '屏幕横坐标', '时间周期', '距今天数' ], answer: 0, explain: '位置=价格结构里的关键区域，画区域不画头发丝。' } ],
   questions: questions,
   verdicts: [
     [12,'全对。高低点序列已经进入眼睛——下一课给这套结构加上音量旋钮。'],
