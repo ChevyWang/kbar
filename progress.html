@@ -54,6 +54,16 @@
   .hidden { display: none; }
   /* 页底备份区（039：主体不出现备份，收进折叠区） */
   #backup { margin-top: 3.5rem; border-top: 1px solid var(--line); }
+  /* 059 里程碑三灯教练视图（每阶段块尾部，折叠；有实操提交时自动展开） */
+  details.ms-coach { margin: 0 0 1.6rem; }
+  details.ms-coach > summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: .6rem; cursor: pointer;
+    font-family: var(--sans); font-size: .92rem; padding: .7rem 0 .3rem; min-height: 44px; }
+  details.ms-coach > summary .sum-sub { font-size: .78rem; color: var(--faint); font-weight: 400; }
+  .ms-lights { white-space: nowrap; }
+  .ms-lights span { font-family: var(--sans); font-size: .74rem; border: 1px solid var(--line); border-radius: 99px;
+    padding: .08rem .55rem; color: var(--faint); background: #fff; margin-right: .3rem; display: inline-block; margin-bottom: .2rem; }
+  .ms-lights span.on { border-color: var(--down); color: var(--down); font-weight: 600; }
+  td.ms-next { font-family: var(--sans); font-size: .82rem; }
   #backup summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: .6rem; cursor: pointer;
     font-family: var(--sans); font-size: .95rem; padding: .9rem 0 .3rem; min-height: 44px; }
   #backup summary .sum-sub { font-size: .78rem; color: var(--faint); font-weight: 400; }
@@ -140,7 +150,7 @@
       ['0006', 'multiple-timeframes', '多周期：一根日K里的二十四场战斗'],
       ['0007', 'chart-reading-training', '盘感训练法：复盘、盲测与毕业考'],
       ['drill0', 'drill', '易混形态混练（4 组 24 例）']
-    ] },
+    ], ms: [['M0.1', '单K双K辨认'], ['M0.2', '位置与结构辨认'], ['M0.3', '量价、速度与多周期辨认'], ['M0.4', '训练系统运转']] },
     { p: 'P1', name: '流利 · 复述推理', dir: 'phase-1', lessons: [['1001', 'always-in', 'Always-In：市场此刻站在哪边'],
       ['1002', 'micro-channel-spike', '微通道与尖峰和通道：趋势的两种紧度'],
       ['1003', 'pullback-anatomy', '回踩的解剖：数腿、H2 与突破回踩'],
@@ -153,7 +163,7 @@
       ['1010', 'bar-by-bar', '逐根带读与毕业考'],
       ['1011', 'drawing-toolbox', '画线工具箱：趋势线、通道线与比例尺'],
       ['drill1', 'drill', '易混形态混练（3 组 15 例）']
-    ] },
+    ], ms: [['M1.1', '紧度与回踩'], ['M1.2', '入场几何'], ['M1.3', '区间与失败'], ['M1.4', '连续推理的结构事实补证']] },
     { p: 'P2', name: '地形 · 作图应用', dir: 'phase-2', lessons: [['2001', 'composite-operator', '复合操盘手：Wyckoff 的市场观'],
       ['2002', 'accumulation-ae', '吸筹结构：阶段 A–E 全解剖'],
       ['2003', 'distribution-ae', '派发结构：镜像的世界'],
@@ -165,7 +175,7 @@
       ['2009', 'wave-chart', '波图：逐波读价（Weis Wave）'],
       ['2010', 'day-type', '日型战术：今天会是哪种天'],
       ['drill2', 'drill', '易混形态混练（4 组 16 例）']
-    ] },
+    ], ms: [['M2.1', '周期与结构作图'], ['M2.2', '陷阱与量价作图'], ['M2.3', '完整地形图'], ['M2.4', '盘中会话与日型证据']] },
     { p: 'P3', name: '概率 · 概率引用', dir: 'phase-3', lessons: [
       ['3001', 'reading-stats', '怎么读胜率表：Bulkowski 统计方法论'],
       ['3002', 'top-patterns', '高价值形态精读：统计身份证与三张面孔'],
@@ -174,7 +184,7 @@
       ['3005', 'morris-filter', 'Morris 蜡烛过滤的完整实现'],
       ['3006', 'hands-on', '手工统计一个形态'],
       ['3007', 'graduation', '反迷信结业与体系解剖学']
-    ] },
+    ], ms: [['M3.1', '统计身份证与口径'], ['M3.2', '失败、过滤与参考时点'], ['M3.3', '自建统计口径核对']] },
     { p: 'P4', name: '系统 · 组装综合', dir: 'phase-4', lessons: [
       ['4001', 'setup-definition', 'Setup 的正式定义：从「看到」到「等到」'],
       ['4002', 'entries', '入场技术：限价单 vs 停损单及其心理学'],
@@ -186,7 +196,7 @@
       ['4008', 'microstructure', '四市场适配与市场微观结构'],
       ['4009', 'one-page-plan', '一页纸交易计划：把零件装成机器'],
       ['4010', 'backtest-graduation', '手工回测：验证自己的规则，然后毕业']
-    ] },
+    ], ms: [['M4.1', '信号、委托与成交状态'], ['M4.2', '资金、成本与压力预算'], ['M4.3', '可复核系统研究包']] },
     { p: 'P5', name: '执行 · 执行自律', dir: 'phase-5', lessons: [
       ['5001', 'probability-mindset', '概率思维：「任何一笔都可能亏」'],
       ['5002', 'decision-quality', '决策质量 vs 结果质量'],
@@ -195,7 +205,7 @@
       ['5005', 'execution-checklist', '执行检查单：信号→下单的 60 秒'],
       ['5006', 'scaling-graduation', '课程结业：证据、补救与真实风险边界'],
       ['5007', 'tilt-repair', 'tilt 的诊断与修复']
-    ] },
+    ], ms: [['M5.1', '执行证据与行为修复'], ['M5.2', '回撤调查与课程结业']] },
     { p: 'P6', name: '输出 · 贡献输出', dir: 'phase-6', lessons: [
       ['6001', 'analysis-writing', '分析写作工坊'],
       ['6002', 'review-writing', '案例复盘写作'],
@@ -275,9 +285,15 @@
   dueEl.className = 'n' + (dueTotal > 0 ? ' alert' : ' calm');
 
   var phHtml = [];
+  var draftKeys = (archive && archive.drafts && typeof archive.drafts === 'object') ? Object.keys(archive.drafts) : [];
+  function hasDraftOf(mid) { return draftKeys.some(function (k) { return k.indexOf(mid + '-') === 0; }); }
+  function dueHref(r) { return r.href + (r.id.indexOf('drill') === 0 ? '#drill' : '#trainer'); }
   rowByPhase.forEach(function (blk) {
     var parts = [blk.done + ' / ' + blk.rows.length + ' 课有练习记录'];
-    if (blk.due > 0) parts.push('<span style="color:var(--up);font-weight:700">到期复习 ' + blk.due + ' 题</span>');
+    var firstDue = null;
+    blk.rows.forEach(function (r) { if (!firstDue && r.due > 0) firstDue = r; });
+    if (blk.due > 0 && firstDue) parts.push('<a href="' + dueHref(firstDue) + '" style="color:var(--up);font-weight:700">到期复习 ' + blk.due + ' 题 →</a>');
+    else if (blk.due > 0) parts.push('<span style="color:var(--up);font-weight:700">到期复习 ' + blk.due + ' 题</span>');
     if (blk.ph.p === 'P6') {
       if (p6Used > 0) parts.push('作品集 ' + p6Used + ' / ' + p6Total + ' 件已动笔');
     } else {
@@ -294,11 +310,65 @@
         '<td class="num' + (r.runs ? '' : ' dim') + '">' + (r.runs || '—') + '</td>' +
         '<td class="num' + (r.best ? '' : ' dim') + '">' + (r.best || '—') + '</td>' +
         '<td class="num' + (r.last ? '' : ' dim') + '">' + (r.last || '—') + '</td>' +
-        '<td class="num' + (r.due > 0 ? ' due' : ' dim') + '">' + (r.due > 0 ? r.due : '—') + '</td></tr>');
+        '<td class="num' + (r.due > 0 ? ' due' : ' dim') + '">' + (r.due > 0 ? '<a href="' + dueHref(r) + '">' + r.due + '</a>' : '—') + '</td></tr>');
     });
     phHtml.push('</tbody></table>');
+    /* 059 里程碑三灯教练行：无提交时静态占位（先看示范）；该阶段有提交才惰性加载题库算灯 */
+    if (blk.ph.ms) {
+      var touched = blk.ph.ms.some(function (M) { return msMap[M[0]]; });
+      phHtml.push('<details class="ms-coach"' + (touched ? ' open' : '') + '><summary><b>阶段实操 · 里程碑三步证据</b><span class="sum-sub">首次独立 → 换题复测 → 跨日复测；点击里程碑名直达实操页</span></summary>' +
+        '<table><thead><tr><th>里程碑</th><th>三步证据</th><th>还差哪一步</th></tr></thead><tbody>' +
+        blk.ph.ms.map(function (M) {
+          return '<tr id="ms-' + M[0] + '"><td><a href="' + blk.ph.dir + '/mastery.html">' + M[0] + ' ' + M[1] + '</a></td>' +
+            '<td class="ms-lights"><span>首次独立</span><span>换题复测</span><span>跨日复测</span></td>' +
+            '<td class="ms-next">' + (hasDraftOf(M[0]) ? '继续作答' : '先看示范，再独立作答') + '</td></tr>';
+        }).join('') + '</tbody></table></details>');
+    }
   });
   document.getElementById('phases').innerHTML = phHtml.join('');
+
+  /* 有实操提交的阶段：惰性加载 mastery.js + 该阶段题库，重算三灯与下一步（与实操页 evidence 同源） */
+  function nextStepText(mid, e) {
+    var started = !!msMap[mid];
+    if (!e.core) return hasDraftOf(mid) ? '继续作答' : !started ? '先看示范，再独立作答'
+      : (e.weakness && e.weakness.length ? '先补常错项：' + e.weakness[0].category + ' ×' + e.weakness[0].count : '继续独立检验');
+    if (!e.retest) return '换一题独立复测';
+    if (!e.delayed) return '隔天做跨日复测';
+    return '三步齐备：复核证据记录';
+  }
+  function paintMilestones() {
+    (window.KBAR_MASTERY_DATA || []).forEach(function (m) {
+      var row = document.getElementById('ms-' + m.id);
+      if (!row || !window.KbarMastery) return;
+      var e = window.KbarMastery.evidence(m, archive);
+      var spans = row.querySelectorAll('.ms-lights span');
+      spans[0].className = e.core ? 'on' : '';
+      spans[1].className = e.retest ? 'on' : '';
+      spans[2].className = e.delayed ? 'on' : '';
+      row.querySelector('.ms-next').textContent = nextStepText(m.id, e);
+    });
+  }
+  if (archive && Array.isArray(archive.attempts)) {
+    var needDirs = rowByPhase.filter(function (blk) {
+      return blk.ph.ms && blk.ph.ms.some(function (M) { return msMap[M[0]]; });
+    }).map(function (blk) { return blk.ph.dir; });
+    if (needDirs.length) {
+      var engine = document.createElement('script');
+      engine.src = needDirs[0] + '/assets/mastery.js';
+      engine.onload = function () {
+        (function next() {
+          var dir = needDirs.shift();
+          if (!dir) return;
+          var d = document.createElement('script');
+          d.src = dir + '/assets/mastery-data.js';
+          d.onload = function () { paintMilestones(); next(); };
+          d.onerror = function () { next(); };
+          document.body.appendChild(d);
+        })();
+      };
+      document.body.appendChild(engine);
+    }
+  }
 
   if (practiced === 0 && msTotal === 0 && p6Used === 0) {
     document.getElementById('empty').classList.remove('hidden');
