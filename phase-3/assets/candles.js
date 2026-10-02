@@ -40,6 +40,51 @@
   var UP = '#d33a2c', DOWN = '#1a7f37', INK = '#1c1c1a', MUTED = '#6e6c64', FAINT = '#a3a198';
   var SANS = '-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
 
+  /* ---- 票 062：主题化取色（深色模式）----
+   * 五色改从 CSS 变量解析（浅色回退=原硬编码值，浅色态逐字节等值）：
+   *   UP/DOWN ← --up/--down（深色块内为提亮变体，红涨绿跌语义不变，D6 不变量）；
+   *   INK/MUTED/FAINT ← --cand-*（画布专用，不与正文 --faint 混用）。
+   * MODE 显式记录配色（cn/international），不再用十六进制反推。
+   * 切换（主题钮/配色钮/系统深浅变化）→ applyThemeColors() 全图重染：
+   * 遍历 svg[data-kbar-chart] 的 fill/stroke 属性做旧值→新值映射，与 053 setPalette 同机制。 */
+  var MODE = 'cn';
+  try { if (window.localStorage.getItem('kbar-palette') === 'international') MODE = 'international'; } catch (e) {}
+
+  function cssVar(name, fallback) {
+    if (typeof document === 'undefined' || !document.documentElement) return fallback;
+    var v = '';
+    try { v = getComputedStyle(document.documentElement).getPropertyValue(name); } catch (e) {}
+    v = (v || '').trim();
+    return v || fallback;
+  }
+  function resolveColors() {
+    var up = cssVar('--up', '#d33a2c'), down = cssVar('--down', '#1a7f37');
+    if (MODE === 'international') { var t = up; up = down; down = t; }
+    return {
+      up: up, down: down,
+      ink: cssVar('--cand-ink', '#1c1c1a'),
+      muted: cssVar('--cand-muted', '#6e6c64'),
+      faint: cssVar('--cand-faint', '#a3a198')
+    };
+  }
+  function recolorCharts(map) {
+    if (typeof document === 'undefined' || !document.querySelectorAll) return;
+    document.querySelectorAll('svg[data-kbar-chart] [fill],svg[data-kbar-chart] [stroke]').forEach(function (el) {
+      ['fill', 'stroke'].forEach(function (attr) {
+        var v = el.getAttribute(attr);
+        if (v && map[v]) el.setAttribute(attr, map[v]);
+      });
+    });
+  }
+  function applyThemeColors() {
+    var c = resolveColors();
+    var map = {};
+    map[UP] = c.up; map[DOWN] = c.down; map[INK] = c.ink; map[MUTED] = c.muted; map[FAINT] = c.faint;
+    UP = c.up; DOWN = c.down; INK = c.ink; MUTED = c.muted; FAINT = c.faint;
+    recolorCharts(map);
+    if (window.Kbar) { window.Kbar.UP = UP; window.Kbar.DOWN = DOWN; window.Kbar.MODE = MODE; }
+  }
+
   function esc(v) {
     return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
@@ -694,33 +739,34 @@
   }
 
   function setPalette(palette) {
-    var international = palette === 'international', oldUp=UP,oldDown=DOWN;
-    UP=international?'#1a7f37':'#d33a2c';DOWN=international?'#d33a2c':'#1a7f37';
-    if(typeof document!=='undefined' && UP!==oldUp) document.querySelectorAll('svg[data-kbar-chart] [fill],svg[data-kbar-chart] [stroke]').forEach(function(el){
-      ['fill','stroke'].forEach(function(attr){var v=el.getAttribute(attr);if(v===oldUp)el.setAttribute(attr,UP);else if(v===oldDown)el.setAttribute(attr,DOWN);});
-    });
-    if(window.Kbar){window.Kbar.UP=UP;window.Kbar.DOWN=DOWN;}
-    try{window.localStorage.setItem('kbar-palette',international?'international':'cn');}catch(e){}
-    return international?'international':'cn';
+    MODE = palette === 'international' ? 'international' : 'cn';
+    try{window.localStorage.setItem('kbar-palette',MODE);}catch(e){}
+    applyThemeColors();
+    return MODE;
   }
-  try { if(window.localStorage.getItem('kbar-palette')==='international'){UP='#1a7f37';DOWN='#d33a2c';} } catch(e){}
-  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, gallery: gallery, setPalette:setPalette, UP: UP, DOWN: DOWN };
-  if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('DOMContentLoaded',function(){
+  applyThemeColors(); /* 票 062：取色统一从 CSS 变量解析（含已存配色档），浅色回退=原硬编码值 */
+  window.Kbar = { candle: candle, anatomy: anatomy, row: row, chart: chart, playback: playback, schematic: schematic, compare: compare, gallery: gallery, setPalette:setPalette, UP: UP, DOWN: DOWN, MODE: MODE };
+  if(typeof document!=='undefined'&&document.addEventListener){
+    /* 票 062：主题切换（nav.js 三态钮）与系统深浅变化 → 全图重染 */
+    document.addEventListener('kbar-themechange', function(){ applyThemeColors(); });
+    try{ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ applyThemeColors(); }); }catch(e){}
+    document.addEventListener('DOMContentLoaded',function(){
     if(document.getElementById('kbar-palette-toggle'))return;
     /* 配色切换：右上角固定小圆钮，图标=双色迷你K线（空心阳线+实心阴线，即图例本身） */
     var b=document.createElement('button');
     b.id='kbar-palette-toggle';b.type='button';
-    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(28,28,26,.16);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(128,126,116,.4);border-radius:50%;background:var(--card,#fff);color:var(--ink,#1c1c1a);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
     var icon=function(){b.innerHTML='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">'
       +'<line x1="6.6" y1="2.5" x2="6.6" y2="17.5" stroke="'+UP+'" stroke-width="1.4"/>'
       +'<rect x="3.8" y="6.5" width="5.6" height="7.5" rx="1" fill="none" stroke="'+UP+'" stroke-width="1.4"/>'
       +'<line x1="13.4" y1="2.5" x2="13.4" y2="17.5" stroke="'+DOWN+'" stroke-width="1.4"/>'
       +'<rect x="10.6" y="5.5" width="5.6" height="8.5" rx="1" fill="'+DOWN+'"/>'
       +'</svg>';};
-    var title=function(){var t=(UP==='#d33a2c'?'配色：红涨绿跌（A股惯例），点击切换绿涨红跌':'配色：绿涨红跌（国际惯例），点击切换红涨绿跌')+'；阳线空心、阴线实心不变，配色不影响评分。';b.title=t;b.setAttribute('aria-label',t);};
-    b.onclick=function(){setPalette(UP==='#d33a2c'?'international':'cn');icon();title();};
+    var title=function(){var t=(MODE==='cn'?'配色：红涨绿跌（A股惯例），点击切换绿涨红跌':'配色：绿涨红跌（国际惯例），点击切换红涨绿跌')+'；阳线空心、阴线实心不变，配色不影响评分。';b.title=t;b.setAttribute('aria-label',t);};
+    b.onclick=function(){setPalette(MODE==='cn'?'international':'cn');icon();title();};
     icon();title();
     document.body.appendChild(b);
     var st=document.createElement('style');st.textContent='@media print{#kbar-palette-toggle{display:none!important}}';document.head.appendChild(st);
   });
+  }
 })();
