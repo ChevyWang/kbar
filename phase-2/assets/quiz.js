@@ -13,6 +13,8 @@
  *   交卷页显示「到期复习」——按 1/3/7/21/60 天间隔复习到期题（含已纠正题）（答对升档、再错归零）；
  *   当场另可「重练本次错题」（练习模式，不计档不改复习档）。票 053：版本指纹只看题库本身——
  *   确定性题库自动按题库内容指纹；随机生成题库（P0 0001–0006 等）必须在 cfg.version 传静态库号。
+ * 票 064（macro 判分卡隔天重练语义）：同日第二次起整卷正式作答自动降级练习——不记档不改复习
+ *   到期日，UI 明示「今日已正式作答 · 本次练习不计档」；跨日自动恢复。到期复习与练习按钮不受影响。
  *   记录仅存本浏览器，可随时清空；不含任何个人信息。
  */
 (function () {
@@ -234,6 +236,16 @@
     prepare(String(cfg.version || templateVersion(cfg)));
     var order = shuffle(cfg.reviewIndices || cfg.roundIndices || cfg.questions.map(function (_, i) { return i; }));
     var idx = 0, correct = 0, reviewing = !!cfg.review, practicing = !!cfg.practice;
+    /* 票 064（macro 判分卡「隔天重练」语义）：同日第二次起整卷正式作答自动降级练习——
+       不记档（events/boxes/sum 均不动），防刷穿 1/3/7/21/60 天梯度的间隔语义。
+       基准=最近一次正式作答时间戳 sum.lastTs（复习/练习不写它）；跨日自动恢复。
+       与 053「当场重练不计档」同族：demoted ≡ practice 记档语义 + 独立文案。 */
+    var cram = false;
+    if (!reviewing && !practicing) {
+      var sumNow = store(sumKey());
+      cram = !!(sumNow && sumNow.lastTs && new Date(sumNow.lastTs).toDateString() === new Date(Date.now()).toDateString());
+    }
+    var noRecord = practicing || cram;
     var wrongIdx = []; // 本次答错的题（当场重练用，票 053）
     var advanced = false; // 本次重渲染是否由交互触发（首渲染/重挂载不抢页面焦点）
 
@@ -250,7 +262,7 @@
       root.innerHTML =
         ((getState().archives || []).length ? '<p class="quiz-archive">历史归档已保留；题库版本或题号无法可靠映射，请重新作答补证。</p>' : '') +
         (!reviewing && idx === 0 && dueQuestions(cfg.questions).length ? '<button class="review-due">到期复习（含已纠正题）</button>' : '') +
-        '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (practicing ? '（练习 · 不计档）' : reviewing ? '（到期复习）' : '') + '</div>' +
+        '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (cram ? '（今日已正式作答 · 本次练习不计档）' : practicing ? '（练习 · 不计档）' : reviewing ? '（到期复习）' : '') + '</div>' +
         '<div class="q-text">' + q.q + '</div>' +
         (q.stage ? '<div class="q-stage">' + q.stage + '</div>' : '') +
         '<div class="opts">' + opts.map(function (o, i) {
@@ -266,7 +278,7 @@
       var next = root.querySelector('.next');
       root.querySelectorAll('.opt').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          if (!practicing && !root.querySelector('.opt:disabled')) {
+          if (!noRecord && !root.querySelector('.opt:disabled')) {
             recordAnswer(questionId(q, order[idx]), opts[+btn.dataset.i].ok, q.tag, q, opts[+btn.dataset.i].label);
           }
           var pick = opts[+btn.dataset.i];
@@ -289,12 +301,14 @@
 
     function finish() {
       var v = (cfg.verdicts || []).find(function (x) { return correct >= x[0]; });
-      if (!reviewing && !practicing) recordSession(correct, order.length);
+      if (!reviewing && !noRecord) recordSession(correct, order.length);
       var due = dueQuestions(cfg.questions);
       root.innerHTML =
         '<div class="verdict">' +
         '<div class="big">' + correct + ' / ' + order.length + '</div>' +
-        (practicing
+        (cram
+          ? '<p>今日正式作答已完成——本次为练习，不计档、不改复习到期日；明日再战自动恢复记档。</p>'
+          : practicing
           ? '<p>练习完成——本次不计档、不改复习到期日。错了没关系，明天到期复习还会见到它。</p>'
           : '<p>' + (v ? v[1] : '') + '</p><p>以上是课内检索练习结果，不授予核心能力或实盘资格。里程碑依据另见本阶段实操与专题任务。</p>') +
         (!practicing && wrongIdx.length
@@ -302,7 +316,7 @@
         (due.length && !reviewing && !practicing
           ? '<button class="next review-start">到期复习（今日 ' + due.length + ' 题，答对升档 1→3→7→21→60 天）</button>'
           : '') +
-        '<button class="next">' + (reviewing || practicing ? '返回正常练习' : '再练一遍（重排顺序）') + '</button></div>';
+        '<button class="next">' + (reviewing || noRecord ? '返回正常练习' : '再练一遍（重排顺序）') + '</button></div>';
       mountBackup(root);
       var rw = root.querySelector('.retry-wrong');
       if (rw) rw.addEventListener('click', function () {
