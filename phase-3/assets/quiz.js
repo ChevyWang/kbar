@@ -230,11 +230,30 @@
     if (document.head && !document.getElementById('kbar-quiz-style')) {
       var st = document.createElement('style');
       st.id = 'kbar-quiz-style';
-      st.textContent = '.quiz button{min-height:44px;min-width:44px}';
+      st.textContent = '.quiz button{min-height:44px;min-width:44px}'
+        + '.q-recall{display:inline-block;font:.72rem var(--sans,sans-serif);color:var(--muted,#6e6c64);border:1px solid var(--line,#e4e2d9);border-radius:99px;padding:.06rem .55rem;margin-left:.5rem;vertical-align:1px}';
       document.head.appendChild(st);
     }
     prepare(String(cfg.version || templateVersion(cfg)));
-    var order = shuffle(cfg.reviewIndices || cfg.roundIndices || cfg.questions.map(function (_, i) { return i; }));
+    /* 票 065：微重现（n=1 recall）——上一课核心题前置到训练场首题区，正常计档；
+       题面来自 cfg.recallQuestions（作者层维护），渲染带「上一课回顾」徽标。 */
+    var questions = cfg.questions;
+    if (cfg.recallQuestions && cfg.recallQuestions.length) {
+      questions = cfg.recallQuestions.map(function (q) { return Object.assign({ recall: true }, q); }).concat(cfg.questions);
+    }
+    var base = (cfg.reviewIndices || cfg.roundIndices) ? cfg.questions : questions;
+    var order;
+    if (cfg.reviewIndices || cfg.roundIndices) {
+      order = shuffle(cfg.reviewIndices || cfg.roundIndices);
+    } else if (questions !== cfg.questions) {
+      /* recall 前缀固定为开卷首题（微重现=n=1 检索练习），主库照常洗牌 */
+      var nR = questions.length - cfg.questions.length;
+      order = [];
+      for (var ri = 0; ri < nR; ri++) order.push(ri);
+      order = order.concat(shuffle(cfg.questions.map(function (_, i) { return i + nR; })));
+    } else {
+      order = shuffle(questions.map(function (_, i) { return i; }));
+    }
     var idx = 0, correct = 0, reviewing = !!cfg.review, practicing = !!cfg.practice;
     /* 票 064（macro 判分卡「隔天重练」语义）：同日第二次起整卷正式作答自动降级练习——
        不记档（events/boxes/sum 均不动），防刷穿 1/3/7/21/60 天梯度的间隔语义。
@@ -251,7 +270,7 @@
 
     function render() {
       if (idx >= order.length) return finish();
-      var q = cfg.questions[order[idx]];
+      var q = base[order[idx]];
       var saved = getState().boxes[questionId(q, order[idx])];
       if (reviewing && saved && saved.question) {
         q = Object.assign({}, saved.question);
@@ -263,7 +282,7 @@
         ((getState().archives || []).length ? '<p class="quiz-archive">历史归档已保留；题库版本或题号无法可靠映射，请重新作答补证。</p>' : '') +
         (!reviewing && idx === 0 && dueQuestions(cfg.questions).length ? '<button class="review-due">到期复习（含已纠正题）</button>' : '') +
         '<div class="q-meta">' + (cfg.title || '训练') + ' · 第 ' + (idx + 1) + ' / ' + order.length + ' 题' + (cram ? '（今日已正式作答 · 本次练习不计档）' : practicing ? '（练习 · 不计档）' : reviewing ? '（到期复习）' : '') + '</div>' +
-        '<div class="q-text">' + q.q + '</div>' +
+        '<div class="q-text">' + q.q + (q.recall ? '<span class="q-recall">上一课回顾</span>' : '') + '</div>' +
         (q.stage ? '<div class="q-stage">' + q.stage + '</div>' : '') +
         '<div class="opts">' + opts.map(function (o, i) {
           return '<button class="opt" data-i="' + i + '">' + o.label + '</button>';
@@ -336,7 +355,70 @@
     if (cfg.focus) { var focus = root.querySelector('.opt') || root.querySelector('.next'); if (focus) focus.focus(); }
   }
 
+  /* ---- 票 065：先猜（prequestion）组件 ----
+   * 每课 1–2 道、瞄准本课核心误区（宁准勿多）；提交即逐项反馈；错误项反馈带
+   * 「上一课/正文见」回链（cfg.see 绝对或相对 URL 含锚点）。
+   * 不记档、不进到期池、答错零惩罚（先猜收益只落在被问到的内容上）。
+   * 用法：Quiz.preq('#preq', { title: '先猜', questions: [
+   *   { q: '…', options: [{t:'A', why:'…', see: '../lessons/0001-x.html#s2'}, …], answer: 1 } ] })
+   * 同题全部作答完毕后显示「进入正文 ↓」跳 cfg.next 锚。 */
+  function mountPreq(sel, cfg) {
+    var root = document.querySelector(sel);
+    if (!root) return;
+    root.classList.add('preq');
+    if (document.head && !document.getElementById('kbar-preq-style')) {
+      var st = document.createElement('style');
+      st.id = 'kbar-preq-style';
+      st.textContent = '.preq{border:1px solid var(--line,#e4e2d9);border-radius:12px;background:var(--card,#fff);padding:1rem 1.15rem;margin:1.4rem 0}'
+        + '.preq .p-kicker{font:700 .74rem var(--sans,sans-serif);letter-spacing:.14em;color:var(--muted,#6e6c64);margin-bottom:.4rem}'
+        + '.preq .p-q{font-weight:700;margin:.7rem 0 .4rem}'
+        + '.preq button{min-height:44px;min-width:44px;font:inherit;text-align:left}'
+        + '.preq .p-opts{display:grid;gap:.45rem;margin:.3rem 0}'
+        + '.preq .p-why{font-size:.92rem;line-height:1.7;background:var(--note-bg,#f7f3e3);border-left:3px solid var(--note,#8a6d1f);padding:.55rem .8rem;margin:.45rem 0 0}'
+        + '.preq .p-why a{color:var(--up,#d33a2c)}'
+        + '.preq .p-next{margin-top:.8rem}';
+      document.head.appendChild(st);
+    }
+    var state = {}; /* qi -> 已选项 */
+    function render() {
+      var qs = cfg.questions || [];
+      var done = qs.every(function (_, i) { return state[i] !== undefined; });
+      root.innerHTML = '<div class="p-kicker">' + (cfg.title || '先猜 · 不计档') + '</div>'
+        + '<p style="margin:.2rem 0 .6rem;font-size:.92rem;color:var(--muted,#6e6c64)">先凭直觉作答——错了最好，正文会替你解惑；作答不记档、不影响任何成绩。</p>'
+        + qs.map(function (q, qi) {
+            var picked = state[qi];
+            return '<div class="p-qblock" data-qi="' + qi + '"><div class="p-q">' + q.q + '</div>'
+              + '<div class="p-opts">' + q.options.map(function (o, oi) {
+                  var cls = 'kbtn';
+                  var mark = picked === undefined ? '' : (oi === picked ? (oi === q.answer ? ' ✓' : ' ✗') : (oi === q.answer ? ' ✓' : ''));
+                  var dis = picked === undefined ? '' : ' disabled';
+                  var own = picked === oi ? ' style="border-width:2px"' : '';
+                  return '<button type="button" class="' + cls + '" data-oi="' + oi + '"' + dis + own + '>' + o.t + mark + '</button>';
+                }).join('') + '</div>'
+              + (picked === undefined ? '' : '<div class="p-why" role="status">' + q.options[picked].why
+                 + (q.options[picked].see ? ' <a href="' + q.options[picked].see + '">原文见 →</a>' : '') + '</div>')
+              + '</div>';
+          }).join('')
+        + (done && cfg.next ? '<a class="p-next" href="' + cfg.next + '">进入正文 ↓</a>' : '');
+      root.querySelectorAll('.p-qblock').forEach(function (block) {
+        var qi = +block.getAttribute('data-qi');
+        block.querySelectorAll('button').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            if (state[qi] !== undefined) return;
+            state[qi] = +btn.getAttribute('data-oi');
+            render();
+            var fb = block.querySelector('.p-why');
+            if (fb) fb.setAttribute('tabindex', '-1'), fb.focus();
+          });
+        });
+      });
+    }
+    render();
+  }
+
   window.Kbar = window.Kbar || {};
   window.Kbar.quizBackup = mountBackup;
-  window.Quiz = { mount: mount };
+  window.Quiz = { mount: mount, preq: mountPreq };
+  window.Kbar = window.Kbar || {};
+  window.Kbar.preq = mountPreq;
 })();
