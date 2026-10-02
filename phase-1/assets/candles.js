@@ -755,7 +755,7 @@
     /* 配色切换：右上角固定小圆钮，图标=双色迷你K线（空心阳线+实心阴线，即图例本身） */
     var b=document.createElement('button');
     b.id='kbar-palette-toggle';b.type='button';
-    b.style.cssText='position:fixed;top:14px;right:16px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(128,126,116,.4);border-radius:50%;background:var(--card,#fff);color:var(--ink,#1c1c1a);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+    b.style.cssText='position:fixed;top:56px;right:16px;z-index:60;width:44px;height:44px;padding:0;border:1px solid rgba(128,126,116,.4);border-radius:50%;background:var(--card,#fff);color:var(--ink,#1c1c1a);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.07)';
     var icon=function(){b.innerHTML='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">'
       +'<line x1="6.6" y1="2.5" x2="6.6" y2="17.5" stroke="'+UP+'" stroke-width="1.4"/>'
       +'<rect x="3.8" y="6.5" width="5.6" height="7.5" rx="1" fill="none" stroke="'+UP+'" stroke-width="1.4"/>'
