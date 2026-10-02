@@ -165,7 +165,7 @@
     if (document.head && !document.getElementById('kbar-kbtn-style')) {
       var kb = document.createElement('style');
       kb.id = 'kbar-kbtn-style';
-      kb.textContent = '.kbtn{font-family:var(--sans,system-ui,sans-serif);font-size:.85rem;border:1.5px solid var(--ink,#1c1c1a);border-radius:8px;padding:.32rem .85rem;margin:.2rem .45rem .2rem 0;cursor:pointer;background:#fff;color:var(--ink,#1c1c1a);min-height:36px}'
+      kb.textContent = '.kbtn{font-family:var(--sans,system-ui,sans-serif);font-size:.85rem;border:1.5px solid var(--ink,#1c1c1a);border-radius:8px;padding:.32rem .85rem;margin:.2rem .45rem .2rem 0;cursor:pointer;background:var(--card,#fff);color:var(--ink,#1c1c1a);min-height:36px}'
         + '.kbtn:hover{background:var(--note-bg,#f7f3e3)}'
         + '.kbtn:focus-visible{outline:3px solid #2255bb;outline-offset:2px}'
         + '.quiz-backup{margin-top:1rem;border-top:1px dashed var(--line,#e4e2d9);padding-top:.7rem}'
