@@ -33,7 +33,7 @@
     padding: clamp(.9rem, 2.4vw, 1.3rem);
     border: 1px solid var(--ink);
     border-top: 4px solid var(--home-accent);
-    background: #fff;
+    background: var(--card);
   }
   .task-main { min-width: 0; }
   .task-kicker,
@@ -91,7 +91,7 @@
     gap: .7rem;
     margin-top: .45rem;
     padding: .55rem .9rem;
-    color: #fff !important;
+    color: var(--paper) !important;
     background: var(--home-accent);
     border: 1px solid var(--home-accent);
     font-family: var(--sans);
@@ -113,7 +113,7 @@
   .route-direct span { color: var(--muted); }
   .route-item { position: relative; }
   .route-item:not(:last-child)::after { content: ''; position: absolute; left: 1.15rem; top: 3.1rem; bottom: -.55rem; border-left: 1px solid var(--line); }
-  .route-node { position: relative; z-index: 1; display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto 1.25rem; gap: .8rem; align-items: center; width: 100%; padding: .8rem 1rem; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; text-align: left; font: inherit; cursor: pointer; }
+  .route-node { position: relative; z-index: 1; display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto 1.25rem; gap: .8rem; align-items: center; width: 100%; padding: .8rem 1rem; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; text-align: left; font: inherit; cursor: pointer; }
   .route-node:hover { border-color: var(--home-accent); background: var(--home-accent-soft); }
   .route-node[aria-pressed="true"] { border-color: var(--home-accent); box-shadow: inset 4px 0 0 var(--home-accent); background: var(--home-accent-soft); }
   .route-node:focus-visible { outline: 3px solid var(--home-focus); outline-offset: 3px; }
@@ -127,14 +127,14 @@
   .route-node-arrow { color: var(--home-accent); font-size: 1.1rem; }
   /* 路线图页专用 */
   .honest { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.2rem 0; }
-  .honest .cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+  .honest .cell { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
   .honest .n { font-size: 1.3rem; font-weight: 700; color: var(--home-accent); }
   .honest .l { font-size: .78rem; color: var(--faint); }
   .honest .note { grid-column: 1/-1; font-size: .78rem; color: var(--faint); padding: .4rem .2rem 0; }
-  details.books { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; margin: .9rem 0; }
+  details.books { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; margin: .9rem 0; }
   details.books p { font-size: .82rem; margin: .3rem 0; color: var(--faint); }
   details.books b { color: var(--ink); }
-  .progress-strip { background: #fff; border: 1px dashed var(--line); border-radius: 12px; padding: .8rem 1.25rem; margin: .9rem 0; }
+  .progress-strip { background: var(--card); border: 1px dashed var(--line); border-radius: 12px; padding: .8rem 1.25rem; margin: .9rem 0; }
   @media (max-width: 767.98px) {
     .current-task { grid-template-columns: 1fr; gap: .9rem; margin: 1.1rem 0 1.8rem; }
     .task-side { padding: .85rem 0 0; border-top: 1px solid var(--line); border-left: 0; }
@@ -150,7 +150,7 @@
   @media print {
     body { max-width: none; padding: 0; }
     .current-task { break-inside: avoid; border-color: #000; }
-    .task-action { color: #000 !important; background: #fff; border-color: #000; }
+    .task-action { color: #000 !important; background: var(--card); border-color: #000; }
   }
 </style>
 </head>

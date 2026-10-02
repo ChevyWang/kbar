@@ -12,6 +12,29 @@
     --note: #8a6d1f; --note-bg: #f7f3e3;
     --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Noto Serif SC", Georgia, serif;
     --sans: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --card: #fff; --ink-strong: #000;
+  }
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1b1b18; --ink: #e9e6da; --muted: #a8a496; --faint: #8f8b7d;
+    --line: #3c3a31; --up: #e5584a; --down: #46a868;
+    --note: #d0aa4e; --note-bg: #282215; --card: #232220; --ink-strong: #0f0f0d;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]):not([data-theme="dark"]) {
+      color-scheme: dark;
+      --paper: #1b1b18; --ink: #e9e6da; --muted: #a8a496; --faint: #8f8b7d;
+      --line: #3c3a31; --up: #e5584a; --down: #46a868;
+      --note: #d0aa4e; --note-bg: #282215; --card: #232220; --ink-strong: #0f0f0d;
+    }
+  }
+  @media print {
+    :root, [data-theme="dark"], html:not([data-theme="light"]):not([data-theme="dark"]) {
+      color-scheme: light;
+      --paper: #fcfcfb; --ink: #1c1c1a; --muted: #6e6c64; --faint: #767468;
+      --line: #e4e2d9; --up: #d33a2c; --down: #1a7f37;
+      --note: #8a6d1f; --note-bg: #f7f3e3; --card: #fff; --ink-strong: #000;
+    }
   }
   * { box-sizing: border-box; }
   html { background: var(--paper); }
@@ -28,7 +51,7 @@
   a:hover { border-bottom-color: var(--up); }
   /* 顶部三个总进度格（同根页 .honest 视觉族） */
   .honest { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.2rem 0; }
-  .honest .cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+  .honest .cell { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
   .honest .n { font-size: 1.3rem; font-weight: 700; color: #0f4c81; }
   .honest .n.alert { color: var(--up); }
   .honest .n.calm { color: var(--faint); }
@@ -43,7 +66,7 @@
   td.due { color: var(--up); font-weight: 700; }
   td.dim { color: var(--faint); }
   .note { background: var(--note-bg); border-left: 3px solid var(--note); padding: .8rem 1.1rem; margin: 1.4rem 0; font-size: .95rem; }
-  .note.tip { background: #fff; border-left-color: var(--down); }
+  .note.tip { background: var(--card); border-left-color: var(--down); }
   .note.tip > b:first-child { color: var(--down); }
   .note ul { margin: .4rem 0 0; padding-left: 1.3rem; }
   .note li { margin: .3rem 0; }
@@ -61,17 +84,17 @@
   details.ms-coach > summary .sum-sub { font-size: .78rem; color: var(--faint); font-weight: 400; }
   .ms-lights { white-space: nowrap; }
   .ms-lights span { font-family: var(--sans); font-size: .74rem; border: 1px solid var(--line); border-radius: 99px;
-    padding: .08rem .55rem; color: var(--faint); background: #fff; margin-right: .3rem; display: inline-block; margin-bottom: .2rem; }
+    padding: .08rem .55rem; color: var(--faint); background: var(--card); margin-right: .3rem; display: inline-block; margin-bottom: .2rem; }
   .ms-lights span.on { border-color: var(--down); color: var(--down); font-weight: 600; }
   td.ms-next { font-family: var(--sans); font-size: .82rem; }
   #backup summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: .6rem; cursor: pointer;
     font-family: var(--sans); font-size: .95rem; padding: .9rem 0 .3rem; min-height: 44px; }
   #backup summary .sum-sub { font-size: .78rem; color: var(--faint); font-weight: 400; }
   #backup .backup-body p { font-size: .92rem; }
-  #backup button, #backup label.kbtn { padding: .32rem .85rem; min-height: 36px; border: 1.5px solid var(--ink); border-radius: 8px; background: #fff;
+  #backup button, #backup label.kbtn { padding: .32rem .85rem; min-height: 36px; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--card);
     font-family: var(--sans); font-size: .85rem; cursor: pointer; }
   #backup button:hover, #backup label.kbtn:hover { background: var(--note-bg); }
-  #backup #backup-export { background: var(--ink); color: #fff; }
+  #backup #backup-export { background: var(--ink); color: var(--paper); }
   #backup #backup-export:hover { background: #000; }
   #backup label.kbtn { display: inline-flex; align-items: center; position: relative; overflow: hidden; margin-left: .6rem; }
   #backup label.kbtn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
@@ -90,7 +113,7 @@
   @media print { .honest .cell, table { border-color: #999; } a { border-bottom: none; } #backup { display: none; } }
 </style>
 </head>
-<body>
+<body data-no-toc>
 
 <header class="course">
   <div class="kicker">Kbar Bootcamp · 学习记录</div>
@@ -136,6 +159,7 @@
 </footer>
 
 <script src="phase-0/assets/quiz.js"></script>
+<script src="phase-0/assets/nav.js" defer></script>
 <script>
 (function () {
   'use strict';
